@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Camera, Play } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { images } from "@/lib/images";
 
 const categories = [
   "All",
@@ -20,72 +22,84 @@ const projects = [
     category: "Real Estate",
     description: "Full photography and video package for a waterfront property.",
     type: "photo" as const,
+    image: images.luxuryLakefront,
   },
   {
     title: "Downtown Green Bay Brand Film",
     category: "Commercial",
     description: "Cinema-quality brand story for a local business.",
     type: "video" as const,
+    image: images.downtownCommercial,
   },
   {
     title: "Fox River Development Overview",
     category: "Drone",
     description: "Aerial documentation of a new residential development.",
     type: "photo" as const,
+    image: images.aerialProperty,
   },
   {
     title: "Modern Farmhouse Virtual Tour",
     category: "3D Tours",
     description: "Interactive 3D walkthrough for a newly built home.",
     type: "video" as const,
+    image: images.modernHome,
   },
   {
     title: "Corporate Headquarters Showcase",
     category: "Commercial",
     description: "Professional photography for a corporate campus.",
     type: "photo" as const,
+    image: images.restaurant,
   },
   {
     title: "Listing Walkthrough Video",
     category: "Videography",
     description: "Cinematic property walkthrough for MLS listing.",
     type: "video" as const,
+    image: images.brandVideo,
   },
   {
     title: "Waterfront Condo Complex",
     category: "Real Estate",
     description: "Multi-unit listing photography with drone aerials.",
     type: "photo" as const,
+    image: images.waterfrontCondo,
   },
   {
     title: "Restaurant Grand Opening",
     category: "Commercial",
     description: "Event coverage and brand photography for a new restaurant.",
     type: "photo" as const,
+    image: images.waterfrontDev,
   },
   {
     title: "Suburban Neighborhood Aerial",
     category: "Drone",
     description: "Neighborhood context shots for a real estate development.",
     type: "photo" as const,
+    image: images.suburbanAerial,
   },
   {
     title: "Historic Home Renovation",
     category: "Real Estate",
     description: "Before and after documentation of a historic restoration.",
     type: "photo" as const,
+    image: images.historicHome,
   },
   {
     title: "Boutique Hotel Tour",
     category: "3D Tours",
     description: "Full Matterport scan of a boutique hotel property.",
     type: "video" as const,
+    image: images.boutiqueHotel,
   },
   {
     title: "Fitness Brand Campaign",
     category: "Videography",
     description: "Multi-platform video content for a fitness brand launch.",
     type: "video" as const,
+    image: images.fitnessBrand,
   },
 ];
 
@@ -144,16 +158,21 @@ export default function PortfolioPage() {
                 key={project.title}
                 className="group relative aspect-[4/3] overflow-hidden bg-navy/50"
               >
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity group-hover:from-black/90" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  {project.type === "video" ? (
-                    <div className="flex h-14 w-14 items-center justify-center border border-white/10 bg-black/30 text-white/20 transition-colors group-hover:border-white/30 group-hover:text-white/40">
+                {project.type === "video" && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="flex h-14 w-14 items-center justify-center border border-white/20 bg-black/40 text-white/60 backdrop-blur-sm transition-colors group-hover:border-white/40 group-hover:text-white">
                       <Play className="ml-0.5 h-5 w-5" />
                     </div>
-                  ) : (
-                    <Camera className="h-10 w-10 text-white/10" />
-                  )}
-                </div>
+                  </div>
+                )}
                 <div className="absolute bottom-0 left-0 right-0 p-5">
                   <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
                     {project.category}

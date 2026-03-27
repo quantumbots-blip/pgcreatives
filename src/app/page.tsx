@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Camera,
@@ -7,8 +8,7 @@ import {
   Cuboid,
   Play,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button-variants";
+import { images } from "@/lib/images";
 
 const services = [
   {
@@ -44,13 +44,29 @@ const stats = [
   { value: "4K+", label: "Ultra HD Quality" },
 ];
 
+const featured = [
+  { title: "Luxury Lakefront Estate", category: "Real Estate", image: images.luxuryLakefront },
+  { title: "Downtown Commercial Shoot", category: "Commercial", image: images.downtownCommercial },
+  { title: "Aerial Property Showcase", category: "Drone", image: images.aerialProperty },
+  { title: "Modern Home Tour", category: "3D Tour", image: images.modernHome },
+  { title: "Brand Launch Video", category: "Videography", image: images.brandVideo },
+  { title: "Waterfront Development", category: "Real Estate", image: images.waterfrontDev },
+];
+
 export default function HomePage() {
   return (
     <>
       {/* Hero */}
       <section className="relative flex min-h-[90vh] items-center overflow-hidden bg-black">
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/40 via-transparent to-black/80" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--color-navy-light)_0%,_transparent_60%)] opacity-40" />
+        <Image
+          src={images.heroMain}
+          alt="Luxury home exterior"
+          fill
+          className="object-cover opacity-30"
+          priority
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/60 via-black/40 to-black" />
 
         <div className="relative mx-auto max-w-7xl px-6 py-32">
           <div className="mx-auto max-w-3xl text-center">
@@ -62,7 +78,7 @@ export default function HomePage() {
               Professional Grade Media
             </h1>
 
-            <p className="mx-auto mt-6 max-w-lg text-lg font-light leading-relaxed text-white/50">
+            <p className="mx-auto mt-6 max-w-lg text-lg font-light leading-relaxed text-white/60">
               Cinema-quality videography, stunning photography, aerial drone
               footage, and immersive 3D tours. We bring your vision to life.
             </p>
@@ -162,22 +178,19 @@ export default function HomePage() {
           </div>
 
           <div className="mt-16 grid gap-1 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { title: "Luxury Lakefront Estate", category: "Real Estate" },
-              { title: "Downtown Commercial Shoot", category: "Commercial" },
-              { title: "Aerial Property Showcase", category: "Drone" },
-              { title: "Modern Home Tour", category: "3D Tour" },
-              { title: "Brand Launch Video", category: "Videography" },
-              { title: "Waterfront Development", category: "Real Estate" },
-            ].map((item) => (
+            {featured.map((item) => (
               <div
                 key={item.title}
                 className="group relative aspect-[4/3] overflow-hidden bg-navy/50"
               >
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Camera className="h-10 w-10 text-white/10" />
-                </div>
                 <div className="absolute bottom-0 left-0 right-0 p-5">
                   <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
                     {item.category}

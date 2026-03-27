@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Camera } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+import { images } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "About",
@@ -13,21 +15,25 @@ const team = [
     name: "Team Member",
     role: "Founder & Lead Photographer",
     bio: "With years of experience in professional photography and videography, leading the PG Creatives vision from day one.",
+    image: images.team1,
   },
   {
     name: "Team Member",
     role: "Videographer & Editor",
     bio: "Specializing in cinema-quality video production and post-production editing that brings stories to life.",
+    image: images.team2,
   },
   {
     name: "Team Member",
     role: "Drone Pilot & Photographer",
     bio: "FAA Part 107 certified drone operator capturing stunning aerial perspectives across Wisconsin.",
+    image: images.team3,
   },
   {
     name: "Team Member",
     role: "3D Tour Specialist",
     bio: "Creating immersive virtual experiences with Matterport technology for real estate and commercial clients.",
+    image: images.team4,
   },
 ];
 
@@ -83,9 +89,13 @@ export default function TeamPage() {
             {team.map((member) => (
               <div key={member.role} className="group">
                 <div className="relative aspect-[3/4] overflow-hidden bg-navy/50">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Camera className="h-10 w-10 text-white/10" />
-                  </div>
+                  <Image
+                    src={member.image}
+                    alt={member.role}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
                 </div>
                 <div className="bg-navy/30 p-5">
@@ -137,9 +147,9 @@ export default function TeamPage() {
           <div className="mt-6 space-y-4 text-white/50">
             <p>
               Based in Green Bay and Madison, Wisconsin, PG Creatives is a
-              professional media company specializing in real estate
-              photography, cinema-quality videography, drone aerial
-              photography, 3D virtual tours, and commercial branding.
+              professional media company specializing in real estate photography,
+              cinema-quality videography, drone aerial photography, 3D virtual
+              tours, and commercial branding.
             </p>
             <p>
               We believe that professional-grade media is the key to making a
