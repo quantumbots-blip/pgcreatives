@@ -81,7 +81,7 @@ export default function HomePage() {
 
       {/* Stats Bar */}
       <div className="section-divider" />
-      <section className="bg-card relative overflow-hidden">
+      <section className="bg-background relative overflow-hidden">
         {/* Single subtle background glow */}
         <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/[0.04] blur-[80px]" />
 
@@ -181,7 +181,7 @@ export default function HomePage() {
       </section>
 
       {/* Portfolio */}
-      <section className="border-t border-purple/10 bg-secondary/50 py-28 lg:py-36 relative overflow-hidden">
+      <section className="py-28 lg:py-36 relative overflow-hidden bg-background">
         {/* Subtle ambient glow */}
         <div className="absolute right-[5%] top-[10%] h-48 w-48 rounded-full bg-purple/[0.04] blur-[100px] hidden lg:block" />
         <div className="mx-auto max-w-7xl px-6">
@@ -253,7 +253,7 @@ export default function HomePage() {
       </section>
 
       {/* Contact Form */}
-      <section className="relative overflow-hidden bg-secondary py-28 lg:py-36">
+      <section className="relative overflow-hidden bg-background py-28 lg:py-36">
         {/* Single slow ambient glow */}
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[100px]" />
 
@@ -279,7 +279,7 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-up" delay={0.15}>
-            <div className="gradient-border rounded-xl bg-[#0a0a2e] p-8 lg:p-10">
+            <div className="gradient-border rounded-xl bg-purple/[0.03] p-8 lg:p-10">
               <ContactForm />
             </div>
           </AnimateOnScroll>

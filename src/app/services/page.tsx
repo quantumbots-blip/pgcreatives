@@ -208,7 +208,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Process */}
-      <section className="border-t border-purple/12 bg-card py-28">
+      <section className="bg-background py-28">
         <div className="mx-auto max-w-7xl px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">

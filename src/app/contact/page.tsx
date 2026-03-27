@@ -54,7 +54,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[#080820] py-28">
+      <section className="relative overflow-hidden bg-background py-28">
         {/* Floating decorative orb */}
         <div
           aria-hidden="true"
@@ -80,7 +80,7 @@ export default function ContactPage() {
       </section>
 
       {/* Form + Info */}
-      <section className="bg-[#080820] py-28">
+      <section className="bg-background py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 lg:grid-cols-5">
             {/* Form */}

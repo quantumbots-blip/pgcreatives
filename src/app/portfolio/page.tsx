@@ -115,7 +115,7 @@ export default function PortfolioPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden py-28" style={{ background: "#080820" }}>
+      <section className="relative overflow-hidden bg-background py-28">
         <div
           className="absolute inset-0"
           style={{
@@ -144,7 +144,7 @@ export default function PortfolioPage() {
       </section>
 
       {/* Filter + Grid */}
-      <section className="py-16" style={{ background: "#080820" }}>
+      <section className="bg-background py-16">
         <div className="mx-auto max-w-7xl px-6">
           {/* Filter tabs */}
           <AnimateOnScroll animation="fade-up">
@@ -232,11 +232,7 @@ export default function PortfolioPage() {
 
       {/* CTA */}
       <section
-        className="py-28"
-        style={{
-          borderTop: "1px solid rgba(139,92,246,0.12)",
-          background: "#0a0a2e",
-        }}
+        className="bg-background py-28"
       >
         <AnimateOnScroll animation="fade-up">
         <div className="mx-auto max-w-3xl px-6 text-center">

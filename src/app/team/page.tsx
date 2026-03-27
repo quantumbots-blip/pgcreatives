@@ -154,7 +154,7 @@ export default function TeamPage() {
       </section>
 
       {/* Values */}
-      <section className="border-t border-purple/10 bg-secondary/30 py-28">
+      <section className="bg-background py-28">
         <div className="mx-auto max-w-7xl px-6">
           {/* Heading */}
           <AnimateOnScroll animation="fade-up">
