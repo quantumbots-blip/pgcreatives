@@ -48,11 +48,6 @@ const team = [
     role: "Administrative Coordinator",
     image: images.team7,
   },
-  {
-    name: "Mike McIntee",
-    role: "Advisor",
-    image: images.team8,
-  },
 ];
 
 const values = [
@@ -98,7 +93,7 @@ export default function TeamPage() {
 
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
               The Creatives{" "}
-              <span className="gradient-text-animated gradient-underline">Behind the Lens</span>
+              <span className="text-purple-light">Behind the Lens</span>
             </h1>
             <p className="mt-5 text-lg leading-relaxed text-white/50">
               PG Creatives has a growing group of editors, photographers, and
@@ -157,7 +152,7 @@ export default function TeamPage() {
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Values</SectionLabel>
               <h2 className="text-3xl font-bold tracking-tight">
-                <span className="gradient-text-animated">What Drives Us</span>
+                <span className="text-white">What Drives Us</span>
               </h2>
             </div>
           </AnimateOnScroll>
@@ -195,7 +190,7 @@ export default function TeamPage() {
 
           <h2 className="text-3xl font-bold tracking-tight text-white">
             About{" "}
-            <span className="rainbow-shimmer">PG Creatives</span>
+            <span className="text-purple-light">PG Creatives</span>
           </h2>
           <div className="mt-6 space-y-4 text-white/50">
             <p>

@@ -146,7 +146,7 @@ export default function ServicesPage() {
             <SectionLabel>Our Services</SectionLabel>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Everything You Need to{" "}
-              <span className="gradient-text-animated gradient-underline">Stand Out</span>
+              <span className="text-purple-light">Stand Out</span>
             </h1>
             <p className="mt-4 text-lg text-white/50">
               From first impressions to lasting impact, our comprehensive media
@@ -211,7 +211,7 @@ export default function ServicesPage() {
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Process</SectionLabel>
               <h2 className="text-3xl font-bold tracking-tight">
-                <span className="gradient-text-animated">Simple. Professional. Fast.</span>
+                <span className="text-white">Simple. Professional. Fast.</span>
               </h2>
             </div>
           </AnimateOnScroll>
@@ -220,7 +220,7 @@ export default function ServicesPage() {
             {process.map((item, i) => (
               <AnimateOnScroll key={item.step} animation="fade-up" delay={i * 0.1}>
                 <div>
-                  <span className="font-mono text-3xl font-bold gradient-text">
+                  <span className="font-mono text-3xl font-bold text-purple/30">
                     {item.step}
                   </span>
                   <div className="mt-3 h-px bg-purple/18" />
@@ -240,7 +240,7 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-3xl font-bold tracking-tight">
             <span className="text-white">Let&apos;s Discuss </span>
-            <span className="gradient-text-animated gradient-underline">Your Project</span>
+            <span className="text-purple-light">Your Project</span>
           </h2>
           <p className="mt-4 text-white/50">
             Every project is unique. Reach out for a custom quote tailored to

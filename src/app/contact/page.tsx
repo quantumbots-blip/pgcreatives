@@ -69,7 +69,7 @@ export default function ContactPage() {
             </span>
             <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Let&apos;s Create{" "}
-              <span className="gradient-text-animated gradient-underline">Something Together</span>
+              <span className="text-purple-light">Something Together</span>
             </h1>
             <p className="mt-4 text-lg text-white/50">
               Ready to elevate your visual content? Get in touch for a free

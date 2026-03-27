@@ -25,6 +25,7 @@ const services = [
     title: "Branding",
     description:
       "Personal branding is essential if you're looking to stand out in a competitive market. It builds trust and credibility, creates a consistent and memorable identity, and showcases your unique value proposition.",
+    image: "/images/video-studio.jpg",
   },
   {
     number: "02",
@@ -32,6 +33,7 @@ const services = [
     title: "Real Estate",
     description:
       "Listing videos and pictures, drone shots, 3D tours and more. Professional photography, editing and content to sell homes faster.",
+    image: "/images/luxury-living-room.jpg",
   },
   {
     number: "03",
@@ -39,6 +41,7 @@ const services = [
     title: "Commercial",
     description:
       "Cinema quality videography for businesses of all types. Have an idea? Let's connect and make it happen.",
+    image: "/images/aerial-lakefront.jpg",
   },
 ];
 
@@ -90,7 +93,7 @@ export default function HomePage() {
           {stats.map((stat, i) => (
             <AnimateOnScroll key={stat.label} animation="fade-up" delay={i * 0.15}>
               <div className="relative text-center">
-                <p className="font-heading text-4xl font-bold sm:text-5xl gradient-text-animated">
+                <p className="font-heading text-4xl font-bold sm:text-5xl text-white">
                   {stat.value}
                 </p>
                 <p className="mt-2 text-sm tracking-wide text-white/35">
@@ -119,7 +122,7 @@ export default function HomePage() {
                 <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                   <span className="text-white">Services Built</span>
                   <br className="hidden sm:block" />
-                  <span className="gradient-text-animated gradient-underline"> for Impact</span>
+                  <span className="text-purple-light"> for Impact</span>
                 </h2>
               </div>
               <Link
@@ -138,26 +141,38 @@ export default function HomePage() {
                 <div className="card-3d-enhanced h-full">
                   <Link
                     href="/services"
-                    className="gradient-border glass-card group relative flex h-full flex-col rounded-xl p-8 transition-all lg:p-10"
+                    className="group relative flex h-full flex-col rounded-xl border border-purple/10 bg-purple/[0.03] overflow-hidden transition-all hover:border-purple/25"
                   >
-                    {/* Subtle corner glow on hover */}
-                    <div className="absolute -right-10 -top-10 h-20 w-20 rounded-full bg-purple/0 blur-[30px] transition-all duration-500 group-hover:bg-purple/15" />
-                    <div className="relative flex items-center justify-between">
-                      <div className="icon-3d flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
-                        <service.icon className="h-5 w-5 text-purple-light" />
+                    {/* Image */}
+                    <div className="relative h-48 w-full overflow-hidden">
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#080820] via-[#080820]/30 to-transparent" />
+                      <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple/20 backdrop-blur-sm border border-purple/20">
+                          <service.icon className="h-4 w-4 text-purple-light" />
+                        </div>
+                        <span className="font-mono text-xs text-white/40">
+                          {service.number}
+                        </span>
                       </div>
-                      <span className="font-mono text-sm text-purple/40">
-                        {service.number}
-                      </span>
                     </div>
-                    <h3 className="mt-6 font-heading text-xl font-semibold text-white lg:text-2xl">
-                      {service.title}
-                    </h3>
-                    <p className="mt-3 flex-1 text-sm leading-relaxed text-white/40 transition-colors group-hover:text-white/55">
-                      {service.description}
-                    </p>
-                    <div className="mt-6 flex items-center gap-2 text-sm text-purple-light opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100">
-                      Learn More <ArrowRight className="h-3 w-3" />
+                    {/* Content */}
+                    <div className="flex flex-1 flex-col p-6 lg:p-8">
+                      <h3 className="font-heading text-xl font-semibold text-white lg:text-2xl">
+                        {service.title}
+                      </h3>
+                      <p className="mt-3 flex-1 text-sm leading-relaxed text-white/40 transition-colors group-hover:text-white/55">
+                        {service.description}
+                      </p>
+                      <div className="mt-6 flex items-center gap-2 text-sm text-purple-light opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100">
+                        Learn More <ArrowRight className="h-3 w-3" />
+                      </div>
                     </div>
                   </Link>
                 </div>
@@ -186,7 +201,7 @@ export default function HomePage() {
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Work</SectionLabel>
               <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-                <span className="gradient-text-animated">Featured Projects</span>
+                <span className="text-white">Featured Projects</span>
               </h2>
               <p className="mt-4 text-white/40">
                 A glimpse of the professional media we&apos;ve created for our

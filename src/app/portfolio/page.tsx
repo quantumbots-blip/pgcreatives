@@ -129,7 +129,7 @@ export default function PortfolioPage() {
               </span>
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              <span className="gradient-text-animated">Our Best Work</span>
+              <span className="text-white">Our Best Work</span>
             </h1>
             <p className="mt-4 text-lg text-purple-light/55">
               Browse our collection of professional media created for clients
@@ -211,7 +211,7 @@ export default function PortfolioPage() {
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-3xl font-bold tracking-tight">
             <span className="text-white">Want Results </span>
-            <span className="gradient-text-animated gradient-underline">Like These?</span>
+            <span className="text-purple-light">Like These?</span>
           </h2>
           <p className="mt-4 text-purple-light/55">
             Let&apos;s create stunning media for your property or brand.
