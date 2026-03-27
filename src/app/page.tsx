@@ -13,9 +13,9 @@ import { SectionLabel } from "@/components/section-label";
 import { images } from "@/lib/images";
 
 const stats = [
-  { value: "$3.9B", label: "In Real Estate Captured" },
-  { value: "1.2m", label: "Views Generated" },
-  { value: "150k", label: "Photos & Videos Delivered" },
+  { value: "$3B", label: "In Real Estate Captured" },
+  { value: "2m+", label: "Views Generated" },
+  { value: "150k+", label: "Photos & Videos Delivered" },
 ];
 
 const services = [

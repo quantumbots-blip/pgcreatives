@@ -87,7 +87,7 @@ export function Footer() {
               <li>
                 <span className="flex items-center gap-2.5 text-sm text-white/50">
                   <MapPin className="h-3.5 w-3.5 shrink-0 text-purple/60" />
-                  Green Bay & Madison, WI
+                  Green Bay, Madison & Fox Valley, WI
                 </span>
               </li>
             </ul>

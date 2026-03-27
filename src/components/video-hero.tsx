@@ -49,7 +49,7 @@ export function VideoHero() {
             className="animate-hero-fade-up mb-6 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5 backdrop-blur-sm"
           >
             <span className="text-xs font-medium tracking-[0.2em] uppercase text-purple-light">
-              Green Bay &amp; Madison, Wisconsin
+              Green Bay, Madison, and the Fox Valley
             </span>
           </div>
 
