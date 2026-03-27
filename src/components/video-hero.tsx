@@ -39,28 +39,8 @@ export function VideoHero() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#080820]/70 via-[#080820]/30 to-[#080820]/85" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#080820]/70 via-transparent to-transparent" />
 
-      {/* Floating decorative elements */}
-      <div className="absolute bottom-0 left-1/3 h-[200px] w-[500px] bg-purple/10 blur-[100px] animate-float-slow" />
-      <div className="absolute top-1/4 right-[15%] h-[120px] w-[120px] rounded-full bg-purple/8 blur-[60px] animate-float" />
-      <div className="absolute bottom-1/3 right-[10%] h-[80px] w-[80px] rounded-full bg-purple-light/5 blur-[40px] animate-float-slow" />
-
-      {/* Geometric floating shapes */}
-      <div
-        className="absolute top-[20%] right-[20%] h-24 w-24 rotate-45 rounded-2xl border border-purple/10 animate-float-slow hidden lg:block"
-        style={{ animationDelay: "1s" }}
-      />
-      <div
-        className="absolute bottom-[25%] right-[25%] h-16 w-16 rotate-12 rounded-xl border border-purple/8 animate-float hidden lg:block"
-        style={{ animationDelay: "2s" }}
-      />
-      <div
-        className="absolute top-[40%] right-[12%] h-3 w-3 rounded-full bg-purple/30 animate-float hidden lg:block"
-        style={{ animationDelay: "0.5s" }}
-      />
-      <div
-        className="absolute top-[60%] right-[30%] h-2 w-2 rounded-full bg-purple-light/20 animate-float-slow hidden lg:block"
-        style={{ animationDelay: "1.5s" }}
-      />
+      {/* Single subtle ambient glow */}
+      <div className="absolute bottom-0 left-1/3 h-[200px] w-[500px] bg-purple/[0.06] blur-[120px]" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-20">

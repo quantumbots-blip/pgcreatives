@@ -229,11 +229,11 @@ html {
   transform: translateY(-2px);
 }
 
-/* Floating animation classes */
-.animate-float { animation: float 6s ease-in-out infinite; }
-.animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
-.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
-.animate-rotate-slow { animation: rotate-slow 20s linear infinite; }
+/* Floating animation classes — slow and deliberate */
+.animate-float { animation: float 12s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 18s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 6s ease-in-out infinite; }
+.animate-rotate-slow { animation: rotate-slow 40s linear infinite; }
 
 /* === ENHANCED 3D & ANIMATION EFFECTS === */
 
@@ -291,33 +291,30 @@ html {
 
 /* Morphing blob */
 .morph-blob {
-  animation: morph 15s ease-in-out infinite, gradient-shift 10s ease infinite;
+  animation: morph 25s ease-in-out infinite, gradient-shift 20s ease infinite;
   background-size: 200% 200%;
 }
 
 /* Glow pulse orb */
 .glow-orb {
-  animation: glow-pulse 4s ease-in-out infinite;
+  animation: glow-pulse 8s ease-in-out infinite;
 }
 
 /* Animated gradient border */
 .gradient-border {
   position: relative;
-  overflow: hidden;
+  border: 1px solid transparent;
+  background-clip: padding-box;
 }
 .gradient-border::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -1px;
   border-radius: inherit;
-  padding: 1px;
   background: linear-gradient(135deg, #8B5CF6, #C4B5FD, #6D28D9, #8B5CF6);
   background-size: 300% 300%;
-  animation: gradient-shift 6s ease infinite;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
+  animation: gradient-shift 12s ease infinite;
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -328,7 +325,7 @@ html {
 
 /* Animated border glow */
 .animate-border-glow {
-  animation: border-glow 3s ease-in-out infinite;
+  animation: border-glow 6s ease-in-out infinite;
 }
 
 /* Counter animation */
@@ -343,7 +340,7 @@ html {
 
 /* Spinning ring decoration */
 .spin-ring {
-  animation: spin-slow 30s linear infinite;
+  animation: spin-slow 60s linear infinite;
 }
 
 /* Glassmorphism card */
@@ -403,7 +400,7 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 6s linear infinite;
+  animation: shimmer 12s linear infinite;
 }
 
 /* Rainbow shimmer for special emphasis */
@@ -422,7 +419,7 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 3s linear infinite;
+  animation: shimmer 8s linear infinite;
 }
 
 /* Floating particles */
@@ -474,7 +471,7 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 4s linear infinite;
+  animation: shimmer 10s linear infinite;
 }
 
 ::-webkit-scrollbar {

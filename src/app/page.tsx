@@ -4,11 +4,11 @@ import {
   ArrowRight,
   Home,
   Sparkles,
-  Star,
   Video,
 } from "lucide-react";
 import { VideoHero } from "@/components/video-hero";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { ContactForm } from "@/components/contact-form";
 import { images } from "@/lib/images";
 
 const stats = [
@@ -82,16 +82,8 @@ export default function HomePage() {
       {/* Stats Bar */}
       <div className="section-divider" />
       <section className="bg-card relative overflow-hidden">
-        {/* Morphing gradient blob */}
-        <div className="absolute -right-20 -top-20 h-60 w-60 morph-blob bg-gradient-to-br from-purple/10 via-purple-light/5 to-transparent" />
-        <div className="absolute -left-10 -bottom-10 h-40 w-40 morph-blob bg-gradient-to-tr from-purple-dim/10 via-purple/5 to-transparent" style={{ animationDelay: '5s' }} />
-
-        {/* Floating particles */}
-        <div className="particle left-[10%] bottom-0" style={{ animationDelay: '0s', animationDuration: '7s' }} />
-        <div className="particle left-[30%] bottom-0" style={{ animationDelay: '2s', animationDuration: '9s' }} />
-        <div className="particle left-[60%] bottom-0" style={{ animationDelay: '4s', animationDuration: '6s' }} />
-        <div className="particle left-[80%] bottom-0" style={{ animationDelay: '1s', animationDuration: '8s' }} />
-        <div className="particle left-[50%] bottom-0" style={{ animationDelay: '3s', animationDuration: '10s' }} />
+        {/* Single subtle background glow */}
+        <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/[0.04] blur-[80px]" />
 
         <div className="mx-auto grid max-w-7xl grid-cols-3 gap-8 px-6 py-14 lg:grid-cols-3">
           {stats.map((stat, i) => (
@@ -115,9 +107,8 @@ export default function HomePage() {
 
       {/* Services */}
       <section className="bg-background py-28 lg:py-36 relative overflow-hidden">
-        {/* Floating decorative orbs */}
-        <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px] animate-float-slow" />
-        <div className="absolute right-20 bottom-40 h-48 w-48 rounded-full bg-purple/[0.04] blur-[60px] animate-float" />
+        {/* Single ambient glow */}
+        <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px]" />
 
         <div className="relative mx-auto max-w-7xl px-6">
           <AnimateOnScroll animation="fade-up">
@@ -191,9 +182,8 @@ export default function HomePage() {
 
       {/* Portfolio */}
       <section className="border-t border-purple/10 bg-secondary/50 py-28 lg:py-36 relative overflow-hidden">
-        {/* Decorative 3D elements */}
-        <div className="absolute right-[5%] top-[10%] h-48 w-48 morph-blob bg-gradient-to-br from-purple/8 via-purple-light/5 to-transparent hidden lg:block" />
-        <div className="absolute left-[8%] bottom-[15%] h-32 w-32 rounded-full border border-purple/10 spin-ring hidden lg:block" />
+        {/* Subtle ambient glow */}
+        <div className="absolute right-[5%] top-[10%] h-48 w-48 rounded-full bg-purple/[0.04] blur-[100px] hidden lg:block" />
         <div className="mx-auto max-w-7xl px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
@@ -262,71 +252,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonial */}
-      <section className="border-t border-purple/10 bg-background py-24 lg:py-32 relative overflow-hidden">
-        <div className="absolute left-1/2 top-1/2 h-[200px] w-[400px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.04] blur-[100px] animate-float-slow" />
-        <div className="absolute right-[10%] top-[20%] h-40 w-40 rounded-full border border-dashed border-purple/8 spin-ring hidden lg:block" />
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <AnimateOnScroll animation="fade-in-scale">
-            <div className="flex items-center justify-center gap-1">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-purple text-purple" />
-              ))}
-            </div>
-            <blockquote className="mt-8 font-heading text-2xl font-medium leading-relaxed text-white/80 sm:text-3xl lg:text-4xl">
-              &ldquo;PG Creatives transformed our listings. The photography and
-              drone footage are absolutely stunning &mdash; our properties sell
-              faster and for more.&rdquo;
-            </blockquote>
-            <div className="mt-8">
-              <p className="text-sm font-medium text-white/60">
-                Top Producing Agent
-              </p>
-              <p className="mt-1 text-xs tracking-wide text-white/30">
-                Leading Real Estate Agency, Green Bay
+      {/* Contact Form */}
+      <section className="relative overflow-hidden bg-secondary py-28 lg:py-36">
+        {/* Single slow ambient glow */}
+        <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[100px]" />
+
+        <div className="relative mx-auto max-w-4xl px-6">
+          <AnimateOnScroll animation="fade-up">
+            <div className="text-center mb-12">
+              <div className="mb-4 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
+                <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
+                  Get Started
+                </span>
+              </div>
+              <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+                <span className="text-white">Ready to </span>
+                <span className="rainbow-shimmer">Elevate</span>
+                <br />
+                <span className="text-white gradient-underline">Your Brand?</span>
+              </h2>
+              <p className="mt-5 text-lg text-white/40">
+                Let&apos;s create something extraordinary together. Fill out the
+                form below for a free consultation and custom quote.
               </p>
             </div>
           </AnimateOnScroll>
-        </div>
-      </section>
 
-      {/* CTA */}
-      <section className="relative overflow-hidden bg-secondary py-28 lg:py-36">
-        {/* Animated purple ambient glows */}
-        <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/8 blur-[80px] animate-float-slow" />
-        <div className="absolute left-1/4 top-1/4 h-[150px] w-[150px] rounded-full bg-purple/5 blur-[50px] animate-float" />
-        <div className="absolute right-1/4 bottom-1/4 h-[100px] w-[100px] rounded-full bg-purple-light/5 blur-[40px] animate-float-slow" />
-
-        <div className="relative mx-auto max-w-3xl px-6 text-center">
-          <AnimateOnScroll animation="fade-up">
-            <div className="mb-4 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
-              <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
-                Get Started
-              </span>
-            </div>
-            <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-              <span className="text-white">Ready to </span>
-              <span className="rainbow-shimmer">Elevate</span>
-              <br />
-              <span className="text-white gradient-underline">Your Brand?</span>
-            </h2>
-            <p className="mt-5 text-lg text-white/40">
-              Let&apos;s create something extraordinary together. Get in touch for
-              a free consultation and custom quote.
-            </p>
-            <div className="mt-10 flex flex-wrap justify-center gap-4">
-              <Link
-                href="/contact"
-                className="glow-hover rounded-lg bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-[#1a1054]"
-              >
-                Contact Us
-              </Link>
-              <a
-                href="tel:+19207770127"
-                className="glow-hover rounded-lg border border-purple/30 px-8 py-3.5 text-sm tracking-wide text-purple-light"
-              >
-                (920) 777-0127
-              </a>
+          <AnimateOnScroll animation="fade-up" delay={0.15}>
+            <div className="gradient-border rounded-xl bg-[#0a0a2e] p-8 lg:p-10">
+              <ContactForm />
             </div>
           </AnimateOnScroll>
         </div>
