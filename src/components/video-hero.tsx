@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Play } from "lucide-react";
 
 export function VideoHero() {
@@ -9,15 +10,23 @@ export function VideoHero() {
 
   return (
     <section className="relative -mt-16 lg:-mt-20 flex min-h-screen items-center overflow-hidden">
-      {/* Dark background until video loads */}
-      <div className="absolute inset-0 bg-[#080820]" />
+      {/* Poster image — shows while video loads */}
+      <Image
+        src="/images/hero-poster.jpg"
+        alt="Property showcase"
+        fill
+        className="object-cover"
+        priority
+        sizes="100vw"
+      />
 
-      {/* Video layer */}
+      {/* Video layer — fades in over poster when ready */}
       <video
         autoPlay
         muted
         loop
         playsInline
+        poster="/images/hero-poster.jpg"
         onLoadedData={() => setVideoLoaded(true)}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ${
           videoLoaded ? "opacity-100" : "opacity-0"
