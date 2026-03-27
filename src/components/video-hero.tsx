@@ -54,7 +54,7 @@ export function VideoHero() {
           </div>
 
           <h1
-            className="animate-hero-fade-up text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-8xl"
+            className="animate-hero-fade-up text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-8xl"
             style={{ animationDelay: "0.15s" }}
           >
             <span className="text-white">Professional</span>

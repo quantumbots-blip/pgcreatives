@@ -165,7 +165,7 @@ export default function ServicesPage() {
               <div
                 className="card-3d-enhanced group grid gap-0 rounded-xl glass-card transition-all duration-200 hover:-translate-y-1 lg:grid-cols-2"
               >
-                <div className="space-y-5 p-8 lg:p-10">
+                <div className="space-y-5 p-6 lg:p-10">
                   <div className="flex items-center gap-3">
                     <div className="icon-3d flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
                       <service.icon className="h-5 w-5 text-purple-light" />
@@ -182,7 +182,7 @@ export default function ServicesPage() {
                   </p>
                 </div>
 
-                <div className="rounded-b-xl bg-purple/[0.06] p-8 lg:rounded-b-none lg:rounded-r-xl lg:p-10">
+                <div className="rounded-b-xl bg-purple/[0.06] p-6 lg:rounded-b-none lg:rounded-r-xl lg:p-10">
                   <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-purple-light/50">
                     What&apos;s Included
                   </p>

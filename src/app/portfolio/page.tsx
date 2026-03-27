@@ -150,7 +150,7 @@ export default function PortfolioPage() {
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={cn(
-                    "rounded-lg px-4 py-2 text-sm tracking-wide transition-colors border",
+                    "rounded-lg px-4 py-3 text-sm tracking-wide transition-colors border",
                     activeCategory === cat
                       ? "bg-purple/15 border-purple/15 text-white"
                       : "bg-purple/[0.04] border-purple/15 text-white/50 hover:text-white"

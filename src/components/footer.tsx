@@ -78,10 +78,10 @@ export function Footer() {
               <li>
                 <a
                   href="mailto:pgcreativeswisconsin@gmail.com"
-                  className="flex items-center gap-2.5 text-sm text-white/50 transition-colors hover:text-purple-light"
+                  className="flex min-w-0 items-center gap-2.5 text-sm text-white/50 transition-colors hover:text-purple-light"
                 >
                   <Mail className="h-3.5 w-3.5 shrink-0 text-purple/60" />
-                  pgcreativeswisconsin@gmail.com
+                  <span className="break-all">pgcreativeswisconsin@gmail.com</span>
                 </a>
               </li>
               <li>

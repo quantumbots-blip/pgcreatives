@@ -85,7 +85,7 @@ export default function ContactPage() {
           <div className="grid gap-8 lg:grid-cols-5">
             {/* Form */}
             <AnimateOnScroll animation="slide-in-left" className="lg:col-span-3">
-              <div className="gradient-border rounded-xl bg-[#0a0a2e] p-8 lg:p-10">
+              <div className="gradient-border rounded-xl bg-[#0a0a2e] p-6 lg:p-10">
                 <ContactForm />
               </div>
             </AnimateOnScroll>

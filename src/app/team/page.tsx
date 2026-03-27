@@ -110,7 +110,7 @@ export default function TeamPage() {
         <div className="pointer-events-none absolute right-0 top-1/4 h-96 w-96 rounded-full bg-purple/10 blur-[120px]" />
 
         <div className="relative mx-auto max-w-7xl px-6">
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
             {team.map((member, index) => (
               <AnimateOnScroll key={member.name} animation="fade-up" delay={index * 0.08}>
                 <div
