@@ -1,6 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
+import { saveSubmission } from "@/lib/db";
 
 export type ContactState = {
   success: boolean;
@@ -27,6 +28,15 @@ export async function submitContactForm(
     return { success: false, error: "Please enter a valid email address." };
   }
 
+  // Save to database
+  try {
+    await saveSubmission({ firstName, lastName, email, company, phone, service, message });
+  } catch (err) {
+    console.error("[contact] Failed to save to database:", err);
+    // Don't block the submission if DB fails — still send email
+  }
+
+  // Send email notification
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.log("[contact] No RESEND_API_KEY — logging submission:");
@@ -47,6 +57,7 @@ export async function submitContactForm(
         ``,
         `Name: ${firstName} ${lastName}`,
         `Email: ${email}`,
+        `Company: ${company || "Not provided"}`,
         `Phone: ${phone || "Not provided"}`,
         `Service: ${service || "Not specified"}`,
         ``,

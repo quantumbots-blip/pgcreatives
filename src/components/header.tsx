@@ -37,6 +37,10 @@ const navigation: NavItem[] = [
         href: "https://portal.spiro.media/order/pg/madison",
         external: true,
       },
+      {
+        name: "Admin",
+        href: "/admin",
+      },
     ],
   },
 ];
