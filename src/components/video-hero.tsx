@@ -2,33 +2,24 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Play } from "lucide-react";
-import { images } from "@/lib/images";
 
 export function VideoHero() {
   const [videoLoaded, setVideoLoaded] = useState(false);
 
   return (
     <section className="relative -mt-16 lg:-mt-20 flex min-h-screen items-center overflow-hidden">
-      {/* Background image (always visible as fallback) */}
-      <Image
-        src={images.heroMain}
-        alt="Luxury property exterior"
-        fill
-        className="object-cover"
-        priority
-        sizes="100vw"
-      />
+      {/* Dark background until video loads */}
+      <div className="absolute inset-0 bg-[#080820]" />
 
-      {/* Video layer — renders on top of image when loaded */}
+      {/* Video layer */}
       <video
         autoPlay
         muted
         loop
         playsInline
         onLoadedData={() => setVideoLoaded(true)}
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[2000ms] ${
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ${
           videoLoaded ? "opacity-100" : "opacity-0"
         }`}
       >
