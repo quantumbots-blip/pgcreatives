@@ -89,6 +89,18 @@ export function ContactForm() {
         </div>
 
         <div className="space-y-2">
+          <Label htmlFor="company" className="text-white/60">
+            Company Name
+          </Label>
+          <Input
+            id="company"
+            name="company"
+            placeholder="Your Company"
+            className="border-white/10 bg-black/50 text-white placeholder:text-white/20"
+          />
+        </div>
+
+        <div className="space-y-2">
           <Label htmlFor="phone" className="text-white/60">
             Phone
           </Label>

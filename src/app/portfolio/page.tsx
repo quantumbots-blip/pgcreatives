@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { images } from "@/lib/images";
+import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 const categories = [
   "All",
@@ -114,17 +115,26 @@ export default function PortfolioPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy py-28">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--color-navy-light)_0%,_transparent_50%)]" />
+      <section className="relative overflow-hidden py-28" style={{ background: "#080820" }}>
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at top right, #0f0f3d 0%, transparent 55%)",
+          }}
+        />
+        <div className="absolute left-10 top-40 h-48 w-48 rounded-full bg-purple/[0.03] blur-[60px] animate-float" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-white/40">
-              Portfolio
-            </p>
+            <div className="mb-5 inline-flex items-center rounded-full border px-3 py-1" style={{ borderColor: "rgba(139,92,246,0.25)", background: "rgba(139,92,246,0.10)" }}>
+              <span className="text-xs font-medium uppercase tracking-[0.25em]" style={{ color: "#C4B5FD" }}>
+                Portfolio
+              </span>
+            </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              Our Best Work
+              <span className="gradient-text">Our Best Work</span>
             </h1>
-            <p className="mt-4 text-lg text-white/50">
+            <p className="mt-4 text-lg" style={{ color: "rgba(196,181,253,0.55)" }}>
               Browse our collection of professional media created for clients
               across Wisconsin.
             </p>
@@ -133,30 +143,40 @@ export default function PortfolioPage() {
       </section>
 
       {/* Filter + Grid */}
-      <section className="bg-black py-16">
+      <section className="py-16" style={{ background: "#080820" }}>
         <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-12 flex flex-wrap gap-2">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={cn(
-                  "px-4 py-2 text-sm tracking-wide transition-colors",
-                  activeCategory === cat
-                    ? "bg-white text-black"
-                    : "border border-white/10 text-white/50 hover:text-white hover:border-white/30"
-                )}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          {/* Filter tabs */}
+          <AnimateOnScroll animation="fade-up">
+            <div className="mb-12 flex flex-wrap gap-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={cn(
+                    "rounded-lg px-4 py-2 text-sm tracking-wide transition-colors",
+                    activeCategory === cat
+                      ? "text-white"
+                      : "text-white/50 hover:text-white"
+                  )}
+                  style={
+                    activeCategory === cat
+                      ? { background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.15)" }
+                      : { background: "rgba(139,92,246,0.04)", border: "1px solid rgba(139,92,246,0.15)" }
+                  }
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </AnimateOnScroll>
 
-          <div className="grid gap-1 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Grid */}
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((project) => (
               <div
                 key={project.title}
-                className="group relative aspect-[4/3] overflow-hidden bg-navy/50"
+                className="group relative aspect-[4/3] overflow-hidden rounded-xl transition-all duration-500 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]"
+                style={{ background: "#0a0a2e" }}
               >
                 <Image
                   src={project.image}
@@ -165,22 +185,41 @@ export default function PortfolioPage() {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity group-hover:from-black/90" />
+                <div
+                  className="absolute inset-0 transition-opacity"
+                  style={{
+                    background:
+                      "linear-gradient(to top, rgba(8,8,32,0.85) 0%, rgba(8,8,32,0.2) 50%, transparent 100%)",
+                  }}
+                />
                 {project.type === "video" && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="flex h-14 w-14 items-center justify-center border border-white/20 bg-black/40 text-white/60 backdrop-blur-sm transition-colors group-hover:border-white/40 group-hover:text-white">
+                    <div
+                      className="flex h-14 w-14 items-center justify-center rounded-full backdrop-blur-sm transition-colors"
+                      style={{
+                        border: "1px solid rgba(139,92,246,0.35)",
+                        background: "rgba(8,8,32,0.50)",
+                        color: "#C4B5FD",
+                      }}
+                    >
                       <Play className="ml-0.5 h-5 w-5" />
                     </div>
                   </div>
                 )}
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
+                <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 transition-transform duration-500 group-hover:translate-y-0">
+                  <p
+                    className="text-[10px] font-medium uppercase tracking-[0.2em]"
+                    style={{ color: "#8B5CF6" }}
+                  >
                     {project.category}
                   </p>
                   <h3 className="mt-1 font-semibold text-white">
                     {project.title}
                   </h3>
-                  <p className="mt-1 text-sm text-white/40 opacity-0 transition-opacity group-hover:opacity-100">
+                  <p
+                    className="mt-1 text-sm opacity-0 transition-opacity group-hover:opacity-100"
+                    style={{ color: "rgba(196,181,253,0.55)" }}
+                  >
                     {project.description}
                   </p>
                 </div>
@@ -191,22 +230,31 @@ export default function PortfolioPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-white/5 bg-navy/30 py-28">
+      <section
+        className="py-28"
+        style={{
+          borderTop: "1px solid rgba(139,92,246,0.12)",
+          background: "#0a0a2e",
+        }}
+      >
+        <AnimateOnScroll animation="fade-up">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white">
             Want Results Like These?
           </h2>
-          <p className="mt-4 text-white/50">
+          <p className="mt-4" style={{ color: "rgba(196,181,253,0.55)" }}>
             Let&apos;s create stunning media for your property or brand.
           </p>
           <Link
             href="/contact"
-            className="mt-10 inline-flex items-center gap-2 bg-white px-8 py-3 text-sm font-medium tracking-wide text-black transition-colors hover:bg-white/90"
+            className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-sm font-medium tracking-wide transition-colors hover:bg-white/90"
+            style={{ color: "#1a1054" }}
           >
             Start Your Project
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
+        </AnimateOnScroll>
       </section>
     </>
   );

@@ -12,7 +12,7 @@ const footerLinks = [
 const socialLinks = [
   {
     name: "Facebook",
-    href: "https://www.facebook.com/pgcreativeswi/",
+    href: "https://www.facebook.com/p/PG-Creatives-Wisconsin-61556298299463/",
     icon: FacebookIcon,
   },
   {
@@ -24,18 +24,17 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/5 bg-navy">
+    <footer className="border-t border-purple/10 bg-secondary">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <Link href="/" className="inline-block">
               <span className="text-lg font-light tracking-[0.2em] uppercase text-white">
-                pg<span className="font-semibold">creatives</span>
+                pg<span className="font-semibold bg-gradient-to-r from-purple to-purple-light bg-clip-text text-transparent">creatives</span>
               </span>
             </Link>
             <p className="text-sm leading-relaxed text-white/50">
-              Professional grade media for tailored experiences. Serving Green
-              Bay, Madison, and all of Wisconsin.
+              Take your brand to the Next Level
             </p>
           </div>
 
@@ -48,7 +47,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 transition-colors hover:text-white"
+                    className="text-sm text-white/50 transition-colors hover:text-purple-light"
                   >
                     {link.name}
                   </Link>
@@ -65,24 +64,24 @@ export function Footer() {
               <li>
                 <a
                   href="tel:+19207770127"
-                  className="flex items-center gap-2.5 text-sm text-white/50 transition-colors hover:text-white"
+                  className="flex items-center gap-2.5 text-sm text-white/50 transition-colors hover:text-purple-light"
                 >
-                  <Phone className="h-3.5 w-3.5 shrink-0" />
+                  <Phone className="h-3.5 w-3.5 shrink-0 text-purple/60" />
                   (920) 777-0127
                 </a>
               </li>
               <li>
                 <a
                   href="mailto:pgcreativeswisconsin@gmail.com"
-                  className="flex items-center gap-2.5 text-sm text-white/50 transition-colors hover:text-white"
+                  className="flex items-center gap-2.5 text-sm text-white/50 transition-colors hover:text-purple-light"
                 >
-                  <Mail className="h-3.5 w-3.5 shrink-0" />
+                  <Mail className="h-3.5 w-3.5 shrink-0 text-purple/60" />
                   pgcreativeswisconsin@gmail.com
                 </a>
               </li>
               <li>
                 <span className="flex items-center gap-2.5 text-sm text-white/50">
-                  <MapPin className="h-3.5 w-3.5 shrink-0" />
+                  <MapPin className="h-3.5 w-3.5 shrink-0 text-purple/60" />
                   Green Bay & Madison, WI
                 </span>
               </li>
@@ -100,7 +99,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-9 w-9 items-center justify-center border border-white/10 text-white/40 transition-colors hover:border-white/30 hover:text-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-purple/15 text-white/40 transition-all hover:border-purple/40 hover:text-purple-light hover:bg-purple/10"
                 >
                   <social.icon className="h-3.5 w-3.5" />
                   <span className="sr-only">{social.name}</span>
@@ -110,12 +109,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/5 pt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="mt-12 border-t border-purple/10 pt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-xs text-white/30">
-            &copy; {new Date().getFullYear()} PG Creatives. All rights reserved.
+            &copy; {new Date().getFullYear()} MCINTEE LLC. All rights reserved.
           </p>
           <p className="text-xs text-white/30 tracking-wide">
-            Professional Grade Media for Tailored Experiences
+            PG Creatives Media
           </p>
         </div>
       </div>

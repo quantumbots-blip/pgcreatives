@@ -10,6 +10,7 @@ import {
   Palette,
   Sparkles,
 } from "lucide-react";
+import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -135,15 +136,18 @@ export default function ServicesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy py-28">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--color-navy-light)_0%,_transparent_50%)]" />
+      <section className="relative overflow-hidden bg-background py-28">
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_rgba(139,92,246,0.12)_0%,transparent_60%)]" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-white/40">
-              Our Services
-            </p>
+            <div className="mb-5 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
+              <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
+                Our Services
+              </span>
+            </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              Everything You Need to Stand Out
+              Everything You Need to{" "}
+              <span className="gradient-text-bold">Stand Out</span>
             </h1>
             <p className="mt-4 text-lg text-white/50">
               From first impressions to lasting impact, our comprehensive media
@@ -154,80 +158,90 @@ export default function ServicesPage() {
       </section>
 
       {/* Services List */}
-      <section className="bg-black py-28">
-        <div className="mx-auto max-w-7xl px-6 space-y-px">
+      <section className="relative overflow-hidden bg-background py-28">
+        <div className="absolute right-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px] animate-float-slow" />
+        <div className="mx-auto max-w-7xl space-y-5 px-6">
           {services.map((service, index) => (
-            <div
-              key={service.title}
-              className="grid gap-0 border border-white/5 lg:grid-cols-2"
-            >
-              <div className="space-y-5 p-8 lg:p-10">
-                <div className="flex items-center gap-3">
-                  <service.icon className="h-5 w-5 text-white/40" />
-                  <span className="font-mono text-xs text-white/30">
-                    0{index + 1}
-                  </span>
+            <AnimateOnScroll key={service.title} animation="fade-up" delay={index * 0.1}>
+              <div
+                className="card-3d group grid gap-0 rounded-xl border border-purple/12 bg-purple/[0.04] transition-all duration-200 hover:border-purple/25 hover:bg-purple/[0.08] hover:-translate-y-0.5 lg:grid-cols-2"
+              >
+                <div className="card-3d-inner space-y-5 p-8 lg:p-10">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple/15">
+                      <service.icon className="h-5 w-5 text-purple-light" />
+                    </div>
+                    <span className="font-mono text-xs text-purple-light/45">
+                      0{index + 1}
+                    </span>
+                  </div>
+                  <h2 className="text-2xl font-bold text-white">
+                    {service.title}
+                  </h2>
+                  <p className="leading-relaxed text-white/50">
+                    {service.description}
+                  </p>
                 </div>
-                <h2 className="text-2xl font-bold text-white">
-                  {service.title}
-                </h2>
-                <p className="leading-relaxed text-white/50">
-                  {service.description}
-                </p>
-              </div>
 
-              <div className="bg-navy/30 p-8 lg:p-10">
-                <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-white/30">
-                  What&apos;s Included
-                </p>
-                <ul className="grid gap-3 sm:grid-cols-2">
-                  {service.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className="flex items-start gap-2.5 text-sm text-white/60"
-                    >
-                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white/30" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                <div className="rounded-b-xl bg-purple/[0.06] p-8 lg:rounded-b-none lg:rounded-r-xl lg:p-10">
+                  <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-purple-light/50">
+                    What&apos;s Included
+                  </p>
+                  <ul className="grid gap-3 sm:grid-cols-2">
+                    {service.features.map((feature) => (
+                      <li
+                        key={feature}
+                        className="flex items-start gap-2.5 text-sm text-white/65"
+                      >
+                        <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-purple" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
+            </AnimateOnScroll>
           ))}
         </div>
       </section>
 
       {/* Process */}
-      <section className="border-t border-white/5 bg-navy/30 py-28">
+      <section className="border-t border-purple/12 bg-card py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-white/40">
-              Our Process
-            </p>
-            <h2 className="text-3xl font-bold tracking-tight text-white">
-              Simple. Professional. Fast.
-            </h2>
-          </div>
+          <AnimateOnScroll animation="fade-up">
+            <div className="mx-auto max-w-2xl text-center">
+              <div className="mb-4 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
+                <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
+                  Our Process
+                </span>
+              </div>
+              <h2 className="text-3xl font-bold tracking-tight text-white">
+                Simple. Professional. Fast.
+              </h2>
+            </div>
+          </AnimateOnScroll>
 
           <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {process.map((item) => (
-              <div key={item.step}>
-                <span className="font-mono text-3xl font-bold text-white/10">
-                  {item.step}
-                </span>
-                <div className="mt-3 h-px bg-white/10" />
-                <h3 className="mt-4 font-semibold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm text-white/40">
-                  {item.description}
-                </p>
-              </div>
+            {process.map((item, i) => (
+              <AnimateOnScroll key={item.step} animation="fade-up" delay={i * 0.1}>
+                <div>
+                  <span className="font-mono text-3xl font-bold text-purple/25">
+                    {item.step}
+                  </span>
+                  <div className="mt-3 h-px bg-purple/18" />
+                  <h3 className="mt-4 font-semibold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm text-white/45">
+                    {item.description}
+                  </p>
+                </div>
+              </AnimateOnScroll>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="bg-black py-28">
+      <section className="bg-background py-28">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white">
             Let&apos;s Discuss Your Project
@@ -239,13 +253,14 @@ export default function ServicesPage() {
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="bg-white px-8 py-3 text-sm font-medium tracking-wide text-black transition-colors hover:bg-white/90"
+              className="glow-hover inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-sm font-semibold tracking-wide text-[#1a1054] transition-all hover:bg-white/90 hover:scale-[1.02]"
             >
               Get a Quote
+              <ArrowRight className="h-4 w-4" />
             </Link>
             <a
               href="tel:+19207770127"
-              className="border border-white/20 px-8 py-3 text-sm tracking-wide text-white transition-colors hover:border-white/40"
+              className="glow-hover inline-flex items-center rounded-lg border border-purple/40 px-8 py-3 text-sm tracking-wide text-purple-light transition-all hover:border-purple/60 hover:bg-purple/5"
             >
               (920) 777-0127
             </a>

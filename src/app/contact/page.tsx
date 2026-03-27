@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { FacebookIcon, InstagramIcon } from "@/components/icons";
+import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -31,7 +32,7 @@ const contactInfo = [
   {
     icon: Clock,
     label: "Availability",
-    value: "Mon-Sat, Flexible Hours",
+    value: "Mon-Sat",
     href: null,
   },
 ];
@@ -53,15 +54,21 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy py-28">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--color-navy-light)_0%,_transparent_50%)]" />
+      <section className="relative overflow-hidden bg-[#080820] py-28">
+        {/* Floating decorative orb */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-32 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_#8B5CF640_0%,_#6D28D920_40%,_transparent_70%)] blur-3xl"
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#8B5CF620_0%,_transparent_55%)]" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-white/40">
+            <span className="mb-5 inline-flex items-center rounded-full border border-[#8B5CF6]/25 bg-[#8B5CF6]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-[#C4B5FD]">
               Contact Us
-            </p>
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              Let&apos;s Create Something Together
+            </span>
+            <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Let&apos;s Create{" "}
+              <span className="gradient-text">Something Together</span>
             </h1>
             <p className="mt-4 text-lg text-white/50">
               Ready to elevate your visual content? Get in touch for a free
@@ -72,17 +79,20 @@ export default function ContactPage() {
       </section>
 
       {/* Form + Info */}
-      <section className="bg-black py-28">
+      <section className="bg-[#080820] py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 lg:grid-cols-5">
             {/* Form */}
-            <div className="border border-white/5 bg-navy/20 p-8 lg:col-span-3 lg:p-10">
-              <ContactForm />
-            </div>
+            <AnimateOnScroll animation="slide-in-left">
+              <div className="rounded-xl border border-[#8B5CF6]/12 bg-[#0a0a2e] p-8 lg:col-span-3 lg:p-10">
+                <ContactForm />
+              </div>
+            </AnimateOnScroll>
 
             {/* Contact Info */}
+            <AnimateOnScroll animation="slide-in-right" delay={0.15}>
             <div className="space-y-6 lg:col-span-2">
-              <div className="border border-white/5 bg-navy/20 p-6">
+              <div className="animate-pulse-glow rounded-xl border border-[#8B5CF6]/12 bg-[#0a0a2e] p-6">
                 <h3 className="font-semibold text-white">
                   Contact Information
                 </h3>
@@ -90,9 +100,9 @@ export default function ContactPage() {
                   {contactInfo.map((item) => {
                     const content = (
                       <div className="flex items-start gap-3 text-sm">
-                        <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-white/30" />
+                        <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-[#8B5CF6]/60" />
                         <div>
-                          <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-white/30">
+                          <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#C4B5FD]">
                             {item.label}
                           </p>
                           <p className="mt-0.5 text-white/60">{item.value}</p>
@@ -117,7 +127,7 @@ export default function ContactPage() {
                 </ul>
               </div>
 
-              <div className="border border-white/5 bg-navy/20 p-6">
+              <div className="rounded-xl border border-[#8B5CF6]/12 bg-[#0a0a2e] p-6">
                 <h3 className="font-semibold text-white">Follow Us</h3>
                 <p className="mt-1 text-sm text-white/40">
                   See our latest work on social media.
@@ -129,7 +139,7 @@ export default function ContactPage() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-9 w-9 items-center justify-center border border-white/10 text-white/40 transition-colors hover:border-white/30 hover:text-white"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#8B5CF6]/20 text-[#8B5CF6]/60 transition-colors hover:border-[#8B5CF6]/50 hover:text-[#C4B5FD]"
                     >
                       <social.icon className="h-3.5 w-3.5" />
                       <span className="sr-only">{social.name}</span>
@@ -138,22 +148,23 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="border border-white/10 bg-white/5 p-6">
+              <div className="rounded-xl border border-[#8B5CF6]/12 bg-[#0f0f3d] p-6">
                 <h3 className="font-semibold text-white">Free Consultation</h3>
                 <p className="mt-2 text-sm text-white/40">
                   Not sure what you need? Call us for a free consultation.
                   We&apos;ll help you figure out the best media package for your
                   goals.
                 </p>
-                <div className="mt-4 h-px bg-white/10" />
+                <div className="mt-4 h-px bg-[#8B5CF6]/15" />
                 <a
                   href="tel:+19207770127"
-                  className="mt-4 inline-block text-lg font-semibold text-white"
+                  className="glow-hover mt-4 inline-block text-lg font-semibold text-white transition-colors hover:text-[#C4B5FD]"
                 >
                   (920) 777-0127
                 </a>
               </div>
             </div>
+            </AnimateOnScroll>
           </div>
         </div>
       </section>
