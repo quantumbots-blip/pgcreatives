@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { FacebookIcon, InstagramIcon } from "@/components/icons";
 
@@ -29,9 +30,13 @@ export function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <Link href="/" className="inline-block">
-              <span className="text-lg font-light tracking-[0.2em] uppercase text-white">
-                pg<span className="font-semibold bg-gradient-to-r from-purple to-purple-light bg-clip-text text-transparent">creatives</span>
-              </span>
+              <Image
+                src="/logo.png"
+                alt="PG Creatives"
+                width={140}
+                height={40}
+                className="h-9 w-auto object-contain"
+              />
             </Link>
             <p className="text-sm leading-relaxed text-white/50">
               Take your brand to the Next Level

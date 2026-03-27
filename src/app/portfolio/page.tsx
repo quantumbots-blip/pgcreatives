@@ -124,6 +124,7 @@ export default function PortfolioPage() {
           }}
         />
         <div className="absolute left-10 top-40 h-48 w-48 rounded-full bg-purple/[0.03] blur-[60px] animate-float" />
+        <div className="absolute right-[8%] top-[25%] h-32 w-32 rounded-full border border-dashed border-purple/10 spin-ring hidden lg:block" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
             <div className="mb-5 inline-flex items-center rounded-full border px-3 py-1" style={{ borderColor: "rgba(139,92,246,0.25)", background: "rgba(139,92,246,0.10)" }}>
@@ -132,7 +133,7 @@ export default function PortfolioPage() {
               </span>
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              <span className="gradient-text">Our Best Work</span>
+              <span className="gradient-text-animated">Our Best Work</span>
             </h1>
             <p className="mt-4 text-lg" style={{ color: "rgba(196,181,253,0.55)" }}>
               Browse our collection of professional media created for clients
@@ -175,7 +176,7 @@ export default function PortfolioPage() {
             {filtered.map((project) => (
               <div
                 key={project.title}
-                className="group relative aspect-[4/3] overflow-hidden rounded-xl transition-all duration-500 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]"
+                className="group relative aspect-[4/3] overflow-hidden rounded-xl hover-lift"
                 style={{ background: "#0a0a2e" }}
               >
                 <Image
@@ -239,8 +240,9 @@ export default function PortfolioPage() {
       >
         <AnimateOnScroll animation="fade-up">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white">
-            Want Results Like These?
+          <h2 className="text-3xl font-bold tracking-tight">
+            <span className="text-white">Want Results </span>
+            <span className="gradient-text-animated gradient-underline">Like These?</span>
           </h2>
           <p className="mt-4" style={{ color: "rgba(196,181,253,0.55)" }}>
             Let&apos;s create stunning media for your property or brand.

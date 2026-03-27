@@ -89,6 +89,7 @@ export default function TeamPage() {
         {/* Ambient glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_70%_0%,rgba(139,92,246,0.12),transparent)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_60%_at_0%_100%,rgba(139,92,246,0.07),transparent)]" />
+        <div className="absolute right-[12%] top-[35%] h-36 w-36 rounded-full border border-dashed border-purple/8 spin-ring hidden lg:block" />
 
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
@@ -101,7 +102,7 @@ export default function TeamPage() {
 
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
               The Creatives{" "}
-              <span className="gradient-text-bold">Behind the Lens</span>
+              <span className="gradient-text-animated gradient-underline">Behind the Lens</span>
             </h1>
             <p className="mt-5 text-lg leading-relaxed text-white/50">
               PG Creatives has a growing group of editors, photographers, and
@@ -122,9 +123,9 @@ export default function TeamPage() {
             {team.map((member, index) => (
               <AnimateOnScroll key={member.name} animation="fade-up" delay={index * 0.08}>
                 <div
-                  className="card-3d group"
+                  className="card-3d-enhanced group"
                 >
-                  <div className="card-3d-inner rounded-xl border border-purple/12 bg-purple/[0.04] overflow-hidden transition-colors duration-300 hover:border-purple/25">
+                  <div className="rounded-xl glass-card overflow-hidden transition-all duration-300">
                     {/* Photo */}
                     <div className="relative aspect-[3/4] overflow-hidden">
                       <Image
@@ -163,8 +164,8 @@ export default function TeamPage() {
                   Our Values
                 </span>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight text-white">
-                What Drives Us
+              <h2 className="text-3xl font-bold tracking-tight">
+                <span className="gradient-text-animated">What Drives Us</span>
               </h2>
             </div>
           </AnimateOnScroll>
@@ -176,10 +177,10 @@ export default function TeamPage() {
               return (
                 <AnimateOnScroll key={value.title} animation="fade-up" delay={i * 0.1}>
                   <div
-                    className="rounded-xl border border-purple/12 bg-purple/[0.04] p-7 transition-colors duration-300 hover:border-purple/25"
+                    className="rounded-xl glass-card hover-lift p-7"
                   >
                     {/* Icon box */}
-                    <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-purple/20 bg-purple/10">
+                    <div className="icon-3d mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
                       <Icon className="h-5 w-5 text-purple-light" />
                     </div>
                     <h3 className="font-semibold text-white">{value.title}</h3>
@@ -202,7 +203,7 @@ export default function TeamPage() {
 
           <h2 className="text-3xl font-bold tracking-tight text-white">
             About{" "}
-            <span className="text-purple-light">PG Creatives</span>
+            <span className="rainbow-shimmer">PG Creatives</span>
           </h2>
           <div className="mt-6 space-y-4 text-white/50">
             <p>

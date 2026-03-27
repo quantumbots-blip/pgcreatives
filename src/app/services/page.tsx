@@ -138,6 +138,8 @@ export default function ServicesPage() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-background py-28">
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_rgba(139,92,246,0.12)_0%,transparent_60%)]" />
+        <div className="absolute right-[10%] top-[30%] h-40 w-40 rounded-full border border-dashed border-purple/8 spin-ring hidden lg:block" />
+        <div className="absolute left-[5%] bottom-[20%] h-24 w-24 morph-blob bg-gradient-to-br from-purple/8 via-purple-light/5 to-transparent hidden lg:block" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
             <div className="mb-5 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
@@ -147,7 +149,7 @@ export default function ServicesPage() {
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Everything You Need to{" "}
-              <span className="gradient-text-bold">Stand Out</span>
+              <span className="gradient-text-animated gradient-underline">Stand Out</span>
             </h1>
             <p className="mt-4 text-lg text-white/50">
               From first impressions to lasting impact, our comprehensive media
@@ -164,11 +166,11 @@ export default function ServicesPage() {
           {services.map((service, index) => (
             <AnimateOnScroll key={service.title} animation="fade-up" delay={index * 0.1}>
               <div
-                className="card-3d group grid gap-0 rounded-xl border border-purple/12 bg-purple/[0.04] transition-all duration-200 hover:border-purple/25 hover:bg-purple/[0.08] hover:-translate-y-0.5 lg:grid-cols-2"
+                className="card-3d-enhanced group grid gap-0 rounded-xl glass-card transition-all duration-200 hover:-translate-y-1 lg:grid-cols-2"
               >
-                <div className="card-3d-inner space-y-5 p-8 lg:p-10">
+                <div className="space-y-5 p-8 lg:p-10">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple/15">
+                    <div className="icon-3d flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
                       <service.icon className="h-5 w-5 text-purple-light" />
                     </div>
                     <span className="font-mono text-xs text-purple-light/45">
@@ -215,8 +217,8 @@ export default function ServicesPage() {
                   Our Process
                 </span>
               </div>
-              <h2 className="text-3xl font-bold tracking-tight text-white">
-                Simple. Professional. Fast.
+              <h2 className="text-3xl font-bold tracking-tight">
+                <span className="gradient-text-animated">Simple. Professional. Fast.</span>
               </h2>
             </div>
           </AnimateOnScroll>
@@ -225,7 +227,7 @@ export default function ServicesPage() {
             {process.map((item, i) => (
               <AnimateOnScroll key={item.step} animation="fade-up" delay={i * 0.1}>
                 <div>
-                  <span className="font-mono text-3xl font-bold text-purple/25">
+                  <span className="font-mono text-3xl font-bold gradient-text">
                     {item.step}
                   </span>
                   <div className="mt-3 h-px bg-purple/18" />
@@ -243,8 +245,9 @@ export default function ServicesPage() {
       {/* CTA */}
       <section className="bg-background py-28">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white">
-            Let&apos;s Discuss Your Project
+          <h2 className="text-3xl font-bold tracking-tight">
+            <span className="text-white">Let&apos;s Discuss </span>
+            <span className="gradient-text-animated gradient-underline">Your Project</span>
           </h2>
           <p className="mt-4 text-white/50">
             Every project is unique. Reach out for a custom quote tailored to

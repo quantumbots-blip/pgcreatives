@@ -61,6 +61,7 @@ export default function ContactPage() {
           className="pointer-events-none absolute -right-32 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_#8B5CF640_0%,_#6D28D920_40%,_transparent_70%)] blur-3xl"
         />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#8B5CF620_0%,_transparent_55%)]" />
+        <div className="absolute left-[8%] bottom-[20%] h-28 w-28 rounded-full border border-dashed border-[#8B5CF6]/10 spin-ring hidden lg:block" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
             <span className="mb-5 inline-flex items-center rounded-full border border-[#8B5CF6]/25 bg-[#8B5CF6]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-[#C4B5FD]">
@@ -68,7 +69,7 @@ export default function ContactPage() {
             </span>
             <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Let&apos;s Create{" "}
-              <span className="gradient-text">Something Together</span>
+              <span className="gradient-text-animated gradient-underline">Something Together</span>
             </h1>
             <p className="mt-4 text-lg text-white/50">
               Ready to elevate your visual content? Get in touch for a free
@@ -84,7 +85,7 @@ export default function ContactPage() {
           <div className="grid gap-8 lg:grid-cols-5">
             {/* Form */}
             <AnimateOnScroll animation="slide-in-left">
-              <div className="rounded-xl border border-[#8B5CF6]/12 bg-[#0a0a2e] p-8 lg:col-span-3 lg:p-10">
+              <div className="gradient-border rounded-xl bg-[#0a0a2e] p-8 lg:col-span-3 lg:p-10">
                 <ContactForm />
               </div>
             </AnimateOnScroll>
@@ -92,7 +93,7 @@ export default function ContactPage() {
             {/* Contact Info */}
             <AnimateOnScroll animation="slide-in-right" delay={0.15}>
             <div className="space-y-6 lg:col-span-2">
-              <div className="animate-pulse-glow rounded-xl border border-[#8B5CF6]/12 bg-[#0a0a2e] p-6">
+              <div className="animate-border-glow rounded-xl glass-card p-6">
                 <h3 className="font-semibold text-white">
                   Contact Information
                 </h3>
@@ -127,7 +128,7 @@ export default function ContactPage() {
                 </ul>
               </div>
 
-              <div className="rounded-xl border border-[#8B5CF6]/12 bg-[#0a0a2e] p-6">
+              <div className="rounded-xl glass-card p-6">
                 <h3 className="font-semibold text-white">Follow Us</h3>
                 <p className="mt-1 text-sm text-white/40">
                   See our latest work on social media.
@@ -148,7 +149,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#8B5CF6]/12 bg-[#0f0f3d] p-6">
+              <div className="gradient-border rounded-xl bg-[#0f0f3d] p-6">
                 <h3 className="font-semibold text-white">Free Consultation</h3>
                 <p className="mt-2 text-sm text-white/40">
                   Not sure what you need? Call us for a free consultation.

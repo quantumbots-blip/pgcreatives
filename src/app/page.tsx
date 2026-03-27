@@ -80,27 +80,38 @@ export default function HomePage() {
       <VideoHero />
 
       {/* Stats Bar */}
-      <section className="border-y border-purple/10 bg-card relative overflow-hidden">
-        {/* Decorative rotating gradient orb */}
-        <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-purple/5 blur-[60px] animate-rotate-slow" />
+      <div className="section-divider" />
+      <section className="bg-card relative overflow-hidden">
+        {/* Morphing gradient blob */}
+        <div className="absolute -right-20 -top-20 h-60 w-60 morph-blob bg-gradient-to-br from-purple/10 via-purple-light/5 to-transparent" />
+        <div className="absolute -left-10 -bottom-10 h-40 w-40 morph-blob bg-gradient-to-tr from-purple-dim/10 via-purple/5 to-transparent" style={{ animationDelay: '5s' }} />
+
+        {/* Floating particles */}
+        <div className="particle left-[10%] bottom-0" style={{ animationDelay: '0s', animationDuration: '7s' }} />
+        <div className="particle left-[30%] bottom-0" style={{ animationDelay: '2s', animationDuration: '9s' }} />
+        <div className="particle left-[60%] bottom-0" style={{ animationDelay: '4s', animationDuration: '6s' }} />
+        <div className="particle left-[80%] bottom-0" style={{ animationDelay: '1s', animationDuration: '8s' }} />
+        <div className="particle left-[50%] bottom-0" style={{ animationDelay: '3s', animationDuration: '10s' }} />
+
         <div className="mx-auto grid max-w-7xl grid-cols-3 gap-8 px-6 py-14 lg:grid-cols-3">
           {stats.map((stat, i) => (
             <AnimateOnScroll key={stat.label} animation="fade-up" delay={i * 0.15}>
               <div className="relative text-center">
-                <p className="font-heading text-4xl font-bold sm:text-5xl gradient-text">
+                <p className="font-heading text-4xl font-bold sm:text-5xl gradient-text-animated">
                   {stat.value}
                 </p>
                 <p className="mt-2 text-sm tracking-wide text-white/35">
                   {stat.label}
                 </p>
                 {i < stats.length - 1 && (
-                  <div className="absolute right-0 top-1/2 hidden h-8 w-px -translate-y-1/2 bg-purple/15 lg:block" />
+                  <div className="absolute right-0 top-1/2 hidden h-8 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-purple/30 to-transparent lg:block" />
                 )}
               </div>
             </AnimateOnScroll>
           ))}
         </div>
       </section>
+      <div className="section-divider" />
 
       {/* Services */}
       <section className="bg-background py-28 lg:py-36 relative overflow-hidden">
@@ -120,7 +131,7 @@ export default function HomePage() {
                 <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                   <span className="text-white">Services Built</span>
                   <br className="hidden sm:block" />
-                  <span className="gradient-text-bold"> for Impact</span>
+                  <span className="gradient-text-animated gradient-underline"> for Impact</span>
                 </h2>
               </div>
               <Link
@@ -136,15 +147,15 @@ export default function HomePage() {
           <div className="mt-16 grid gap-4 sm:grid-cols-3">
             {services.map((service, i) => (
               <AnimateOnScroll key={service.title} animation="fade-up" delay={i * 0.12}>
-                <div className="card-3d h-full">
+                <div className="card-3d-enhanced h-full">
                   <Link
                     href="/services"
-                    className="card-3d-inner group relative flex h-full flex-col rounded-xl border border-purple/12 bg-purple/[0.04] p-8 transition-all hover:border-purple/30 lg:p-10"
+                    className="gradient-border glass-card group relative flex h-full flex-col rounded-xl p-8 transition-all lg:p-10"
                   >
                     {/* Subtle corner glow on hover */}
                     <div className="absolute -right-10 -top-10 h-20 w-20 rounded-full bg-purple/0 blur-[30px] transition-all duration-500 group-hover:bg-purple/15" />
                     <div className="relative flex items-center justify-between">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple/15 transition-all duration-300 group-hover:animate-pulse-glow">
+                      <div className="icon-3d flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
                         <service.icon className="h-5 w-5 text-purple-light" />
                       </div>
                       <span className="font-mono text-sm text-purple/40">
@@ -179,7 +190,10 @@ export default function HomePage() {
       </section>
 
       {/* Portfolio */}
-      <section className="border-t border-purple/10 bg-secondary/50 py-28 lg:py-36">
+      <section className="border-t border-purple/10 bg-secondary/50 py-28 lg:py-36 relative overflow-hidden">
+        {/* Decorative 3D elements */}
+        <div className="absolute right-[5%] top-[10%] h-48 w-48 morph-blob bg-gradient-to-br from-purple/8 via-purple-light/5 to-transparent hidden lg:block" />
+        <div className="absolute left-[8%] bottom-[15%] h-32 w-32 rounded-full border border-purple/10 spin-ring hidden lg:block" />
         <div className="mx-auto max-w-7xl px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
@@ -189,7 +203,7 @@ export default function HomePage() {
                 </span>
               </div>
               <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-                <span className="gradient-text">Featured Projects</span>
+                <span className="gradient-text-animated">Featured Projects</span>
               </h2>
               <p className="mt-4 text-white/40">
                 A glimpse of the professional media we&apos;ve created for our
@@ -251,6 +265,7 @@ export default function HomePage() {
       {/* Testimonial */}
       <section className="border-t border-purple/10 bg-background py-24 lg:py-32 relative overflow-hidden">
         <div className="absolute left-1/2 top-1/2 h-[200px] w-[400px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.04] blur-[100px] animate-float-slow" />
+        <div className="absolute right-[10%] top-[20%] h-40 w-40 rounded-full border border-dashed border-purple/8 spin-ring hidden lg:block" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <AnimateOnScroll animation="fade-in-scale">
             <div className="flex items-center justify-center gap-1">
@@ -291,9 +306,9 @@ export default function HomePage() {
             </div>
             <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
               <span className="text-white">Ready to </span>
-              <span className="shimmer-text">Elevate</span>
+              <span className="rainbow-shimmer">Elevate</span>
               <br />
-              <span className="text-white">Your Brand?</span>
+              <span className="text-white gradient-underline">Your Brand?</span>
             </h2>
             <p className="mt-5 text-lg text-white/40">
               Let&apos;s create something extraordinary together. Get in touch for

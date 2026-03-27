@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
@@ -40,9 +41,14 @@ export function Header() {
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:h-20">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-lg font-light tracking-[0.2em] uppercase text-white">
-            pg<span className="font-semibold bg-gradient-to-r from-purple to-purple-light bg-clip-text text-transparent">creatives</span>
-          </span>
+          <Image
+            src="/logo.png"
+            alt="PG Creatives"
+            width={160}
+            height={45}
+            className="h-10 w-auto lg:h-12 object-contain"
+            priority
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

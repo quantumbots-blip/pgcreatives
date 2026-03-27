@@ -235,6 +235,231 @@ html {
 .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
 .animate-rotate-slow { animation: rotate-slow 20s linear infinite; }
 
+/* === ENHANCED 3D & ANIMATION EFFECTS === */
+
+/* Morphing gradient background orbs */
+@keyframes morph {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50% { border-radius: 50% 60% 30% 60% / 30% 50% 70% 40%; }
+  75% { border-radius: 40% 60% 70% 30% / 60% 40% 30% 70%; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; filter: blur(60px); }
+  50% { opacity: 0.7; filter: blur(80px); }
+}
+
+@keyframes tilt-3d {
+  0%, 100% { transform: perspective(800px) rotateX(0deg) rotateY(0deg); }
+  25% { transform: perspective(800px) rotateX(2deg) rotateY(-2deg); }
+  75% { transform: perspective(800px) rotateX(-2deg) rotateY(2deg); }
+}
+
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(139, 92, 246, 0.12); box-shadow: 0 0 0 rgba(139, 92, 246, 0); }
+  50% { border-color: rgba(139, 92, 246, 0.35); box-shadow: 0 0 20px rgba(139, 92, 246, 0.1); }
+}
+
+@keyframes counter-up {
+  from { opacity: 0; transform: translateY(20px) scale(0.8); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes reveal-right {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh) translateX(50px) scale(0); opacity: 0; }
+}
+
+/* Morphing blob */
+.morph-blob {
+  animation: morph 15s ease-in-out infinite, gradient-shift 10s ease infinite;
+  background-size: 200% 200%;
+}
+
+/* Glow pulse orb */
+.glow-orb {
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  overflow: hidden;
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #8B5CF6, #C4B5FD, #6D28D9, #8B5CF6);
+  background-size: 300% 300%;
+  animation: gradient-shift 6s ease infinite;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+/* 3D tilt animation for sections */
+.tilt-3d {
+  animation: tilt-3d 12s ease-in-out infinite;
+}
+
+/* Animated border glow */
+.animate-border-glow {
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+/* Counter animation */
+.animate-counter-up {
+  animation: counter-up 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+/* Reveal animation */
+.animate-reveal-right {
+  animation: reveal-right 1s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+/* Spinning ring decoration */
+.spin-ring {
+  animation: spin-slow 30s linear infinite;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(139, 92, 246, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.glass-card:hover {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15), inset 0 0 60px rgba(139, 92, 246, 0.03);
+}
+
+/* Enhanced 3D card with mouse-follow effect */
+.card-3d-enhanced {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.card-3d-enhanced > * {
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s ease;
+  transform-style: preserve-3d;
+}
+
+.card-3d-enhanced:hover > * {
+  transform: rotateY(-4deg) rotateX(4deg) translateZ(20px);
+  box-shadow:
+    25px 25px 80px rgba(0, 0, 0, 0.35),
+    -8px -8px 30px rgba(139, 92, 246, 0.12),
+    0 0 40px rgba(139, 92, 246, 0.08);
+}
+
+/* Gradient title underline */
+.gradient-underline {
+  position: relative;
+  display: inline-block;
+}
+.gradient-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #8B5CF6, #C4B5FD, transparent);
+  border-radius: 2px;
+  animation: reveal-right 1.2s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+/* Animated gradient text — more vibrant */
+.gradient-text-animated {
+  background: linear-gradient(135deg, #7C3AED, #8B5CF6, #C4B5FD, #E0D4FC, #C4B5FD, #8B5CF6);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 6s linear infinite;
+}
+
+/* Rainbow shimmer for special emphasis */
+.rainbow-shimmer {
+  background: linear-gradient(
+    90deg,
+    #6D28D9 0%,
+    #8B5CF6 15%,
+    #C4B5FD 30%,
+    #ffffff 50%,
+    #C4B5FD 70%,
+    #8B5CF6 85%,
+    #6D28D9 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.4);
+  animation: particle-float 8s linear infinite;
+}
+
+/* Section divider gradient line */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #8B5CF6, #C4B5FD, #8B5CF6, transparent);
+  opacity: 0.3;
+}
+
+/* Hover lift effect */
+.hover-lift {
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(139, 92, 246, 0.12);
+}
+
+/* Icon 3D float */
+.icon-3d {
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.icon-3d:hover {
+  transform: translateY(-4px) rotateY(-10deg) scale(1.1);
+  filter: drop-shadow(0 10px 20px rgba(139, 92, 246, 0.3));
+}
+
 /* Shimmer text */
 .shimmer-text {
   background: linear-gradient(
