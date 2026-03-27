@@ -9,11 +9,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button-variants";
 
-type NavItem = {
-  name: string;
-  href?: string;
-  children?: { name: string; href: string; external?: boolean }[];
-};
+type NavLink = { name: string; href: string; children?: never };
+type NavDropdown = { name: string; href?: never; children: { name: string; href: string; external?: boolean }[] };
+type NavItem = NavLink | NavDropdown;
 
 const navigation: NavItem[] = [
   {
@@ -43,9 +41,10 @@ const navigation: NavItem[] = [
   },
 ];
 
-function DesktopDropdown({ item, pathname }: { item: NavItem; pathname: string }) {
+function DesktopDropdown({ item, pathname }: { item: NavDropdown; pathname: string }) {
   const [open, setOpen] = useState(false);
   const timeout = useRef<ReturnType<typeof setTimeout>>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const enter = () => {
     if (timeout.current) clearTimeout(timeout.current);
@@ -55,11 +54,33 @@ function DesktopDropdown({ item, pathname }: { item: NavItem; pathname: string }
     timeout.current = setTimeout(() => setOpen(false), 150);
   };
 
-  const isActive = item.children?.some((c) => pathname === c.href);
+  // Close on Escape or outside click
+  useEffect(() => {
+    if (!open) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const handleClick = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [open]);
+
+  const isActive = item.children.some((c) => pathname === c.href);
 
   return (
-    <div className="relative" onMouseEnter={enter} onMouseLeave={leave}>
+    <div ref={containerRef} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="true"
         className={cn(
           "flex items-center gap-1 text-sm tracking-wide transition-colors",
           isActive ? "text-white" : "text-white/60 hover:text-purple-light"
@@ -74,14 +95,18 @@ function DesktopDropdown({ item, pathname }: { item: NavItem; pathname: string }
         />
       </button>
       {open && (
-        <div className="absolute left-1/2 top-full z-50 mt-2 -translate-x-1/2 rounded-lg border border-purple/15 bg-[#0a0a2e]/95 backdrop-blur-md py-2 shadow-xl min-w-[160px]">
-          {item.children?.map((child) =>
+        <div
+          role="menu"
+          className="absolute left-1/2 top-full z-50 mt-2 -translate-x-1/2 rounded-lg border border-purple/15 bg-[#0a0a2e]/95 backdrop-blur-md py-2 shadow-xl min-w-[160px]"
+        >
+          {item.children.map((child) =>
             child.external ? (
               <a
                 key={child.href}
                 href={child.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                role="menuitem"
                 className="block px-4 py-2.5 text-sm text-white/60 transition-colors hover:bg-purple/10 hover:text-white"
               >
                 {child.name}
@@ -90,6 +115,8 @@ function DesktopDropdown({ item, pathname }: { item: NavItem; pathname: string }
               <Link
                 key={child.href}
                 href={child.href}
+                role="menuitem"
+                onClick={() => setOpen(false)}
                 className={cn(
                   "block px-4 py-2.5 text-sm transition-colors hover:bg-purple/10",
                   pathname === child.href
@@ -153,7 +180,7 @@ export function Header() {
             ) : (
               <Link
                 key={item.name}
-                href={item.href!}
+                href={item.href}
                 className={cn(
                   "text-sm tracking-wide transition-colors",
                   pathname === item.href
@@ -224,7 +251,7 @@ export function Header() {
                 ) : (
                   <Link
                     key={item.name}
-                    href={item.href!}
+                    href={item.href}
                     onClick={() => setOpen(false)}
                     className={cn(
                       "px-4 py-3 text-base tracking-wide rounded-lg transition-colors",

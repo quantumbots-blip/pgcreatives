@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ArrowRight, Star, Users, Zap, MapPin } from "lucide-react";
 import { images } from "@/lib/images";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { SectionLabel } from "@/components/section-label";
 
 export const metadata: Metadata = {
   title: "About",
@@ -93,12 +94,7 @@ export default function TeamPage() {
 
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            {/* Section pill label */}
-            <div className="mb-6 inline-flex items-center rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
-              <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
-                About Us
-              </span>
-            </div>
+            <SectionLabel>About Us</SectionLabel>
 
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
               The Creatives{" "}
@@ -159,11 +155,7 @@ export default function TeamPage() {
           {/* Heading */}
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
-              <div className="mb-5 inline-flex items-center rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
-                <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
-                  Our Values
-                </span>
-              </div>
+              <SectionLabel>Our Values</SectionLabel>
               <h2 className="text-3xl font-bold tracking-tight">
                 <span className="gradient-text-animated">What Drives Us</span>
               </h2>

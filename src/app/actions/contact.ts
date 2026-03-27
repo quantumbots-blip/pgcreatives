@@ -11,15 +11,20 @@ export async function submitContactForm(
   prevState: ContactState,
   formData: FormData,
 ): Promise<ContactState> {
-  const firstName = formData.get("firstName") as string;
-  const lastName = formData.get("lastName") as string;
-  const email = formData.get("email") as string;
-  const phone = (formData.get("phone") as string) || "Not provided";
-  const service = (formData.get("service") as string) || "Not specified";
-  const message = formData.get("message") as string;
+  const firstName = String(formData.get("firstName") ?? "").trim();
+  const lastName = String(formData.get("lastName") ?? "").trim();
+  const email = String(formData.get("email") ?? "").trim();
+  const company = String(formData.get("company") ?? "").trim();
+  const phone = String(formData.get("phone") ?? "").trim();
+  const service = String(formData.get("service") ?? "").trim();
+  const message = String(formData.get("message") ?? "").trim();
 
-  if (!firstName?.trim() || !lastName?.trim() || !email?.trim() || !message?.trim()) {
+  if (!firstName || !lastName || !email || !message) {
     return { success: false, error: "Please fill in all required fields." };
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { success: false, error: "Please enter a valid email address." };
   }
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -42,8 +47,8 @@ export async function submitContactForm(
         ``,
         `Name: ${firstName} ${lastName}`,
         `Email: ${email}`,
-        `Phone: ${phone}`,
-        `Service: ${service}`,
+        `Phone: ${phone || "Not provided"}`,
+        `Service: ${service || "Not specified"}`,
         ``,
         `Message:`,
         message,

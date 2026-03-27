@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef } from "react";
+import { useState, useActionState, useRef } from "react";
 import { submitContactForm, type ContactState } from "@/app/actions/contact";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,11 @@ import { ArrowRight, CheckCircle2, Loader2, Mail, Phone, User } from "lucide-rea
 const initialState: ContactState = { success: false, error: null };
 
 export function ContactForm() {
+  const [resetKey, setResetKey] = useState(0);
+  return <ContactFormInner key={resetKey} onReset={() => setResetKey((k) => k + 1)} />;
+}
+
+function ContactFormInner({ onReset }: { onReset: () => void }) {
   const [state, formAction, pending] = useActionState(
     submitContactForm,
     initialState,
@@ -29,7 +34,7 @@ export function ContactForm() {
         </p>
         <button
           type="button"
-          onClick={() => window.location.reload()}
+          onClick={onReset}
           className="mt-8 rounded-lg border border-purple/25 bg-purple/10 px-6 py-2.5 text-sm tracking-wide text-purple-light transition-all hover:border-purple/40 hover:bg-purple/15"
         >
           Send Another Message

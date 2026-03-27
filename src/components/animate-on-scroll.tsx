@@ -24,6 +24,13 @@ export function AnimateOnScroll({
     const el = ref.current;
     if (!el) return;
 
+    // Respect prefers-reduced-motion
+    const motionOk = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!motionOk) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

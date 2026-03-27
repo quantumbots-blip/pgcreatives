@@ -11,6 +11,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { SectionLabel } from "@/components/section-label";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -142,11 +143,7 @@ export default function ServicesPage() {
         <div className="absolute left-[5%] bottom-[20%] h-24 w-24 morph-blob bg-gradient-to-br from-purple/8 via-purple-light/5 to-transparent hidden lg:block" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            <div className="mb-5 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
-              <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
-                Our Services
-              </span>
-            </div>
+            <SectionLabel>Our Services</SectionLabel>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Everything You Need to{" "}
               <span className="gradient-text-animated gradient-underline">Stand Out</span>
@@ -212,11 +209,7 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-7xl px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
-              <div className="mb-4 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
-                <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
-                  Our Process
-                </span>
-              </div>
+              <SectionLabel>Our Process</SectionLabel>
               <h2 className="text-3xl font-bold tracking-tight">
                 <span className="gradient-text-animated">Simple. Professional. Fast.</span>
               </h2>

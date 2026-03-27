@@ -84,15 +84,15 @@ export default function ContactPage() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 lg:grid-cols-5">
             {/* Form */}
-            <AnimateOnScroll animation="slide-in-left">
-              <div className="gradient-border rounded-xl bg-[#0a0a2e] p-8 lg:col-span-3 lg:p-10">
+            <AnimateOnScroll animation="slide-in-left" className="lg:col-span-3">
+              <div className="gradient-border rounded-xl bg-[#0a0a2e] p-8 lg:p-10">
                 <ContactForm />
               </div>
             </AnimateOnScroll>
 
             {/* Contact Info */}
-            <AnimateOnScroll animation="slide-in-right" delay={0.15}>
-            <div className="space-y-6 lg:col-span-2">
+            <AnimateOnScroll animation="slide-in-right" delay={0.15} className="lg:col-span-2">
+            <div className="space-y-6">
               <div className="animate-border-glow rounded-xl glass-card p-6">
                 <h3 className="font-semibold text-white">
                   Contact Information

@@ -9,6 +9,7 @@ import {
 import { VideoHero } from "@/components/video-hero";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { ContactForm } from "@/components/contact-form";
+import { SectionLabel } from "@/components/section-label";
 import { images } from "@/lib/images";
 
 const stats = [
@@ -114,11 +115,7 @@ export default function HomePage() {
           <AnimateOnScroll animation="fade-up">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <div className="mb-4 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
-                  <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
-                    What We Do
-                  </span>
-                </div>
+                <SectionLabel>What We Do</SectionLabel>
                 <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                   <span className="text-white">Services Built</span>
                   <br className="hidden sm:block" />
@@ -187,11 +184,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
-              <div className="mb-4 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
-                <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
-                  Our Work
-                </span>
-              </div>
+              <SectionLabel>Our Work</SectionLabel>
               <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                 <span className="gradient-text-animated">Featured Projects</span>
               </h2>
@@ -260,11 +253,7 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-4xl px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="text-center mb-12">
-              <div className="mb-4 inline-block rounded-full border border-purple/25 bg-purple/10 px-4 py-1.5">
-                <span className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
-                  Get Started
-                </span>
-              </div>
+              <SectionLabel>Get Started</SectionLabel>
               <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                 <span className="text-white">Ready to </span>
                 <span className="rainbow-shimmer">Elevate</span>

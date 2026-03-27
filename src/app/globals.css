@@ -487,3 +487,35 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #8B5CF6;
 }
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-slow,
+  .animate-pulse-glow,
+  .animate-rotate-slow,
+  .morph-blob,
+  .glow-orb,
+  .spin-ring,
+  .animate-border-glow,
+  .shimmer-text,
+  .gradient-text-animated,
+  .rainbow-shimmer,
+  .animate-hero-fade-up,
+  .animate-hero-line {
+    animation: none !important;
+  }
+
+  .card-3d:hover .card-3d-inner,
+  .card-3d-enhanced:hover > * {
+    transform: none !important;
+  }
+
+  .hover-lift:hover {
+    transform: none !important;
+  }
+
+  .glow-hover:hover {
+    transform: none !important;
+  }
+}

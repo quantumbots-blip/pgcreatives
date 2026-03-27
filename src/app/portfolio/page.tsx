@@ -117,25 +117,21 @@ export default function PortfolioPage() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-background py-28">
         <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at top right, #0f0f3d 0%, transparent 55%)",
-          }}
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,#0f0f3d_0%,transparent_55%)]"
         />
         <div className="absolute left-10 top-40 h-48 w-48 rounded-full bg-purple/[0.03] blur-[60px] animate-float" />
         <div className="absolute right-[8%] top-[25%] h-32 w-32 rounded-full border border-dashed border-purple/10 spin-ring hidden lg:block" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            <div className="mb-5 inline-flex items-center rounded-full border px-3 py-1" style={{ borderColor: "rgba(139,92,246,0.25)", background: "rgba(139,92,246,0.10)" }}>
-              <span className="text-xs font-medium uppercase tracking-[0.25em]" style={{ color: "#C4B5FD" }}>
+            <div className="mb-5 inline-flex items-center rounded-full border border-purple/25 bg-purple/10 px-3 py-1">
+              <span className="text-xs font-medium uppercase tracking-[0.25em] text-purple-light">
                 Portfolio
               </span>
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
               <span className="gradient-text-animated">Our Best Work</span>
             </h1>
-            <p className="mt-4 text-lg" style={{ color: "rgba(196,181,253,0.55)" }}>
+            <p className="mt-4 text-lg text-purple-light/55">
               Browse our collection of professional media created for clients
               across Wisconsin.
             </p>
@@ -154,16 +150,11 @@ export default function PortfolioPage() {
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={cn(
-                    "rounded-lg px-4 py-2 text-sm tracking-wide transition-colors",
+                    "rounded-lg px-4 py-2 text-sm tracking-wide transition-colors border",
                     activeCategory === cat
-                      ? "text-white"
-                      : "text-white/50 hover:text-white"
+                      ? "bg-purple/15 border-purple/15 text-white"
+                      : "bg-purple/[0.04] border-purple/15 text-white/50 hover:text-white"
                   )}
-                  style={
-                    activeCategory === cat
-                      ? { background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.15)" }
-                      : { background: "rgba(139,92,246,0.04)", border: "1px solid rgba(139,92,246,0.15)" }
-                  }
                 >
                   {cat}
                 </button>
@@ -176,8 +167,7 @@ export default function PortfolioPage() {
             {filtered.map((project) => (
               <div
                 key={project.title}
-                className="group relative aspect-[4/3] overflow-hidden rounded-xl hover-lift"
-                style={{ background: "#0a0a2e" }}
+                className="group relative aspect-[4/3] overflow-hidden rounded-xl hover-lift bg-[#0a0a2e]"
               >
                 <Image
                   src={project.image}
@@ -186,41 +176,24 @@ export default function PortfolioPage() {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
-                <div
-                  className="absolute inset-0 transition-opacity"
-                  style={{
-                    background:
-                      "linear-gradient(to top, rgba(8,8,32,0.85) 0%, rgba(8,8,32,0.2) 50%, transparent 100%)",
-                  }}
-                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#080820]/85 via-[#080820]/20 to-transparent transition-opacity" />
                 {project.type === "video" && (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div
-                      className="flex h-14 w-14 items-center justify-center rounded-full backdrop-blur-sm transition-colors"
-                      style={{
-                        border: "1px solid rgba(139,92,246,0.35)",
-                        background: "rgba(8,8,32,0.50)",
-                        color: "#C4B5FD",
-                      }}
+                      className="flex h-14 w-14 items-center justify-center rounded-full backdrop-blur-sm transition-colors border border-purple/35 bg-[#080820]/50 text-purple-light"
                     >
                       <Play className="ml-0.5 h-5 w-5" />
                     </div>
                   </div>
                 )}
                 <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 transition-transform duration-500 group-hover:translate-y-0">
-                  <p
-                    className="text-[10px] font-medium uppercase tracking-[0.2em]"
-                    style={{ color: "#8B5CF6" }}
-                  >
+                  <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-purple">
                     {project.category}
                   </p>
                   <h3 className="mt-1 font-semibold text-white">
                     {project.title}
                   </h3>
-                  <p
-                    className="mt-1 text-sm opacity-0 transition-opacity group-hover:opacity-100"
-                    style={{ color: "rgba(196,181,253,0.55)" }}
-                  >
+                  <p className="mt-1 text-sm text-purple-light/55 opacity-0 transition-opacity group-hover:opacity-100">
                     {project.description}
                   </p>
                 </div>
@@ -240,13 +213,12 @@ export default function PortfolioPage() {
             <span className="text-white">Want Results </span>
             <span className="gradient-text-animated gradient-underline">Like These?</span>
           </h2>
-          <p className="mt-4" style={{ color: "rgba(196,181,253,0.55)" }}>
+          <p className="mt-4 text-purple-light/55">
             Let&apos;s create stunning media for your property or brand.
           </p>
           <Link
             href="/contact"
-            className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-sm font-medium tracking-wide transition-colors hover:bg-white/90"
-            style={{ color: "#1a1054" }}
+            className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-sm font-medium tracking-wide transition-colors hover:bg-white/90 text-[#1a1054]"
           >
             Start Your Project
             <ArrowRight className="h-3.5 w-3.5" />
