@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { ContactForm } from "@/components/contact-form";
 import { FacebookIcon, InstagramIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -80,96 +77,7 @@ export default function ContactPage() {
           <div className="grid gap-8 lg:grid-cols-5">
             {/* Form */}
             <div className="border border-white/5 bg-navy/20 p-8 lg:col-span-3 lg:p-10">
-              <h2 className="text-xl font-semibold text-white">
-                Send Us a Message
-              </h2>
-              <p className="mt-1 text-sm text-white/40">
-                Fill out the form below and we&apos;ll get back to you within 24
-                hours.
-              </p>
-
-              <form className="mt-8 space-y-6">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName" className="text-white/60">
-                      First Name
-                    </Label>
-                    <Input
-                      id="firstName"
-                      placeholder="John"
-                      required
-                      className="border-white/10 bg-black/50 text-white placeholder:text-white/20"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName" className="text-white/60">
-                      Last Name
-                    </Label>
-                    <Input
-                      id="lastName"
-                      placeholder="Doe"
-                      required
-                      className="border-white/10 bg-black/50 text-white placeholder:text-white/20"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-white/60">
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="john@example.com"
-                    required
-                    className="border-white/10 bg-black/50 text-white placeholder:text-white/20"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-white/60">
-                    Phone
-                  </Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="(555) 123-4567"
-                    className="border-white/10 bg-black/50 text-white placeholder:text-white/20"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="service" className="text-white/60">
-                    Service Interested In
-                  </Label>
-                  <Input
-                    id="service"
-                    placeholder="e.g. Real Estate Photography, Drone Aerial"
-                    className="border-white/10 bg-black/50 text-white placeholder:text-white/20"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message" className="text-white/60">
-                    Message
-                  </Label>
-                  <Textarea
-                    id="message"
-                    placeholder="Tell us about your project..."
-                    rows={5}
-                    required
-                    className="border-white/10 bg-black/50 text-white placeholder:text-white/20"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="bg-white px-8 py-3 text-sm font-medium tracking-wide text-black transition-colors hover:bg-white/90"
-                >
-                  Send Message
-                </button>
-              </form>
+              <ContactForm />
             </div>
 
             {/* Contact Info */}
