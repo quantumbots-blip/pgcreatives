@@ -85,7 +85,7 @@ export default function HomePage() {
         {/* Single subtle background glow */}
         <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/[0.04] blur-[80px]" />
 
-        <div className="mx-auto grid max-w-7xl grid-cols-3 gap-8 px-6 py-14 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 py-14 sm:grid-cols-3">
           {stats.map((stat, i) => (
             <AnimateOnScroll key={stat.label} animation="fade-up" delay={i * 0.15}>
               <div className="relative text-center">
@@ -279,7 +279,7 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-up" delay={0.15}>
-            <div className="gradient-border rounded-xl bg-purple/[0.03] p-8 lg:p-10">
+            <div className="rounded-xl border border-purple/10 bg-purple/[0.03] p-6 sm:p-8 lg:p-10">
               <ContactForm />
             </div>
           </AnimateOnScroll>

@@ -3,18 +3,109 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Menu } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button-variants";
 
-const navigation = [
-  { name: "About", href: "/team" },
-  { name: "Services", href: "/services" },
-  { name: "Portfolio", href: "/portfolio" },
-  { name: "Contact", href: "/contact" },
+type NavItem = {
+  name: string;
+  href?: string;
+  children?: { name: string; href: string; external?: boolean }[];
+};
+
+const navigation: NavItem[] = [
+  {
+    name: "About",
+    children: [
+      { name: "Meet The Team", href: "/team" },
+      { name: "Portfolio", href: "/portfolio" },
+      { name: "Contact", href: "/contact" },
+    ],
+  },
+  { name: "Branding", href: "/services" },
+  { name: "Listing Packages", href: "/services" },
+  {
+    name: "Login",
+    children: [
+      {
+        name: "Green Bay",
+        href: "https://portal.spiro.media/order/pg/northeast-wisconsin",
+        external: true,
+      },
+      {
+        name: "Madison",
+        href: "https://portal.spiro.media/order/pg/madison",
+        external: true,
+      },
+    ],
+  },
 ];
+
+function DesktopDropdown({ item, pathname }: { item: NavItem; pathname: string }) {
+  const [open, setOpen] = useState(false);
+  const timeout = useRef<ReturnType<typeof setTimeout>>(null);
+
+  const enter = () => {
+    if (timeout.current) clearTimeout(timeout.current);
+    setOpen(true);
+  };
+  const leave = () => {
+    timeout.current = setTimeout(() => setOpen(false), 150);
+  };
+
+  const isActive = item.children?.some((c) => pathname === c.href);
+
+  return (
+    <div className="relative" onMouseEnter={enter} onMouseLeave={leave}>
+      <button
+        className={cn(
+          "flex items-center gap-1 text-sm tracking-wide transition-colors",
+          isActive ? "text-white" : "text-white/60 hover:text-purple-light"
+        )}
+      >
+        {item.name}
+        <ChevronDown
+          className={cn(
+            "h-3 w-3 transition-transform duration-200",
+            open && "rotate-180"
+          )}
+        />
+      </button>
+      {open && (
+        <div className="absolute left-1/2 top-full z-50 mt-2 -translate-x-1/2 rounded-lg border border-purple/15 bg-[#0a0a2e]/95 backdrop-blur-md py-2 shadow-xl min-w-[160px]">
+          {item.children?.map((child) =>
+            child.external ? (
+              <a
+                key={child.href}
+                href={child.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block px-4 py-2.5 text-sm text-white/60 transition-colors hover:bg-purple/10 hover:text-white"
+              >
+                {child.name}
+              </a>
+            ) : (
+              <Link
+                key={child.href}
+                href={child.href}
+                className={cn(
+                  "block px-4 py-2.5 text-sm transition-colors hover:bg-purple/10",
+                  pathname === child.href
+                    ? "text-white"
+                    : "text-white/60 hover:text-white"
+                )}
+              >
+                {child.name}
+              </Link>
+            )
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -52,28 +143,37 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          {navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "text-sm tracking-wide transition-colors",
-                pathname === item.href
-                  ? "text-white"
-                  : "text-white/60 hover:text-purple-light"
-              )}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navigation.map((item) =>
+            item.children ? (
+              <DesktopDropdown
+                key={item.name}
+                item={item}
+                pathname={pathname}
+              />
+            ) : (
+              <Link
+                key={item.name}
+                href={item.href!}
+                className={cn(
+                  "text-sm tracking-wide transition-colors",
+                  pathname === item.href
+                    ? "text-white"
+                    : "text-white/60 hover:text-purple-light"
+                )}
+              >
+                {item.name}
+              </Link>
+            )
+          )}
           <Link
             href="/contact"
-            className="bg-white px-5 py-2 text-sm font-semibold text-[#1a1054] rounded-lg tracking-wide transition-all hover:bg-white/90 hover:scale-[1.02]"
+            className="bg-gradient-to-r from-purple-dim via-purple to-purple-light px-5 py-2 text-sm font-semibold text-white rounded-lg tracking-wide transition-all hover:brightness-110 hover:scale-[1.02]"
           >
             Book Now
           </Link>
         </nav>
 
+        {/* Mobile menu */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             className={cn(
@@ -84,27 +184,63 @@ export function Header() {
             <Menu className="h-5 w-5" />
             <span className="sr-only">Open menu</span>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72 bg-[#0f0f3d] border-purple/10">
+          <SheetContent side="right" className="w-72 bg-[#0a0a2e] border-purple/10">
             <nav className="mt-8 flex flex-col gap-1">
-              {navigation.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "px-4 py-3 text-base tracking-wide rounded-lg transition-colors",
-                    pathname === item.href
-                      ? "text-white bg-purple/10"
-                      : "text-white/60 hover:text-purple-light"
-                  )}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {navigation.map((item) =>
+                item.children ? (
+                  <div key={item.name}>
+                    <p className="px-4 py-2 text-xs font-medium uppercase tracking-[0.15em] text-white/30">
+                      {item.name}
+                    </p>
+                    {item.children.map((child) =>
+                      child.external ? (
+                        <a
+                          key={child.href}
+                          href={child.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setOpen(false)}
+                          className="px-4 py-3 pl-8 text-base tracking-wide rounded-lg text-white/60 hover:text-purple-light transition-colors block"
+                        >
+                          {child.name}
+                        </a>
+                      ) : (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={() => setOpen(false)}
+                          className={cn(
+                            "px-4 py-3 pl-8 text-base tracking-wide rounded-lg transition-colors block",
+                            pathname === child.href
+                              ? "text-white bg-purple/10"
+                              : "text-white/60 hover:text-purple-light"
+                          )}
+                        >
+                          {child.name}
+                        </Link>
+                      )
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    key={item.name}
+                    href={item.href!}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "px-4 py-3 text-base tracking-wide rounded-lg transition-colors",
+                      pathname === item.href
+                        ? "text-white bg-purple/10"
+                        : "text-white/60 hover:text-purple-light"
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                )
+              )}
               <Link
                 href="/contact"
                 onClick={() => setOpen(false)}
-                className="mx-4 mt-4 bg-white px-5 py-3 text-center text-sm font-semibold text-[#1a1054] rounded-lg tracking-wide"
+                className="mx-4 mt-4 bg-gradient-to-r from-purple-dim via-purple to-purple-light px-5 py-3 text-center text-sm font-semibold text-white rounded-lg tracking-wide"
               >
                 Book Now
               </Link>

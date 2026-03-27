@@ -146,14 +146,14 @@ export function ContactForm() {
       )}
 
       {/* Submit */}
-      <div className="flex items-center justify-between pt-2">
-        <p className="hidden text-xs text-white/25 sm:block">
+      <div className="flex flex-col-reverse gap-4 pt-2 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-center text-xs text-white/25 sm:text-left">
           We respond within 24 hours
         </p>
         <button
           type="submit"
           disabled={pending}
-          className="glow-hover group flex items-center gap-3 rounded-lg bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-[#1a1054] transition-all hover:bg-white/90 disabled:opacity-60 disabled:hover:bg-white"
+          className="glow-hover group flex w-full items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-purple-dim via-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white transition-all hover:brightness-110 disabled:opacity-60 sm:w-auto"
         >
           {pending ? (
             <>
