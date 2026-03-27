@@ -33,9 +33,9 @@ export function Footer() {
               <Image
                 src="/logo.png"
                 alt="PG Creatives"
-                width={140}
-                height={40}
-                className="h-9 w-auto object-contain"
+                width={180}
+                height={50}
+                className="h-14 w-auto object-contain"
               />
             </Link>
             <p className="text-sm leading-relaxed text-white/50">
