@@ -54,7 +54,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background py-28">
+      <section className="relative overflow-hidden bg-background pt-24 pb-16 sm:py-28">
         {/* Floating decorative orb */}
         <div
           aria-hidden="true"
@@ -67,7 +67,7 @@ export default function ContactPage() {
             <span className="mb-5 inline-flex items-center rounded-full border border-[#8B5CF6]/25 bg-[#8B5CF6]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-[#C4B5FD]">
               Contact Us
             </span>
-            <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            <h1 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Let&apos;s Create{" "}
               <span className="text-purple-light">Something Together</span>
             </h1>
@@ -80,9 +80,9 @@ export default function ContactPage() {
       </section>
 
       {/* Form + Info */}
-      <section className="bg-background py-28">
+      <section className="bg-background py-12 sm:py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-8 lg:grid-cols-5">
+          <div className="grid gap-6 sm:gap-8 lg:grid-cols-5">
             {/* Form */}
             <AnimateOnScroll animation="slide-in-left" className="lg:col-span-3">
               <div className="gradient-border rounded-xl bg-[#0a0a2e] p-6 lg:p-10">

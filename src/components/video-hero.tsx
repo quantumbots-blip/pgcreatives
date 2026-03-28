@@ -57,7 +57,7 @@ export function VideoHero() {
           </div>
 
           <h1
-            className="animate-hero-fade-up text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-8xl"
+            className="animate-hero-fade-up text-3xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-7xl"
             style={{ animationDelay: "0.15s" }}
           >
             <span className="text-white">Professional</span>
@@ -66,7 +66,7 @@ export function VideoHero() {
           </h1>
 
           <p
-            className="animate-hero-fade-up mt-6 max-w-lg text-lg font-light leading-relaxed text-white/55"
+            className="animate-hero-fade-up mt-6 max-w-lg text-base sm:text-lg font-light leading-relaxed text-white/55"
             style={{ animationDelay: "0.3s" }}
           >
             Cinema-quality videography, stunning photography, aerial drone
@@ -74,7 +74,7 @@ export function VideoHero() {
           </p>
 
           <div
-            className="animate-hero-fade-up mt-10 flex flex-wrap items-center gap-4"
+            className="animate-hero-fade-up mt-10 flex flex-wrap items-center gap-3 sm:gap-4"
             style={{ animationDelay: "0.45s" }}
           >
             <MagneticButton>

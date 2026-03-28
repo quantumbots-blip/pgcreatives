@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -13,8 +14,15 @@ import { SectionLabel } from "@/components/section-label";
 import { Counter } from "@/components/counter";
 import { MagneticButton } from "@/components/magnetic-button";
 import { TextReveal } from "@/components/text-reveal";
-import { FloatingParticles } from "@/components/floating-particles";
 import { images } from "@/lib/images";
+
+const FloatingParticles = dynamic(
+  () =>
+    import("@/components/floating-particles").then(
+      (mod) => mod.FloatingParticles
+    ),
+  { ssr: false }
+);
 
 const stats = [
   { value: 3, prefix: "$", suffix: "B", label: "In Real Estate Captured" },
@@ -93,7 +101,7 @@ export default function HomePage() {
         {/* Single subtle background glow */}
         <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/[0.04] blur-[80px]" />
 
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 py-14 sm:grid-cols-3">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 py-10 sm:py-14 sm:grid-cols-3">
           {stats.map((stat, i) => (
             <AnimateOnScroll key={stat.label} animation="fade-up" delay={i * 0.15}>
               <div className="relative text-center">
@@ -119,7 +127,7 @@ export default function HomePage() {
       <div className="section-divider" />
 
       {/* Services */}
-      <section className="bg-background py-28 lg:py-36 relative overflow-hidden">
+      <section className="bg-background py-16 sm:py-24 lg:py-36 relative overflow-hidden">
         {/* Single ambient glow */}
         <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px]" />
         <FloatingParticles count={10} />
@@ -145,7 +153,7 @@ export default function HomePage() {
             </div>
           </AnimateOnScroll>
 
-          <div className="mt-16 grid gap-4 sm:grid-cols-3">
+          <div className="mt-10 sm:mt-16 grid gap-4 sm:grid-cols-3">
             {services.map((service, i) => (
               <AnimateOnScroll key={service.title} animation="fade-up" delay={i * 0.12}>
                 <div className="card-3d-enhanced h-full">
@@ -203,7 +211,7 @@ export default function HomePage() {
       </section>
 
       {/* Portfolio */}
-      <section className="py-28 lg:py-36 relative overflow-hidden bg-background">
+      <section className="py-16 sm:py-24 lg:py-36 relative overflow-hidden bg-background">
         {/* Subtle ambient glow */}
         <div className="absolute right-[5%] top-[10%] h-48 w-48 rounded-full bg-purple/[0.04] blur-[100px] hidden lg:block" />
         <div className="mx-auto max-w-7xl px-6">
@@ -222,12 +230,12 @@ export default function HomePage() {
 
           {/* Bento-style grid */}
           <AnimateOnScroll animation="fade-in-scale" delay={0.2}>
-            <div className="mt-16 grid grid-cols-1 gap-2 sm:grid-cols-4 sm:grid-rows-2">
+            <div className="mt-10 sm:mt-16 grid grid-cols-1 gap-2 sm:grid-cols-4 sm:grid-rows-2">
               {portfolio.map((item) => (
                 <div
                   key={item.title}
                   className={`group relative overflow-hidden rounded-xl bg-navy-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] ${item.colSpan} ${
-                    item.colSpan ? "aspect-auto min-h-[350px]" : "aspect-[4/3]"
+                    item.colSpan ? "aspect-auto min-h-[250px] sm:min-h-[350px]" : "aspect-[4/3]"
                   }`}
                 >
                   <Image
@@ -273,14 +281,14 @@ export default function HomePage() {
       </section>
 
       {/* Contact Form */}
-      <section className="relative overflow-hidden bg-background py-28 lg:py-36">
+      <section className="relative overflow-hidden bg-background py-16 sm:py-24 lg:py-36">
         {/* Single slow ambient glow */}
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[100px]" />
         <FloatingParticles count={8} />
 
         <div className="relative mx-auto max-w-4xl px-6">
           <AnimateOnScroll animation="fade-up">
-            <div className="text-center mb-12">
+            <div className="text-center mb-8 sm:mb-12">
               <SectionLabel>Get Started</SectionLabel>
               <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                 <span className="text-white">Ready to </span>

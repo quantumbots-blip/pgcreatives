@@ -26,7 +26,7 @@ const socialLinks = [
 export function Footer() {
   return (
     <footer className="bg-background">
-      <div className="mx-auto max-w-7xl px-6 py-16">
+      <div className="mx-auto max-w-7xl px-6 py-10 sm:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <Link href="/" className="inline-block">
@@ -35,7 +35,7 @@ export function Footer() {
                 alt="PG Creatives"
                 width={180}
                 height={50}
-                className="h-14 w-auto object-contain"
+                className="h-12 sm:h-14 w-auto object-contain"
               />
             </Link>
             <p className="text-sm leading-relaxed text-white/50">
@@ -114,7 +114,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-purple/10 pt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="mt-8 pt-6 sm:mt-12 border-t border-purple/10 sm:pt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-xs text-white/30">
             &copy; {new Date().getFullYear()} MCINTEE LLC. All rights reserved.
           </p>

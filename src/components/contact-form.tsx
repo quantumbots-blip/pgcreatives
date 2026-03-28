@@ -44,7 +44,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
   }
 
   return (
-    <form ref={formRef} action={formAction} className="space-y-8">
+    <form ref={formRef} action={formAction} className="space-y-6 sm:space-y-8">
       {/* Name row */}
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2.5">
@@ -151,7 +151,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
       )}
 
       {/* Submit */}
-      <div className="flex flex-col-reverse gap-4 pt-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col-reverse gap-4 pt-0 sm:pt-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-center text-xs text-white/25 sm:text-left">
           We respond within 24 hours
         </p>

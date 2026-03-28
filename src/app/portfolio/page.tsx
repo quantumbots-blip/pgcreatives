@@ -1,21 +1,20 @@
-"use client";
-
-import { useState } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, Play } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
 import { images } from "@/lib/images";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { PortfolioFilter } from "@/components/portfolio-filter";
 
-const categories = [
-  "All",
-  "Real Estate",
-  "Commercial",
-  "Drone",
-  "3D Tours",
-  "Videography",
-];
+export const metadata: Metadata = {
+  title: "Portfolio",
+  description:
+    "Browse our collection of professional real estate photography, videography, drone footage, and 3D tours created for clients across Wisconsin.",
+  openGraph: {
+    title: "Portfolio | PG Creatives",
+    description:
+      "Professional media portfolio — real estate, commercial, drone, and 3D tours in Wisconsin.",
+  },
+};
 
 const projects = [
   {
@@ -105,17 +104,10 @@ const projects = [
 ];
 
 export default function PortfolioPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
-
-  const filtered =
-    activeCategory === "All"
-      ? projects
-      : projects.filter((p) => p.category === activeCategory);
-
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background py-28">
+      <section className="relative overflow-hidden bg-background pt-24 pb-16 sm:py-28">
         <div
           className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,#0f0f3d_0%,transparent_55%)]"
         />
@@ -128,8 +120,8 @@ export default function PortfolioPage() {
                 Portfolio
               </span>
             </div>
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              <span className="text-white">Our Best Work</span>
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Our Best Work
             </h1>
             <p className="mt-4 text-lg text-purple-light/55">
               Browse our collection of professional media created for clients
@@ -140,90 +132,29 @@ export default function PortfolioPage() {
       </section>
 
       {/* Filter + Grid */}
-      <section className="bg-background py-16">
-        <div className="mx-auto max-w-7xl px-6">
-          {/* Filter tabs */}
-          <AnimateOnScroll animation="fade-up">
-            <div className="mb-12 flex flex-wrap gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={cn(
-                    "rounded-lg px-4 py-3 text-sm tracking-wide transition-colors border",
-                    activeCategory === cat
-                      ? "bg-purple/15 border-purple/15 text-white"
-                      : "bg-purple/[0.04] border-purple/15 text-white/50 hover:text-white"
-                  )}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </AnimateOnScroll>
-
-          {/* Grid */}
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((project) => (
-              <div
-                key={project.title}
-                className="group relative aspect-[4/3] overflow-hidden rounded-xl hover-lift bg-[#0a0a2e]"
-              >
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#080820]/85 via-[#080820]/20 to-transparent transition-opacity" />
-                {project.type === "video" && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div
-                      className="flex h-14 w-14 items-center justify-center rounded-full backdrop-blur-sm transition-colors border border-purple/35 bg-[#080820]/50 text-purple-light"
-                    >
-                      <Play className="ml-0.5 h-5 w-5" />
-                    </div>
-                  </div>
-                )}
-                <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 transition-transform duration-500 group-hover:translate-y-0">
-                  <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-purple">
-                    {project.category}
-                  </p>
-                  <h3 className="mt-1 font-semibold text-white">
-                    {project.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-purple-light/55 opacity-0 transition-opacity group-hover:opacity-100">
-                    {project.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <section className="bg-background py-10 sm:py-16">
+        <PortfolioFilter projects={projects} />
       </section>
 
       {/* CTA */}
-      <section
-        className="bg-background py-28"
-      >
+      <section className="bg-background py-16 sm:py-28">
         <AnimateOnScroll animation="fade-up">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">
-            <span className="text-white">Want Results </span>
-            <span className="text-purple-light">Like These?</span>
-          </h2>
-          <p className="mt-4 text-purple-light/55">
-            Let&apos;s create stunning media for your property or brand.
-          </p>
-          <Link
-            href="/contact"
-            className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-sm font-medium tracking-wide transition-colors hover:bg-white/90 text-[#1a1054]"
-          >
-            Start Your Project
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
+          <div className="mx-auto max-w-3xl px-6 text-center">
+            <h2 className="text-3xl font-bold tracking-tight">
+              <span className="text-white">Want Results </span>
+              <span className="text-purple-light">Like These?</span>
+            </h2>
+            <p className="mt-4 text-purple-light/55">
+              Let&apos;s create stunning media for your property or brand.
+            </p>
+            <Link
+              href="/contact"
+              className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-sm font-medium tracking-wide transition-colors hover:bg-white/90 text-[#1a1054]"
+            >
+              Start Your Project
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
         </AnimateOnScroll>
       </section>
     </>
