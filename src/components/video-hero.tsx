@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Play } from "lucide-react";
@@ -9,19 +9,17 @@ import { FloatingParticles } from "@/components/floating-particles";
 
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoLoaded, setVideoLoaded] = useState(false);
 
   const tryPlay = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Ensure muted (required for autoplay in most browsers)
     video.muted = true;
 
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        // Autoplay was blocked — retry on first user interaction
+        // Autoplay blocked — retry on first user interaction
         const resume = () => {
           video.play().catch(() => {});
           document.removeEventListener("click", resume);
@@ -39,39 +37,19 @@ export function VideoHero() {
     const video = videoRef.current;
     if (!video) return;
 
-    // If already has data (handles cached/fast loads), show immediately
     if (video.readyState >= 2) {
-      setVideoLoaded(true);
       tryPlay();
       return;
     }
 
-    const showAndPlay = () => {
-      setVideoLoaded(true);
-      tryPlay();
-    };
-
-    // Multiple events to catch all load scenarios
-    video.addEventListener("canplay", showAndPlay);
-    video.addEventListener("loadeddata", showAndPlay);
-    video.addEventListener("loadedmetadata", showAndPlay);
-
-    // Fallback: show after 3s regardless (handles background tab throttling)
-    const fallback = setTimeout(() => {
-      setVideoLoaded(true);
-    }, 3000);
-
-    return () => {
-      video.removeEventListener("canplay", showAndPlay);
-      video.removeEventListener("loadeddata", showAndPlay);
-      video.removeEventListener("loadedmetadata", showAndPlay);
-      clearTimeout(fallback);
-    };
+    const onReady = () => tryPlay();
+    video.addEventListener("canplay", onReady);
+    return () => video.removeEventListener("canplay", onReady);
   }, [tryPlay]);
 
   return (
     <section className="relative -mt-16 lg:-mt-20 flex min-h-screen items-center overflow-hidden">
-      {/* Poster image — shows while video loads */}
+      {/* Poster — shows while video loads or if video fails */}
       <Image
         src="/images/hero-poster.jpg"
         alt="Property showcase"
@@ -81,7 +59,7 @@ export function VideoHero() {
         sizes="100vw"
       />
 
-      {/* Video layer — fades in over poster when ready */}
+      {/* Video — always visible; poster attr handles initial frame */}
       <video
         ref={videoRef}
         autoPlay
@@ -90,13 +68,8 @@ export function VideoHero() {
         playsInline
         preload="auto"
         poster="/images/hero-poster.jpg"
-        onLoadedData={() => {
-          setVideoLoaded(true);
-          tryPlay();
-        }}
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ${
-          videoLoaded ? "opacity-100" : "opacity-0"
-        }`}
+        onLoadedData={tryPlay}
+        className="absolute inset-0 h-full w-full object-cover"
       >
         <source src="/hero-video-v2.mp4" type="video/mp4" />
       </video>
