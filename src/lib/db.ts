@@ -59,6 +59,109 @@ export async function logAuditEvent(data: {
   }
 }
 
+// ── Page View Tracking ──
+
+export async function ensurePageViewsTable() {
+  const sql = getDb();
+  await sql`
+    CREATE TABLE IF NOT EXISTS page_views (
+      id SERIAL PRIMARY KEY,
+      path VARCHAR(500) NOT NULL,
+      referrer VARCHAR(1000),
+      device VARCHAR(10) DEFAULT 'desktop',
+      visitor_hash VARCHAR(64),
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+  // Index for fast date-range queries
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_page_views_created_at ON page_views (created_at)
+  `;
+}
+
+export async function recordPageView(data: {
+  path: string;
+  referrer: string | null;
+  device: "mobile" | "tablet" | "desktop";
+  visitorHash: string;
+}) {
+  const sql = getDb();
+  await sql`
+    INSERT INTO page_views (path, referrer, device, visitor_hash)
+    VALUES (${data.path}, ${data.referrer}, ${data.device}, ${data.visitorHash})
+  `;
+}
+
+export async function getPageViewStats() {
+  const sql = getDb();
+
+  const [totalViews] = await sql`SELECT COUNT(*) as count FROM page_views`;
+  const [totalUnique] = await sql`SELECT COUNT(DISTINCT visitor_hash) as count FROM page_views`;
+  const [monthViews] = await sql`
+    SELECT COUNT(*) as count FROM page_views WHERE created_at >= NOW() - INTERVAL '30 days'
+  `;
+  const [monthUnique] = await sql`
+    SELECT COUNT(DISTINCT visitor_hash) as count FROM page_views WHERE created_at >= NOW() - INTERVAL '30 days'
+  `;
+  const [weekViews] = await sql`
+    SELECT COUNT(*) as count FROM page_views WHERE created_at >= NOW() - INTERVAL '7 days'
+  `;
+  const [todayViews] = await sql`
+    SELECT COUNT(*) as count FROM page_views WHERE created_at >= NOW() - INTERVAL '1 day'
+  `;
+
+  const dailyViews = await sql`
+    SELECT DATE(created_at) as day, COUNT(*) as views, COUNT(DISTINCT visitor_hash) as visitors
+    FROM page_views
+    WHERE created_at >= NOW() - INTERVAL '30 days'
+    GROUP BY DATE(created_at)
+    ORDER BY day ASC
+  `;
+
+  const topPages = await sql`
+    SELECT path, COUNT(*) as views, COUNT(DISTINCT visitor_hash) as visitors
+    FROM page_views
+    WHERE created_at >= NOW() - INTERVAL '30 days'
+    GROUP BY path
+    ORDER BY views DESC
+    LIMIT 6
+  `;
+
+  const deviceBreakdown = await sql`
+    SELECT device, COUNT(*) as count
+    FROM page_views
+    WHERE created_at >= NOW() - INTERVAL '30 days'
+    GROUP BY device
+    ORDER BY count DESC
+  `;
+
+  const topReferrers = await sql`
+    SELECT
+      CASE WHEN referrer IS NULL OR referrer = '' THEN 'Direct' ELSE referrer END as source,
+      COUNT(*) as count
+    FROM page_views
+    WHERE created_at >= NOW() - INTERVAL '30 days'
+    GROUP BY source
+    ORDER BY count DESC
+    LIMIT 5
+  `;
+
+  return {
+    totalViews: Number(totalViews.count),
+    totalUnique: Number(totalUnique.count),
+    monthViews: Number(monthViews.count),
+    monthUnique: Number(monthUnique.count),
+    weekViews: Number(weekViews.count),
+    todayViews: Number(todayViews.count),
+    dailyViews: dailyViews as { day: string; views: number; visitors: number }[],
+    topPages: topPages as { path: string; views: number; visitors: number }[],
+    deviceBreakdown: deviceBreakdown as { device: string; count: number }[],
+    topReferrers: topReferrers as { source: string; count: number }[],
+  };
+}
+
+// ── Submissions ──
+
 export async function saveSubmission(data: {
   firstName: string;
   lastName: string;

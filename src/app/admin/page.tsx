@@ -9,20 +9,28 @@ import {
   Calendar,
   CheckCircle2,
   ChevronRight,
+  Eye,
+  Globe,
   LogOut,
   Mail,
   MessageSquare,
+  Monitor,
   Phone,
   Send,
+  Smartphone,
   Sparkles,
+  Tablet,
   TrendingUp,
+  Users,
 } from "lucide-react";
 import {
   ensureSchema,
+  ensurePageViewsTable,
   getSubmissions,
   getSubmissionStats,
   getServiceBreakdown,
   getStatusCounts,
+  getPageViewStats,
 } from "@/lib/db";
 import type { SubmissionStatus } from "@/lib/db";
 import { logoutAction } from "@/app/actions/auth";
@@ -55,16 +63,30 @@ export default async function AdminDashboard() {
     booked: 0,
     archived: 0,
   };
+  let traffic: Awaited<ReturnType<typeof getPageViewStats>> = {
+    totalViews: 0,
+    totalUnique: 0,
+    monthViews: 0,
+    monthUnique: 0,
+    weekViews: 0,
+    todayViews: 0,
+    dailyViews: [],
+    topPages: [],
+    deviceBreakdown: [],
+    topReferrers: [],
+  };
   let dbError = false;
 
   try {
-    await ensureSchema();
-    [stats, submissions, serviceBreakdown, statusCounts] = await Promise.all([
-      getSubmissionStats(),
-      getSubmissions(),
-      getServiceBreakdown(),
-      getStatusCounts(),
-    ]);
+    await Promise.all([ensureSchema(), ensurePageViewsTable()]);
+    [stats, submissions, serviceBreakdown, statusCounts, traffic] =
+      await Promise.all([
+        getSubmissionStats(),
+        getSubmissions(),
+        getServiceBreakdown(),
+        getStatusCounts(),
+        getPageViewStats(),
+      ]);
   } catch {
     dbError = true;
   }
@@ -206,6 +228,183 @@ export default async function AdminDashboard() {
                 </div>
                 <p className="text-xs text-white/40">This Week</p>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Website Traffic ── */}
+        <div className="mt-8 rounded-xl border border-purple/10 bg-purple/[0.03] p-6">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-white/50">
+              Website Traffic
+            </h2>
+            <span className="text-xs text-white/30">Last 30 days</span>
+          </div>
+
+          {/* Traffic stat cards */}
+          <div className="grid gap-3 grid-cols-2 lg:grid-cols-4 mb-6">
+            <div className="rounded-lg border border-purple/10 bg-purple/[0.04] p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Eye className="h-4 w-4 text-purple/60" />
+                <span className="text-[10px] uppercase tracking-wider text-white/40">Views</span>
+              </div>
+              <p className="text-2xl font-bold text-white">{traffic.monthViews.toLocaleString()}</p>
+              <p className="text-[10px] text-white/30 mt-1">{traffic.totalViews.toLocaleString()} all time</p>
+            </div>
+            <div className="rounded-lg border border-purple/10 bg-purple/[0.04] p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Users className="h-4 w-4 text-purple/60" />
+                <span className="text-[10px] uppercase tracking-wider text-white/40">Visitors</span>
+              </div>
+              <p className="text-2xl font-bold text-white">{traffic.monthUnique.toLocaleString()}</p>
+              <p className="text-[10px] text-white/30 mt-1">{traffic.totalUnique.toLocaleString()} all time</p>
+            </div>
+            <div className="rounded-lg border border-purple/10 bg-purple/[0.04] p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingUp className="h-4 w-4 text-purple/60" />
+                <span className="text-[10px] uppercase tracking-wider text-white/40">This Week</span>
+              </div>
+              <p className="text-2xl font-bold text-white">{traffic.weekViews.toLocaleString()}</p>
+            </div>
+            <div className="rounded-lg border border-purple/10 bg-purple/[0.04] p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-purple/60" />
+                <span className="text-[10px] uppercase tracking-wider text-white/40">Today</span>
+              </div>
+              <p className="text-2xl font-bold text-white">{traffic.todayViews.toLocaleString()}</p>
+            </div>
+          </div>
+
+          {/* Traffic chart */}
+          {traffic.dailyViews.length > 0 && (
+            <div className="mb-6">
+              <p className="mb-3 text-xs text-white/30">Daily Views</p>
+              <div className="flex items-end gap-1 h-28">
+                {traffic.dailyViews.map((d) => {
+                  const max = Math.max(
+                    ...traffic.dailyViews.map((v) => Number(v.views)),
+                    1
+                  );
+                  return (
+                    <div
+                      key={d.day}
+                      className="flex-1 group relative"
+                      title={`${d.day}: ${d.views} views, ${d.visitors} visitors`}
+                    >
+                      <div
+                        className="w-full rounded-t bg-gradient-to-t from-purple/40 to-purple-light/60 transition-all hover:from-purple hover:to-purple-light"
+                        style={{
+                          height: `${(Number(d.views) / max) * 100}%`,
+                          minHeight: "2px",
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Bottom row: Top Pages, Devices, Referrers */}
+          <div className="grid gap-4 lg:grid-cols-3">
+            {/* Top Pages */}
+            <div>
+              <p className="mb-3 text-xs font-medium uppercase tracking-wider text-white/40">
+                Top Pages
+              </p>
+              {traffic.topPages.length === 0 ? (
+                <p className="text-xs text-white/20">No data yet</p>
+              ) : (
+                <div className="space-y-2">
+                  {traffic.topPages.map((page) => (
+                    <div
+                      key={page.path}
+                      className="flex items-center justify-between rounded-lg bg-white/[0.02] px-3 py-2"
+                    >
+                      <span className="text-xs text-white/70 font-mono truncate max-w-[140px]">
+                        {page.path}
+                      </span>
+                      <div className="flex items-center gap-3 text-[10px] text-white/40 shrink-0">
+                        <span>{Number(page.views).toLocaleString()} views</span>
+                        <span>{Number(page.visitors).toLocaleString()} visitors</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Device Breakdown */}
+            <div>
+              <p className="mb-3 text-xs font-medium uppercase tracking-wider text-white/40">
+                Devices
+              </p>
+              {traffic.deviceBreakdown.length === 0 ? (
+                <p className="text-xs text-white/20">No data yet</p>
+              ) : (
+                <div className="space-y-2">
+                  {traffic.deviceBreakdown.map((d) => {
+                    const total = traffic.deviceBreakdown.reduce(
+                      (sum, v) => sum + Number(v.count),
+                      0
+                    );
+                    const pct = total > 0 ? Math.round((Number(d.count) / total) * 100) : 0;
+                    const Icon =
+                      d.device === "mobile"
+                        ? Smartphone
+                        : d.device === "tablet"
+                          ? Tablet
+                          : Monitor;
+                    return (
+                      <div
+                        key={d.device}
+                        className="flex items-center gap-3 rounded-lg bg-white/[0.02] px-3 py-2"
+                      >
+                        <Icon className="h-3.5 w-3.5 text-purple/50 shrink-0" />
+                        <span className="text-xs text-white/70 capitalize flex-1">
+                          {d.device}
+                        </span>
+                        <span className="text-[10px] text-white/40">{pct}%</span>
+                        <div className="w-16 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                          <div
+                            className="h-full rounded-full bg-purple/50"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Top Referrers */}
+            <div>
+              <p className="mb-3 text-xs font-medium uppercase tracking-wider text-white/40">
+                Top Referrers
+              </p>
+              {traffic.topReferrers.length === 0 ? (
+                <p className="text-xs text-white/20">No data yet</p>
+              ) : (
+                <div className="space-y-2">
+                  {traffic.topReferrers.map((ref) => (
+                    <div
+                      key={ref.source}
+                      className="flex items-center justify-between rounded-lg bg-white/[0.02] px-3 py-2"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Globe className="h-3.5 w-3.5 text-purple/50 shrink-0" />
+                        <span className="text-xs text-white/70 truncate">
+                          {ref.source}
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-white/40 shrink-0 ml-2">
+                        {Number(ref.count).toLocaleString()}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
