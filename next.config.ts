@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/hero-video.mp4",
+        source: "/hero-video-v2.mp4",
         headers: [
           {
             key: "Cache-Control",

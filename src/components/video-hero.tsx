@@ -39,21 +39,34 @@ export function VideoHero() {
     const video = videoRef.current;
     if (!video) return;
 
-    // If already ready, play immediately
-    if (video.readyState >= 3) {
+    // If already has data (handles cached/fast loads), show immediately
+    if (video.readyState >= 2) {
       setVideoLoaded(true);
       tryPlay();
       return;
     }
 
-    // Listen for canplay to handle slow loads
-    const onCanPlay = () => {
+    const showAndPlay = () => {
       setVideoLoaded(true);
       tryPlay();
     };
 
-    video.addEventListener("canplay", onCanPlay);
-    return () => video.removeEventListener("canplay", onCanPlay);
+    // Multiple events to catch all load scenarios
+    video.addEventListener("canplay", showAndPlay);
+    video.addEventListener("loadeddata", showAndPlay);
+    video.addEventListener("loadedmetadata", showAndPlay);
+
+    // Fallback: show after 3s regardless (handles background tab throttling)
+    const fallback = setTimeout(() => {
+      setVideoLoaded(true);
+    }, 3000);
+
+    return () => {
+      video.removeEventListener("canplay", showAndPlay);
+      video.removeEventListener("loadeddata", showAndPlay);
+      video.removeEventListener("loadedmetadata", showAndPlay);
+      clearTimeout(fallback);
+    };
   }, [tryPlay]);
 
   return (
@@ -85,7 +98,7 @@ export function VideoHero() {
           videoLoaded ? "opacity-100" : "opacity-0"
         }`}
       >
-        <source src="/hero-video.mp4" type="video/mp4" />
+        <source src="/hero-video-v2.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay gradients — purple-tinted */}
