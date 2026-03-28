@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { FacebookIcon, InstagramIcon } from "@/components/icons";
 
 const footerLinks = [
@@ -26,34 +26,87 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-background">
-      <div className="mx-auto max-w-7xl px-6 py-10 sm:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="space-y-4">
+    <footer className="relative overflow-hidden bg-[#060618]">
+      {/* Subtle background gradient accents */}
+      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-7xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/30 to-transparent" />
+      <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-purple/[0.04] blur-[120px]" />
+      <div className="pointer-events-none absolute -right-40 bottom-20 h-80 w-80 rounded-full bg-purple/[0.03] blur-[120px]" />
+
+      {/* ── CTA Banner ── */}
+      <div className="mx-auto max-w-7xl px-6 pt-16 sm:pt-24">
+        <div className="relative rounded-2xl border border-purple/10 bg-gradient-to-br from-purple/[0.08] via-[#0a0a2e] to-purple/[0.04] p-8 sm:p-12 lg:p-16 overflow-hidden">
+          {/* Decorative corner glow */}
+          <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/10 blur-[80px]" />
+
+          <div className="relative flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-lg">
+              <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
+                Ready to Elevate
+                <br />
+                <span className="gradient-text">Your Visual Story?</span>
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-white/40 sm:text-base">
+                Let&apos;s create professional-grade media that makes a lasting
+                impression.
+              </p>
+            </div>
+            <Link
+              href="/contact"
+              className="glow-hover group inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-[#080820] transition-all hover:bg-purple-light hover:text-white shrink-0"
+            >
+              Start a Project
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Main Footer Content ── */}
+      <div className="mx-auto max-w-7xl px-6 pt-14 pb-6 sm:pt-20 sm:pb-8">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
+          {/* Brand column */}
+          <div className="lg:col-span-4 space-y-5">
             <Link href="/" className="inline-block">
               <Image
                 src="/logo.png"
                 alt="PG Creatives"
-                width={180}
-                height={50}
-                className="h-12 sm:h-14 w-auto object-contain"
+                width={478}
+                height={522}
+                className="h-16 sm:h-20 w-auto object-contain"
               />
             </Link>
-            <p className="text-sm leading-relaxed text-white/50">
-              Take your brand to the Next Level
+            <p className="max-w-xs text-sm leading-relaxed text-white/40">
+              Professional-grade videography, photography, drone aerial, and 3D
+              tours. Serving Green Bay, Madison, and the Fox Valley.
             </p>
+            {/* Social icons */}
+            <div className="flex gap-2.5 pt-1">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.03] text-white/40 transition-all duration-200 hover:border-purple/30 hover:bg-purple/10 hover:text-purple-light hover:scale-105"
+                >
+                  <social.icon className="h-4 w-4" />
+                  <span className="sr-only">{social.name}</span>
+                </a>
+              ))}
+            </div>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-white/40">
-              Quick Links
+          {/* Quick Links */}
+          <div className="lg:col-span-2 lg:col-start-6">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/30">
+              Navigation
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="mt-5 space-y-3">
               {footerLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 transition-colors hover:text-purple-light"
+                    className="text-sm text-white/45 transition-colors duration-200 hover:text-white"
                   >
                     {link.name}
                   </Link>
@@ -62,66 +115,106 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-white/40">
-              Contact
+          {/* Contact */}
+          <div className="lg:col-span-3">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/30">
+              Get in Touch
             </h3>
-            <ul className="space-y-3">
+            <ul className="mt-5 space-y-4">
               <li>
                 <a
                   href="tel:+19207770127"
-                  className="flex items-center gap-2.5 text-sm text-white/50 transition-colors hover:text-purple-light"
+                  className="group flex items-center gap-3 text-sm text-white/45 transition-colors duration-200 hover:text-white"
                 >
-                  <Phone className="h-3.5 w-3.5 shrink-0 text-purple/60" />
-                  (920) 777-0127
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04] transition-colors group-hover:bg-purple/15">
+                    <Phone className="h-3.5 w-3.5 text-purple/50 transition-colors group-hover:text-purple-light" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase tracking-[0.15em] text-white/25">Green Bay</span>
+                    <span className="block">(920) 777-0127</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="tel:+16084206199"
+                  className="group flex items-center gap-3 text-sm text-white/45 transition-colors duration-200 hover:text-white"
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04] transition-colors group-hover:bg-purple/15">
+                    <Phone className="h-3.5 w-3.5 text-purple/50 transition-colors group-hover:text-purple-light" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase tracking-[0.15em] text-white/25">Madison</span>
+                    <span className="block">(608) 420-6199</span>
+                  </div>
                 </a>
               </li>
               <li>
                 <a
                   href="mailto:pgcreativeswisconsin@gmail.com"
-                  className="flex min-w-0 items-center gap-2.5 text-sm text-white/50 transition-colors hover:text-purple-light"
+                  className="group flex items-center gap-3 text-sm text-white/45 transition-colors duration-200 hover:text-white"
                 >
-                  <Mail className="h-3.5 w-3.5 shrink-0 text-purple/60" />
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.04] transition-colors group-hover:bg-purple/15">
+                    <Mail className="h-3.5 w-3.5 text-purple/50 transition-colors group-hover:text-purple-light" />
+                  </div>
                   <span className="break-all">pgcreativeswisconsin@gmail.com</span>
                 </a>
               </li>
               <li>
-                <span className="flex items-center gap-2.5 text-sm text-white/50">
-                  <MapPin className="h-3.5 w-3.5 shrink-0 text-purple/60" />
+                <div className="flex items-center gap-3 text-sm text-white/45">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04]">
+                    <MapPin className="h-3.5 w-3.5 text-purple/50" />
+                  </div>
                   Green Bay, Madison & Fox Valley, WI
-                </span>
+                </div>
               </li>
             </ul>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-white/40">
-              Follow Us
+          {/* Portals */}
+          <div className="lg:col-span-3">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/30">
+              Client Portals
             </h3>
-            <div className="flex gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-purple/15 text-white/40 transition-all hover:border-purple/40 hover:text-purple-light hover:bg-purple/10"
-                >
-                  <social.icon className="h-3.5 w-3.5" />
-                  <span className="sr-only">{social.name}</span>
-                </a>
-              ))}
+            <div className="mt-5 space-y-2.5">
+              <a
+                href="https://portal.spiro.media/order/pg/northeast-wisconsin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/45 transition-all duration-200 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white"
+              >
+                <span>Green Bay Portal</span>
+                <ArrowRight className="h-3.5 w-3.5 text-white/20" />
+              </a>
+              <a
+                href="https://portal.spiro.media/order/pg/madison"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/45 transition-all duration-200 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white"
+              >
+                <span>Madison Portal</span>
+                <ArrowRight className="h-3.5 w-3.5 text-white/20" />
+              </a>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 sm:mt-12 border-t border-purple/10 sm:pt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-xs text-white/30">
-            &copy; {new Date().getFullYear()} MCINTEE LLC. All rights reserved.
-          </p>
-          <p className="text-xs text-white/30 tracking-wide">
-            PG Creatives Media
-          </p>
+        {/* ── Bottom Bar ── */}
+        <div className="mt-12 sm:mt-16 border-t border-white/[0.06] pt-6 sm:pt-8">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p className="text-xs text-white/25">
+              &copy; {new Date().getFullYear()} MCINTEE LLC. All rights reserved.
+            </p>
+            <div className="flex items-center gap-6">
+              <span className="text-xs text-white/25 tracking-wide">
+                PG Creatives Media
+              </span>
+              <span className="hidden h-3 w-px bg-white/10 sm:block" />
+              <span className="hidden text-xs text-white/20 sm:block">
+                Wisconsin
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

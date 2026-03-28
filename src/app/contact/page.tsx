@@ -5,17 +5,36 @@ import { FacebookIcon, InstagramIcon } from "@/components/icons";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact | Get a Free Quote",
   description:
-    "Get in touch with PG Creatives for a free consultation. Serving Green Bay, Madison, and all of Wisconsin.",
+    "Contact PG Creatives for a free consultation and custom quote. Professional media services in Green Bay (920) 777-0127 and Madison (608) 420-6199, Wisconsin.",
+  keywords: [
+    "contact PG Creatives",
+    "free quote",
+    "Green Bay photographer",
+    "Madison videographer",
+    "Wisconsin media booking",
+  ],
+  openGraph: {
+    title: "Contact | PG Creatives",
+    description:
+      "Get in touch for a free consultation. Serving Green Bay & Madison, WI.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
 };
 
 const contactInfo = [
   {
     icon: Phone,
-    label: "Phone",
+    label: "Green Bay",
     value: "(920) 777-0127",
     href: "tel:+19207770127",
+  },
+  {
+    icon: Phone,
+    label: "Madison",
+    value: "(608) 420-6199",
+    href: "tel:+16084206199",
   },
   {
     icon: Mail,
@@ -157,12 +176,22 @@ export default function ContactPage() {
                   goals.
                 </p>
                 <div className="mt-4 h-px bg-[#8B5CF6]/15" />
-                <a
-                  href="tel:+19207770127"
-                  className="glow-hover mt-4 inline-block text-lg font-semibold text-white transition-colors hover:text-[#C4B5FD]"
-                >
-                  (920) 777-0127
-                </a>
+                <div className="mt-4 space-y-2">
+                  <a
+                    href="tel:+19207770127"
+                    className="glow-hover flex items-center gap-2 text-base font-semibold text-white transition-colors hover:text-[#C4B5FD]"
+                  >
+                    <span className="text-xs font-normal text-white/30">GB</span>
+                    (920) 777-0127
+                  </a>
+                  <a
+                    href="tel:+16084206199"
+                    className="glow-hover flex items-center gap-2 text-base font-semibold text-white transition-colors hover:text-[#C4B5FD]"
+                  >
+                    <span className="text-xs font-normal text-white/30">MAD</span>
+                    (608) 420-6199
+                  </a>
+                </div>
               </div>
             </div>
             </AnimateOnScroll>

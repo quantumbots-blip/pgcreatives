@@ -1,20 +1,8 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { images } from "@/lib/images";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PortfolioFilter } from "@/components/portfolio-filter";
-
-export const metadata: Metadata = {
-  title: "Portfolio",
-  description:
-    "Browse our collection of professional real estate photography, videography, drone footage, and 3D tours created for clients across Wisconsin.",
-  openGraph: {
-    title: "Portfolio | PG Creatives",
-    description:
-      "Professional media portfolio — real estate, commercial, drone, and 3D tours in Wisconsin.",
-  },
-};
 
 const projects = [
   {

@@ -331,12 +331,13 @@ export default function ShowreelPage() {
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </MagneticButton>
-              <a
-                href="tel:+19207770127"
-                className="glow-hover inline-flex items-center rounded-lg border border-purple/40 px-8 py-3.5 text-sm tracking-wide text-purple-light transition-all hover:border-purple/60 hover:bg-purple/5"
+              <Link
+                href="/contact"
+                className="glow-hover inline-flex items-center gap-2 rounded-lg border border-purple/40 px-8 py-3.5 text-sm tracking-wide text-purple-light transition-all hover:border-purple/60 hover:bg-purple/5"
               >
-                (920) 777-0127
-              </a>
+                Contact Us
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
           </div>
         </AnimateOnScroll>

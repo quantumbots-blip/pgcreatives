@@ -14,9 +14,25 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { SectionLabel } from "@/components/section-label";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Services | Professional Media Solutions",
   description:
-    "Professional media services including real estate photography, cinema videography, drone aerial, 3D virtual tours, and commercial branding.",
+    "Professional real estate photography, cinema videography, FAA-certified drone aerial, Matterport 3D virtual tours, and commercial branding services in Green Bay, Madison, and Fox Valley, Wisconsin.",
+  keywords: [
+    "real estate photography",
+    "cinema videography",
+    "drone aerial photography",
+    "3D virtual tours",
+    "commercial branding",
+    "Green Bay photographer",
+    "Madison videographer",
+    "Wisconsin media",
+  ],
+  openGraph: {
+    title: "Services | PG Creatives",
+    description:
+      "Professional media services — photography, videography, drone, 3D tours, and branding in Wisconsin.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
 };
 
 const services = [
@@ -254,12 +270,13 @@ export default function ServicesPage() {
               Get a Quote
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <a
-              href="tel:+19207770127"
-              className="glow-hover inline-flex items-center rounded-lg border border-purple/40 px-8 py-3 text-sm tracking-wide text-purple-light transition-all hover:border-purple/60 hover:bg-purple/5"
+            <Link
+              href="/contact"
+              className="glow-hover inline-flex items-center gap-2 rounded-lg border border-purple/40 px-8 py-3 text-sm tracking-wide text-purple-light transition-all hover:border-purple/60 hover:bg-purple/5"
             >
-              (920) 777-0127
-            </a>
+              Contact Us
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
         </div>
       </section>

@@ -38,7 +38,6 @@ const navigation: NavItem[] = [
   },
   { name: "Showreel", href: "/showreel" },
   { name: "Branding", href: "/services" },
-  { name: "Listing Packages", href: "/services" },
   {
     name: "Login",
     children: [
@@ -274,9 +273,9 @@ export function Header() {
             <Image
               src="/logo.png"
               alt="PG Creatives"
-              width={160}
-              height={45}
-              className="h-12 w-auto lg:h-14 object-contain"
+              width={478}
+              height={522}
+              className="h-10 w-auto sm:h-12 lg:h-14 object-contain"
               priority
             />
           </Link>

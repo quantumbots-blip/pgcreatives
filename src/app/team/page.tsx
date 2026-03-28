@@ -7,9 +7,22 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { SectionLabel } from "@/components/section-label";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About | Meet The Team",
   description:
-    "Meet the talented team behind PG Creatives. Professional photographers, videographers, and creatives based in Wisconsin.",
+    "Meet the talented photographers, videographers, and creatives behind PG Creatives. Based in Green Bay and Madison, Wisconsin, our team delivers professional-grade media.",
+  keywords: [
+    "PG Creatives team",
+    "Wisconsin photographers",
+    "Green Bay videographer",
+    "Madison media company",
+    "professional creatives",
+  ],
+  openGraph: {
+    title: "About | PG Creatives Team",
+    description:
+      "Meet the talented team behind PG Creatives in Wisconsin.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
 };
 
 const team = [
