@@ -83,14 +83,14 @@ export default function ContactPage() {
         <div className="absolute left-[8%] bottom-[20%] h-28 w-28 rounded-full border border-dashed border-[#8B5CF6]/10 spin-ring hidden lg:block" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            <span className="mb-5 inline-flex items-center rounded-full border border-[#8B5CF6]/25 bg-[#8B5CF6]/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-[#C4B5FD]">
+            <span className="mb-5 inline-flex items-center rounded-full border border-[#8B5CF6]/25 bg-[#8B5CF6]/10 px-3 py-1 text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#C4B5FD]">
               Contact Us
             </span>
-            <h1 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            <h1 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
               Let&apos;s Create{" "}
               <span className="text-purple-light">Something Together</span>
             </h1>
-            <p className="mt-4 text-lg text-white/50">
+            <p className="mt-4 text-base sm:text-lg text-white/50">
               Ready to elevate your visual content? Get in touch for a free
               consultation and custom quote.
             </p>
@@ -104,7 +104,7 @@ export default function ContactPage() {
           <div className="grid gap-6 sm:gap-8 lg:grid-cols-5">
             {/* Form */}
             <AnimateOnScroll animation="slide-in-left" className="lg:col-span-3">
-              <div className="gradient-border rounded-xl bg-[#0a0a2e] p-6 lg:p-10">
+              <div className="gradient-border rounded-xl bg-[#060E35] p-6 lg:p-10">
                 <ContactForm />
               </div>
             </AnimateOnScroll>
@@ -159,7 +159,7 @@ export default function ContactPage() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#8B5CF6]/20 text-[#8B5CF6]/60 transition-colors hover:border-[#8B5CF6]/50 hover:text-[#C4B5FD]"
+                      className="flex h-11 w-11 items-center justify-center rounded-lg border border-[#8B5CF6]/20 text-[#8B5CF6]/60 transition-colors hover:border-[#8B5CF6]/50 hover:text-[#C4B5FD]"
                     >
                       <social.icon className="h-3.5 w-3.5" />
                       <span className="sr-only">{social.name}</span>
@@ -168,7 +168,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="gradient-border rounded-xl bg-[#0f0f3d] p-6">
+              <div className="gradient-border rounded-xl bg-[#0A1240] p-6">
                 <h3 className="font-semibold text-white">Free Consultation</h3>
                 <p className="mt-2 text-sm text-white/40">
                   Not sure what you need? Call us for a free consultation.

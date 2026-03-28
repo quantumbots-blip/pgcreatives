@@ -5,7 +5,6 @@ import { FacebookIcon, InstagramIcon } from "@/components/icons";
 
 const footerLinks = [
   { name: "Services", href: "/services" },
-  { name: "Showreel", href: "/showreel" },
   { name: "Portfolio", href: "/portfolio" },
   { name: "About", href: "/team" },
   { name: "Contact", href: "/contact" },
@@ -26,7 +25,7 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-[#060618]">
+    <footer className="relative overflow-hidden bg-[#030820]">
       {/* Subtle background gradient accents */}
       <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-7xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/30 to-transparent" />
       <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-purple/[0.04] blur-[120px]" />
@@ -34,7 +33,7 @@ export function Footer() {
 
       {/* ── CTA Banner ── */}
       <div className="mx-auto max-w-7xl px-6 pt-16 sm:pt-24">
-        <div className="relative rounded-2xl border border-purple/10 bg-gradient-to-br from-purple/[0.08] via-[#0a0a2e] to-purple/[0.04] p-8 sm:p-12 lg:p-16 overflow-hidden">
+        <div className="relative rounded-2xl border border-purple/10 bg-gradient-to-br from-purple/[0.08] via-[#060E35] to-purple/[0.04] p-8 sm:p-12 lg:p-16 overflow-hidden">
           {/* Decorative corner glow */}
           <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/10 blur-[80px]" />
 
@@ -52,7 +51,7 @@ export function Footer() {
             </div>
             <Link
               href="/contact"
-              className="glow-hover group inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-[#080820] transition-all hover:bg-purple-light hover:text-white shrink-0"
+              className="glow-hover group inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-[#040A2D] transition-all hover:bg-purple-light hover:text-white shrink-0"
             >
               Start a Project
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -63,9 +62,9 @@ export function Footer() {
 
       {/* ── Main Footer Content ── */}
       <div className="mx-auto max-w-7xl px-6 pt-14 pb-6 sm:pt-20 sm:pb-8">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand column */}
-          <div className="lg:col-span-4 space-y-5">
+          <div className="space-y-5">
             <Link href="/" className="inline-block">
               <Image
                 src="/logo.png"
@@ -97,7 +96,7 @@ export function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div className="lg:col-span-2 lg:col-start-6">
+          <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/30">
               Navigation
             </h3>
@@ -116,7 +115,7 @@ export function Footer() {
           </div>
 
           {/* Contact */}
-          <div className="lg:col-span-3">
+          <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/30">
               Get in Touch
             </h3>
@@ -172,7 +171,7 @@ export function Footer() {
           </div>
 
           {/* Portals */}
-          <div className="lg:col-span-3">
+          <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/30">
               Client Portals
             </h3>

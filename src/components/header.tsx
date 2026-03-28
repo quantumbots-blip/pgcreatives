@@ -15,7 +15,7 @@ import {
   ExternalLink,
   Sparkles,
   Home,
-  Play,
+
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -28,15 +28,14 @@ type NavDropdown = {
 type NavItem = NavLink | NavDropdown;
 
 const navigation: NavItem[] = [
+  { name: "Portfolio", href: "/portfolio" },
   {
     name: "About",
     children: [
       { name: "Meet The Team", href: "/team", icon: Users },
-      { name: "Portfolio", href: "/portfolio", icon: Camera },
       { name: "Contact", href: "/contact", icon: Mail },
     ],
   },
-  { name: "Showreel", href: "/showreel" },
   { name: "Branding", href: "/services" },
   {
     name: "Login",
@@ -142,10 +141,10 @@ function DesktopDropdown({
         )}
       >
         {/* Arrow */}
-        <div className="mx-auto mb-[-6px] h-3 w-3 rotate-45 rounded-sm border-l border-t border-purple/20 bg-[#0c0c30]" />
+        <div className="mx-auto mb-[-6px] h-3 w-3 rotate-45 rounded-sm border-l border-t border-purple/20 bg-[#061035]" />
         <div
           role="menu"
-          className="rounded-xl border border-purple/15 bg-[#0c0c30]/98 backdrop-blur-xl p-1.5 shadow-2xl shadow-purple/5 min-w-[180px]"
+          className="rounded-xl border border-purple/15 bg-[#061035]/98 backdrop-blur-xl p-1.5 shadow-2xl shadow-purple/5 min-w-[180px]"
         >
           {item.children.map((child) => {
             const Icon = child.icon;
@@ -219,7 +218,6 @@ function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
 const mobileNavItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Services", href: "/services", icon: Sparkles },
-  { name: "Showreel", href: "/showreel", icon: Play },
   { name: "Portfolio", href: "/portfolio", icon: Camera },
   { name: "Team", href: "/team", icon: Users },
   { name: "Contact", href: "/contact", icon: Mail },
@@ -264,7 +262,7 @@ export function Header() {
           "fixed top-0 z-50 w-full transition-all duration-500",
           transparent
             ? "bg-transparent"
-            : "bg-[#080820]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/10"
+            : "bg-[#040A2D]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/10"
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:h-[72px] lg:px-8">
@@ -311,7 +309,7 @@ export function Header() {
             {/* CTA */}
             <Link
               href="/contact"
-              className="ml-3 rounded-full bg-white px-6 py-2 text-[13px] font-semibold text-[#080820] tracking-wide transition-all duration-200 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
+              className="ml-3 rounded-full bg-white px-6 py-2 text-[13px] font-semibold text-[#040A2D] tracking-wide transition-all duration-200 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
             >
               Book Now
             </Link>
@@ -339,7 +337,7 @@ export function Header() {
       >
         {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-[#080820]/95 backdrop-blur-2xl"
+          className="absolute inset-0 bg-[#040A2D]/95 backdrop-blur-2xl"
           onClick={() => setMobileOpen(false)}
         />
 
@@ -430,7 +428,7 @@ export function Header() {
             <Link
               href="/contact"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-center gap-2 rounded-2xl bg-white py-4 text-base font-semibold text-[#080820] tracking-wide transition-all active:scale-[0.98]"
+              className="flex items-center justify-center gap-2 rounded-2xl bg-white py-4 text-base font-semibold text-[#040A2D] tracking-wide transition-all active:scale-[0.98]"
             >
               Book a Shoot
             </Link>

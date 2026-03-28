@@ -104,11 +104,11 @@ export default function TeamPage() {
           <div className="max-w-2xl">
             <SectionLabel>About Us</SectionLabel>
 
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
               The Creatives{" "}
               <span className="text-purple-light">Behind the Lens</span>
             </h1>
-            <p className="mt-5 text-lg leading-relaxed text-white/50">
+            <p className="mt-5 text-base sm:text-lg leading-relaxed text-white/50">
               PG Creatives has a growing group of editors, photographers, and
               content strategists. Meet the most experienced group in the
               Midwest, elevating your game.
@@ -139,7 +139,7 @@ export default function TeamPage() {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#080820] via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#040A2D] via-transparent to-transparent" />
                     </div>
 
                     {/* Info */}
@@ -164,7 +164,7 @@ export default function TeamPage() {
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Values</SectionLabel>
-              <h2 className="text-3xl font-bold tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
                 <span className="text-white">What Drives Us</span>
               </h2>
             </div>
@@ -201,7 +201,7 @@ export default function TeamPage() {
           {/* Decorative top border accent */}
           <div className="mx-auto mb-8 h-px w-24 bg-gradient-to-r from-transparent via-purple/50 to-transparent" />
 
-          <h2 className="text-3xl font-bold tracking-tight text-white">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             About{" "}
             <span className="text-purple-light">PG Creatives</span>
           </h2>
@@ -223,7 +223,7 @@ export default function TeamPage() {
           {/* CTA */}
           <Link
             href="/contact"
-            className="glow-hover mt-10 inline-flex items-center gap-2 rounded-full border border-purple/25 bg-purple/10 px-8 py-3 text-sm font-medium tracking-wide text-purple-light transition-colors duration-200 hover:bg-purple/20 hover:border-purple/40"
+            className="glow-hover mt-10 inline-flex items-center gap-2 rounded-full border border-purple/25 bg-purple/10 px-6 py-3 sm:px-8 text-sm font-medium tracking-wide text-purple-light transition-colors duration-200 hover:bg-purple/20 hover:border-purple/40"
           >
             Work With Us
             <ArrowRight className="h-3.5 w-3.5" />

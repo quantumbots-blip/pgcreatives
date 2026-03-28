@@ -61,7 +61,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         {filtered.map((project) => (
           <div
             key={project.title}
-            className="group relative aspect-[4/3] overflow-hidden rounded-xl hover-lift bg-[#0a0a2e]"
+            className="group relative aspect-[4/3] overflow-hidden rounded-xl hover-lift bg-[#060E35]"
           >
             <Image
               src={project.image}
@@ -70,10 +70,10 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#080820]/85 via-[#080820]/20 to-transparent transition-opacity" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#040A2D]/85 via-[#040A2D]/20 to-transparent transition-opacity" />
             {project.type === "video" && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full backdrop-blur-sm transition-colors border border-purple/35 bg-[#080820]/50 text-purple-light">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full backdrop-blur-sm transition-colors border border-purple/35 bg-[#040A2D]/50 text-purple-light">
                   <Play className="ml-0.5 h-5 w-5" />
                 </div>
               </div>

@@ -57,32 +57,32 @@ const services = [
 
 const portfolio = [
   {
-    title: "Luxury Lakefront Estate",
+    title: "Open-Concept Living Room",
     category: "Real Estate",
     image: images.luxuryLakefront,
     colSpan: "sm:col-span-2 sm:row-span-2",
   },
   {
-    title: "Downtown Commercial Shoot",
-    category: "Commercial",
+    title: "Downtown Penthouse",
+    category: "Real Estate",
     image: images.downtownCommercial,
     colSpan: "",
   },
   {
-    title: "Aerial Property Showcase",
+    title: "Lakefront Estate Aerial",
     category: "Drone",
     image: images.aerialProperty,
     colSpan: "",
   },
   {
-    title: "Modern Home Tour",
-    category: "3D Tour",
+    title: "Lakehouse Kitchen",
+    category: "Real Estate",
     image: images.modernHome,
     colSpan: "",
   },
   {
-    title: "Brand Launch Video",
-    category: "Videography",
+    title: "Professional Studio Setup",
+    category: "Commercial",
     image: images.brandVideo,
     colSpan: "",
   },
@@ -99,7 +99,7 @@ export default function HomePage() {
         {/* Single subtle background glow */}
         <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/[0.04] blur-[80px]" />
 
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 py-10 sm:py-14 sm:grid-cols-3">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:gap-8 px-6 py-10 sm:py-14 sm:grid-cols-3">
           {stats.map((stat, i) => (
             <AnimateOnScroll key={stat.label} animation="fade-up" delay={i * 0.15}>
               <div className="relative text-center">
@@ -135,7 +135,7 @@ export default function HomePage() {
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
                 <SectionLabel>What We Do</SectionLabel>
-                <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
                   <span className="text-white">Services Built</span>
                   <br className="hidden sm:block" />
                   <span className="text-purple-light"> for Impact</span>
@@ -168,7 +168,7 @@ export default function HomePage() {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         sizes="(max-width: 640px) 100vw, 33vw"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#080820] via-[#080820]/30 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#040A2D] via-[#040A2D]/30 to-transparent" />
                       <div className="absolute bottom-3 left-4 flex items-center gap-2">
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple/20 backdrop-blur-sm border border-purple/20">
                           <service.icon className="h-4 w-4 text-purple-light" />
@@ -216,7 +216,7 @@ export default function HomePage() {
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Work</SectionLabel>
-              <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
                 <span className="text-white">Featured Projects</span>
               </h2>
               <p className="mt-4 text-white/40">
@@ -247,7 +247,7 @@ export default function HomePage() {
                         : "(max-width: 640px) 100vw, 25vw"
                     }
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#080820]/85 via-[#080820]/20 to-transparent opacity-70 transition-opacity group-hover:opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#040A2D]/85 via-[#040A2D]/20 to-transparent opacity-70 transition-opacity group-hover:opacity-90" />
 
                   <div className="absolute inset-x-0 bottom-0 p-5 lg:p-6 translate-y-2 transition-transform duration-500 group-hover:translate-y-0">
                     <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-purple-light">
@@ -267,7 +267,7 @@ export default function HomePage() {
               <MagneticButton>
                 <Link
                   href="/portfolio"
-                  className="glow-hover inline-flex items-center gap-2.5 rounded-lg bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-[#1a1054]"
+                  className="glow-hover inline-flex items-center gap-2.5 rounded-lg bg-white px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-[#0E1850]"
                 >
                   View Full Portfolio
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -288,13 +288,13 @@ export default function HomePage() {
           <AnimateOnScroll animation="fade-up">
             <div className="text-center mb-8 sm:mb-12">
               <SectionLabel>Get Started</SectionLabel>
-              <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
                 <span className="text-white">Ready to </span>
                 <span className="rainbow-shimmer">Elevate</span>
                 <br />
                 <span className="text-white gradient-underline">Your Brand?</span>
               </h2>
-              <div className="mt-5 text-lg text-white/40">
+              <div className="mt-5 text-base sm:text-lg text-white/40">
                 <TextReveal
                   text="Let's create something extraordinary together. Fill out the form below for a free consultation and custom quote."
                   delay={0.3}

@@ -10,7 +10,7 @@ export default async function Image() {
     (
       <div
         style={{
-          background: "linear-gradient(135deg, #080820 0%, #0f0f3d 50%, #1a1054 100%)",
+          background: "linear-gradient(135deg, #040A2D 0%, #0A1240 50%, #0E1850 100%)",
           width: "100%",
           height: "100%",
           display: "flex",

@@ -1,93 +1,120 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { images } from "@/lib/images";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PortfolioFilter } from "@/components/portfolio-filter";
 
 const projects = [
   {
-    title: "Luxury Lakefront Estate",
+    title: "Open-Concept Living Room",
     category: "Real Estate",
-    description: "Full photography and video package for a waterfront property.",
+    description: "Vaulted ceiling great room with kitchen bar and natural light.",
     type: "photo" as const,
-    image: images.luxuryLakefront,
+    image: "/images/luxury-living-room.jpg",
   },
   {
-    title: "Downtown Green Bay Brand Film",
-    category: "Commercial",
-    description: "Cinema-quality brand story for a local business.",
-    type: "video" as const,
-    image: images.downtownCommercial,
+    title: "Downtown Penthouse",
+    category: "Real Estate",
+    description: "Modern city condo with designer furnishings and skyline views.",
+    type: "photo" as const,
+    image: "/images/modern-condo.jpg",
   },
   {
-    title: "Fox River Development Overview",
+    title: "Lakefront Estate Aerial",
     category: "Drone",
-    description: "Aerial documentation of a new residential development.",
+    description: "Drone flyover of a waterfront property with private dock.",
     type: "photo" as const,
-    image: images.aerialProperty,
+    image: "/images/aerial-lakefront.jpg",
   },
   {
-    title: "Modern Farmhouse Virtual Tour",
-    category: "3D Tours",
-    description: "Interactive 3D walkthrough for a newly built home.",
-    type: "video" as const,
-    image: images.modernHome,
-  },
-  {
-    title: "Corporate Headquarters Showcase",
-    category: "Commercial",
-    description: "Professional photography for a corporate campus.",
-    type: "photo" as const,
-    image: images.restaurant,
-  },
-  {
-    title: "Listing Walkthrough Video",
-    category: "Videography",
-    description: "Cinematic property walkthrough for MLS listing.",
-    type: "video" as const,
-    image: images.brandVideo,
-  },
-  {
-    title: "Waterfront Condo Complex",
+    title: "Lakehouse Kitchen & Fireplace",
     category: "Real Estate",
-    description: "Multi-unit listing photography with drone aerials.",
+    description: "Bright lakehouse kitchen with spiral staircase and chandelier.",
     type: "photo" as const,
-    image: images.waterfrontCondo,
+    image: "/images/lakehouse-kitchen.jpg",
   },
   {
-    title: "Restaurant Grand Opening",
+    title: "Professional Studio Setup",
     category: "Commercial",
-    description: "Event coverage and brand photography for a new restaurant.",
+    description: "Behind the scenes of our professional lighting and video rig.",
     type: "photo" as const,
-    image: images.waterfrontDev,
+    image: "/images/video-studio.jpg",
   },
   {
-    title: "Suburban Neighborhood Aerial",
+    title: "Lakefront Cottage Exterior",
+    category: "Real Estate",
+    description: "White cottage with pergola and lush landscaping on the water.",
+    type: "photo" as const,
+    image: "/images/cottage-exterior.jpg",
+  },
+  {
+    title: "Gourmet Kitchen Design",
+    category: "Real Estate",
+    description: "Oak cabinetry kitchen with island seating and pendant lights.",
+    type: "photo" as const,
+    image: "/images/gourmet-kitchen.jpg",
+  },
+  {
+    title: "Modern Home Entryway",
+    category: "Real Estate",
+    description: "Clean-lined foyer with glass double doors and natural light.",
+    type: "photo" as const,
+    image: "/images/modern-entryway.jpg",
+  },
+  {
+    title: "Luxury Estate at Twilight",
     category: "Drone",
-    description: "Neighborhood context shots for a real estate development.",
+    description: "Aerial twilight shot of a hilltop estate with landscape lighting.",
     type: "photo" as const,
-    image: images.suburbanAerial,
+    image: "/images/luxury-estate-night.jpg",
   },
   {
-    title: "Historic Home Renovation",
+    title: "Classic Lakehouse Living Room",
     category: "Real Estate",
-    description: "Before and after documentation of a historic restoration.",
+    description: "Rustic stone fireplace, built-in bookshelves, and waterfront views.",
     type: "photo" as const,
-    image: images.historicHome,
+    image: "/images/rustic-living.jpg",
   },
   {
-    title: "Boutique Hotel Tour",
-    category: "3D Tours",
-    description: "Full Matterport scan of a boutique hotel property.",
-    type: "video" as const,
-    image: images.boutiqueHotel,
+    title: "Screened Porch Retreat",
+    category: "Real Estate",
+    description: "Four-season porch with canoe display, rocking chairs, and wood fireplace.",
+    type: "photo" as const,
+    image: "/images/screened-porch.jpg",
   },
   {
-    title: "Fitness Brand Campaign",
-    category: "Videography",
-    description: "Multi-platform video content for a fitness brand launch.",
-    type: "video" as const,
-    image: images.fitnessBrand,
+    title: "Great Room with Stone Fireplace",
+    category: "Real Estate",
+    description: "Two-story great room with floor-to-ceiling stone fireplace and wooded views.",
+    type: "photo" as const,
+    image: "/images/stone-fireplace-living.jpg",
+  },
+  {
+    title: "Farmhouse Kitchen",
+    category: "Real Estate",
+    description: "White farmhouse kitchen with globe pendants and wicker bar stools.",
+    type: "photo" as const,
+    image: "/images/farmhouse-kitchen.jpg",
+  },
+  {
+    title: "Overhead Living Room View",
+    category: "Real Estate",
+    description: "Dramatic balcony perspective of a stone fireplace great room.",
+    type: "photo" as const,
+    image: "/images/overhead-living.jpg",
+  },
+  {
+    title: "Modern Linear Fireplace",
+    category: "Real Estate",
+    description: "Contemporary fluted tile fireplace surround with dining area.",
+    type: "photo" as const,
+    image: "/images/fireplace-living.jpg",
+  },
+  {
+    title: "Kitchen Detail & Backsplash",
+    category: "Real Estate",
+    description: "Marble backsplash with globe pendants and cane-back chairs.",
+    type: "photo" as const,
+    image: "/images/pendant-kitchen.jpg",
   },
 ];
 
@@ -96,22 +123,20 @@ export default function PortfolioPage() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-background pt-24 pb-16 sm:py-28">
-        <div
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,#0f0f3d_0%,transparent_55%)]"
-        />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,#0A1240_0%,transparent_55%)]" />
         <div className="absolute left-10 top-40 h-48 w-48 rounded-full bg-purple/[0.03] blur-[60px] animate-float" />
         <div className="absolute right-[8%] top-[25%] h-32 w-32 rounded-full border border-dashed border-purple/10 spin-ring hidden lg:block" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            <div className="mb-5 inline-flex items-center rounded-full border border-purple/25 bg-purple/10 px-3 py-1">
-              <span className="text-xs font-medium uppercase tracking-[0.25em] text-purple-light">
+            <div className="mb-5 inline-flex items-center rounded-full border border-purple/25 bg-purple/10 px-3 py-1 sm:px-4 sm:py-1.5">
+              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.25em] text-purple-light">
                 Portfolio
               </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
               Our Best Work
             </h1>
-            <p className="mt-4 text-lg text-purple-light/55">
+            <p className="mt-4 text-base sm:text-lg text-purple-light/55">
               Browse our collection of professional media created for clients
               across Wisconsin.
             </p>
@@ -128,7 +153,7 @@ export default function PortfolioPage() {
       <section className="bg-background py-16 sm:py-28">
         <AnimateOnScroll animation="fade-up">
           <div className="mx-auto max-w-3xl px-6 text-center">
-            <h2 className="text-3xl font-bold tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
               <span className="text-white">Want Results </span>
               <span className="text-purple-light">Like These?</span>
             </h2>
@@ -137,7 +162,7 @@ export default function PortfolioPage() {
             </p>
             <Link
               href="/contact"
-              className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-sm font-medium tracking-wide transition-colors hover:bg-white/90 text-[#1a1054]"
+              className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 sm:px-8 text-sm font-medium tracking-wide transition-colors hover:bg-white/90 text-[#0E1850]"
             >
               Start Your Project
               <ArrowRight className="h-3.5 w-3.5" />

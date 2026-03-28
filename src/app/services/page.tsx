@@ -160,11 +160,11 @@ export default function ServicesPage() {
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
             <SectionLabel>Our Services</SectionLabel>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
               Everything You Need to{" "}
               <span className="text-purple-light">Stand Out</span>
             </h1>
-            <p className="mt-4 text-lg text-white/50">
+            <p className="mt-4 text-base sm:text-lg text-white/50">
               From first impressions to lasting impact, our comprehensive media
               services cover every angle of your visual story.
             </p>
@@ -226,13 +226,13 @@ export default function ServicesPage() {
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Process</SectionLabel>
-              <h2 className="text-3xl font-bold tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
                 <span className="text-white">Simple. Professional. Fast.</span>
               </h2>
             </div>
           </AnimateOnScroll>
 
-          <div className="mt-10 sm:mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 sm:mt-16 grid gap-4 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {process.map((item, i) => (
               <AnimateOnScroll key={item.step} animation="fade-up" delay={i * 0.1}>
                 <div>
@@ -254,7 +254,7 @@ export default function ServicesPage() {
       {/* CTA */}
       <section className="bg-background py-16 sm:py-28">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
             <span className="text-white">Let&apos;s Discuss </span>
             <span className="text-purple-light">Your Project</span>
           </h2>
@@ -265,14 +265,14 @@ export default function ServicesPage() {
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="glow-hover inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-sm font-semibold tracking-wide text-[#1a1054] transition-all hover:bg-white/90 hover:scale-[1.02]"
+              className="glow-hover inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 sm:px-8 text-sm font-semibold tracking-wide text-[#0E1850] transition-all hover:bg-white/90 hover:scale-[1.02]"
             >
               Get a Quote
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/contact"
-              className="glow-hover inline-flex items-center gap-2 rounded-lg border border-purple/40 px-8 py-3 text-sm tracking-wide text-purple-light transition-all hover:border-purple/60 hover:bg-purple/5"
+              className="glow-hover inline-flex items-center gap-2 rounded-lg border border-purple/40 px-6 py-3 sm:px-8 text-sm tracking-wide text-purple-light transition-all hover:border-purple/60 hover:bg-purple/5"
             >
               Contact Us
               <ArrowRight className="h-3.5 w-3.5" />
