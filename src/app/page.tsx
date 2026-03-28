@@ -11,7 +11,6 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { ContactForm } from "@/components/contact-form";
 import { SectionLabel } from "@/components/section-label";
 import { Counter } from "@/components/counter";
-import { Marquee } from "@/components/marquee";
 import { MagneticButton } from "@/components/magnetic-button";
 import { TextReveal } from "@/components/text-reveal";
 import { FloatingParticles } from "@/components/floating-particles";
@@ -118,18 +117,6 @@ export default function HomePage() {
         </div>
       </section>
       <div className="section-divider" />
-
-      {/* Marquee social proof strip */}
-      <section className="bg-background py-6 relative overflow-hidden border-y border-purple/[0.06]">
-        <Marquee speed={25} pauseOnHover>
-          {["Videography", "Photography", "Drone Aerial", "3D Tours", "Branding", "Real Estate", "Commercial", "Social Media", "Editing", "Content Creation"].map((item) => (
-            <span key={item} className="mx-8 text-sm font-medium uppercase tracking-[0.2em] text-white/20">
-              {item}
-              <span className="ml-8 text-purple/40">✦</span>
-            </span>
-          ))}
-        </Marquee>
-      </section>
 
       {/* Services */}
       <section className="bg-background py-28 lg:py-36 relative overflow-hidden">
@@ -283,18 +270,6 @@ export default function HomePage() {
             </div>
           </AnimateOnScroll>
         </div>
-      </section>
-
-      {/* Second marquee — reverse direction */}
-      <section className="bg-background py-4 relative overflow-hidden border-y border-purple/[0.06]">
-        <Marquee speed={20} direction="right" pauseOnHover>
-          {["Green Bay", "Madison", "Fox Valley", "Milwaukee", "Appleton", "Oshkosh", "Fond du Lac", "Wausau", "Wisconsin"].map((item) => (
-            <span key={item} className="mx-8 text-sm font-medium uppercase tracking-[0.2em] text-white/15">
-              {item}
-              <span className="ml-8 text-purple/30">◆</span>
-            </span>
-          ))}
-        </Marquee>
       </section>
 
       {/* Contact Form */}

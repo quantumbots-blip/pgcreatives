@@ -54,7 +54,9 @@ export function Counter({
   function formatNumber(n: number): string {
     // Preserve decimal places matching the target value
     const decimals = (value.toString().split(".")[1] || "").length;
-    return decimals > 0 ? n.toFixed(decimals) : Math.round(n).toLocaleString();
+    if (decimals > 0) return n.toFixed(decimals);
+    const rounded = Math.round(n);
+    return (rounded === 0 ? 0 : rounded).toLocaleString();
   }
 
   function animate() {

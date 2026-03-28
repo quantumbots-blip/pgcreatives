@@ -5,8 +5,7 @@
       "name": "pgcreatives-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 3000,
-      "cwd": "/Users/quantumbots/pgcreatives"
+      "port": 3000
     }
   ]
 }
