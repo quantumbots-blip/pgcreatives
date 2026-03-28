@@ -5,6 +5,7 @@ import { FacebookIcon, InstagramIcon } from "@/components/icons";
 
 const footerLinks = [
   { name: "Services", href: "/services" },
+  { name: "Showreel", href: "/showreel" },
   { name: "Portfolio", href: "/portfolio" },
   { name: "About", href: "/team" },
   { name: "Contact", href: "/contact" },

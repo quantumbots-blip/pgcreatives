@@ -15,6 +15,7 @@ import {
   ExternalLink,
   Sparkles,
   Home,
+  Play,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +36,7 @@ const navigation: NavItem[] = [
       { name: "Contact", href: "/contact", icon: Mail },
     ],
   },
+  { name: "Showreel", href: "/showreel" },
   { name: "Branding", href: "/services" },
   { name: "Listing Packages", href: "/services" },
   {
@@ -218,6 +220,7 @@ function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
 const mobileNavItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Services", href: "/services", icon: Sparkles },
+  { name: "Showreel", href: "/showreel", icon: Play },
   { name: "Portfolio", href: "/portfolio", icon: Camera },
   { name: "Team", href: "/team", icon: Users },
   { name: "Contact", href: "/contact", icon: Mail },
@@ -281,7 +284,7 @@ export function Header() {
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 md:flex">
             {/* Nav links in a pill container */}
-            <div className="flex items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.03] px-1.5 py-1">
+            <div className="flex items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5">
               {navigation.map((item) =>
                 item.children ? (
                   <DesktopDropdown

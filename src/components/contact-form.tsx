@@ -119,12 +119,24 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         <Label htmlFor="service" className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">
           Service Interested In
         </Label>
-        <Input
+        <select
           id="service"
           name="service"
-          placeholder="e.g. Real Estate Photography, Drone Aerial, Branding"
-          className="h-12 rounded-lg border-purple/12 bg-[#080820]/60 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
-        />
+          defaultValue=""
+          className="h-12 w-full rounded-lg border border-purple/12 bg-[#080820]/60 px-3.5 text-sm text-white focus:border-purple/40 focus:ring-1 focus:ring-purple/20 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(139%2C92%2C246%2C0.4)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat"
+        >
+          <option value="" disabled className="bg-[#080820] text-white/40">
+            Select a service...
+          </option>
+          <option value="Real Estate Photography" className="bg-[#080820]">Real Estate Photography</option>
+          <option value="Cinema Videography" className="bg-[#080820]">Cinema Videography</option>
+          <option value="Drone Aerial" className="bg-[#080820]">Drone Aerial</option>
+          <option value="3D Virtual Tours" className="bg-[#080820]">3D Virtual Tours</option>
+          <option value="Commercial Branding" className="bg-[#080820]">Commercial Branding</option>
+          <option value="Professional Editing" className="bg-[#080820]">Professional Editing</option>
+          <option value="Full Listing Package" className="bg-[#080820]">Full Listing Package</option>
+          <option value="Other" className="bg-[#080820]">Other</option>
+        </select>
       </div>
 
       {/* Message */}

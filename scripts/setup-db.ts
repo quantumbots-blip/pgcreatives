@@ -20,11 +20,18 @@ async function setup() {
       phone VARCHAR(50),
       service VARCHAR(255),
       message TEXT NOT NULL,
+      status VARCHAR(20) DEFAULT 'new',
       created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
     )
   `;
 
-  console.log("✓ Submissions table created successfully");
+  // Migration: add status column to existing tables
+  console.log("Ensuring status column exists...");
+  await sql`
+    ALTER TABLE submissions ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'new'
+  `;
+
+  console.log("Done.");
 }
 
 setup().catch(console.error);
