@@ -74,10 +74,9 @@ export function TextReveal({
             key={i}
             style={{
               display: "inline-block",
-              transition: `opacity 0.5s ease ${transitionDelay}, transform 0.5s ease ${transitionDelay}, filter 0.5s ease ${transitionDelay}`,
+              transition: `opacity 0.5s ease ${transitionDelay}, transform 0.5s ease ${transitionDelay}`,
               opacity: isVisible ? 1 : 0,
-              transform: isVisible ? "translateY(0)" : "translateY(0.5em)",
-              filter: isVisible ? "blur(0px)" : "blur(4px)",
+              transform: isVisible ? "translateY(0) scale(1)" : "translateY(0.5em) scale(0.98)",
               whiteSpace: mode === "chars" ? "pre" : undefined,
             }}
           >

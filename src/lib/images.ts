@@ -14,7 +14,7 @@ export const images = {
   // Portfolio page
   waterfrontCondo: "/images/gourmet-kitchen.jpg",
   restaurant: "/images/modern-entryway.jpg",
-  suburbanAerial: "/images/luxury-estate-night.png",
+  suburbanAerial: "/images/luxury-estate-night.jpg",
   historicHome: "/images/rustic-living.jpg",
   boutiqueHotel: "/images/screened-porch.jpg",
   fitnessBrand: "/images/stone-fireplace-living.jpg",

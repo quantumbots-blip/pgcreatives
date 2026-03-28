@@ -16,12 +16,10 @@ import { MagneticButton } from "@/components/magnetic-button";
 import { TextReveal } from "@/components/text-reveal";
 import { images } from "@/lib/images";
 
-const FloatingParticles = dynamic(
-  () =>
-    import("@/components/floating-particles").then(
-      (mod) => mod.FloatingParticles
-    ),
-  { ssr: false }
+const FloatingParticles = dynamic(() =>
+  import("@/components/floating-particles").then(
+    (mod) => mod.FloatingParticles
+  )
 );
 
 const stats = [
