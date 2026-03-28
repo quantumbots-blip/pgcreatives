@@ -14,17 +14,7 @@ import { SectionLabel } from "@/components/section-label";
 import { Counter } from "@/components/counter";
 import { MagneticButton } from "@/components/magnetic-button";
 import { TextReveal } from "@/components/text-reveal";
-import { IPhoneScroll } from "@/components/iphone-3d";
 import { images } from "@/lib/images";
-
-const iphoneImages = [
-  "/images/luxury-living-room.jpg",
-  "/images/aerial-lakefront.jpg",
-  "/images/gourmet-kitchen.jpg",
-  "/images/luxury-estate-night.jpg",
-  "/images/stone-fireplace-living.jpg",
-  "/images/cottage-exterior.jpg",
-];
 
 const FloatingParticles = dynamic(() =>
   import("@/components/floating-particles").then(
@@ -192,9 +182,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* iPhone 3D Scroll Section */}
-      <IPhoneScroll images={iphoneImages} />
 
       {/* Portfolio */}
       <section className="py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-background">
