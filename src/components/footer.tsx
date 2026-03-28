@@ -32,7 +32,7 @@ export function Footer() {
       <div className="pointer-events-none absolute -right-40 bottom-20 h-80 w-80 rounded-full bg-purple/[0.03] blur-[120px]" />
 
       {/* ── CTA Banner ── */}
-      <div className="mx-auto max-w-7xl px-6 pt-16 sm:pt-24">
+      <div className="mx-auto max-w-7xl px-6 pt-12 sm:pt-16">
         <div className="relative rounded-2xl border border-purple/10 bg-gradient-to-br from-purple/[0.08] via-[#060E35] to-purple/[0.04] p-8 sm:p-12 lg:p-16 overflow-hidden">
           {/* Decorative corner glow */}
           <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/10 blur-[80px]" />

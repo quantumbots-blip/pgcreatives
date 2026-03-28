@@ -153,7 +153,7 @@ export default function ServicesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background pt-24 pb-16 sm:py-28">
+      <section className="relative overflow-hidden bg-background pt-24 pb-12 sm:pt-28 sm:pb-16">
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_rgba(139,92,246,0.12)_0%,transparent_60%)]" />
         <div className="absolute right-[10%] top-[30%] h-40 w-40 rounded-full border border-dashed border-purple/8 spin-ring hidden lg:block" />
         <div className="absolute left-[5%] bottom-[20%] h-24 w-24 morph-blob bg-gradient-to-br from-purple/8 via-purple-light/5 to-transparent hidden lg:block" />
@@ -173,7 +173,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Services List */}
-      <section className="relative overflow-hidden bg-background py-12 sm:py-28">
+      <section className="relative overflow-hidden bg-background py-10 sm:py-14">
         <div className="absolute right-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px] animate-float-slow" />
         <div className="mx-auto max-w-7xl space-y-5 px-6">
           {services.map((service, index) => (
@@ -221,7 +221,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Process */}
-      <section className="bg-background py-16 sm:py-28">
+      <section className="bg-background py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
@@ -252,7 +252,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-background py-16 sm:py-28">
+      <section className="bg-background py-12 sm:py-16">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
             <span className="text-white">Let&apos;s Discuss </span>

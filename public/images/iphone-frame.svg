@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 880" fill="none">
+  <!-- iPhone 15 Pro - Realistic SVG Frame -->
+
+  <!-- Outer body shadow -->
+  <defs>
+    <linearGradient id="titanium" x1="0" y1="0" x2="430" y2="880" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3a3a42"/>
+      <stop offset="25%" stop-color="#2c2c34"/>
+      <stop offset="50%" stop-color="#232329"/>
+      <stop offset="75%" stop-color="#2c2c34"/>
+      <stop offset="100%" stop-color="#1e1e24"/>
+    </linearGradient>
+    <linearGradient id="titaniumEdge" x1="0" y1="0" x2="0" y2="880" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4a4a52"/>
+      <stop offset="50%" stop-color="#35353d"/>
+      <stop offset="100%" stop-color="#2a2a32"/>
+    </linearGradient>
+    <linearGradient id="buttonGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3d3d47"/>
+      <stop offset="50%" stop-color="#2a2a32"/>
+      <stop offset="100%" stop-color="#3d3d47"/>
+    </linearGradient>
+    <filter id="frameShadow" x="-20%" y="-10%" width="140%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <clipPath id="screenClip">
+      <rect x="18" y="18" width="394" height="844" rx="42"/>
+    </clipPath>
+  </defs>
+
+  <!-- Main body -->
+  <rect x="4" y="4" width="422" height="872" rx="58" fill="url(#titanium)" filter="url(#frameShadow)"/>
+
+  <!-- Titanium edge highlight -->
+  <rect x="4" y="4" width="422" height="872" rx="58" fill="none" stroke="url(#titaniumEdge)" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Inner edge (subtle) -->
+  <rect x="6" y="6" width="418" height="868" rx="56" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+
+  <!-- Screen bezel (black area around screen) -->
+  <rect x="12" y="12" width="406" height="856" rx="50" fill="#0a0a0f"/>
+
+  <!-- Screen area (transparent - content shows through) -->
+  <rect x="18" y="18" width="394" height="844" rx="44" fill="black" opacity="0.01"/>
+
+  <!-- ═══ Side Buttons ═══ -->
+
+  <!-- Left: Action Button -->
+  <rect x="0" y="155" width="4" height="32" rx="1.5" fill="url(#buttonGrad)"/>
+  <rect x="0.5" y="156" width="1" height="30" rx="0.5" fill="rgba(255,255,255,0.08)"/>
+
+  <!-- Left: Volume Up -->
+  <rect x="0" y="215" width="4" height="50" rx="1.5" fill="url(#buttonGrad)"/>
+  <rect x="0.5" y="216" width="1" height="48" rx="0.5" fill="rgba(255,255,255,0.08)"/>
+
+  <!-- Left: Volume Down -->
+  <rect x="0" y="275" width="4" height="50" rx="1.5" fill="url(#buttonGrad)"/>
+  <rect x="0.5" y="276" width="1" height="48" rx="0.5" fill="rgba(255,255,255,0.08)"/>
+
+  <!-- Right: Power Button -->
+  <rect x="426" y="230" width="4" height="70" rx="1.5" fill="url(#buttonGrad)"/>
+  <rect x="428.5" y="231" width="1" height="68" rx="0.5" fill="rgba(255,255,255,0.08)"/>
+
+  <!-- ═══ Dynamic Island ═══ -->
+  <rect x="155" y="30" width="120" height="34" rx="17" fill="#0a0a0f"/>
+  <!-- Camera lens -->
+  <circle cx="240" cy="47" r="6.5" fill="#0f0f18"/>
+  <circle cx="240" cy="47" r="5" fill="#0a0a12"/>
+  <circle cx="240" cy="47" r="3.5" fill="#15152a" opacity="0.8"/>
+  <!-- Camera lens flare -->
+  <circle cx="238" cy="45" r="1.2" fill="rgba(255,255,255,0.15)"/>
+  <circle cx="241.5" cy="48" r="0.6" fill="rgba(139,92,246,0.2)"/>
+
+  <!-- ═══ Bottom Speaker Grille ═══ -->
+  <circle cx="178" cy="862" r="1.2" fill="#2a2a32"/>
+  <circle cx="184" cy="862" r="1.2" fill="#2a2a32"/>
+  <circle cx="190" cy="862" r="1.2" fill="#2a2a32"/>
+  <circle cx="196" cy="862" r="1.2" fill="#2a2a32"/>
+  <circle cx="202" cy="862" r="1.2" fill="#2a2a32"/>
+  <circle cx="208" cy="862" r="1.2" fill="#2a2a32"/>
+
+  <!-- Right speaker dots -->
+  <circle cx="222" cy="862" r="1.2" fill="#2a2a32"/>
+  <circle cx="228" cy="862" r="1.2" fill="#2a2a32"/>
+  <circle cx="234" cy="862" r="1.2" fill="#2a2a32"/>
+  <circle cx="240" cy="862" r="1.2" fill="#2a2a32"/>
+  <circle cx="246" cy="862" r="1.2" fill="#2a2a32"/>
+  <circle cx="252" cy="862" r="1.2" fill="#2a2a32"/>
+
+  <!-- USB-C port -->
+  <rect x="200" y="870" width="30" height="4" rx="2" fill="#1a1a22"/>
+
+  <!-- ═══ Top edge details ═══ -->
+  <!-- Top highlight -->
+  <line x1="80" y1="4.5" x2="350" y2="4.5" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+
+  <!-- ═══ Home Indicator ═══ -->
+  <rect x="155" y="847" width="120" height="4.5" rx="2.25" fill="rgba(255,255,255,0.25)"/>
+
+  <!-- Glass reflection overlay -->
+  <rect x="18" y="18" width="394" height="844" rx="44" fill="url(#reflection)" opacity="0.03" clip-path="url(#screenClip)"/>
+
+  <defs>
+    <linearGradient id="reflection" x1="0" y1="0" x2="430" y2="880" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="white" stop-opacity="0"/>
+      <stop offset="40%" stop-color="white" stop-opacity="0"/>
+      <stop offset="48%" stop-color="white" stop-opacity="1"/>
+      <stop offset="52%" stop-color="white" stop-opacity="1"/>
+      <stop offset="60%" stop-color="white" stop-opacity="0"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>

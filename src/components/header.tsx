@@ -116,10 +116,10 @@ function DesktopDropdown({
         aria-expanded={open}
         aria-haspopup="true"
         className={cn(
-          "flex items-center gap-1.5 text-[13px] font-medium tracking-wide transition-colors duration-200",
+          "flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[13px] font-medium tracking-wide transition-all duration-200",
           isActive
-            ? "text-white"
-            : "text-white/60 hover:text-white"
+            ? "text-white bg-purple/15"
+            : "text-white/60 hover:text-white hover:bg-white/[0.05]"
         )}
       >
         {item.name}

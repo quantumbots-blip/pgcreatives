@@ -14,7 +14,17 @@ import { SectionLabel } from "@/components/section-label";
 import { Counter } from "@/components/counter";
 import { MagneticButton } from "@/components/magnetic-button";
 import { TextReveal } from "@/components/text-reveal";
+import { IPhoneScroll } from "@/components/iphone-3d";
 import { images } from "@/lib/images";
+
+const iphoneImages = [
+  "/images/luxury-living-room.jpg",
+  "/images/aerial-lakefront.jpg",
+  "/images/gourmet-kitchen.jpg",
+  "/images/luxury-estate-night.jpg",
+  "/images/stone-fireplace-living.jpg",
+  "/images/cottage-exterior.jpg",
+];
 
 const FloatingParticles = dynamic(() =>
   import("@/components/floating-particles").then(
@@ -55,37 +65,12 @@ const services = [
   },
 ];
 
-const portfolio = [
-  {
-    title: "Open-Concept Living Room",
-    category: "Real Estate",
-    image: images.luxuryLakefront,
-    colSpan: "sm:col-span-2 sm:row-span-2",
-  },
-  {
-    title: "Downtown Penthouse",
-    category: "Real Estate",
-    image: images.downtownCommercial,
-    colSpan: "",
-  },
-  {
-    title: "Lakefront Estate Aerial",
-    category: "Drone",
-    image: images.aerialProperty,
-    colSpan: "",
-  },
-  {
-    title: "Lakehouse Kitchen",
-    category: "Real Estate",
-    image: images.modernHome,
-    colSpan: "",
-  },
-  {
-    title: "Professional Studio Setup",
-    category: "Commercial",
-    image: images.brandVideo,
-    colSpan: "",
-  },
+const photos = [
+  { image: images.luxuryLakefront, alt: "Open-concept living room with vaulted ceiling", colSpan: "sm:col-span-2 sm:row-span-2" },
+  { image: images.downtownCommercial, alt: "Modern downtown penthouse interior", colSpan: "" },
+  { image: images.aerialProperty, alt: "Lakefront estate drone aerial", colSpan: "" },
+  { image: images.modernHome, alt: "Lakehouse kitchen with spiral staircase", colSpan: "" },
+  { image: images.brandVideo, alt: "Professional studio lighting setup", colSpan: "" },
 ];
 
 export default function HomePage() {
@@ -125,7 +110,7 @@ export default function HomePage() {
       <div className="section-divider" />
 
       {/* Services */}
-      <section className="bg-background py-16 sm:py-24 lg:py-36 relative overflow-hidden">
+      <section className="bg-background py-12 sm:py-16 lg:py-20 relative overflow-hidden">
         {/* Single ambient glow */}
         <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px]" />
         <FloatingParticles count={10} />
@@ -208,8 +193,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* iPhone 3D Scroll Section */}
+      <IPhoneScroll images={iphoneImages} />
+
       {/* Portfolio */}
-      <section className="py-16 sm:py-24 lg:py-36 relative overflow-hidden bg-background">
+      <section className="py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-background">
         {/* Subtle ambient glow */}
         <div className="absolute right-[5%] top-[10%] h-48 w-48 rounded-full bg-purple/[0.04] blur-[100px] hidden lg:block" />
         <div className="mx-auto max-w-7xl px-6">
@@ -217,10 +205,10 @@ export default function HomePage() {
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Work</SectionLabel>
               <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
-                <span className="text-white">Featured Projects</span>
+                <span className="text-white">Featured Photos</span>
               </h2>
               <p className="mt-4 text-white/40">
-                A glimpse of the professional media we&apos;ve created for our
+                A glimpse of the professional media we&apos;ve captured for our
                 clients across Wisconsin.
               </p>
             </div>
@@ -229,34 +217,25 @@ export default function HomePage() {
           {/* Bento-style grid */}
           <AnimateOnScroll animation="fade-in-scale" delay={0.2}>
             <div className="mt-10 sm:mt-16 grid grid-cols-1 gap-2 sm:grid-cols-4 sm:grid-rows-2">
-              {portfolio.map((item) => (
+              {photos.map((photo) => (
                 <div
-                  key={item.title}
-                  className={`group relative overflow-hidden rounded-xl bg-navy-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] ${item.colSpan} ${
-                    item.colSpan ? "aspect-auto min-h-[250px] sm:min-h-[350px]" : "aspect-[4/3]"
+                  key={photo.alt}
+                  className={`group relative overflow-hidden rounded-xl bg-navy-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] ${photo.colSpan} ${
+                    photo.colSpan ? "aspect-auto min-h-[250px] sm:min-h-[350px]" : "aspect-[4/3]"
                   }`}
                 >
                   <Image
-                    src={item.image}
-                    alt={item.title}
+                    src={photo.image}
+                    alt={photo.alt}
                     fill
-                    className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+                    className="object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110"
                     sizes={
-                      item.colSpan
+                      photo.colSpan
                         ? "(max-width: 640px) 100vw, 50vw"
                         : "(max-width: 640px) 100vw, 25vw"
                     }
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#040A2D]/85 via-[#040A2D]/20 to-transparent opacity-70 transition-opacity group-hover:opacity-90" />
-
-                  <div className="absolute inset-x-0 bottom-0 p-5 lg:p-6 translate-y-2 transition-transform duration-500 group-hover:translate-y-0">
-                    <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-purple-light">
-                      {item.category}
-                    </p>
-                    <h3 className="mt-1.5 font-heading text-lg font-semibold text-white">
-                      {item.title}
-                    </h3>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#040A2D]/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 </div>
               ))}
             </div>
@@ -279,7 +258,7 @@ export default function HomePage() {
       </section>
 
       {/* Contact Form */}
-      <section className="relative overflow-hidden bg-background py-16 sm:py-24 lg:py-36">
+      <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
         {/* Single slow ambient glow */}
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[100px]" />
         <FloatingParticles count={8} />

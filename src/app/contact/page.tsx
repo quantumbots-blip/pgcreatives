@@ -73,7 +73,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background pt-24 pb-16 sm:py-28">
+      <section className="relative overflow-hidden bg-background pt-24 pb-12 sm:pt-28 sm:pb-16">
         {/* Floating decorative orb */}
         <div
           aria-hidden="true"
@@ -83,7 +83,7 @@ export default function ContactPage() {
         <div className="absolute left-[8%] bottom-[20%] h-28 w-28 rounded-full border border-dashed border-[#8B5CF6]/10 spin-ring hidden lg:block" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            <span className="mb-5 inline-flex items-center rounded-full border border-[#8B5CF6]/25 bg-[#8B5CF6]/10 px-3 py-1 text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#C4B5FD]">
+            <span className="mb-5 inline-flex items-center justify-center rounded-full border border-[#8B5CF6]/25 bg-[#8B5CF6]/10 px-3 h-7 sm:px-4 sm:h-8 text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#C4B5FD] leading-none">
               Contact Us
             </span>
             <h1 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
@@ -99,7 +99,7 @@ export default function ContactPage() {
       </section>
 
       {/* Form + Info */}
-      <section className="bg-background py-12 sm:py-28">
+      <section className="bg-background py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-6 sm:gap-8 lg:grid-cols-5">
             {/* Form */}

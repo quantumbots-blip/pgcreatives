@@ -94,7 +94,7 @@ export default function TeamPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background pt-24 pb-16 sm:py-28">
+      <section className="relative overflow-hidden bg-background pt-24 pb-12 sm:pt-28 sm:pb-16">
         {/* Ambient glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_70%_0%,rgba(139,92,246,0.12),transparent)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_60%_at_0%_100%,rgba(139,92,246,0.07),transparent)]" />
@@ -118,7 +118,7 @@ export default function TeamPage() {
       </section>
 
       {/* Team Grid */}
-      <section className="relative bg-background py-12 sm:py-28">
+      <section className="relative bg-background py-10 sm:py-14">
         {/* Floating decorative orb */}
         <div className="pointer-events-none absolute right-0 top-1/4 h-96 w-96 rounded-full bg-purple/10 blur-[120px]" />
 
@@ -158,7 +158,7 @@ export default function TeamPage() {
       </section>
 
       {/* Values */}
-      <section className="bg-background py-16 sm:py-28">
+      <section className="bg-background py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-6">
           {/* Heading */}
           <AnimateOnScroll animation="fade-up">
@@ -196,7 +196,7 @@ export default function TeamPage() {
       </section>
 
       {/* About */}
-      <section className="bg-background py-16 sm:py-28">
+      <section className="bg-background py-12 sm:py-16">
         <div className="mx-auto max-w-3xl px-6 text-center">
           {/* Decorative top border accent */}
           <div className="mx-auto mb-8 h-px w-24 bg-gradient-to-r from-transparent via-purple/50 to-transparent" />
