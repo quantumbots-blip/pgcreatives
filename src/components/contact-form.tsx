@@ -45,6 +45,11 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
 
   return (
     <form ref={formRef} action={formAction} className="space-y-6 sm:space-y-8">
+      {/* Honeypot — hidden from humans, filled by bots */}
+      <div className="absolute -left-[9999px]" aria-hidden="true">
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+      </div>
+
       {/* Name row */}
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2.5">
@@ -58,6 +63,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               name="firstName"
               placeholder="John"
               required
+              maxLength={50}
               className="h-12 rounded-lg border-purple/12 bg-[#080820]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
             />
           </div>
@@ -73,6 +79,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               name="lastName"
               placeholder="Doe"
               required
+              maxLength={50}
               className="h-12 rounded-lg border-purple/12 bg-[#080820]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
             />
           </div>
@@ -93,6 +100,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               type="email"
               placeholder="john@example.com"
               required
+              maxLength={254}
               className="h-12 rounded-lg border-purple/12 bg-[#080820]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
             />
           </div>
@@ -108,6 +116,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               name="phone"
               type="tel"
               placeholder="(555) 123-4567"
+              maxLength={20}
               className="h-12 rounded-lg border-purple/12 bg-[#080820]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
             />
           </div>
@@ -150,6 +159,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           placeholder="Describe your project, timeline, and any specific requirements..."
           rows={5}
           required
+          maxLength={5000}
           className="rounded-lg border-purple/12 bg-[#080820]/60 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all resize-none"
         />
       </div>

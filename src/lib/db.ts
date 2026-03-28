@@ -23,13 +23,40 @@ export type Submission = {
   created_at: string;
 };
 
-/** Run once per request to ensure the status column exists (idempotent). */
+/** Run once per request to ensure required columns/tables exist (idempotent). */
 export async function ensureSchema() {
   const sql = getDb();
   await sql`
     ALTER TABLE submissions
     ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'new'
   `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS audit_logs (
+      id SERIAL PRIMARY KEY,
+      action VARCHAR(100) NOT NULL,
+      target_table VARCHAR(100),
+      target_id INTEGER,
+      new_value TEXT,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+}
+
+export async function logAuditEvent(data: {
+  action: string;
+  targetTable?: string;
+  targetId?: number;
+  newValue?: string;
+}) {
+  try {
+    const sql = getDb();
+    await sql`
+      INSERT INTO audit_logs (action, target_table, target_id, new_value)
+      VALUES (${data.action}, ${data.targetTable ?? null}, ${data.targetId ?? null}, ${data.newValue ?? null})
+    `;
+  } catch {
+    // Audit logging should never block the main operation
+  }
 }
 
 export async function saveSubmission(data: {

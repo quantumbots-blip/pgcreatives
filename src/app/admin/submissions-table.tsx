@@ -128,6 +128,15 @@ export function SubmissionsTable({
     await updateStatusAction(id, newStatus);
   }
 
+  function sanitizeCSV(str: string): string {
+    // Prevent formula injection — prefix with ' if starts with =, +, -, @, tab, CR
+    let safe = str.replace(/"/g, '""');
+    if (/^[=+\-@\t\r]/.test(safe)) {
+      safe = "'" + safe;
+    }
+    return `"${safe}"`;
+  }
+
   function exportCSV() {
     const headers = [
       "Name",
@@ -140,14 +149,14 @@ export function SubmissionsTable({
       "Date",
     ];
     const rows = filtered.map((s) => [
-      `"${s.first_name} ${s.last_name}"`,
-      s.email,
-      s.phone || "",
-      `"${(s.company || "").replace(/"/g, '""')}"`,
-      s.service || "",
-      s.status || "new",
-      `"${(s.message || "").replace(/"/g, '""')}"`,
-      new Date(s.created_at).toLocaleDateString(),
+      sanitizeCSV(`${s.first_name} ${s.last_name}`),
+      sanitizeCSV(s.email),
+      sanitizeCSV(s.phone || ""),
+      sanitizeCSV(s.company || ""),
+      sanitizeCSV(s.service || ""),
+      sanitizeCSV(s.status || "new"),
+      sanitizeCSV(s.message || ""),
+      sanitizeCSV(new Date(s.created_at).toLocaleDateString()),
     ]);
     const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join(
       "\n"

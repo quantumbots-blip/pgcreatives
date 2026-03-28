@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { verifySessionToken } from "@/lib/auth";
 import {
   Archive,
   ArrowDownRight,
@@ -34,7 +35,7 @@ export default async function AdminDashboard() {
   const cookieStore = await cookies();
   const session = cookieStore.get("admin_session");
 
-  if (!session || session.value !== "authenticated") {
+  if (!session || !verifySessionToken(session.value)) {
     redirect("/admin/login");
   }
 
