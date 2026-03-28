@@ -10,12 +10,17 @@ import { VideoHero } from "@/components/video-hero";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { ContactForm } from "@/components/contact-form";
 import { SectionLabel } from "@/components/section-label";
+import { Counter } from "@/components/counter";
+import { Marquee } from "@/components/marquee";
+import { MagneticButton } from "@/components/magnetic-button";
+import { TextReveal } from "@/components/text-reveal";
+import { FloatingParticles } from "@/components/floating-particles";
 import { images } from "@/lib/images";
 
 const stats = [
-  { value: "$3B", label: "In Real Estate Captured" },
-  { value: "2m+", label: "Views Generated" },
-  { value: "150k+", label: "Photos & Videos Delivered" },
+  { value: 3, prefix: "$", suffix: "B", label: "In Real Estate Captured" },
+  { value: 2, suffix: "m+", label: "Views Generated" },
+  { value: 150, suffix: "k+", label: "Photos & Videos Delivered" },
 ];
 
 const services = [
@@ -94,7 +99,12 @@ export default function HomePage() {
             <AnimateOnScroll key={stat.label} animation="fade-up" delay={i * 0.15}>
               <div className="relative text-center">
                 <p className="font-heading text-4xl font-bold sm:text-5xl text-white">
-                  {stat.value}
+                  <Counter
+                    value={stat.value}
+                    prefix={stat.prefix}
+                    suffix={stat.suffix}
+                    duration={2.5}
+                  />
                 </p>
                 <p className="mt-2 text-sm tracking-wide text-white/35">
                   {stat.label}
@@ -109,10 +119,23 @@ export default function HomePage() {
       </section>
       <div className="section-divider" />
 
+      {/* Marquee social proof strip */}
+      <section className="bg-background py-6 relative overflow-hidden border-y border-purple/[0.06]">
+        <Marquee speed={25} pauseOnHover>
+          {["Videography", "Photography", "Drone Aerial", "3D Tours", "Branding", "Real Estate", "Commercial", "Social Media", "Editing", "Content Creation"].map((item) => (
+            <span key={item} className="mx-8 text-sm font-medium uppercase tracking-[0.2em] text-white/20">
+              {item}
+              <span className="ml-8 text-purple/40">✦</span>
+            </span>
+          ))}
+        </Marquee>
+      </section>
+
       {/* Services */}
       <section className="bg-background py-28 lg:py-36 relative overflow-hidden">
         {/* Single ambient glow */}
         <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px]" />
+        <FloatingParticles count={10} />
 
         <div className="relative mx-auto max-w-7xl px-6">
           <AnimateOnScroll animation="fade-up">
@@ -248,22 +271,37 @@ export default function HomePage() {
 
           <AnimateOnScroll animation="fade-up" delay={0.3}>
             <div className="mt-14 text-center">
-              <Link
-                href="/portfolio"
-                className="glow-hover inline-flex items-center gap-2.5 rounded-lg bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-[#1a1054]"
-              >
-                View Full Portfolio
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
+              <MagneticButton>
+                <Link
+                  href="/portfolio"
+                  className="glow-hover inline-flex items-center gap-2.5 rounded-lg bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-[#1a1054]"
+                >
+                  View Full Portfolio
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </MagneticButton>
             </div>
           </AnimateOnScroll>
         </div>
+      </section>
+
+      {/* Second marquee — reverse direction */}
+      <section className="bg-background py-4 relative overflow-hidden border-y border-purple/[0.06]">
+        <Marquee speed={20} direction="right" pauseOnHover>
+          {["Green Bay", "Madison", "Fox Valley", "Milwaukee", "Appleton", "Oshkosh", "Fond du Lac", "Wausau", "Wisconsin"].map((item) => (
+            <span key={item} className="mx-8 text-sm font-medium uppercase tracking-[0.2em] text-white/15">
+              {item}
+              <span className="ml-8 text-purple/30">◆</span>
+            </span>
+          ))}
+        </Marquee>
       </section>
 
       {/* Contact Form */}
       <section className="relative overflow-hidden bg-background py-28 lg:py-36">
         {/* Single slow ambient glow */}
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[100px]" />
+        <FloatingParticles count={8} />
 
         <div className="relative mx-auto max-w-4xl px-6">
           <AnimateOnScroll animation="fade-up">
@@ -275,10 +313,13 @@ export default function HomePage() {
                 <br />
                 <span className="text-white gradient-underline">Your Brand?</span>
               </h2>
-              <p className="mt-5 text-lg text-white/40">
-                Let&apos;s create something extraordinary together. Fill out the
-                form below for a free consultation and custom quote.
-              </p>
+              <div className="mt-5 text-lg text-white/40">
+                <TextReveal
+                  text="Let's create something extraordinary together. Fill out the form below for a free consultation and custom quote."
+                  delay={0.3}
+                  staggerDelay={0.04}
+                />
+              </div>
             </div>
           </AnimateOnScroll>
 

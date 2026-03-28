@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Play } from "lucide-react";
+import { MagneticButton } from "@/components/magnetic-button";
+import { FloatingParticles } from "@/components/floating-particles";
 
 export function VideoHero() {
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -41,6 +43,7 @@ export function VideoHero() {
 
       {/* Single subtle ambient glow */}
       <div className="absolute bottom-0 left-1/3 h-[200px] w-[500px] bg-purple/[0.06] blur-[120px]" />
+      <FloatingParticles count={12} />
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-20">
@@ -74,19 +77,23 @@ export function VideoHero() {
             className="animate-hero-fade-up mt-10 flex flex-wrap items-center gap-4"
             style={{ animationDelay: "0.45s" }}
           >
-            <Link
-              href="/contact"
-              className="glow-hover rounded-lg bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-[#1a1054]"
-            >
-              Book a Shoot
-            </Link>
-            <Link
-              href="/portfolio"
-              className="glow-hover flex items-center gap-2.5 rounded-lg border border-purple/40 px-8 py-3.5 text-sm tracking-wide text-purple-light"
-            >
-              <Play className="h-3.5 w-3.5" />
-              View Our Work
-            </Link>
+            <MagneticButton>
+              <Link
+                href="/contact"
+                className="glow-hover rounded-lg bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-[#1a1054]"
+              >
+                Book a Shoot
+              </Link>
+            </MagneticButton>
+            <MagneticButton>
+              <Link
+                href="/portfolio"
+                className="glow-hover flex items-center gap-2.5 rounded-lg border border-purple/40 px-8 py-3.5 text-sm tracking-wide text-purple-light"
+              >
+                <Play className="h-3.5 w-3.5" />
+                View Our Work
+              </Link>
+            </MagneticButton>
           </div>
         </div>
       </div>
