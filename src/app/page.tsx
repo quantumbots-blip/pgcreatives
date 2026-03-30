@@ -91,7 +91,7 @@ export default function HomePage() {
                     duration={2.5}
                   />
                 </p>
-                <p className="mt-2 text-sm tracking-wide text-white/35">
+                <p className="mt-2 text-sm tracking-wide text-white/50">
                   {stat.label}
                 </p>
                 {i < stats.length - 1 && (
@@ -163,7 +163,7 @@ export default function HomePage() {
                       <h3 className="font-heading text-xl font-semibold text-white lg:text-2xl">
                         {service.title}
                       </h3>
-                      <p className="mt-3 flex-1 text-sm leading-relaxed text-white/40 transition-colors group-hover:text-white/55">
+                      <p className="mt-3 flex-1 text-sm leading-relaxed text-white/60 transition-colors group-hover:text-white/75">
                         {service.description}
                       </p>
                       <div className="mt-6 flex items-center gap-2 text-sm text-purple-light opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100">
@@ -199,7 +199,7 @@ export default function HomePage() {
               <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
                 <span className="text-white">Featured Photos</span>
               </h2>
-              <p className="mt-4 text-white/40">
+              <p className="mt-4 text-white/60">
                 A glimpse of the professional media we&apos;ve captured for our
                 clients across Wisconsin.
               </p>
@@ -269,7 +269,7 @@ export default function HomePage() {
                 <br />
                 <span className="text-white">Your Brand?</span>
               </h2>
-              <div className="mt-5 text-base sm:text-lg text-white/40">
+              <div className="mt-5 text-base sm:text-lg text-white/60">
                 <TextReveal
                   text="Let's create something extraordinary together. Fill out the form below for a free consultation and custom quote."
                   delay={0.3}

@@ -1,7 +1,7 @@
 // Real client work from PG Creatives
 export const images = {
   // Hero backgrounds
-  heroMain: "/images/hero-twilight.png",
+  heroMain: "/images/hero-twilight.webp",
 
   // Real estate — Homepage portfolio bento + portfolio page
   luxuryLakefront: "/images/luxury-living-room.jpg",

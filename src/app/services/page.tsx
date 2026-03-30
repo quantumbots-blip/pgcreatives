@@ -13,6 +13,8 @@ import {
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { SectionLabel } from "@/components/section-label";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Services | Professional Media Solutions",
   description:
@@ -164,7 +166,7 @@ export default function ServicesPage() {
               Everything You Need to{" "}
               <span className="text-purple-light">Stand Out</span>
             </h1>
-            <p className="mt-4 text-base sm:text-lg text-white/50">
+            <p className="mt-4 text-base sm:text-lg text-white/60">
               From first impressions to lasting impact, our comprehensive media
               services cover every angle of your visual story.
             </p>
@@ -193,7 +195,7 @@ export default function ServicesPage() {
                   <h2 className="text-2xl font-bold text-white">
                     {service.title}
                   </h2>
-                  <p className="leading-relaxed text-white/50">
+                  <p className="leading-relaxed text-white/60">
                     {service.description}
                   </p>
                 </div>
@@ -241,7 +243,7 @@ export default function ServicesPage() {
                   </span>
                   <div className="mt-3 h-px bg-purple/18" />
                   <h3 className="mt-4 font-semibold text-white">{item.title}</h3>
-                  <p className="mt-2 text-sm text-white/45">
+                  <p className="mt-2 text-sm text-white/60">
                     {item.description}
                   </p>
                 </div>

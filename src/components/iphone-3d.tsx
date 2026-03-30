@@ -606,7 +606,7 @@ export function IPhoneScroll({
               <br />
               <span className="gradient-text">Stops the Scroll</span>
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-white/40 leading-relaxed">
+            <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed">
               Every photo and video we create is optimized for social media.
               Vertical formats, cinematic quality, and proven results — your
               listings go viral.

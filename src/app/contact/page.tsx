@@ -90,7 +90,7 @@ export default function ContactPage() {
               Let&apos;s Create{" "}
               <span className="text-purple-light">Something Together</span>
             </h1>
-            <p className="mt-4 text-base sm:text-lg text-white/50">
+            <p className="mt-4 text-base sm:text-lg text-white/60">
               Ready to elevate your visual content? Get in touch for a free
               consultation and custom quote.
             </p>
@@ -149,7 +149,7 @@ export default function ContactPage() {
 
               <div className="rounded-xl glass-card p-6 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
                 <h3 className="font-semibold text-white">Follow Us</h3>
-                <p className="mt-1 text-sm text-white/40">
+                <p className="mt-1 text-sm text-white/60">
                   See our latest work on social media.
                 </p>
                 <div className="mt-4 flex gap-3">

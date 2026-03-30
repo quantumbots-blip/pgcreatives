@@ -7,6 +7,34 @@ function getDb() {
   return neon(url);
 }
 
+// ── In-memory fallback rate limiter ──────────────────────────────────
+const memoryStore = new Map<string, { count: number; resetAt: number }>();
+let memoryCallCount = 0;
+
+function memoryRateLimit(key: string, limit: number, windowMs: number): boolean {
+  memoryCallCount++;
+
+  // Periodic cleanup: every 100th call, remove expired entries
+  if (memoryCallCount % 100 === 0) {
+    const now = Date.now();
+    for (const [k, entry] of memoryStore) {
+      if (now > entry.resetAt) {
+        memoryStore.delete(k);
+      }
+    }
+  }
+
+  const now = Date.now();
+  const entry = memoryStore.get(key);
+  if (!entry || now > entry.resetAt) {
+    memoryStore.set(key, { count: 1, resetAt: now + windowMs });
+    return true; // allowed
+  }
+  if (entry.count >= limit) return false; // blocked
+  entry.count++;
+  return true; // allowed
+}
+
 /** Get the client IP from request headers. */
 export async function getClientIp(): Promise<string> {
   const hdrs = await headers();
@@ -19,15 +47,20 @@ export async function getClientIp(): Promise<string> {
 
 /**
  * Check + increment rate limit. Returns true if allowed, false if blocked.
- * Falls back to allowing the request if the database is unavailable.
+ * Falls back to in-memory rate limiting if the database is unavailable.
  */
 export async function checkRateLimit(
   key: string,
   maxAttempts: number,
   windowMinutes: number
 ): Promise<boolean> {
+  const windowMs = windowMinutes * 60 * 1000;
   const sql = getDb();
-  if (!sql) return true; // No DB = no rate limiting (don't block users)
+
+  if (!sql) {
+    // No DB configured — use in-memory fallback instead of allowing all
+    return memoryRateLimit(key, maxAttempts, windowMs);
+  }
 
   try {
     // Ensure table exists
@@ -62,8 +95,9 @@ export async function checkRateLimit(
     `;
 
     return true;
-  } catch {
-    // If rate limiting fails, allow the request (don't block legitimate users)
-    return true;
+  } catch (err) {
+    console.error("[rate-limit] DB error, falling back to in-memory limiter:", err);
+    // DB is down — use in-memory fallback instead of failing open
+    return memoryRateLimit(key, maxAttempts, windowMs);
   }
 }

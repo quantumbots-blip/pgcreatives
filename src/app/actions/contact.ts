@@ -9,6 +9,8 @@ export type ContactState = {
   error: string | null;
 };
 
+const sanitizeHeader = (s: string) => s.replace(/[\r\n\0]/g, "");
+
 const MAX_LENGTHS = {
   firstName: 50,
   lastName: 50,
@@ -83,8 +85,8 @@ export async function submitContactForm(
     await resend.emails.send({
       from: "PG Creatives <noreply@pgcreativeswi.com>",
       to: "pgcreativeswisconsin@gmail.com",
-      replyTo: email,
-      subject: `New Inquiry: ${firstName} ${lastName}`,
+      replyTo: sanitizeHeader(email),
+      subject: `New Inquiry: ${sanitizeHeader(firstName)} ${sanitizeHeader(lastName)}`,
       text: [
         `New contact form submission from pgcreativeswi.com`,
         ``,

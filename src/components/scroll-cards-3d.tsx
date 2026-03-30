@@ -123,7 +123,7 @@ export function ScrollCards3D() {
             <span className="text-white">Our </span>
             <span className="text-purple-light">Packages</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-white/40">
+          <p className="mx-auto mt-4 max-w-xl text-white/60">
             Tailored media packages for every stage of your project — from
             single-property shoots to full-scale production.
           </p>
@@ -168,7 +168,7 @@ export function ScrollCards3D() {
                   <h3 className="font-heading text-xl font-semibold text-white">
                     {service.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/40">
+                  <p className="mt-2 text-sm leading-relaxed text-white/60">
                     {service.description}
                   </p>
 

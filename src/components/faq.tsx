@@ -203,7 +203,7 @@ export function FAQ() {
             Frequently Asked{" "}
             <span className="gradient-text">Questions</span>
           </h2>
-          <p className="mt-4 text-base text-white/40">
+          <p className="mt-4 text-base text-white/60">
             Everything you need to know about working with us.
           </p>
         </div>

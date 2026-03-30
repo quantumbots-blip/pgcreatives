@@ -44,7 +44,7 @@ export function Footer() {
                 <br />
                 <span className="text-white">Your Visual Story?</span>
               </h2>
-              <p className="mt-3 text-sm leading-relaxed text-white/40 sm:text-base">
+              <p className="mt-3 text-sm leading-relaxed text-white/60 sm:text-base">
                 Let&apos;s create professional-grade media that makes a lasting
                 impression.
               </p>
@@ -74,7 +74,7 @@ export function Footer() {
                 className="h-14 sm:h-16 w-auto object-contain"
               />
             </Link>
-            <p className="max-w-xs text-sm leading-relaxed text-white/40">
+            <p className="max-w-xs text-sm leading-relaxed text-white/60">
               Professional-grade videography, photography, drone aerial, and 3D
               tours. Serving Green Bay, Madison, and the Fox Valley.
             </p>
@@ -97,7 +97,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/30">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
               Navigation
             </h3>
             <ul className="mt-5 space-y-3">
@@ -105,7 +105,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/45 transition-colors duration-200 hover:text-white"
+                    className="text-sm text-white/60 transition-colors duration-200 hover:text-white"
                   >
                     {link.name}
                   </Link>
@@ -116,20 +116,20 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/30">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
               Get in Touch
             </h3>
             <ul className="mt-5 space-y-4">
               <li>
                 <a
                   href="tel:+19207770127"
-                  className="group flex items-center gap-3 text-sm text-white/45 transition-colors duration-200 hover:text-white"
+                  className="group flex items-center gap-3 text-sm text-white/60 transition-colors duration-200 hover:text-white"
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04] transition-colors group-hover:bg-purple/15">
                     <Phone className="h-3.5 w-3.5 text-purple/50 transition-colors group-hover:text-purple-light" />
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase tracking-[0.15em] text-white/25">Green Bay</span>
+                    <span className="text-[10px] uppercase tracking-[0.15em] text-white/40">Green Bay</span>
                     <span className="block">(920) 777-0127</span>
                   </div>
                 </a>
@@ -137,13 +137,13 @@ export function Footer() {
               <li>
                 <a
                   href="tel:+16084206199"
-                  className="group flex items-center gap-3 text-sm text-white/45 transition-colors duration-200 hover:text-white"
+                  className="group flex items-center gap-3 text-sm text-white/60 transition-colors duration-200 hover:text-white"
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04] transition-colors group-hover:bg-purple/15">
                     <Phone className="h-3.5 w-3.5 text-purple/50 transition-colors group-hover:text-purple-light" />
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase tracking-[0.15em] text-white/25">Madison</span>
+                    <span className="text-[10px] uppercase tracking-[0.15em] text-white/40">Madison</span>
                     <span className="block">(608) 420-6199</span>
                   </div>
                 </a>
@@ -151,7 +151,7 @@ export function Footer() {
               <li>
                 <a
                   href="mailto:pgcreativeswisconsin@gmail.com"
-                  className="group flex items-center gap-3 text-sm text-white/45 transition-colors duration-200 hover:text-white"
+                  className="group flex items-center gap-3 text-sm text-white/60 transition-colors duration-200 hover:text-white"
                 >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.04] transition-colors group-hover:bg-purple/15">
                     <Mail className="h-3.5 w-3.5 text-purple/50 transition-colors group-hover:text-purple-light" />
@@ -160,7 +160,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <div className="flex items-center gap-3 text-sm text-white/45">
+                <div className="flex items-center gap-3 text-sm text-white/60">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04]">
                     <MapPin className="h-3.5 w-3.5 text-purple/50" />
                   </div>
@@ -172,7 +172,7 @@ export function Footer() {
 
           {/* Portals */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/30">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
               Client Portals
             </h3>
             <div className="mt-5 space-y-2.5">
@@ -180,7 +180,7 @@ export function Footer() {
                 href="https://portal.spiro.media/order/pg/northeast-wisconsin"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/45 transition-all duration-500 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]"
+                className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/60 transition-all duration-500 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]"
               >
                 <span>Green Bay Portal</span>
                 <ArrowRight className="h-3.5 w-3.5 text-white/20" />
@@ -189,7 +189,7 @@ export function Footer() {
                 href="https://portal.spiro.media/order/pg/madison"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/45 transition-all duration-500 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]"
+                className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/60 transition-all duration-500 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]"
               >
                 <span>Madison Portal</span>
                 <ArrowRight className="h-3.5 w-3.5 text-white/20" />
@@ -201,15 +201,15 @@ export function Footer() {
         {/* ── Bottom Bar ── */}
         <div className="mt-12 sm:mt-16 border-t border-white/[0.06] pt-6 sm:pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <p className="text-xs text-white/25">
+            <p className="text-xs text-white/40">
               &copy; {new Date().getFullYear()} MCINTEE LLC. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <span className="text-xs text-white/25 tracking-wide">
+              <span className="text-xs text-white/40 tracking-wide">
                 PG Creatives Media
               </span>
               <span className="hidden h-3 w-px bg-white/10 sm:block" />
-              <span className="hidden text-xs text-white/20 sm:block">
+              <span className="hidden text-xs text-white/40 sm:block">
                 Wisconsin
               </span>
             </div>

@@ -66,12 +66,12 @@ export function VideoHero() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         poster="/images/hero-poster.jpg"
         onLoadedData={tryPlay}
         className="absolute inset-0 h-full w-full object-cover"
       >
-        <source src="/hero-video.mp4" type="video/mp4" />
+        <source src="/hero-video-v2.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay gradients — purple-tinted */}
@@ -103,7 +103,7 @@ export function VideoHero() {
           </h1>
 
           <p
-            className="animate-hero-fade-up mt-6 max-w-lg text-base sm:text-lg font-light leading-relaxed text-white/55"
+            className="animate-hero-fade-up mt-6 max-w-lg text-base sm:text-lg font-light leading-relaxed text-white/70"
             style={{ animationDelay: "0.3s" }}
           >
             Cinema-quality videography, stunning photography, aerial drone

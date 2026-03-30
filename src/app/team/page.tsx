@@ -6,6 +6,8 @@ import { images } from "@/lib/images";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { SectionLabel } from "@/components/section-label";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "About | Meet The Team",
   description:
@@ -108,7 +110,7 @@ export default function TeamPage() {
               The Creatives{" "}
               <span className="text-purple-light">Behind the Lens</span>
             </h1>
-            <p className="mt-5 text-base sm:text-lg leading-relaxed text-white/50">
+            <p className="mt-5 text-base sm:text-lg leading-relaxed text-white/60">
               PG Creatives has a growing group of editors, photographers, and
               content strategists. Meet the most experienced group in the
               Midwest, elevating your game.
@@ -184,7 +186,7 @@ export default function TeamPage() {
                       <Icon className="h-5 w-5 text-purple-light" />
                     </div>
                     <h3 className="font-semibold text-white">{value.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-white/45">
+                    <p className="mt-2 text-sm leading-relaxed text-white/60">
                       {value.description}
                     </p>
                   </div>
@@ -205,7 +207,7 @@ export default function TeamPage() {
             About{" "}
             <span className="text-purple-light">PG Creatives</span>
           </h2>
-          <div className="mt-6 space-y-4 text-white/50">
+          <div className="mt-6 space-y-4 text-white/60">
             <p>
               Based in Green Bay and Madison, Wisconsin, PG Creatives is a
               professional media company specializing in real estate photography,

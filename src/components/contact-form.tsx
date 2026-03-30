@@ -53,7 +53,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
       {/* Name row */}
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2.5">
-          <Label htmlFor="firstName" className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">
+          <Label htmlFor="firstName" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
             First Name <span className="text-purple-light/50">*</span>
           </Label>
           <div className="relative">
@@ -69,7 +69,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           </div>
         </div>
         <div className="space-y-2.5">
-          <Label htmlFor="lastName" className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">
+          <Label htmlFor="lastName" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
             Last Name <span className="text-purple-light/50">*</span>
           </Label>
           <div className="relative">
@@ -89,7 +89,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
       {/* Email + Phone row */}
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2.5">
-          <Label htmlFor="email" className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">
+          <Label htmlFor="email" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
             Email <span className="text-purple-light/50">*</span>
           </Label>
           <div className="relative">
@@ -106,7 +106,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           </div>
         </div>
         <div className="space-y-2.5">
-          <Label htmlFor="phone" className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">
+          <Label htmlFor="phone" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
             Phone
           </Label>
           <div className="relative">
@@ -125,7 +125,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
 
       {/* Service */}
       <div className="space-y-2.5">
-        <Label htmlFor="service" className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">
+        <Label htmlFor="service" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
           Service Interested In
         </Label>
         <select
@@ -134,7 +134,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           defaultValue=""
           className="h-12 w-full rounded-lg border border-purple/12 bg-[#000000]/60 px-3.5 text-sm text-white focus:border-purple/40 focus:ring-1 focus:ring-purple/20 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(139%2C92%2C246%2C0.4)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat"
         >
-          <option value="" disabled className="bg-[#000000] text-white/40">
+          <option value="" disabled className="bg-[#000000] text-white/60">
             Select a service...
           </option>
           <option value="Real Estate" className="bg-[#000000]">Real Estate</option>
@@ -146,7 +146,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
 
       {/* Message */}
       <div className="space-y-2.5">
-        <Label htmlFor="message" className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">
+        <Label htmlFor="message" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
           Message
         </Label>
         <Textarea

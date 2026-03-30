@@ -389,7 +389,7 @@ export function Header() {
             <div className="!my-4 h-px bg-gradient-to-r from-transparent via-purple/20 to-transparent" />
 
             {/* Portal login links */}
-            <p className="px-5 pb-2 pt-2 text-xs font-medium uppercase tracking-[0.2em] text-white/25">
+            <p className="px-5 pb-2 pt-2 text-xs font-medium uppercase tracking-[0.2em] text-white/50">
               Client Portal
             </p>
             {[
@@ -410,7 +410,7 @@ export function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-4 rounded-2xl px-5 py-3.5 text-white/40 transition-all active:bg-white/[0.05]"
+                className="flex items-center gap-4 rounded-2xl px-5 py-3.5 text-white/60 transition-all active:bg-white/[0.05]"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.04]">
                   <portal.icon className="h-4.5 w-4.5 text-white/30" />
@@ -432,7 +432,7 @@ export function Header() {
             >
               Book a Shoot
             </Link>
-            <p className="mt-3 text-center text-xs text-white/20">
+            <p className="mt-3 text-center text-xs text-white/40">
               Green Bay · Madison · Fox Valley
             </p>
           </div>

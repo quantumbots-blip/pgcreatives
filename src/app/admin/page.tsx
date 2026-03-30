@@ -144,8 +144,7 @@ export default async function AdminDashboard() {
         {dbError && (
           <div className="mb-8 rounded-lg border border-yellow-500/20 bg-yellow-500/5 px-5 py-4">
             <p className="text-sm text-yellow-400">
-              Database connection failed. Make sure DATABASE_URL is set in your
-              environment variables.
+              Dashboard temporarily unavailable. Please try again later.
             </p>
           </div>
         )}
