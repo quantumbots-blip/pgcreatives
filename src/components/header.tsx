@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Sparkles,
   Home,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -49,6 +50,7 @@ const navigation: NavItem[] = [
         external: true,
         icon: MapPin,
       },
+      { name: "Admin", href: "/admin", icon: Shield },
     ],
   },
 ];
