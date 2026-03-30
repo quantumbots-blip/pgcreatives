@@ -104,7 +104,7 @@ export default function ContactPage() {
           <div className="grid gap-6 sm:gap-8 lg:grid-cols-5">
             {/* Form */}
             <AnimateOnScroll animation="slide-in-left" className="lg:col-span-3">
-              <div className="gradient-border rounded-xl bg-[#0a0a0a] p-6 lg:p-10">
+              <div className="gradient-border rounded-xl bg-[#0a0a0a] p-6 lg:p-10 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
                 <ContactForm />
               </div>
             </AnimateOnScroll>
@@ -112,7 +112,7 @@ export default function ContactPage() {
             {/* Contact Info */}
             <AnimateOnScroll animation="slide-in-right" delay={0.15} className="lg:col-span-2">
             <div className="space-y-6">
-              <div className="animate-border-glow rounded-xl glass-card p-6">
+              <div className="animate-border-glow rounded-xl glass-card p-6 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
                 <h3 className="font-semibold text-white">
                   Contact Information
                 </h3>
@@ -147,7 +147,7 @@ export default function ContactPage() {
                 </ul>
               </div>
 
-              <div className="rounded-xl glass-card p-6">
+              <div className="rounded-xl glass-card p-6 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
                 <h3 className="font-semibold text-white">Follow Us</h3>
                 <p className="mt-1 text-sm text-white/40">
                   See our latest work on social media.

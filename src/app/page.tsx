@@ -81,7 +81,7 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:gap-8 px-6 py-10 sm:py-14 sm:grid-cols-3">
           {stats.map((stat, i) => (
             <AnimateOnScroll key={stat.label} animation="fade-up" delay={i * 0.15}>
-              <div className="relative text-center">
+              <div className="relative text-center rounded-xl p-4 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
                 <p className="font-heading text-4xl font-bold sm:text-5xl text-white">
                   <Counter
                     value={stat.value}
@@ -136,7 +136,7 @@ export default function HomePage() {
                 <div className="card-3d-enhanced relative z-10 h-full">
                   <Link
                     href="/services"
-                    className="group relative flex h-full flex-col rounded-xl border border-purple/10 bg-[#0a0a0a] overflow-hidden transition-all hover:border-purple/25"
+                    className="group relative flex h-full flex-col rounded-xl border border-purple/10 bg-[#0a0a0a] overflow-hidden transition-all duration-500 hover:border-purple/25 hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]"
                   >
                     {/* Image */}
                     <div className="relative h-48 w-full overflow-hidden">
@@ -211,7 +211,7 @@ export default function HomePage() {
               {photos.map((photo) => (
                 <div
                   key={photo.alt}
-                  className={`group relative overflow-hidden rounded-xl bg-navy-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] ${photo.colSpan} ${
+                  className={`group relative overflow-hidden rounded-xl bg-navy-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(79,110,247,0.15)] ${photo.colSpan} ${
                     photo.colSpan ? "aspect-auto min-h-[250px] sm:min-h-[350px]" : "aspect-[4/3]"
                   }`}
                 >
@@ -279,7 +279,7 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-up" delay={0.15}>
-            <div className="relative z-10 rounded-xl border border-purple/10 bg-[#0a0a0a] p-6 sm:p-8 lg:p-10">
+            <div className="relative z-10 rounded-xl border border-purple/10 bg-[#0a0a0a] p-6 sm:p-8 lg:p-10 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
               <ContactForm />
             </div>
           </AnimateOnScroll>

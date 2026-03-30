@@ -33,7 +33,7 @@ export function Footer() {
 
       {/* ── CTA Banner ── */}
       <div className="mx-auto max-w-7xl px-6 pt-12 sm:pt-16">
-        <div className="relative rounded-2xl border border-purple/10 bg-gradient-to-br from-purple/[0.08] via-[#0a0a0a] to-purple/[0.04] p-8 sm:p-12 lg:p-16 overflow-hidden">
+        <div className="relative rounded-2xl border border-purple/10 bg-gradient-to-br from-purple/[0.08] via-[#0a0a0a] to-purple/[0.04] p-8 sm:p-12 lg:p-16 overflow-hidden transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
           {/* Decorative corner glow */}
           <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/10 blur-[80px]" />
 
@@ -65,7 +65,7 @@ export function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand column */}
           <div className="space-y-5">
-            <Link href="/" className="inline-block">
+            <Link href="/" className="-ml-2.5 inline-block">
               <Image
                 src="/logo.png"
                 alt="PG Creatives"
@@ -180,7 +180,7 @@ export function Footer() {
                 href="https://portal.spiro.media/order/pg/northeast-wisconsin"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/45 transition-all duration-200 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white"
+                className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/45 transition-all duration-500 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]"
               >
                 <span>Green Bay Portal</span>
                 <ArrowRight className="h-3.5 w-3.5 text-white/20" />
@@ -189,7 +189,7 @@ export function Footer() {
                 href="https://portal.spiro.media/order/pg/madison"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/45 transition-all duration-200 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white"
+                className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/45 transition-all duration-500 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]"
               >
                 <span>Madison Portal</span>
                 <ArrowRight className="h-3.5 w-3.5 text-white/20" />

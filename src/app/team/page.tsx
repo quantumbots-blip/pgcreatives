@@ -129,7 +129,7 @@ export default function TeamPage() {
                 <div
                   className="card-3d-enhanced group"
                 >
-                  <div className="rounded-xl glass-card overflow-hidden transition-all duration-300">
+                  <div className="rounded-xl glass-card overflow-hidden transition-all duration-500 hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]">
                     {/* Photo */}
                     <div className="relative aspect-[3/4] overflow-hidden">
                       <Image
@@ -177,7 +177,7 @@ export default function TeamPage() {
               return (
                 <AnimateOnScroll key={value.title} animation="fade-up" delay={i * 0.1}>
                   <div
-                    className="rounded-xl glass-card hover-lift p-7"
+                    className="rounded-xl glass-card hover-lift p-7 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]"
                   >
                     {/* Icon box */}
                     <div className="icon-3d mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
@@ -223,7 +223,7 @@ export default function TeamPage() {
           {/* CTA */}
           <Link
             href="/contact"
-            className="glow-hover mt-10 inline-flex items-center gap-2 rounded-full border border-purple/25 bg-purple/10 px-6 py-3 sm:px-8 text-sm font-medium tracking-wide text-purple-light transition-colors duration-200 hover:bg-purple/20 hover:border-purple/40"
+            className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
           >
             Work With Us
             <ArrowRight className="h-3.5 w-3.5" />

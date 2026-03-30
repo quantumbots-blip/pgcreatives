@@ -86,7 +86,7 @@ export function VideoHero() {
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-20">
         <div className="max-w-3xl">
           <div
-            className="animate-hero-fade-up mb-4 sm:mb-6 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 h-7 sm:px-4 sm:h-8 backdrop-blur-sm"
+            className="animate-hero-fade-up mb-4 sm:mb-6 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 h-7 sm:px-4 sm:h-8 backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_20px_rgba(79,110,247,0.25)]"
           >
             <span className="text-[10px] sm:text-xs font-medium tracking-[0.15em] sm:tracking-[0.2em] uppercase text-purple-light leading-none">
               Green Bay, Madison, and the Fox Valley

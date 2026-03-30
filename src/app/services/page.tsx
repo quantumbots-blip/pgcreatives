@@ -179,7 +179,7 @@ export default function ServicesPage() {
           {services.map((service, index) => (
             <AnimateOnScroll key={service.title} animation="fade-up" delay={index * 0.1}>
               <div
-                className="card-3d-enhanced group grid gap-0 rounded-xl glass-card transition-all duration-200 hover:-translate-y-1 lg:grid-cols-2"
+                className="card-3d-enhanced group grid gap-0 rounded-xl glass-card transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)] lg:grid-cols-2"
               >
                 <div className="space-y-5 p-6 lg:p-10">
                   <div className="flex items-center gap-3">
@@ -235,7 +235,7 @@ export default function ServicesPage() {
           <div className="mt-10 sm:mt-16 grid gap-4 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {process.map((item, i) => (
               <AnimateOnScroll key={item.step} animation="fade-up" delay={i * 0.1}>
-                <div>
+                <div className="rounded-xl p-5 transition-shadow duration-500 hover:shadow-[0_0_20px_rgba(79,110,247,0.25)]">
                   <span className="font-mono text-3xl font-bold text-purple/30">
                     {item.step}
                   </span>

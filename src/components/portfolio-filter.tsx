@@ -54,7 +54,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         {filtered.map((project) => (
           <div
             key={project.title}
-            className="group relative aspect-[4/3] overflow-hidden rounded-xl hover-lift bg-[#0a0a0a]"
+            className="group relative aspect-[4/3] overflow-hidden rounded-xl hover-lift bg-[#0a0a0a] transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]"
           >
             <Image
               src={project.image}
