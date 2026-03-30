@@ -428,6 +428,13 @@ html {
   animation: particle-float 8s linear infinite;
 }
 
+/* ── Scroll-driven 3D card fan ── */
+
+.perspective-container {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
 /* ── Misc utilities ── */
 
 .section-divider {

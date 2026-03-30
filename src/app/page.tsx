@@ -22,6 +22,10 @@ const FloatingParticles = dynamic(() =>
   )
 );
 
+const ScrollCards3D = dynamic(() =>
+  import("@/components/scroll-cards-3d").then((mod) => mod.ScrollCards3D)
+);
+
 const stats = [
   { value: 3, prefix: "$", suffix: "B", label: "In Real Estate Captured" },
   { value: 2, suffix: "m+", label: "Views Generated" },
@@ -243,6 +247,10 @@ export default function HomePage() {
           </AnimateOnScroll>
         </div>
       </section>
+
+      {/* Packages – 3D scroll fan */}
+      <div className="section-divider" />
+      <ScrollCards3D />
 
       {/* Contact Form */}
       <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
