@@ -122,7 +122,7 @@ export default function PortfolioPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background pt-24 pb-12 sm:pt-28 sm:pb-16">
+      <section className="relative overflow-hidden bg-background pt-24 pb-4 sm:pt-28 sm:pb-6">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,#111111_0%,transparent_55%)]" />
         <div className="absolute left-10 top-40 h-48 w-48 rounded-full bg-purple/[0.03] blur-[60px] animate-float" />
         <div className="absolute right-[8%] top-[25%] h-32 w-32 rounded-full border border-dashed border-purple/10 spin-ring hidden lg:block" />
@@ -145,7 +145,7 @@ export default function PortfolioPage() {
       </section>
 
       {/* Filter + Grid */}
-      <section className="bg-background py-10 sm:py-16">
+      <section className="bg-background pt-4 pb-10 sm:pt-6 sm:pb-16">
         <PortfolioFilter projects={projects} />
       </section>
 

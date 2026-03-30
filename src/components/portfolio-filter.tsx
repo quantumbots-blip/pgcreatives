@@ -6,14 +6,7 @@ import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
-const categories = [
-  "All",
-  "Real Estate",
-  "Commercial",
-  "Drone",
-  "3D Tours",
-  "Videography",
-];
+const categories = ["All", "Photo", "Video"];
 
 interface Project {
   title: string;
@@ -30,7 +23,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
     () =>
       activeCategory === "All"
         ? projects
-        : projects.filter((p) => p.category === activeCategory),
+        : projects.filter((p) => p.type === activeCategory.toLowerCase()),
     [activeCategory, projects]
   );
 
