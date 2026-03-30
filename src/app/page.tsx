@@ -136,7 +136,7 @@ export default function HomePage() {
                 <div className="card-3d-enhanced h-full">
                   <Link
                     href="/services"
-                    className="group relative flex h-full flex-col rounded-xl border border-purple/10 bg-purple/[0.03] overflow-hidden transition-all hover:border-purple/25"
+                    className="group relative flex h-full flex-col rounded-xl border border-purple/10 bg-[#0a0a0a] overflow-hidden transition-all hover:border-purple/25"
                   >
                     {/* Image */}
                     <div className="relative h-48 w-full overflow-hidden">
@@ -237,7 +237,7 @@ export default function HomePage() {
               <MagneticButton>
                 <Link
                   href="/portfolio"
-                  className="glow-hover inline-flex items-center gap-2.5 rounded-lg bg-white px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-[#1a1a1a]"
+                  className="inline-flex items-center gap-2.5 rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
                 >
                   View Full Portfolio
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -279,7 +279,7 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-up" delay={0.15}>
-            <div className="rounded-xl border border-purple/10 bg-purple/[0.03] p-6 sm:p-8 lg:p-10">
+            <div className="rounded-xl border border-purple/10 bg-[#0a0a0a] p-6 sm:p-8 lg:p-10">
               <ContactForm />
             </div>
           </AnimateOnScroll>
