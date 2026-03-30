@@ -58,9 +58,11 @@ function easeOutCubic(t: number) {
 export function ScrollCards3D() {
   const sectionRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
+    setMounted(true);
     // Skip 3D effect on mobile / reduced-motion
     const motionOk = !window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -137,11 +139,11 @@ export function ScrollCards3D() {
             <div
               key={service.title}
               className="w-full max-w-sm lg:w-1/3 lg:max-w-none"
-              style={{
+              style={mounted ? {
                 transform: getCardTransform(i, progress),
                 transition: "transform 0.1s linear",
                 willChange: "transform",
-              }}
+              } : undefined}
             >
               <div
                 className={`relative flex h-full flex-col rounded-2xl border transition-all duration-300 ${
