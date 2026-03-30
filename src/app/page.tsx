@@ -280,7 +280,7 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-up" delay={0.15}>
-            <div className="relative z-10 rounded-xl border border-purple/10 bg-[#0a0a0a] p-6 sm:p-8 lg:p-10 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
+            <div className="relative z-10 rounded-xl border border-purple/15 bg-gradient-to-br from-[#0a0a1a] via-[#0d0d2a] to-[#0a0a1a] p-6 sm:p-8 lg:p-10 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
               <ContactForm />
             </div>
           </AnimateOnScroll>
