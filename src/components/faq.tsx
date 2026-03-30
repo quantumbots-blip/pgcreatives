@@ -245,6 +245,8 @@ export function FAQ() {
               >
                 <button
                   onClick={() => toggle(i)}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-${activeCategory}-${i}`}
                   className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
                 >
                   <span className="text-base font-semibold text-white sm:text-lg">
@@ -258,13 +260,15 @@ export function FAQ() {
                   />
                 </button>
                 <div
+                  id={`faq-${activeCategory}-${i}`}
+                  role="region"
                   className={cn(
                     "grid transition-all duration-200",
                     isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                   )}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-6 pb-5 text-sm leading-relaxed text-white/50 sm:text-base">
+                    <p className="px-6 pb-5 text-sm leading-relaxed text-white/60 sm:text-base">
                       {faq.answer}
                     </p>
                   </div>

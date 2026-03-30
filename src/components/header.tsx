@@ -6,16 +6,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   ChevronDown,
-  X,
   Users,
   Camera,
   Mail,
   MapPin,
-  Shield,
   ExternalLink,
   Sparkles,
   Home,
-
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -51,11 +48,6 @@ const navigation: NavItem[] = [
         href: "https://portal.spiro.media/order/pg/madison",
         external: true,
         icon: MapPin,
-      },
-      {
-        name: "Admin",
-        href: "/admin",
-        icon: Shield,
       },
     ],
   },

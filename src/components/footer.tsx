@@ -205,9 +205,9 @@ export function Footer() {
               &copy; {new Date().getFullYear()} MCINTEE LLC. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <span className="text-xs text-white/40 tracking-wide">
-                PG Creatives Media
-              </span>
+              <a href="/privacy" className="text-xs text-white/40 tracking-wide hover:text-white/60 transition-colors">
+                Privacy Policy
+              </a>
               <span className="hidden h-3 w-px bg-white/10 sm:block" />
               <span className="hidden text-xs text-white/40 sm:block">
                 Wisconsin

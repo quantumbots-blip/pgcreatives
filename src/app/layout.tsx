@@ -81,6 +81,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:rounded-lg focus:bg-purple focus:px-4 focus:py-2 focus:text-white">
+          Skip to main content
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -114,7 +117,7 @@ export default function RootLayout({
         />
         <PageViewTracker />
         <Header />
-        <main className="flex-1 pt-16 lg:pt-20">{children}</main>
+        <main id="main-content" className="flex-1 pt-16 lg:pt-20">{children}</main>
         <Footer />
       </body>
     </html>
