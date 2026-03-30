@@ -77,13 +77,13 @@ export default function ContactPage() {
         {/* Floating decorative orb */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-32 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_#8B5CF640_0%,_#6D28D920_40%,_transparent_70%)] blur-3xl"
+          className="pointer-events-none absolute -right-32 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_#4f6ef740_0%,_#3730a320_40%,_transparent_70%)] blur-3xl"
         />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#8B5CF620_0%,_transparent_55%)]" />
-        <div className="absolute left-[8%] bottom-[20%] h-28 w-28 rounded-full border border-dashed border-[#8B5CF6]/10 spin-ring hidden lg:block" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#4f6ef720_0%,_transparent_55%)]" />
+        <div className="absolute left-[8%] bottom-[20%] h-28 w-28 rounded-full border border-dashed border-[#4f6ef7]/10 spin-ring hidden lg:block" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            <span className="mb-5 inline-flex items-center justify-center rounded-full border border-[#8B5CF6]/25 bg-[#8B5CF6]/10 px-3 h-7 sm:px-4 sm:h-8 text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#C4B5FD] leading-none">
+            <span className="mb-5 inline-flex items-center justify-center rounded-full border border-[#4f6ef7]/25 bg-[#4f6ef7]/10 px-3 h-7 sm:px-4 sm:h-8 text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#a5b4fc] leading-none">
               Contact Us
             </span>
             <h1 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
@@ -120,9 +120,9 @@ export default function ContactPage() {
                   {contactInfo.map((item) => {
                     const content = (
                       <div className="flex items-start gap-3 text-sm">
-                        <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-[#8B5CF6]/60" />
+                        <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-[#4f6ef7]/60" />
                         <div>
-                          <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#C4B5FD]">
+                          <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#a5b4fc]">
                             {item.label}
                           </p>
                           <p className="mt-0.5 text-white/60">{item.value}</p>
@@ -159,7 +159,7 @@ export default function ContactPage() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-11 w-11 items-center justify-center rounded-lg border border-[#8B5CF6]/20 text-[#8B5CF6]/60 transition-colors hover:border-[#8B5CF6]/50 hover:text-[#C4B5FD]"
+                      className="flex h-11 w-11 items-center justify-center rounded-lg border border-[#4f6ef7]/20 text-[#4f6ef7]/60 transition-colors hover:border-[#4f6ef7]/50 hover:text-[#a5b4fc]"
                     >
                       <social.icon className="h-3.5 w-3.5" />
                       <span className="sr-only">{social.name}</span>
@@ -175,18 +175,18 @@ export default function ContactPage() {
                   We&apos;ll help you figure out the best media package for your
                   goals.
                 </p>
-                <div className="mt-4 h-px bg-[#8B5CF6]/15" />
+                <div className="mt-4 h-px bg-[#4f6ef7]/15" />
                 <div className="mt-4 space-y-2">
                   <a
                     href="tel:+19207770127"
-                    className="glow-hover flex items-center gap-2 text-base font-semibold text-white transition-colors hover:text-[#C4B5FD]"
+                    className="glow-hover flex items-center gap-2 text-base font-semibold text-white transition-colors hover:text-[#a5b4fc]"
                   >
                     <span className="text-xs font-normal text-white/30">GB</span>
                     (920) 777-0127
                   </a>
                   <a
                     href="tel:+16084206199"
-                    className="glow-hover flex items-center gap-2 text-base font-semibold text-white transition-colors hover:text-[#C4B5FD]"
+                    className="glow-hover flex items-center gap-2 text-base font-semibold text-white transition-colors hover:text-[#a5b4fc]"
                   >
                     <span className="text-xs font-normal text-white/30">MAD</span>
                     (608) 420-6199

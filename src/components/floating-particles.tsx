@@ -43,7 +43,7 @@ export function FloatingParticles({
             height: `${p.size}px`,
             left: `${p.left}%`,
             bottom: `-${p.size}px`,
-            backgroundColor: "#8B5CF6",
+            backgroundColor: "#4f6ef7",
             opacity: 0,
             animation: `particle-float ${p.duration}s ease-in-out ${p.delay}s infinite`,
             willChange: "transform, opacity",

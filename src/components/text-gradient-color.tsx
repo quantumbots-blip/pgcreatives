@@ -14,10 +14,10 @@ interface TextGradientColorProps {
 }
 
 const DEFAULT_GRADIENTS = [
-  "linear-gradient(135deg, #8B5CF6, #C4B5FD)",
-  "linear-gradient(135deg, #C4B5FD, #8B5CF6)",
-  "linear-gradient(135deg, #6D28D9, #C4B5FD)",
-  "linear-gradient(135deg, #8B5CF6, #6D28D9)",
+  "linear-gradient(135deg, #4f6ef7, #a5b4fc)",
+  "linear-gradient(135deg, #a5b4fc, #4f6ef7)",
+  "linear-gradient(135deg, #3730a3, #a5b4fc)",
+  "linear-gradient(135deg, #4f6ef7, #3730a3)",
 ];
 
 export function TextGradientColor({

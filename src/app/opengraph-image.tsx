@@ -58,7 +58,7 @@ export default async function Image() {
           }}
         >
           <span>PG</span>
-          <span style={{ color: "#C4B5FD" }}>Creatives</span>
+          <span style={{ color: "#a5b4fc" }}>Creatives</span>
         </div>
 
         {/* Tagline */}
@@ -90,7 +90,7 @@ export default async function Image() {
                   padding: "8px 20px",
                   borderRadius: 100,
                   border: "1px solid rgba(139,92,246,0.3)",
-                  color: "#C4B5FD",
+                  color: "#a5b4fc",
                   fontSize: 16,
                   background: "rgba(139,92,246,0.1)",
                 }}
