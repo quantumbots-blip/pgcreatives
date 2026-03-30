@@ -260,7 +260,7 @@ export default function TeamPage() {
             <div className="absolute -right-10 top-1/2 h-32 w-32 -translate-y-1/2 rounded-full bg-gradient-to-br from-blue-500/10 to-indigo-500/10 blur-[60px]" />
             <Link
               href="/#portals"
-              className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
+              className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-dim to-purple px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
             >
               Work With Us
               <ArrowRight className="h-3.5 w-3.5" />

@@ -221,7 +221,7 @@ export function PricingSection() {
                   className={cn(
                     "mt-6 flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300",
                     pkg.popular
-                      ? "bg-gradient-to-r from-purple to-purple-light text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
+                      ? "bg-gradient-to-r from-purple-dim to-purple text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
                       : "border border-white/15 text-white/70 hover:border-white/30 hover:bg-white/5 hover:text-white"
                   )}
                 >

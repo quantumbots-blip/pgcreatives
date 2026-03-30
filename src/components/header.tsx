@@ -420,7 +420,7 @@ export function Header() {
             <Link
               href="/#portals"
               onClick={() => setMobileOpen(false)}
-              className="flex w-full items-center justify-center rounded-full bg-gradient-to-r from-purple to-purple-light py-4 text-base font-semibold text-white tracking-wide shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all active:scale-[0.98]"
+              className="flex w-full items-center justify-center rounded-full bg-gradient-to-r from-purple-dim to-purple py-4 text-base font-semibold text-white tracking-wide shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all active:scale-[0.98]"
             >
               Book a Shoot
             </Link>

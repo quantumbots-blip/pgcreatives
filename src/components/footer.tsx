@@ -51,7 +51,7 @@ export function Footer() {
             </div>
             <Link
               href="/#portals"
-              className="group inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)] shrink-0"
+              className="group inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-purple-dim to-purple px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)] shrink-0"
             >
               Start a Project
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

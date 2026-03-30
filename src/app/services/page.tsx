@@ -266,7 +266,7 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-xl px-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-white">Ready to get started?</h2>
           <p className="mt-3 text-white/50">Get in touch for a free consultation and custom quote.</p>
-          <Link href="/#portals" className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]">
+          <Link href="/#portals" className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-dim to-purple px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]">
             Get a Quote <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
