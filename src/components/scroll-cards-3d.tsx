@@ -6,27 +6,27 @@ import Link from "next/link";
 
 const services = [
   {
-    title: "Real Estate",
+    title: "PG Core",
     description:
-      "HDR photography, MLS-ready images, twilight shoots, and virtual staging that sell homes faster.",
-    features: ["HDR Photography", "Drone Aerials", "Virtual Staging", "MLS-Ready"],
-    price: "Starting at $250",
+      "Essential listing media — professional HDR photos, drone aerials, and MLS-ready formatting.",
+    features: ["HDR Photography", "Drone Aerials", "MLS-Ready", "Fast Turnaround"],
+    price: "From $550",
     popular: false,
   },
   {
-    title: "Full Production",
+    title: "PG Growth",
     description:
-      "Complete media package — photography, videography, drone, and 3D tours for the ultimate listing.",
-    features: ["4K Video Tours", "Drone Footage", "3D Matterport", "Photo + Video"],
-    price: "Starting at $750",
+      "Our most popular package — listing video, HDR photos, drone footage, and social media edits.",
+    features: ["Listing Video", "HDR Photos", "Drone Footage", "Social Edits"],
+    price: "From $725",
     popular: true,
   },
   {
-    title: "Commercial",
+    title: "PG Platinum",
     description:
-      "Cinema-quality brand videos, product photography, headshots, and content creation for businesses.",
-    features: ["Brand Videos", "Product Photos", "Social Content", "Color Grading"],
-    price: "Custom Quote",
+      "The full premium experience — premium video, photos, drone, 3D tour, and priority scheduling.",
+    features: ["Premium Video", "3D Virtual Tour", "Drone Aerial", "Priority Scheduling"],
+    price: "From $1,000",
     popular: false,
   },
 ];
@@ -104,7 +104,7 @@ export function ScrollCards3D() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[80vh] overflow-hidden bg-background py-12 sm:py-16 lg:py-24"
+      className="relative overflow-hidden bg-background py-16 sm:py-24 lg:py-32"
     >
       {/* Ambient glow */}
       <div className="absolute left-1/2 top-1/3 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple/[0.04] blur-[120px]" />
@@ -131,7 +131,7 @@ export function ScrollCards3D() {
 
         {/* Cards container */}
         <div
-          className="perspective-container relative mx-auto flex max-w-5xl flex-col items-center gap-6 lg:flex-row lg:items-stretch lg:justify-center lg:gap-8"
+          className="perspective-container relative mx-auto flex max-w-5xl flex-col items-center gap-4 lg:flex-row lg:items-stretch lg:justify-center lg:gap-8"
         >
           {services.map((service, i) => (
             <div

@@ -10,8 +10,13 @@ import {
   Palette,
   Sparkles,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { SectionLabel } from "@/components/section-label";
+
+const PricingSection = dynamic(() =>
+  import("@/components/pricing-section").then((mod) => mod.PricingSection)
+);
 
 export const revalidate = 3600;
 
@@ -222,6 +227,9 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Pricing */}
+      <PricingSection />
+
       {/* Process */}
       <section className="bg-background py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-6">
@@ -250,6 +258,17 @@ export default function ServicesPage() {
               </AnimateOnScroll>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 sm:py-20 text-center">
+        <div className="mx-auto max-w-xl px-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white">Ready to get started?</h2>
+          <p className="mt-3 text-white/50">Get in touch for a free consultation and custom quote.</p>
+          <Link href="/contact" className="mt-8 inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-purple via-purple-light/80 to-purple px-7 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30">
+            Get a Quote <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
