@@ -14,6 +14,7 @@ import { SectionLabel } from "@/components/section-label";
 import { Counter } from "@/components/counter";
 import { MagneticButton } from "@/components/magnetic-button";
 import { TextReveal } from "@/components/text-reveal";
+import { FAQ } from "@/components/faq";
 import { images } from "@/lib/images";
 
 const FloatingParticles = dynamic(() =>
@@ -136,7 +137,7 @@ export default function HomePage() {
                 <div className="card-3d-enhanced relative z-10 h-full">
                   <Link
                     href="/services"
-                    className="group relative flex h-full flex-col rounded-xl border border-purple/10 bg-[#0a0a0a] overflow-hidden transition-all duration-500 hover:border-purple/25 hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]"
+                    className="group relative flex h-full flex-col rounded-xl border border-purple/15 bg-[#0a0a0a] overflow-hidden shadow-[0_0_15px_rgba(79,110,247,0.08)] transition-all duration-500 hover:border-purple/30 hover:shadow-[0_0_30px_rgba(79,110,247,0.18)]"
                   >
                     {/* Image */}
                     <div className="relative h-48 w-full overflow-hidden">
@@ -237,7 +238,7 @@ export default function HomePage() {
               <MagneticButton>
                 <Link
                   href="/portfolio"
-                  className="inline-flex items-center gap-2.5 rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
+                  className="inline-flex items-center gap-2.5 rounded-lg bg-gradient-to-bl from-purple-light via-purple to-purple-dim px-7 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
                 >
                   View Full Portfolio
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -285,6 +286,9 @@ export default function HomePage() {
           </AnimateOnScroll>
         </div>
       </section>
+
+      {/* FAQ */}
+      <FAQ />
     </>
   );
 }
