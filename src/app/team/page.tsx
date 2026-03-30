@@ -27,6 +27,19 @@ export const metadata: Metadata = {
   },
 };
 
+const cardGradients = [
+  "from-blue-600/20 to-indigo-600/20",
+  "from-purple-500/20 to-pink-500/20",
+  "from-emerald-500/20 to-teal-500/20",
+  "from-amber-500/20 to-orange-500/20",
+  "from-rose-500/20 to-red-500/20",
+  "from-cyan-500/20 to-blue-500/20",
+  "from-violet-500/20 to-fuchsia-500/20",
+  "from-blue-600/20 to-indigo-600/20",
+  "from-purple-500/20 to-pink-500/20",
+  "from-emerald-500/20 to-teal-500/20",
+];
+
 const team = [
   {
     name: "Michael McIntee",
@@ -80,6 +93,13 @@ const team = [
   },
 ];
 
+const valueColors = [
+  { iconGradient: "from-blue-500 to-blue-600", borderGradient: "from-blue-500 to-blue-600" },
+  { iconGradient: "from-purple-500 to-purple-600", borderGradient: "from-purple-500 to-purple-600" },
+  { iconGradient: "from-amber-500 to-orange-500", borderGradient: "from-amber-500 to-orange-500" },
+  { iconGradient: "from-emerald-500 to-teal-500", borderGradient: "from-emerald-500 to-teal-500" },
+];
+
 const values = [
   {
     icon: Star,
@@ -117,6 +137,10 @@ export default function TeamPage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_60%_at_0%_100%,rgba(139,92,246,0.07),transparent)]" />
         <div className="absolute right-[12%] top-[35%] h-36 w-36 rounded-full border border-dashed border-purple/8 spin-ring hidden lg:block" />
 
+        {/* Decorative colored gradient orbs */}
+        <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-gradient-to-br from-purple/20 via-blue-500/10 to-transparent blur-[100px]" />
+        <div className="absolute bottom-0 left-10 h-60 w-60 rounded-full bg-gradient-to-tr from-indigo-500/10 to-transparent blur-[80px]" />
+
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
             <SectionLabel>About Us</SectionLabel>
@@ -140,31 +164,25 @@ export default function TeamPage() {
         <div className="pointer-events-none absolute right-0 top-1/4 h-96 w-96 rounded-full bg-purple/10 blur-[120px]" />
 
         <div className="relative mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4 lg:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
             {team.map((member, index) => (
               <AnimateOnScroll key={member.name} animation="fade-up" delay={index * 0.08}>
-                <div
-                  className="card-3d-enhanced group"
-                >
-                  <div className="rounded-xl glass-card overflow-hidden transition-all duration-500 hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]">
-                    {/* Photo */}
-                    <div className="relative aspect-[3/4] overflow-hidden">
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-transparent to-transparent" />
-                    </div>
-
-                    {/* Info */}
-                    <div className="p-5">
-                      <h3 className="font-semibold text-white">{member.name}</h3>
-                      <p className="mt-1 text-xs font-medium uppercase tracking-[0.15em] text-purple-light">
-                        {member.role}
-                      </p>
+                <div className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cardGradients[index]} border border-white/[0.08] transition-all duration-500 hover:border-white/20 hover:shadow-[0_0_40px_rgba(79,110,247,0.15)]`}>
+                  {/* Photo with aspect-[3/4] */}
+                  <div className="relative aspect-[3/4] overflow-hidden">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    />
+                    {/* Bottom gradient overlay for text readability */}
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent" />
+                    {/* Name/role overlay at bottom of image */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                      <h3 className="font-semibold text-white text-base sm:text-lg">{member.name}</h3>
+                      <p className="text-sm text-white/60">{member.role}</p>
                     </div>
                   </div>
                 </div>
@@ -175,7 +193,7 @@ export default function TeamPage() {
       </section>
 
       {/* Values */}
-      <section className="bg-background py-12 sm:py-16">
+      <section className="bg-background py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6">
           {/* Heading */}
           <AnimateOnScroll animation="fade-up">
@@ -191,19 +209,22 @@ export default function TeamPage() {
           <div className="mt-10 sm:mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((value, i) => {
               const Icon = value.icon;
+              const colors = valueColors[i];
               return (
                 <AnimateOnScroll key={value.title} animation="fade-up" delay={i * 0.1}>
-                  <div
-                    className="rounded-xl glass-card hover-lift p-7 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]"
-                  >
-                    {/* Icon box */}
-                    <div className="icon-3d mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
-                      <Icon className="h-5 w-5 text-purple-light" />
+                  <div className="rounded-xl glass-card overflow-hidden transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
+                    {/* Colored top border */}
+                    <div className={`h-1 bg-gradient-to-r ${colors.borderGradient}`} />
+                    <div className="p-7">
+                      {/* Icon box */}
+                      <div className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${colors.iconGradient} shadow-lg`}>
+                        <Icon className="h-5 w-5 text-white" />
+                      </div>
+                      <h3 className="font-semibold text-white">{value.title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-white/60">
+                        {value.description}
+                      </p>
                     </div>
-                    <h3 className="font-semibold text-white">{value.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-white/60">
-                      {value.description}
-                    </p>
                   </div>
                 </AnimateOnScroll>
               );
@@ -213,14 +234,14 @@ export default function TeamPage() {
       </section>
 
       {/* About */}
-      <section className="bg-background py-12 sm:py-16">
+      <section className="relative bg-gradient-to-b from-transparent via-purple/[0.02] to-transparent py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          {/* Decorative top border accent */}
-          <div className="mx-auto mb-8 h-px w-24 bg-gradient-to-r from-transparent via-purple/50 to-transparent" />
+          {/* Decorative rainbow top border accent */}
+          <div className="mx-auto mb-8 h-px w-24 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
 
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             About{" "}
-            <span className="text-purple-light">PG Creatives</span>
+            <span className="gradient-text">PG Creatives</span>
           </h2>
           <div className="mt-6 space-y-4 text-white/60">
             <p>
@@ -238,13 +259,18 @@ export default function TeamPage() {
           </div>
 
           {/* CTA */}
-          <Link
-            href="/contact"
-            className="mt-10 inline-flex items-center gap-2 rounded-lg bg-gradient-to-tl from-purple-dim via-purple to-purple-light px-7 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
-          >
-            Work With Us
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
+          <div className="relative mt-10">
+            {/* Floating gradient orbs behind CTA */}
+            <div className="absolute -left-10 top-1/2 h-32 w-32 -translate-y-1/2 rounded-full bg-gradient-to-br from-purple-500/10 to-pink-500/10 blur-[60px]" />
+            <div className="absolute -right-10 top-1/2 h-32 w-32 -translate-y-1/2 rounded-full bg-gradient-to-br from-blue-500/10 to-indigo-500/10 blur-[60px]" />
+            <Link
+              href="/contact"
+              className="relative inline-flex items-center gap-2 rounded-lg bg-gradient-to-tl from-purple-dim via-purple to-purple-light px-7 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
+            >
+              Work With Us
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
         </div>
       </section>
     </>
