@@ -139,11 +139,12 @@ export function ScrollCards3D() {
             <div
               key={service.title}
               className="w-full max-w-sm lg:w-1/3 lg:max-w-none"
+              suppressHydrationWarning
               style={mounted ? {
                 transform: getCardTransform(i, progress),
                 transition: "transform 0.1s linear",
                 willChange: "transform",
-              } : undefined}
+              } : {}}
             >
               <div
                 className={`relative flex h-full flex-col rounded-2xl border transition-all duration-300 ${
