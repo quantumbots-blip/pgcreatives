@@ -32,7 +32,7 @@ export function FloatingParticles({
         className
       )}
       aria-hidden="true"
-      style={{ contain: "strict", zIndex: 0 }}
+      style={{ contain: "strict", zIndex: -1 }}
     >
       {particles.map((p) => (
         <div
