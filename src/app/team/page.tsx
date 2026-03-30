@@ -31,37 +31,52 @@ const team = [
   {
     name: "Michael McIntee",
     role: "Founder",
-    image: images.team1,
+    image: images.michaelMcintee,
   },
   {
     name: "Isaiah Bastian",
     role: "Lead Creative (Madison)",
-    image: images.team2,
+    image: images.isaiahBastian,
   },
   {
     name: "Brenden Gruber",
     role: "Brand Development",
-    image: images.team3,
+    image: images.brendenGruber,
   },
   {
     name: "Liam Janowski",
     role: "Creative Specialist (Green Bay)",
-    image: images.team4,
+    image: images.liamJanowski,
   },
   {
-    name: "Ryan Ybanez",
+    name: "Diether Ryan Ybañez",
     role: "Senior Video Editor",
-    image: images.team5,
+    image: images.ryanYbanez,
   },
   {
-    name: "Lyle Alquills",
+    name: "Lyle Alquilos",
     role: "Video Editor",
-    image: images.team6,
+    image: images.lyleAlquilos,
+  },
+  {
+    name: "Claudio Ondoy Jr",
+    role: "Team Member",
+    image: images.claudioOndoyJr,
+  },
+  {
+    name: "Gvy Teleron",
+    role: "Team Member",
+    image: images.gvyTeleron,
   },
   {
     name: "Charlibeth Sicad",
     role: "Administrative Coordinator",
-    image: images.team7,
+    image: images.charlibethSicad,
+  },
+  {
+    name: "Mike McIntee",
+    role: "Advisor",
+    image: images.mikeMcintee,
   },
 ];
 
