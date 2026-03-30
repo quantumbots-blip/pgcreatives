@@ -32,19 +32,20 @@ export function FloatingParticles({
         className
       )}
       aria-hidden="true"
-      style={{ contain: "strict" }}
+      style={{ contain: "strict", zIndex: 0 }}
     >
       {particles.map((p) => (
         <div
           key={p.id}
           className="absolute rounded-full"
           style={{
-            width: `${p.size}px`,
-            height: `${p.size}px`,
+            width: `${p.size * 2}px`,
+            height: `${p.size * 2}px`,
             left: `${p.left}%`,
             bottom: `-${p.size}px`,
             backgroundColor: "#4f6ef7",
             opacity: 0,
+            filter: `blur(${p.size + 1}px)`,
             animation: `particle-float ${p.duration}s ease-in-out ${p.delay}s infinite`,
             willChange: "transform, opacity",
           }}

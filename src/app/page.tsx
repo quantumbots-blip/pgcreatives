@@ -36,9 +36,9 @@ const services = [
   {
     number: "01",
     icon: Sparkles,
-    title: "Branding",
+    title: "Social Media",
     description:
-      "Personal branding is essential if you're looking to stand out in a competitive market. It builds trust and credibility, creates a consistent and memorable identity, and showcases your unique value proposition.",
+      "Social media is essential if you're looking to stand out in a competitive market. It builds trust and credibility, creates a consistent and memorable identity, and showcases your unique value proposition.",
     image: "/images/video-studio.jpg",
   },
   {
@@ -109,7 +109,7 @@ export default function HomePage() {
         <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px]" />
         <FloatingParticles count={10} />
 
-        <div className="relative mx-auto max-w-7xl px-6">
+        <div className="relative z-10 mx-auto max-w-7xl px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
@@ -258,7 +258,7 @@ export default function HomePage() {
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[100px]" />
         <FloatingParticles count={8} />
 
-        <div className="relative mx-auto max-w-4xl px-6">
+        <div className="relative z-10 mx-auto max-w-4xl px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="text-center mb-8 sm:mb-12">
               <SectionLabel>Get Started</SectionLabel>
