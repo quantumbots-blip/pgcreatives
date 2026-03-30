@@ -137,7 +137,7 @@ export default function HomePage() {
                 <div className="card-3d-enhanced relative z-10 h-full">
                   <Link
                     href="/services"
-                    className="group relative flex h-full flex-col rounded-xl border border-purple/15 bg-[#0a0a0a] overflow-hidden shadow-[0_0_15px_rgba(79,110,247,0.08)] transition-all duration-500 hover:border-purple/30 hover:shadow-[0_0_30px_rgba(79,110,247,0.18)]"
+                    className="group relative flex h-full flex-col rounded-xl border border-purple/20 bg-[#0a0a0a] overflow-hidden shadow-[0_0_20px_rgba(79,110,247,0.15),0_0_40px_rgba(79,110,247,0.05)] transition-all duration-500 hover:border-purple/35 hover:shadow-[0_0_30px_rgba(79,110,247,0.25),0_0_60px_rgba(79,110,247,0.1)]"
                   >
                     {/* Image */}
                     <div className="relative h-48 w-full overflow-hidden">
@@ -267,7 +267,7 @@ export default function HomePage() {
                 <span className="text-white">Ready to </span>
                 <span className="rainbow-shimmer">Elevate</span>
                 <br />
-                <span className="text-white gradient-underline">Your Brand?</span>
+                <span className="text-white">Your Brand?</span>
               </h2>
               <div className="mt-5 text-base sm:text-lg text-white/40">
                 <TextReveal
