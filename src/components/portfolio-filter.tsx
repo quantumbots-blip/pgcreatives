@@ -78,9 +78,6 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
               <h3 className="mt-1 font-semibold text-white">
                 {project.title}
               </h3>
-              <p className="mt-1 text-sm text-purple-light/55 opacity-0 transition-opacity group-hover:opacity-100">
-                {project.description}
-              </p>
             </div>
           </div>
         ))}
