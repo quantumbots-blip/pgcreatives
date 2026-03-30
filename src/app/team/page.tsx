@@ -60,12 +60,12 @@ const team = [
   },
   {
     name: "Claudio Ondoy Jr",
-    role: "Team Member",
+    role: "Editor",
     image: images.claudioOndoyJr,
   },
   {
     name: "Gvy Teleron",
-    role: "Team Member",
+    role: "Editor",
     image: images.gvyTeleron,
   },
   {
