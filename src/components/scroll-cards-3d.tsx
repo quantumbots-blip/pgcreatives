@@ -195,10 +195,10 @@ export function ScrollCards3D() {
                   <div className="mt-8">
                     <Link
                       href="/contact"
-                      className={`glow-hover inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold tracking-wide transition-all ${
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-lg px-7 py-3 text-sm tracking-wide transition-all duration-300 ${
                         service.popular
-                          ? "bg-purple text-white hover:bg-purple-dim"
-                          : "border border-purple/20 bg-purple/10 text-purple-light hover:bg-purple/20"
+                          ? "bg-white font-semibold text-[#0a0a0a] hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
+                          : "border border-purple/30 font-medium text-purple-light hover:border-purple/50 hover:bg-purple/10"
                       }`}
                     >
                       Get Started

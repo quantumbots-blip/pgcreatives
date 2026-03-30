@@ -35,7 +35,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         <button
           type="button"
           onClick={onReset}
-          className="mt-8 rounded-lg border border-purple/25 bg-purple/10 px-6 py-2.5 text-sm tracking-wide text-purple-light transition-all hover:border-purple/40 hover:bg-purple/15"
+          className="mt-8 rounded-lg border border-purple/30 px-7 py-3 text-sm font-medium tracking-wide text-purple-light transition-all duration-300 hover:border-purple/50 hover:bg-purple/10"
         >
           Send Another Message
         </button>
@@ -172,7 +172,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         <button
           type="submit"
           disabled={pending}
-          className="glow-hover group flex w-full items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-purple-dim via-purple to-purple-light px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-white transition-all hover:brightness-110 disabled:opacity-60 sm:w-auto"
+          className="group flex w-full items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-purple via-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/25 disabled:opacity-60"
         >
           {pending ? (
             <>

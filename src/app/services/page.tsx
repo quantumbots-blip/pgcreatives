@@ -265,14 +265,14 @@ export default function ServicesPage() {
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="glow-hover inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 sm:px-8 text-sm font-semibold tracking-wide text-[#1a1a1a] transition-all hover:bg-white/90 hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
             >
               Get a Quote
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/contact"
-              className="glow-hover inline-flex items-center gap-2 rounded-lg border border-purple/40 px-6 py-3 sm:px-8 text-sm tracking-wide text-purple-light transition-all hover:border-purple/60 hover:bg-purple/5"
+              className="inline-flex items-center gap-2 rounded-lg border border-purple/30 px-7 py-3 text-sm font-medium tracking-wide text-purple-light transition-all duration-300 hover:border-purple/50 hover:bg-purple/10"
             >
               Contact Us
               <ArrowRight className="h-3.5 w-3.5" />

@@ -162,7 +162,7 @@ export default function PortfolioPage() {
             </p>
             <Link
               href="/contact"
-              className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 sm:px-8 text-sm font-medium tracking-wide transition-colors hover:bg-white/90 text-[#1a1a1a]"
+              className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
             >
               Start Your Project
               <ArrowRight className="h-3.5 w-3.5" />

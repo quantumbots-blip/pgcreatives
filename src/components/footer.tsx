@@ -51,7 +51,7 @@ export function Footer() {
             </div>
             <Link
               href="/contact"
-              className="glow-hover group inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-[#000000] transition-all hover:bg-purple-light hover:text-white shrink-0"
+              className="group inline-flex items-center gap-2.5 rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20 shrink-0"
             >
               Start a Project
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
