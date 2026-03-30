@@ -62,9 +62,9 @@ export function Footer() {
 
       {/* ── Main Footer Content ── */}
       <div className="mx-auto max-w-7xl px-6 pt-14 pb-6 sm:pt-20 sm:pb-8">
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_1fr_1fr] lg:gap-12">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_1fr_1fr] lg:gap-12">
           {/* Brand column */}
-          <div className="col-span-2 space-y-3">
+          <div className="sm:col-span-2 lg:col-span-1 space-y-3">
             <Link href="/" className="-ml-2.5 inline-block">
               <Image
                 src="/logo.png"

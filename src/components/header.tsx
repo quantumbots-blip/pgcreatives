@@ -298,15 +298,13 @@ export function Header() {
                   </Link>
                 )
               )}
+              <Link
+                href="/contact"
+                className="rounded-full bg-white px-4 py-1.5 text-[13px] font-medium tracking-wide text-black transition-all duration-200 hover:bg-white/80"
+              >
+                Book Now
+              </Link>
             </div>
-
-            {/* CTA */}
-            <Link
-              href="/contact"
-              className="ml-3 rounded-full bg-gradient-to-br from-purple-light via-purple to-purple-dim px-6 py-2 text-[13px] font-semibold text-white tracking-wide transition-all duration-200 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
-            >
-              Book Now
-            </Link>
           </nav>
 
           {/* Mobile hamburger */}

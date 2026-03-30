@@ -42,11 +42,6 @@ const cardGradients = [
 
 const team = [
   {
-    name: "Michael McIntee",
-    role: "Founder",
-    image: images.michaelMcintee,
-  },
-  {
     name: "Isaiah Bastian",
     role: "Lead Creative (Madison)",
     image: images.isaiahBastian,
@@ -85,11 +80,6 @@ const team = [
     name: "Charlibeth Sicad",
     role: "Administrative Coordinator",
     image: images.charlibethSicad,
-  },
-  {
-    name: "Mike McIntee",
-    role: "Advisor",
-    image: images.mikeMcintee,
   },
 ];
 
