@@ -71,7 +71,7 @@ export function VideoHero() {
         onLoadedData={tryPlay}
         className="absolute inset-0 h-full w-full object-cover"
       >
-        <source src="/hero-video-v2.mp4" type="video/mp4" />
+        <source src="/hero-video.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay gradients — purple-tinted */}
