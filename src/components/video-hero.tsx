@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Play } from "lucide-react";
@@ -9,6 +9,7 @@ import { FloatingParticles } from "@/components/floating-particles";
 
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
 
   const tryPlay = useCallback(() => {
     const video = videoRef.current;
@@ -18,18 +19,20 @@ export function VideoHero() {
 
     const playPromise = video.play();
     if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Autoplay blocked — retry on first user interaction
-        const resume = () => {
-          video.play().catch(() => {});
-          document.removeEventListener("click", resume);
-          document.removeEventListener("touchstart", resume);
-          document.removeEventListener("scroll", resume);
-        };
-        document.addEventListener("click", resume, { once: true });
-        document.addEventListener("touchstart", resume, { once: true });
-        document.addEventListener("scroll", resume, { once: true });
-      });
+      playPromise
+        .then(() => setVideoReady(true))
+        .catch(() => {
+          // Autoplay blocked — retry on first user interaction
+          const resume = () => {
+            video.play().then(() => setVideoReady(true)).catch(() => {});
+            document.removeEventListener("click", resume);
+            document.removeEventListener("touchstart", resume);
+            document.removeEventListener("scroll", resume);
+          };
+          document.addEventListener("click", resume, { once: true });
+          document.addEventListener("touchstart", resume, { once: true });
+          document.addEventListener("scroll", resume, { once: true });
+        });
     }
   }, []);
 
@@ -49,6 +52,22 @@ export function VideoHero() {
 
   return (
     <section className="relative -mt-16 lg:-mt-20 flex min-h-screen items-center overflow-hidden">
+      {/* Loading overlay — black with logo, fades out when video is playing */}
+      <div
+        className={`absolute inset-0 z-20 flex items-center justify-center bg-black transition-opacity duration-700 ${
+          videoReady ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
+        <Image
+          src="/logo.png"
+          alt="PG Creatives"
+          width={120}
+          height={131}
+          className="animate-pulse opacity-60"
+          priority
+        />
+      </div>
+
       {/* Poster — shows while video loads or if video fails */}
       <Image
         src="/images/hero-poster.jpg"
@@ -59,17 +78,19 @@ export function VideoHero() {
         sizes="100vw"
       />
 
-      {/* Video — always visible; poster attr handles initial frame */}
+      {/* Video — hidden until ready to prevent flash of old cached frame */}
       <video
         ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
         poster="/images/hero-poster.jpg"
         onLoadedData={tryPlay}
-        className="absolute inset-0 h-full w-full object-cover"
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+          videoReady ? "opacity-100" : "opacity-0"
+        }`}
       >
         <source src="/hero-video-v2.mp4" type="video/mp4" />
       </video>
