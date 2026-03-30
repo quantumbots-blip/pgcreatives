@@ -18,21 +18,18 @@ export function FloatingParticles({
       const left = Math.random() * 100;
       const duration = 6 + Math.random() * 10;
       const delay = Math.random() * 8;
-      const opacity = 0.15 + Math.random() * 0.45;
-      const drift = -20 + Math.random() * 40;
 
-      return { id: i, size, left, duration, delay, opacity, drift };
+      return { id: i, size, left, duration, delay };
     });
   }, [count]);
 
   return (
     <div
       className={cn(
-        "pointer-events-none absolute inset-0 overflow-hidden",
+        "pointer-events-none absolute inset-0 overflow-hidden z-0",
         className
       )}
       aria-hidden="true"
-      style={{ contain: "strict", zIndex: -1 }}
     >
       {particles.map((p) => (
         <div

@@ -104,7 +104,7 @@ export default function HomePage() {
       <div className="section-divider" />
 
       {/* Services */}
-      <section className="bg-background py-12 sm:py-16 lg:py-20 relative overflow-hidden">
+      <section className="isolate bg-background py-12 sm:py-16 lg:py-20 relative overflow-hidden">
         {/* Single ambient glow */}
         <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px]" />
         <FloatingParticles count={10} />
@@ -133,7 +133,7 @@ export default function HomePage() {
           <div className="mt-10 sm:mt-16 grid gap-4 sm:grid-cols-3">
             {services.map((service, i) => (
               <AnimateOnScroll key={service.title} animation="fade-up" delay={i * 0.12}>
-                <div className="card-3d-enhanced h-full">
+                <div className="card-3d-enhanced relative z-10 h-full">
                   <Link
                     href="/services"
                     className="group relative flex h-full flex-col rounded-xl border border-purple/10 bg-[#0a0a0a] overflow-hidden transition-all hover:border-purple/25"
@@ -253,7 +253,7 @@ export default function HomePage() {
       <ScrollCards3D />
 
       {/* Contact Form */}
-      <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
+      <section className="isolate relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
         {/* Single slow ambient glow */}
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[100px]" />
         <FloatingParticles count={8} />
@@ -279,7 +279,7 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-up" delay={0.15}>
-            <div className="rounded-xl border border-purple/10 bg-[#0a0a0a] p-6 sm:p-8 lg:p-10">
+            <div className="relative z-10 rounded-xl border border-purple/10 bg-[#0a0a0a] p-6 sm:p-8 lg:p-10">
               <ContactForm />
             </div>
           </AnimateOnScroll>
