@@ -137,14 +137,10 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           <option value="" disabled className="bg-[#000000] text-white/40">
             Select a service...
           </option>
-          <option value="Real Estate Photography" className="bg-[#000000]">Real Estate Photography</option>
-          <option value="Cinema Videography" className="bg-[#000000]">Cinema Videography</option>
-          <option value="Drone Aerial" className="bg-[#000000]">Drone Aerial</option>
-          <option value="3D Virtual Tours" className="bg-[#000000]">3D Virtual Tours</option>
-          <option value="Commercial Branding" className="bg-[#000000]">Commercial Branding</option>
-          <option value="Professional Editing" className="bg-[#000000]">Professional Editing</option>
-          <option value="Full Listing Package" className="bg-[#000000]">Full Listing Package</option>
-          <option value="Other" className="bg-[#000000]">Other</option>
+          <option value="Real Estate" className="bg-[#000000]">Real Estate</option>
+          <option value="Branding" className="bg-[#000000]">Branding</option>
+          <option value="Social Media" className="bg-[#000000]">Social Media</option>
+          <option value="Commercial" className="bg-[#000000]">Commercial</option>
         </select>
       </div>
 
@@ -172,10 +168,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
       )}
 
       {/* Submit */}
-      <div className="flex flex-col-reverse gap-4 pt-0 sm:pt-2 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-center text-xs text-white/25 sm:text-left">
-          We respond within 24 hours
-        </p>
+      <div className="flex flex-col-reverse gap-4 pt-0 sm:pt-2 sm:flex-row sm:items-center sm:justify-end">
         <button
           type="submit"
           disabled={pending}
