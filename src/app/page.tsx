@@ -312,52 +312,48 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <div className="mt-12 grid gap-5 sm:grid-cols-2">
-            <AnimateOnScroll animation="fade-up" delay={0.1}>
               <a
                 href="https://portal.spiro.media/order/pg/northeast-wisconsin"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)] hover:scale-[1.02]"
+                className="group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]"
               >
                 <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-purple/20 blur-[60px] transition-all duration-300 group-hover:bg-purple/30" />
-                <p className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
+                <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   Northeast Wisconsin
                 </p>
-                <p className="mt-2 text-2xl font-bold text-white">
+                <p className="relative mt-2 text-2xl font-bold text-white">
                   Green Bay Portal
                 </p>
-                <p className="mt-2 text-sm text-white/50">
+                <p className="relative mt-2 text-sm text-white/50">
                   Green Bay, Fox Valley &amp; surrounding areas
                 </p>
-                <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-all duration-200 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                <div className="relative mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-all duration-200 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
                   Book a Session
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </a>
-            </AnimateOnScroll>
-            <AnimateOnScroll animation="fade-up" delay={0.2}>
               <a
                 href="https://portal.spiro.media/order/pg/madison"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple-light/[0.08] via-black to-purple/[0.1] p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)] hover:scale-[1.02]"
+                className="group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple-light/[0.08] via-black to-purple/[0.1] p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]"
               >
                 <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-purple-light/15 blur-[60px] transition-all duration-300 group-hover:bg-purple-light/25" />
-                <p className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
+                <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   South-Central Wisconsin
                 </p>
-                <p className="mt-2 text-2xl font-bold text-white">
+                <p className="relative mt-2 text-2xl font-bold text-white">
                   Madison Portal
                 </p>
-                <p className="mt-2 text-sm text-white/50">
+                <p className="relative mt-2 text-sm text-white/50">
                   Madison, Dane County &amp; surrounding areas
                 </p>
-                <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-all duration-200 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                <div className="relative mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-all duration-200 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
                   Book a Session
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </a>
-            </AnimateOnScroll>
           </div>
         </div>
       </section>
