@@ -87,8 +87,8 @@ export default function ContactPage() {
               Contact Us
             </span>
             <h1 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
-              Let&apos;s Create{" "}
-              <span className="text-purple-light">Something Together</span>
+              Let&apos;s <span className="gradient-text">Create</span>{" "}
+              Something Together
             </h1>
             <p className="mt-4 text-base sm:text-lg text-white/60">
               Ready to elevate your visual content? Get in touch for a free

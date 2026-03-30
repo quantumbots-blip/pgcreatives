@@ -194,11 +194,11 @@ export function ScrollCards3D() {
                   {/* CTA */}
                   <div className="mt-8">
                     <Link
-                      href="/contact"
-                      className={`inline-flex w-full items-center justify-center gap-2 rounded-lg px-7 py-3 text-sm tracking-wide transition-all duration-300 ${
+                      href="/#portals"
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm tracking-wide transition-all duration-300 ${
                         service.popular
-                          ? "bg-gradient-to-r from-purple-dim via-purple to-purple-light font-semibold text-white hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
-                          : "border border-purple/30 font-medium text-purple-light hover:border-purple/50 hover:bg-purple/10"
+                          ? "bg-gradient-to-r from-purple to-purple-light font-semibold text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
+                          : "border border-white/15 font-medium text-white/70 hover:border-white/30 hover:bg-white/5 hover:text-white"
                       }`}
                     >
                       Get Started

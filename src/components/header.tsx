@@ -26,7 +26,6 @@ type NavDropdown = {
 type NavItem = NavLink | NavDropdown;
 
 const navigation: NavItem[] = [
-  { name: "Portfolio", href: "/portfolio" },
   {
     name: "About",
     children: [
@@ -34,6 +33,7 @@ const navigation: NavItem[] = [
       { name: "Contact", href: "/contact", icon: Mail },
     ],
   },
+  { name: "Portfolio", href: "/portfolio" },
   { name: "Branding", href: "/services" },
   {
     name: "Login",
@@ -299,7 +299,7 @@ export function Header() {
                 )
               )}
               <Link
-                href="/contact"
+                href="/#portals"
                 className="rounded-full bg-white px-4 py-1.5 text-[13px] font-medium tracking-wide text-black transition-all duration-200 hover:bg-white/80"
               >
                 Book Now
@@ -418,7 +418,7 @@ export function Header() {
           {/* Bottom CTA */}
           <div className="pt-4">
             <Link
-              href="/contact"
+              href="/#portals"
               onClick={() => setMobileOpen(false)}
               className="rounded-2xl bg-white py-4 text-base font-semibold text-[#0a0a0a] tracking-wide transition-all active:scale-[0.98]"
             >

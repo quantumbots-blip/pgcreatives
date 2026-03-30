@@ -137,8 +137,8 @@ export function VideoHero() {
           >
             <MagneticButton>
               <Link
-                href="/contact"
-                className="rounded-lg bg-gradient-to-r from-purple-dim via-purple to-purple-light px-7 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
+                href="/#portals"
+                className="rounded-full bg-gradient-to-r from-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
               >
                 Book a Shoot
               </Link>
@@ -146,7 +146,7 @@ export function VideoHero() {
             <MagneticButton>
               <Link
                 href="/portfolio"
-                className="flex items-center gap-2.5 rounded-lg border border-purple/30 px-7 py-3 text-sm font-medium tracking-wide text-purple-light transition-all duration-300 hover:border-purple/50 hover:bg-purple/10"
+                className="flex items-center gap-2.5 rounded-full border border-white/20 px-8 py-3.5 text-sm font-medium tracking-wide text-white/80 transition-all duration-300 hover:border-white/40 hover:bg-white/5 hover:text-white"
               >
                 <Play className="h-3.5 w-3.5" />
                 View Our Work

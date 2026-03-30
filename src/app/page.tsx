@@ -287,6 +287,64 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Client Portals */}
+      <section id="portals" className="relative overflow-hidden bg-black py-16 sm:py-20">
+        <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-5xl -translate-x-1/2 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        <div className="mx-auto max-w-4xl px-6">
+          <AnimateOnScroll animation="fade-up">
+            <div className="text-center">
+              <SectionLabel>Client Access</SectionLabel>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white md:text-4xl">
+                Client Portals
+              </h2>
+              <p className="mx-auto mt-4 max-w-lg text-base text-white/60">
+                Book sessions, view galleries, and manage your projects through our
+                dedicated portals.
+              </p>
+            </div>
+          </AnimateOnScroll>
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            <AnimateOnScroll animation="fade-up" delay={0.1}>
+              <a
+                href="https://portal.spiro.media/order/pg/northeast-wisconsin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.03] px-6 py-5 transition-all duration-300 hover:border-purple/25 hover:bg-purple/[0.06] hover:shadow-[0_0_30px_rgba(79,110,247,0.1)]"
+              >
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/40">
+                    Northeast Wisconsin
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-white">
+                    Green Bay Portal
+                  </p>
+                </div>
+                <ArrowRight className="h-5 w-5 text-white/25 transition-all group-hover:translate-x-1 group-hover:text-purple-light" />
+              </a>
+            </AnimateOnScroll>
+            <AnimateOnScroll animation="fade-up" delay={0.2}>
+              <a
+                href="https://portal.spiro.media/order/pg/madison"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.03] px-6 py-5 transition-all duration-300 hover:border-purple/25 hover:bg-purple/[0.06] hover:shadow-[0_0_30px_rgba(79,110,247,0.1)]"
+              >
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/40">
+                    South-Central Wisconsin
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-white">
+                    Madison Portal
+                  </p>
+                </div>
+                <ArrowRight className="h-5 w-5 text-white/25 transition-all group-hover:translate-x-1 group-hover:text-purple-light" />
+              </a>
+            </AnimateOnScroll>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
       <FAQ />
     </>
