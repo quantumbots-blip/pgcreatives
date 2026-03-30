@@ -172,7 +172,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         <button
           type="submit"
           disabled={pending}
-          className="group flex w-full items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-purple-light via-purple to-purple-dim px-8 py-3.5 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30 disabled:opacity-60"
+          className="group flex w-full sm:w-auto items-center justify-center gap-3 rounded-full bg-gradient-to-r from-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)] disabled:opacity-60"
         >
           {pending ? (
             <>

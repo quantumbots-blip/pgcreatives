@@ -137,7 +137,7 @@ export default function HomePage() {
                 <div className="card-3d-enhanced relative z-10 h-full">
                   <Link
                     href="/services"
-                    className="group relative flex h-full flex-col rounded-xl border border-purple/15 bg-[#0a0a0a] overflow-hidden shadow-[0_0_20px_rgba(79,110,247,0.12),0_0_40px_rgba(79,110,247,0.05)] transition-all duration-500 hover:border-purple/30 hover:shadow-[0_0_30px_rgba(79,110,247,0.25),0_0_60px_rgba(79,110,247,0.1)]"
+                    className="group relative flex h-full flex-col rounded-xl border border-purple/15 bg-gradient-to-br from-[#0a0a1a] via-[#0d0d2a] to-[#0a0a1a] overflow-hidden shadow-[0_0_20px_rgba(79,110,247,0.12),0_0_40px_rgba(79,110,247,0.05)] transition-all duration-500 hover:border-purple/30 hover:shadow-[0_0_30px_rgba(79,110,247,0.25),0_0_60px_rgba(79,110,247,0.1)]"
                   >
                     {/* Image */}
                     <div className="relative h-48 w-full overflow-hidden">
@@ -238,7 +238,7 @@ export default function HomePage() {
               <MagneticButton>
                 <Link
                   href="/portfolio"
-                  className="inline-flex items-center gap-2.5 rounded-lg bg-gradient-to-bl from-purple-light via-purple to-purple-dim px-7 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
                 >
                   View Full Portfolio
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -288,39 +288,51 @@ export default function HomePage() {
       </section>
 
       {/* Client Portals */}
-      <section id="portals" className="relative overflow-hidden bg-black py-16 sm:py-20">
-        <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-5xl -translate-x-1/2 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-        <div className="mx-auto max-w-4xl px-6">
+      <section id="portals" className="relative overflow-hidden bg-black py-20 sm:py-28">
+        {/* Background glow effects */}
+        <div className="pointer-events-none absolute left-1/4 top-1/2 -translate-y-1/2 h-[400px] w-[400px] rounded-full bg-purple/[0.08] blur-[120px]" />
+        <div className="pointer-events-none absolute right-1/4 top-1/2 -translate-y-1/2 h-[300px] w-[300px] rounded-full bg-purple-light/[0.06] blur-[100px]" />
+        <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-5xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/30 to-transparent" />
+
+        <div className="relative mx-auto max-w-4xl px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="text-center">
-              <SectionLabel>Client Access</SectionLabel>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white md:text-4xl">
-                Client Portals
+              <SectionLabel>Book Now</SectionLabel>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
+                Ready to{" "}
+                <span className="bg-gradient-to-r from-purple-light via-purple to-purple-light bg-clip-text text-transparent">
+                  Get Started?
+                </span>
               </h2>
-              <p className="mx-auto mt-4 max-w-lg text-base text-white/60">
-                Book sessions, view galleries, and manage your projects through our
-                dedicated portals.
+              <p className="mx-auto mt-5 max-w-lg text-base text-white/60 sm:text-lg">
+                Choose your region to book a session, view galleries, and manage
+                your projects.
               </p>
             </div>
           </AnimateOnScroll>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          <div className="mt-12 grid gap-5 sm:grid-cols-2">
             <AnimateOnScroll animation="fade-up" delay={0.1}>
               <a
                 href="https://portal.spiro.media/order/pg/northeast-wisconsin"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.03] px-6 py-5 transition-all duration-300 hover:border-purple/25 hover:bg-purple/[0.06] hover:shadow-[0_0_30px_rgba(79,110,247,0.1)]"
+                className="group relative overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)] hover:scale-[1.02]"
               >
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/40">
-                    Northeast Wisconsin
-                  </p>
-                  <p className="mt-1 text-lg font-semibold text-white">
-                    Green Bay Portal
-                  </p>
+                <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-purple/20 blur-[60px] transition-all duration-300 group-hover:bg-purple/30" />
+                <p className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
+                  Northeast Wisconsin
+                </p>
+                <p className="mt-2 text-2xl font-bold text-white">
+                  Green Bay Portal
+                </p>
+                <p className="mt-2 text-sm text-white/50">
+                  Green Bay, Fox Valley &amp; surrounding areas
+                </p>
+                <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-all duration-200 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                  Book a Session
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
-                <ArrowRight className="h-5 w-5 text-white/25 transition-all group-hover:translate-x-1 group-hover:text-purple-light" />
               </a>
             </AnimateOnScroll>
             <AnimateOnScroll animation="fade-up" delay={0.2}>
@@ -328,17 +340,22 @@ export default function HomePage() {
                 href="https://portal.spiro.media/order/pg/madison"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.03] px-6 py-5 transition-all duration-300 hover:border-purple/25 hover:bg-purple/[0.06] hover:shadow-[0_0_30px_rgba(79,110,247,0.1)]"
+                className="group relative overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple-light/[0.08] via-black to-purple/[0.1] p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)] hover:scale-[1.02]"
               >
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/40">
-                    South-Central Wisconsin
-                  </p>
-                  <p className="mt-1 text-lg font-semibold text-white">
-                    Madison Portal
-                  </p>
+                <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-purple-light/15 blur-[60px] transition-all duration-300 group-hover:bg-purple-light/25" />
+                <p className="text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
+                  South-Central Wisconsin
+                </p>
+                <p className="mt-2 text-2xl font-bold text-white">
+                  Madison Portal
+                </p>
+                <p className="mt-2 text-sm text-white/50">
+                  Madison, Dane County &amp; surrounding areas
+                </p>
+                <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-all duration-200 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                  Book a Session
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
-                <ArrowRight className="h-5 w-5 text-white/25 transition-all group-hover:translate-x-1 group-hover:text-purple-light" />
               </a>
             </AnimateOnScroll>
           </div>
