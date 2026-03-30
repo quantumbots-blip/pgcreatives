@@ -108,7 +108,7 @@ export default function HomePage() {
       <section className="isolate bg-background py-12 sm:py-16 lg:py-20 relative overflow-hidden">
         {/* Single ambient glow */}
         <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px]" />
-        <FloatingParticles count={10} />
+        <FloatingParticles count={10} className="hidden sm:block" />
 
         <div className="relative z-10 mx-auto max-w-7xl px-6">
           <AnimateOnScroll animation="fade-up">
@@ -257,7 +257,7 @@ export default function HomePage() {
       <section className="isolate relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
         {/* Single slow ambient glow */}
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[100px]" />
-        <FloatingParticles count={8} />
+        <FloatingParticles count={8} className="hidden sm:block" />
 
         <div className="relative z-10 mx-auto max-w-4xl px-6">
           <AnimateOnScroll animation="fade-up">

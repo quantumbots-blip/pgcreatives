@@ -13,15 +13,10 @@ export function FloatingParticles({
   className,
 }: FloatingParticlesProps) {
   const [mounted, setMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setIsMobile(window.innerWidth < 768);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
   const particles = useMemo(() => {
-    if (!mounted || isMobile) return [];
+    if (!mounted) return [];
     return Array.from({ length: count }, (_, i) => {
       const size = 2 + Math.random() * 4;
       const left = Math.random() * 100;
@@ -30,9 +25,9 @@ export function FloatingParticles({
 
       return { id: i, size, left, duration, delay };
     });
-  }, [count, mounted, isMobile]);
+  }, [count, mounted]);
 
-  if (isMobile || !mounted) return null;
+  if (!mounted) return null;
 
   return (
     <div
