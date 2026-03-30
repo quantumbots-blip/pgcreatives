@@ -168,31 +168,6 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="gradient-border rounded-xl bg-[#111111] p-6">
-                <h3 className="font-semibold text-white">Free Consultation</h3>
-                <p className="mt-2 text-sm text-white/40">
-                  Not sure what you need? Call us for a free consultation.
-                  We&apos;ll help you figure out the best media package for your
-                  goals.
-                </p>
-                <div className="mt-4 h-px bg-[#4f6ef7]/15" />
-                <div className="mt-4 space-y-2">
-                  <a
-                    href="tel:+19207770127"
-                    className="glow-hover flex items-center gap-2 text-base font-semibold text-white transition-colors hover:text-[#a5b4fc]"
-                  >
-                    <span className="text-xs font-normal text-white/30">GB</span>
-                    (920) 777-0127
-                  </a>
-                  <a
-                    href="tel:+16084206199"
-                    className="glow-hover flex items-center gap-2 text-base font-semibold text-white transition-colors hover:text-[#a5b4fc]"
-                  >
-                    <span className="text-xs font-normal text-white/30">MAD</span>
-                    (608) 420-6199
-                  </a>
-                </div>
-              </div>
             </div>
             </AnimateOnScroll>
           </div>

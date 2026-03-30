@@ -1,6 +1,3 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PortfolioFilter } from "@/components/portfolio-filter";
 
 const projects = [
@@ -149,27 +146,6 @@ export default function PortfolioPage() {
         <PortfolioFilter projects={projects} />
       </section>
 
-      {/* CTA */}
-      <section className="bg-background py-12 sm:py-16">
-        <AnimateOnScroll animation="fade-up">
-          <div className="mx-auto max-w-3xl px-6 text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-              <span className="text-white">Want Results </span>
-              <span className="text-purple-light">Like These?</span>
-            </h2>
-            <p className="mt-4 text-purple-light/55">
-              Let&apos;s create stunning media for your property or brand.
-            </p>
-            <Link
-              href="/contact"
-              className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
-            >
-              Start Your Project
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </AnimateOnScroll>
-      </section>
     </>
   );
 }
