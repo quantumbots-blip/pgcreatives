@@ -262,7 +262,7 @@ export function Header() {
           "fixed top-0 z-50 w-full transition-all duration-500",
           transparent
             ? "bg-transparent"
-            : "bg-[#040A2D]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/10"
+            : "bg-[#000000]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/10"
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:h-[72px] lg:px-8">
@@ -309,7 +309,7 @@ export function Header() {
             {/* CTA */}
             <Link
               href="/contact"
-              className="ml-3 rounded-full bg-white px-6 py-2 text-[13px] font-semibold text-[#040A2D] tracking-wide transition-all duration-200 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
+              className="ml-3 rounded-full bg-white px-6 py-2 text-[13px] font-semibold text-[#000000] tracking-wide transition-all duration-200 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
             >
               Book Now
             </Link>
@@ -337,7 +337,7 @@ export function Header() {
       >
         {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-[#040A2D]/95 backdrop-blur-2xl"
+          className="absolute inset-0 bg-[#000000]/95 backdrop-blur-2xl"
           onClick={() => setMobileOpen(false)}
         />
 
@@ -428,7 +428,7 @@ export function Header() {
             <Link
               href="/contact"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-center gap-2 rounded-2xl bg-white py-4 text-base font-semibold text-[#040A2D] tracking-wide transition-all active:scale-[0.98]"
+              className="flex items-center justify-center gap-2 rounded-2xl bg-white py-4 text-base font-semibold text-[#000000] tracking-wide transition-all active:scale-[0.98]"
             >
               Book a Shoot
             </Link>

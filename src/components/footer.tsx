@@ -33,7 +33,7 @@ export function Footer() {
 
       {/* ── CTA Banner ── */}
       <div className="mx-auto max-w-7xl px-6 pt-12 sm:pt-16">
-        <div className="relative rounded-2xl border border-purple/10 bg-gradient-to-br from-purple/[0.08] via-[#060E35] to-purple/[0.04] p-8 sm:p-12 lg:p-16 overflow-hidden">
+        <div className="relative rounded-2xl border border-purple/10 bg-gradient-to-br from-purple/[0.08] via-[#0a0a0a] to-purple/[0.04] p-8 sm:p-12 lg:p-16 overflow-hidden">
           {/* Decorative corner glow */}
           <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/10 blur-[80px]" />
 
@@ -51,7 +51,7 @@ export function Footer() {
             </div>
             <Link
               href="/contact"
-              className="glow-hover group inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-[#040A2D] transition-all hover:bg-purple-light hover:text-white shrink-0"
+              className="glow-hover group inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-[#000000] transition-all hover:bg-purple-light hover:text-white shrink-0"
             >
               Start a Project
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

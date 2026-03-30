@@ -64,7 +64,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               placeholder="John"
               required
               maxLength={50}
-              className="h-12 rounded-lg border-purple/12 bg-[#040A2D]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
             />
           </div>
         </div>
@@ -80,7 +80,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               placeholder="Doe"
               required
               maxLength={50}
-              className="h-12 rounded-lg border-purple/12 bg-[#040A2D]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
             />
           </div>
         </div>
@@ -101,7 +101,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               placeholder="john@example.com"
               required
               maxLength={254}
-              className="h-12 rounded-lg border-purple/12 bg-[#040A2D]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
             />
           </div>
         </div>
@@ -117,7 +117,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               type="tel"
               placeholder="(555) 123-4567"
               maxLength={20}
-              className="h-12 rounded-lg border-purple/12 bg-[#040A2D]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
             />
           </div>
         </div>
@@ -132,19 +132,19 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           id="service"
           name="service"
           defaultValue=""
-          className="h-12 w-full rounded-lg border border-purple/12 bg-[#040A2D]/60 px-3.5 text-sm text-white focus:border-purple/40 focus:ring-1 focus:ring-purple/20 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(139%2C92%2C246%2C0.4)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat"
+          className="h-12 w-full rounded-lg border border-purple/12 bg-[#000000]/60 px-3.5 text-sm text-white focus:border-purple/40 focus:ring-1 focus:ring-purple/20 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(139%2C92%2C246%2C0.4)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat"
         >
-          <option value="" disabled className="bg-[#040A2D] text-white/40">
+          <option value="" disabled className="bg-[#000000] text-white/40">
             Select a service...
           </option>
-          <option value="Real Estate Photography" className="bg-[#040A2D]">Real Estate Photography</option>
-          <option value="Cinema Videography" className="bg-[#040A2D]">Cinema Videography</option>
-          <option value="Drone Aerial" className="bg-[#040A2D]">Drone Aerial</option>
-          <option value="3D Virtual Tours" className="bg-[#040A2D]">3D Virtual Tours</option>
-          <option value="Commercial Branding" className="bg-[#040A2D]">Commercial Branding</option>
-          <option value="Professional Editing" className="bg-[#040A2D]">Professional Editing</option>
-          <option value="Full Listing Package" className="bg-[#040A2D]">Full Listing Package</option>
-          <option value="Other" className="bg-[#040A2D]">Other</option>
+          <option value="Real Estate Photography" className="bg-[#000000]">Real Estate Photography</option>
+          <option value="Cinema Videography" className="bg-[#000000]">Cinema Videography</option>
+          <option value="Drone Aerial" className="bg-[#000000]">Drone Aerial</option>
+          <option value="3D Virtual Tours" className="bg-[#000000]">3D Virtual Tours</option>
+          <option value="Commercial Branding" className="bg-[#000000]">Commercial Branding</option>
+          <option value="Professional Editing" className="bg-[#000000]">Professional Editing</option>
+          <option value="Full Listing Package" className="bg-[#000000]">Full Listing Package</option>
+          <option value="Other" className="bg-[#000000]">Other</option>
         </select>
       </div>
 
@@ -159,7 +159,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           placeholder="Any additional details..."
           rows={4}
           maxLength={5000}
-          className="rounded-lg border-purple/12 bg-[#040A2D]/60 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all resize-none"
+          className="rounded-lg border-purple/12 bg-[#000000]/60 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all resize-none"
         />
       </div>
 

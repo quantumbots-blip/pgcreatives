@@ -104,7 +104,7 @@ export default function ContactPage() {
           <div className="grid gap-6 sm:gap-8 lg:grid-cols-5">
             {/* Form */}
             <AnimateOnScroll animation="slide-in-left" className="lg:col-span-3">
-              <div className="gradient-border rounded-xl bg-[#060E35] p-6 lg:p-10">
+              <div className="gradient-border rounded-xl bg-[#0a0a0a] p-6 lg:p-10">
                 <ContactForm />
               </div>
             </AnimateOnScroll>
@@ -168,7 +168,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="gradient-border rounded-xl bg-[#0A1240] p-6">
+              <div className="gradient-border rounded-xl bg-[#111111] p-6">
                 <h3 className="font-semibold text-white">Free Consultation</h3>
                 <p className="mt-2 text-sm text-white/40">
                   Not sure what you need? Call us for a free consultation.

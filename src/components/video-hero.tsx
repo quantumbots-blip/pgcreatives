@@ -75,8 +75,8 @@ export function VideoHero() {
       </video>
 
       {/* Overlay gradients — purple-tinted */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#040A2D]/70 via-[#040A2D]/30 to-[#040A2D]/85" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#040A2D]/70 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/70 via-[#000000]/30 to-[#000000]/85" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/70 via-transparent to-transparent" />
 
       {/* Single subtle ambient glow */}
       <div className="absolute bottom-0 left-1/3 h-[200px] w-[500px] bg-purple/[0.06] blur-[120px]" />
@@ -117,7 +117,7 @@ export function VideoHero() {
             <MagneticButton>
               <Link
                 href="/contact"
-                className="glow-hover rounded-lg bg-white px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-[#0E1850]"
+                className="glow-hover rounded-lg bg-white px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-[#1a1a1a]"
               >
                 Book a Shoot
               </Link>

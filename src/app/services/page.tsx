@@ -265,7 +265,7 @@ export default function ServicesPage() {
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="glow-hover inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 sm:px-8 text-sm font-semibold tracking-wide text-[#0E1850] transition-all hover:bg-white/90 hover:scale-[1.02]"
+              className="glow-hover inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 sm:px-8 text-sm font-semibold tracking-wide text-[#1a1a1a] transition-all hover:bg-white/90 hover:scale-[1.02]"
             >
               Get a Quote
               <ArrowRight className="h-4 w-4" />

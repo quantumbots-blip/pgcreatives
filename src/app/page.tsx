@@ -143,7 +143,7 @@ export default function HomePage() {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         sizes="(max-width: 640px) 100vw, 33vw"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#040A2D] via-[#040A2D]/30 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/30 to-transparent" />
                       <div className="absolute bottom-3 left-4 flex items-center gap-2">
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple/20 backdrop-blur-sm border border-purple/20">
                           <service.icon className="h-4 w-4 text-purple-light" />
@@ -222,7 +222,7 @@ export default function HomePage() {
                         : "(max-width: 640px) 100vw, 25vw"
                     }
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#040A2D]/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 </div>
               ))}
             </div>
@@ -233,7 +233,7 @@ export default function HomePage() {
               <MagneticButton>
                 <Link
                   href="/portfolio"
-                  className="glow-hover inline-flex items-center gap-2.5 rounded-lg bg-white px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-[#0E1850]"
+                  className="glow-hover inline-flex items-center gap-2.5 rounded-lg bg-white px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-semibold tracking-wide text-[#1a1a1a]"
                 >
                   View Full Portfolio
                   <ArrowRight className="h-3.5 w-3.5" />
