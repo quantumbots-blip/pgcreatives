@@ -75,7 +75,7 @@ export function VideoHero() {
       </video>
 
       {/* Overlay gradients — purple-tinted */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/70 via-[#000000]/30 to-[#000000]/85" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/60 via-[#000000]/30 to-[#000000]/80" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/70 via-transparent to-transparent" />
 
       {/* Single subtle ambient glow */}

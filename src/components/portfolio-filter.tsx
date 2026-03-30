@@ -31,7 +31,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
     <div className="mx-auto max-w-7xl px-6">
       {/* Filter tabs */}
       <AnimateOnScroll animation="fade-up">
-        <div className="mb-12 flex flex-wrap gap-2">
+        <div className="mb-12 -mx-6 px-6 overflow-x-auto [&::-webkit-scrollbar]:hidden flex flex-nowrap whitespace-nowrap gap-2">
           {categories.map((cat) => (
             <button
               key={cat}

@@ -61,7 +61,7 @@ const services = [
 ];
 
 const photos = [
-  { image: images.luxuryLakefront, alt: "Open-concept living room with vaulted ceiling", colSpan: "sm:col-span-2 sm:row-span-2" },
+  { image: images.luxuryLakefront, alt: "Open-concept living room with vaulted ceiling", colSpan: "col-span-2 row-span-2" },
   { image: images.downtownCommercial, alt: "Modern downtown penthouse interior", colSpan: "" },
   { image: images.aerialProperty, alt: "Lakefront estate drone aerial", colSpan: "" },
   { image: images.modernHome, alt: "Lakehouse kitchen with spiral staircase", colSpan: "" },
@@ -208,7 +208,7 @@ export default function HomePage() {
 
           {/* Bento-style grid */}
           <AnimateOnScroll animation="fade-in-scale" delay={0.2}>
-            <div className="mt-10 sm:mt-16 grid grid-cols-1 gap-2 sm:grid-cols-4 sm:grid-rows-2">
+            <div className="mt-10 sm:mt-16 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:grid-rows-2">
               {photos.map((photo) => (
                 <div
                   key={photo.alt}

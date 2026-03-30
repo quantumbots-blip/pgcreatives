@@ -268,6 +268,10 @@ html {
   contain: layout style;
 }
 
+.card-3d-enhanced:active > * {
+  transform: scale(0.98);
+}
+
 .card-3d-enhanced > * {
   transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s ease;
   transform-style: preserve-3d;
@@ -294,6 +298,10 @@ html {
 
 .hover-lift {
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hover-lift:active {
+  transform: scale(0.98);
 }
 
 .hover-lift:hover {
@@ -339,6 +347,11 @@ html {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(10, 26, 92, 0.15);
+  transition: transform 0.15s ease;
+}
+
+.glass-card:active {
+  transform: scale(0.98);
 }
 
 .glass-card:hover {

@@ -104,7 +104,7 @@ export default function ContactPage() {
           <div className="grid gap-6 sm:gap-8 lg:grid-cols-5">
             {/* Form */}
             <AnimateOnScroll animation="slide-in-left" className="lg:col-span-3">
-              <div className="gradient-border rounded-xl bg-[#0a0a0a] p-6 lg:p-10 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
+              <div className="gradient-border rounded-xl bg-[#0a0a0a] p-4 sm:p-6 lg:p-10 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
                 <ContactForm />
               </div>
             </AnimateOnScroll>
@@ -125,7 +125,7 @@ export default function ContactPage() {
                           <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#a5b4fc]">
                             {item.label}
                           </p>
-                          <p className="mt-0.5 text-white/60">{item.value}</p>
+                          <p className="mt-0.5 text-white/60 break-all">{item.value}</p>
                         </div>
                       </div>
                     );

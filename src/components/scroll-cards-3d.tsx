@@ -121,7 +121,7 @@ export function ScrollCards3D() {
           </div>
           <h2 className="font-heading text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
             <span className="text-white">Our </span>
-            <span className="text-purple-light">Packages</span>
+            <span className="text-white">Packages</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-white/60">
             Tailored media packages for every stage of your project — from
