@@ -99,7 +99,7 @@ export function VideoHero() {
           >
             <span className="text-white">Professional</span>
             <br />
-            <span className="gradient-text">Grade Media</span>
+            <span className="text-white">Grade Media</span>
           </h1>
 
           <p
@@ -117,7 +117,7 @@ export function VideoHero() {
             <MagneticButton>
               <Link
                 href="/contact"
-                className="rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
+                className="rounded-lg bg-gradient-to-r from-purple-dim via-purple to-purple-light px-7 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
               >
                 Book a Shoot
               </Link>

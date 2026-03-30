@@ -197,7 +197,7 @@ export function ScrollCards3D() {
                       href="/contact"
                       className={`inline-flex w-full items-center justify-center gap-2 rounded-lg px-7 py-3 text-sm tracking-wide transition-all duration-300 ${
                         service.popular
-                          ? "bg-white font-semibold text-[#0a0a0a] hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
+                          ? "bg-gradient-to-r from-purple-dim via-purple to-purple-light font-semibold text-white hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
                           : "border border-purple/30 font-medium text-purple-light hover:border-purple/50 hover:bg-purple/10"
                       }`}
                     >

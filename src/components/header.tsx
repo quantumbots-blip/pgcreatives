@@ -265,15 +265,15 @@ export function Header() {
             : "bg-[#000000]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/10"
         )}
       >
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:h-[72px]">
+        <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 lg:h-22">
           {/* Logo */}
-          <Link href="/" className="relative z-50 flex items-center">
+          <Link href="/" className="relative z-50 -ml-2.5 flex items-center">
             <Image
               src="/logo.png"
               alt="PG Creatives"
               width={478}
               height={522}
-              className="h-12 w-auto sm:h-14 lg:h-16 object-contain"
+              className="h-16 w-auto sm:h-18 lg:h-20 object-contain"
               priority
             />
           </Link>
@@ -309,7 +309,7 @@ export function Header() {
             {/* CTA */}
             <Link
               href="/contact"
-              className="ml-3 rounded-full bg-white px-6 py-2 text-[13px] font-semibold text-[#0a0a0a] tracking-wide transition-all duration-200 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
+              className="ml-3 rounded-full bg-gradient-to-br from-purple-light via-purple to-purple-dim px-6 py-2 text-[13px] font-semibold text-white tracking-wide transition-all duration-200 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
             >
               Book Now
             </Link>

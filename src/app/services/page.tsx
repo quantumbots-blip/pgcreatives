@@ -251,35 +251,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-background py-12 sm:py-16">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-            <span className="text-white">Let&apos;s Discuss </span>
-            <span className="text-purple-light">Your Project</span>
-          </h2>
-          <p className="mt-4 text-white/50">
-            Every project is unique. Reach out for a custom quote tailored to
-            your specific needs.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
-            >
-              Get a Quote
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg border border-purple/30 px-7 py-3 text-sm font-medium tracking-wide text-purple-light transition-all duration-300 hover:border-purple/50 hover:bg-purple/10"
-            >
-              Contact Us
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

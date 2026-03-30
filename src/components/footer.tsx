@@ -42,7 +42,7 @@ export function Footer() {
               <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
                 Ready to Elevate
                 <br />
-                <span className="gradient-text">Your Visual Story?</span>
+                <span className="text-white">Your Visual Story?</span>
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-white/40 sm:text-base">
                 Let&apos;s create professional-grade media that makes a lasting
@@ -51,7 +51,7 @@ export function Footer() {
             </div>
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-2.5 rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20 shrink-0"
+              className="group inline-flex items-center gap-2.5 rounded-lg bg-gradient-to-tr from-purple-dim via-purple to-purple-light/90 px-7 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30 shrink-0"
             >
               Start a Project
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -62,16 +62,16 @@ export function Footer() {
 
       {/* ── Main Footer Content ── */}
       <div className="mx-auto max-w-7xl px-6 pt-14 pb-6 sm:pt-20 sm:pb-8">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_1fr_1fr] lg:gap-12">
           {/* Brand column */}
-          <div className="space-y-5">
+          <div className="space-y-3">
             <Link href="/" className="-ml-2.5 inline-block">
               <Image
                 src="/logo.png"
                 alt="PG Creatives"
                 width={478}
                 height={522}
-                className="h-16 sm:h-20 w-auto object-contain"
+                className="h-14 sm:h-16 w-auto object-contain"
               />
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-white/40">
@@ -79,7 +79,7 @@ export function Footer() {
               tours. Serving Green Bay, Madison, and the Fox Valley.
             </p>
             {/* Social icons */}
-            <div className="flex gap-2.5 pt-1">
+            <div className="flex gap-2.5">
               {socialLinks.map((social) => (
                 <a
                   key={social.name}

@@ -223,7 +223,7 @@ export default function TeamPage() {
           {/* CTA */}
           <Link
             href="/contact"
-            className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-7 py-3 text-sm font-semibold tracking-wide text-[#0a0a0a] transition-all duration-300 hover:bg-purple-light hover:text-white hover:shadow-lg hover:shadow-purple/20"
+            className="mt-10 inline-flex items-center gap-2 rounded-lg bg-gradient-to-tl from-purple-dim via-purple to-purple-light px-7 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-purple/30"
           >
             Work With Us
             <ArrowRight className="h-3.5 w-3.5" />
