@@ -186,9 +186,9 @@ export default function ServicesPage() {
           {services.map((service, index) => (
             <AnimateOnScroll key={service.title} animation="fade-up" delay={index * 0.1}>
               <div
-                className="card-3d-enhanced group grid gap-0 rounded-xl glass-card transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)] lg:grid-cols-2"
+                className="group grid grid-cols-1 gap-0 rounded-2xl glass-card transition-all duration-300 hover:-translate-y-1 lg:grid-cols-2"
               >
-                <div className="space-y-5 p-6 lg:p-10">
+                <div className="space-y-5 p-5 sm:p-6 lg:p-10">
                   <div className="flex items-center gap-3">
                     <div className="icon-3d flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
                       <service.icon className="h-5 w-5 text-purple-light" />
@@ -205,11 +205,11 @@ export default function ServicesPage() {
                   </p>
                 </div>
 
-                <div className="rounded-b-xl bg-purple/[0.06] p-6 lg:rounded-b-none lg:rounded-r-xl lg:p-10">
+                <div className="rounded-b-2xl bg-purple/[0.06] p-5 sm:p-6 lg:rounded-b-none lg:rounded-r-2xl lg:p-10">
                   <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-purple-light/50">
                     What&apos;s Included
                   </p>
-                  <ul className="grid gap-3 sm:grid-cols-2">
+                  <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {service.features.map((feature) => (
                       <li
                         key={feature}
@@ -242,7 +242,7 @@ export default function ServicesPage() {
             </div>
           </AnimateOnScroll>
 
-          <div className="mt-10 sm:mt-16 grid gap-4 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 sm:mt-16 grid grid-cols-1 gap-4 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {process.map((item, i) => (
               <AnimateOnScroll key={item.step} animation="fade-up" delay={i * 0.1}>
                 <div className="rounded-xl p-5 transition-shadow duration-500 hover:shadow-[0_0_20px_rgba(79,110,247,0.25)]">

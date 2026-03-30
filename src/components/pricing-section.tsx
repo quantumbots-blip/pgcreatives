@@ -185,10 +185,10 @@ export function PricingSection() {
             <AnimateOnScroll key={pkg.name} animation="fade-up" delay={i * 0.1}>
               <div
                 className={cn(
-                  "relative flex flex-col rounded-2xl border p-6 lg:p-8 transition-all duration-500 hover:-translate-y-1",
+                  "relative flex flex-col rounded-2xl border p-6 lg:p-8 transition-all duration-300 hover:-translate-y-1",
                   pkg.popular
-                    ? "border-purple/30 bg-purple/[0.08] shadow-[0_0_25px_rgba(79,110,247,0.15)]"
-                    : "border-white/[0.08] bg-white/[0.03]"
+                    ? "border-purple/30 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] shadow-[0_0_40px_rgba(79,110,247,0.15)]"
+                    : "border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06]"
                 )}
               >
                 {pkg.popular && (

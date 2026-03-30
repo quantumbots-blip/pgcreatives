@@ -144,15 +144,11 @@ export function ScrollCards3D() {
               }}
             >
               <div
-                className={`relative flex h-full flex-col rounded-2xl border backdrop-blur-xl transition-shadow duration-500 ${
+                className={`relative flex h-full flex-col rounded-2xl border transition-all duration-300 ${
                   service.popular
-                    ? "border-purple/30 bg-[rgba(139,92,246,0.08)] hover:shadow-[0_0_50px_rgba(79,110,247,0.25),0_0_100px_rgba(79,110,247,0.1)] hover:border-purple/40"
-                    : "border-white/10 bg-[rgba(10,10,40,0.6)] hover:shadow-[0_0_40px_rgba(79,110,247,0.2),0_0_80px_rgba(79,110,247,0.08)] hover:border-purple/20"
+                    ? "border-purple/30 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] hover:border-purple/50 hover:shadow-[0_0_40px_rgba(79,110,247,0.25)]"
+                    : "border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]"
                 }`}
-                style={{
-                  boxShadow:
-                    "inset 0 1px 0 rgba(255,255,255,0.1), 0 20px 60px rgba(0,0,0,0.4)",
-                }}
               >
                 {/* Popular badge */}
                 {service.popular && (

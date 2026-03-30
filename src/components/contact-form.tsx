@@ -51,7 +51,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
       </div>
 
       {/* Name row */}
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="space-y-2.5">
           <Label htmlFor="firstName" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
             First Name <span className="text-purple-light/50">*</span>
@@ -87,7 +87,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
       </div>
 
       {/* Email + Phone row */}
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="space-y-2.5">
           <Label htmlFor="email" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
             Email <span className="text-purple-light/50">*</span>
@@ -172,7 +172,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         <button
           type="submit"
           disabled={pending}
-          className="group flex w-full sm:w-auto items-center justify-center gap-3 rounded-full bg-gradient-to-r from-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)] disabled:opacity-60"
+          className="group flex w-full sm:w-auto items-center justify-center gap-3 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:bg-white/90 disabled:opacity-60"
         >
           {pending ? (
             <>

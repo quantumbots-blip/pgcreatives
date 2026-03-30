@@ -201,13 +201,13 @@ export default function TeamPage() {
           </AnimateOnScroll>
 
           {/* Value cards */}
-          <div className="mt-10 sm:mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 sm:mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((value, i) => {
               const Icon = value.icon;
               const colors = valueColors[i];
               return (
                 <AnimateOnScroll key={value.title} animation="fade-up" delay={i * 0.1}>
-                  <div className="rounded-xl glass-card overflow-hidden transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
+                  <div className="rounded-2xl glass-card overflow-hidden">
                     {/* Colored top border */}
                     <div className={`h-1 bg-gradient-to-r ${colors.borderGradient}`} />
                     <div className="p-7">

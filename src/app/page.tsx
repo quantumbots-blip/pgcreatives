@@ -131,13 +131,13 @@ export default function HomePage() {
             </div>
           </AnimateOnScroll>
 
-          <div className="mt-10 sm:mt-16 grid gap-4 sm:grid-cols-3">
+          <div className="mt-10 sm:mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {services.map((service, i) => (
               <AnimateOnScroll key={service.title} animation="fade-up" delay={i * 0.12}>
                 <div className="card-3d-enhanced relative z-10 h-full">
                   <Link
                     href="/services"
-                    className="group relative flex h-full flex-col rounded-xl border border-purple/15 bg-gradient-to-br from-[#0a0a1a] via-[#0d0d2a] to-[#0a0a1a] overflow-hidden shadow-[0_0_20px_rgba(79,110,247,0.12),0_0_40px_rgba(79,110,247,0.05)] transition-all duration-500 hover:border-purple/30 hover:shadow-[0_0_30px_rgba(79,110,247,0.25),0_0_60px_rgba(79,110,247,0.1)]"
+                    className="group relative flex h-full flex-col rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] overflow-hidden transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]"
                   >
                     {/* Image */}
                     <div className="relative h-48 w-full overflow-hidden">
@@ -159,7 +159,7 @@ export default function HomePage() {
                       </div>
                     </div>
                     {/* Content */}
-                    <div className="flex flex-1 flex-col p-6 lg:p-8">
+                    <div className="flex flex-1 flex-col p-4 sm:p-6 lg:p-8">
                       <h3 className="font-heading text-xl font-semibold text-white lg:text-2xl">
                         {service.title}
                       </h3>
@@ -238,7 +238,7 @@ export default function HomePage() {
               <MagneticButton>
                 <Link
                   href="/portfolio"
-                  className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:bg-white/90"
                 >
                   View Full Portfolio
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -280,7 +280,7 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-up" delay={0.15}>
-            <div className="relative z-10 rounded-xl border border-purple/15 bg-gradient-to-br from-[#0a0a1a] via-[#0d0d2a] to-[#0a0a1a] p-6 sm:p-8 lg:p-10 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
+            <div className="relative z-10 rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-6 sm:p-8 lg:p-10 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]">
               <ContactForm />
             </div>
           </AnimateOnScroll>

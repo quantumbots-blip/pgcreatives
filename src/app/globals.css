@@ -343,11 +343,9 @@ html {
 }
 
 .glass-card {
-  background: rgba(10, 26, 92, 0.06);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(10, 26, 92, 0.15);
-  transition: transform 0.15s ease;
+  background: linear-gradient(135deg, rgba(79, 110, 247, 0.1), rgba(0, 0, 0, 0.9), rgba(165, 180, 252, 0.06));
+  border: 1px solid rgba(79, 110, 247, 0.15);
+  transition: all 0.3s ease;
 }
 
 .glass-card:active {
@@ -355,9 +353,8 @@ html {
 }
 
 .glass-card:hover {
-  background: rgba(10, 26, 92, 0.1);
-  border-color: rgba(10, 26, 92, 0.3);
-  box-shadow: 0 8px 32px rgba(10, 26, 92, 0.15), inset 0 0 60px rgba(10, 26, 92, 0.03);
+  border-color: rgba(79, 110, 247, 0.3);
+  box-shadow: 0 0 40px rgba(79, 110, 247, 0.15);
 }
 
 /* ── Gradient text animations ── */
