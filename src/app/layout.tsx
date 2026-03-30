@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-home.jpg",
         width: 1200,
         height: 630,
         alt: "PG Creatives - Professional Grade Media",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     title: "PG Creatives | Professional Grade Media",
     description:
       "Professional grade media for tailored experiences in Green Bay & Madison, WI.",
-    images: ["/og-image.png"],
+    images: ["/og-home.jpg"],
   },
   robots: { index: true, follow: true },
   alternates: { canonical: "https://pgcreatives.vercel.app" },
@@ -95,7 +95,7 @@ export default function RootLayout({
                 "Professional grade media — real estate photography, videography, drone shots, 3D tours, and commercial branding.",
               url: "https://pgcreatives.vercel.app",
               telephone: ["(920) 777-0127", "(608) 420-6199"],
-              image: "https://pgcreatives.vercel.app/og-image.png",
+              image: "https://pgcreatives.vercel.app/og-home.jpg",
               priceRange: "$$",
               areaServed: [
                 { "@type": "City", name: "Green Bay, WI" },

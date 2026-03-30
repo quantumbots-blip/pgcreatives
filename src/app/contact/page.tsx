@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: "Contact | PG Creatives",
     description:
       "Get in touch for a free consultation. Serving Green Bay & Madison, WI.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    images: [{ url: "/og-contact.jpg", width: 1200, height: 630, alt: "Contact PG Creatives - Get a Free Quote" }],
   },
 };
 

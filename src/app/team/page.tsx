@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: "About | PG Creatives Team",
     description:
       "Meet the talented team behind PG Creatives in Wisconsin.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    images: [{ url: "/og-team.jpg", width: 1200, height: 630, alt: "PG Creatives Team - The Creatives Behind the Lens" }],
   },
 };
 

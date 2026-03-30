@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     title: "Services | PG Creatives",
     description:
       "Professional media services — photography, videography, drone, 3D tours, and branding in Wisconsin.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    images: [{ url: "/og-services.jpg", width: 1200, height: 630, alt: "PG Creatives Services - Professional Media Solutions" }],
   },
 };
 
