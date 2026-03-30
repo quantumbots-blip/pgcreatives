@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 interface FloatingParticlesProps {
@@ -12,7 +12,11 @@ export function FloatingParticles({
   count = 15,
   className,
 }: FloatingParticlesProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const particles = useMemo(() => {
+    if (!mounted) return [];
     return Array.from({ length: count }, (_, i) => {
       const size = 2 + Math.random() * 4;
       const left = Math.random() * 100;
@@ -21,7 +25,7 @@ export function FloatingParticles({
 
       return { id: i, size, left, duration, delay };
     });
-  }, [count]);
+  }, [count, mounted]);
 
   return (
     <div
