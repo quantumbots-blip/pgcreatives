@@ -25,7 +25,7 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-[#030820]">
+    <footer className="relative overflow-hidden bg-black">
       {/* Subtle background gradient accents */}
       <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-7xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/30 to-transparent" />
       <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-purple/[0.04] blur-[120px]" />
