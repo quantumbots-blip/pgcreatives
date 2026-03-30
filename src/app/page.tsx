@@ -137,7 +137,7 @@ export default function HomePage() {
                 <div className="card-3d-enhanced relative z-10 h-full">
                   <Link
                     href="/services"
-                    className="group relative flex h-full flex-col rounded-xl border border-purple/25 bg-[#0a0a0a] overflow-hidden shadow-[0_0_30px_rgba(79,110,247,0.35),0_0_60px_rgba(79,110,247,0.15)] transition-all duration-500 hover:border-purple/50 hover:shadow-[0_0_40px_rgba(79,110,247,0.45),0_0_80px_rgba(79,110,247,0.2)]"
+                    className="group relative flex h-full flex-col rounded-xl border border-purple/15 bg-[#0a0a0a] overflow-hidden shadow-[0_0_20px_rgba(79,110,247,0.12),0_0_40px_rgba(79,110,247,0.05)] transition-all duration-500 hover:border-purple/30 hover:shadow-[0_0_30px_rgba(79,110,247,0.25),0_0_60px_rgba(79,110,247,0.1)]"
                   >
                     {/* Image */}
                     <div className="relative h-48 w-full overflow-hidden">
