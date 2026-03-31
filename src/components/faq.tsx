@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 const categories = [
   "General",
@@ -141,11 +142,15 @@ export function FAQ() {
   return (
     <section className="relative overflow-hidden bg-black py-16 sm:py-28">
       {/* Background accents */}
+      <div className="absolute inset-0 gradient-mesh-warm pointer-events-none" />
       <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-5xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/20 to-transparent" />
-      <div className="pointer-events-none absolute -right-40 top-40 h-80 w-80 rounded-full bg-purple/[0.03] blur-[120px]" />
+      <div className="pointer-events-none absolute -right-40 top-40 h-80 w-80 rounded-full bg-purple/[0.05] blur-[120px]" />
+      <div className="pointer-events-none absolute left-[10%] bottom-[20%] h-60 w-60 rounded-full bg-sky-500/[0.04] blur-[100px]" />
+      <div className="pointer-events-none absolute right-[15%] top-[15%] h-28 w-28 rounded-full border border-dashed border-purple/[0.06] spin-ring hidden lg:block" />
 
       <div className="mx-auto max-w-4xl px-5 sm:px-6">
         {/* Heading */}
+        <AnimateOnScroll animation="fade-up">
         <div className="text-center">
           <h2 className="text-2xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
             Frequently Asked Questions
@@ -154,8 +159,10 @@ export function FAQ() {
             Everything you need to know about working with us.
           </p>
         </div>
+        </AnimateOnScroll>
 
         {/* Category pills */}
+        <AnimateOnScroll animation="fade-up" delay={0.1}>
         <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-2">
           {categories.map((cat) => (
             <button
@@ -175,8 +182,10 @@ export function FAQ() {
             </button>
           ))}
         </div>
+        </AnimateOnScroll>
 
         {/* FAQ items */}
+        <AnimateOnScroll animation="fade-up" delay={0.2}>
         <div className="mt-8 sm:mt-10 space-y-2.5 sm:space-y-3">
           {filtered.map((faq, i) => {
             const isOpen = openIndex === i;
@@ -224,6 +233,7 @@ export function FAQ() {
             );
           })}
         </div>
+        </AnimateOnScroll>
       </div>
     </section>
   );

@@ -145,40 +145,6 @@ export default function TeamPage() {
             </p>
           </div>
 
-          {/* Divider */}
-          <div className="mx-auto my-12 sm:my-16 h-px w-16 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
-
-          {/* About text — single centered column */}
-          <div className="mx-auto max-w-3xl space-y-6 text-base sm:text-lg leading-relaxed text-white/60 text-center">
-            <p>
-              PG Creatives started at 19 years old with a simple goal — create
-              better media for real estate and help agents stand out in a crowded
-              market. What began as just me with a camera has grown into a full
-              team working with hundreds of agents and continuing to raise the
-              standard of what real estate content should look like.
-            </p>
-            <p>
-              From the beginning, this was never just about photos and videos. It
-              was about helping agents build a brand, get attention online, and
-              create real opportunities through their content. As we have grown,
-              that mindset has never changed.
-            </p>
-            <p>
-              We take pride in being reliable, fast, and detail-focused. But more
-              than anything, we care about the people we work with. Every project
-              is approached as a partnership. We are not just there to shoot a
-              listing. We are there to help you create content that represents
-              who you are and moves your business forward.
-            </p>
-            <p>
-              When you work with PG Creatives, you are not just hiring a media
-              company. You are working with a team that is invested in your
-              success.
-            </p>
-            <p className="text-xl font-semibold text-white sm:text-2xl pt-2">
-              When you win, we win.
-            </p>
-          </div>
         </div>
       </section>
 
@@ -191,7 +157,7 @@ export default function TeamPage() {
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
             {team.map((member, index) => (
               <AnimateOnScroll key={member.name} animation="fade-up" delay={index * 0.08}>
-                <div className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cardGradients[index]} border border-white/[0.08] transition-all duration-500 hover:border-white/20 hover:shadow-[0_0_40px_rgba(79,110,247,0.15)]`}>
+                <div className={`card-shine group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cardGradients[index]} border border-white/[0.08] transition-all duration-500 hover:border-white/20 hover:shadow-[0_0_40px_rgba(79,110,247,0.15)]`}>
                   {/* Photo with aspect-[3/4] */}
                   <div className="relative aspect-[3/4] overflow-hidden">
                     <Image
@@ -216,6 +182,44 @@ export default function TeamPage() {
         </div>
       </section>
 
+      {/* About Story */}
+      <section className="relative bg-background py-12 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-3xl px-5 sm:px-6">
+          <AnimateOnScroll animation="fade-up">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white md:text-4xl text-center mb-10">
+              When you win, we win.
+            </h2>
+            <div className="space-y-6 text-base sm:text-lg leading-relaxed text-white/60 text-center">
+              <p>
+                PG Creatives started at 19 years old with a simple goal — create
+                better media for real estate and help agents stand out in a crowded
+                market. What began as just me with a camera has grown into a full
+                team working with hundreds of agents and continuing to raise the
+                standard of what real estate content should look like.
+              </p>
+              <p>
+                From the beginning, this was never just about photos and videos. It
+                was about helping agents build a brand, get attention online, and
+                create real opportunities through their content. As we have grown,
+                that mindset has never changed.
+              </p>
+              <p>
+                We take pride in being reliable, fast, and detail-focused. But more
+                than anything, we care about the people we work with. Every project
+                is approached as a partnership. We are not just there to shoot a
+                listing. We are there to help you create content that represents
+                who you are and moves your business forward.
+              </p>
+              <p>
+                When you work with PG Creatives, you are not just hiring a media
+                company. You are working with a team that is invested in your
+                success.
+              </p>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
       {/* Values */}
       <section className="bg-background py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
@@ -236,10 +240,10 @@ export default function TeamPage() {
               const colors = valueColors[i];
               return (
                 <AnimateOnScroll key={value.title} animation="fade-up" delay={i * 0.1}>
-                  <div className="rounded-2xl glass-card overflow-hidden">
+                  <div className="rounded-2xl glass-card overflow-hidden h-full flex flex-col">
                     {/* Colored top border */}
-                    <div className={`h-1 bg-gradient-to-r ${colors.borderGradient}`} />
-                    <div className="p-7">
+                    <div className={`h-1 shrink-0 bg-gradient-to-r ${colors.borderGradient}`} />
+                    <div className="p-7 flex-1">
                       {/* Icon box */}
                       <div className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${colors.iconGradient} shadow-lg`}>
                         <Icon className="h-5 w-5 text-white" />

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { FacebookIcon, InstagramIcon } from "@/components/icons";
+import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { BUSINESS } from "@/lib/data";
 
 const footerLinks = [
@@ -25,6 +26,7 @@ export function Footer() {
       <div className="pointer-events-none absolute -right-40 bottom-20 h-80 w-80 rounded-full bg-purple/[0.03] blur-[120px]" />
 
       {/* ── CTA Banner ── */}
+      <AnimateOnScroll animation="fade-up">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 pt-10 sm:pt-16">
         <div className="relative rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-6 sm:p-8 overflow-hidden transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(52,97,209,0.2)]">
 
@@ -50,6 +52,7 @@ export function Footer() {
           </div>
         </div>
       </div>
+      </AnimateOnScroll>
 
       {/* ── Main Footer Content ── */}
       <div className="mx-auto max-w-7xl px-5 sm:px-6 pt-12 pb-6 sm:pt-20 sm:pb-8">

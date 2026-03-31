@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface FloatingParticlesProps {
@@ -8,27 +8,28 @@ interface FloatingParticlesProps {
   className?: string;
 }
 
-// Deterministic pseudo-random based on seed (render-safe, no Math.random)
-function hash(seed: number) {
-  const x = Math.sin(seed * 9301 + 49297) * 233280;
-  return x - Math.floor(x);
-}
-
 export function FloatingParticles({
   count = 15,
   className,
 }: FloatingParticlesProps) {
-  const particles = useMemo(
-    () =>
+  const [particles, setParticles] = useState<
+    { id: number; size: number; left: number; duration: number; delay: number }[]
+  >([]);
+
+  useEffect(() => {
+    // Generate particles only on the client to avoid hydration mismatch
+    setParticles(
       Array.from({ length: count }, (_, i) => ({
         id: i,
-        size: 2 + hash(i) * 4,
-        left: hash(i + 100) * 100,
-        duration: 8 + hash(i + 200) * 12,
-        delay: hash(i + 300) * 10,
-      })),
-    [count]
-  );
+        size: +(2 + Math.random() * 4).toFixed(1),
+        left: +(Math.random() * 100).toFixed(1),
+        duration: +(8 + Math.random() * 12).toFixed(1),
+        delay: +(Math.random() * 10).toFixed(1),
+      }))
+    );
+  }, [count]);
+
+  if (particles.length === 0) return null;
 
   return (
     <div
@@ -47,7 +48,7 @@ export function FloatingParticles({
             height: `${p.size}px`,
             left: `${p.left}%`,
             bottom: `-${p.size}px`,
-            backgroundColor: "#4f6ef7",
+            backgroundColor: "#3461d1",
             opacity: 0,
             animation: `particle-float ${p.duration}s ease-in-out ${p.delay}s infinite`,
           }}

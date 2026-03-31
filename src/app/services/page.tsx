@@ -13,6 +13,18 @@ import {
 } from "lucide-react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { SectionLabel } from "@/components/section-label";
+import { VideoGallery } from "@/components/video-gallery";
+import { getVimeoThumbnails } from "@/lib/vimeo";
+
+const showcaseVideos = [
+  { vimeoId: "1163714583", title: "Agent Brand Content" },
+  { vimeoId: "1164740705", title: "Social Media Reel" },
+  { vimeoId: "1166726096", title: "Creator Program Spotlight" },
+  { vimeoId: "1177761655", title: "Personal Brand Story" },
+  { vimeoId: "1175629817", title: "Content Strategy in Action" },
+  { vimeoId: "1168240392", title: "Agent Highlight Reel" },
+  { vimeoId: "1127088549", title: "Brand Growth Campaign" },
+];
 
 export const revalidate = 3600;
 
@@ -121,7 +133,15 @@ const tiers = [
   },
 ];
 
-export default function BrandingPage() {
+export default async function BrandingPage() {
+  const thumbnails = await getVimeoThumbnails(
+    showcaseVideos.map((v) => v.vimeoId)
+  );
+  const videosWithThumbs = showcaseVideos.map((v) => ({
+    ...v,
+    thumbnail: thumbnails[v.vimeoId],
+  }));
+
   return (
     <>
       {/* Hero */}
@@ -144,9 +164,32 @@ export default function BrandingPage() {
         </div>
       </section>
 
+      {/* Video Showcase */}
+      <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6">
+          <AnimateOnScroll animation="fade-up">
+            <div className="mx-auto max-w-2xl text-center mb-10 sm:mb-14">
+              <SectionLabel>See Our Work</SectionLabel>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white md:text-4xl">
+                Content We Have Created
+              </h2>
+              <p className="mt-4 text-white/60">
+                Real videos from our Content Creator Program — built to perform
+                and designed to grow your brand.
+              </p>
+            </div>
+          </AnimateOnScroll>
+          <AnimateOnScroll animation="fade-up" delay={0.15}>
+            <VideoGallery videos={videosWithThumbs} columns={3} />
+          </AnimateOnScroll>
+        </div>
+      </section>
+
       {/* What We Do */}
       <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
-        <div className="absolute right-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px]" />
+        <div className="absolute inset-0 gradient-mesh" />
+        <div className="absolute right-10 top-20 h-64 w-64 rounded-full bg-purple/[0.05] blur-[80px]" />
+        <div className="absolute left-[8%] bottom-[15%] h-40 w-40 rounded-full bg-sky-500/[0.04] blur-[80px] hidden lg:block" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <SectionLabel>What We Do</SectionLabel>
@@ -163,8 +206,8 @@ export default function BrandingPage() {
             {whatWeDoItems.map((item, i) => {
               const Icon = item.icon;
               return (
-                <AnimateOnScroll key={item.text} animation="fade-up" delay={i * 0.08}>
-                  <div className="flex items-start gap-4 rounded-2xl glass-card p-6 sm:p-7">
+                <AnimateOnScroll key={item.text} animation="fade-up" delay={i * 0.08} className="h-full">
+                  <div className="flex items-start gap-4 rounded-2xl glass-card p-6 sm:p-7 h-full">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
                       <Icon className="h-5 w-5 text-purple-light" />
                     </div>
@@ -181,7 +224,9 @@ export default function BrandingPage() {
 
       {/* How This Helps You Win */}
       <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
-        <div className="absolute left-[5%] top-[20%] h-60 w-60 rounded-full bg-purple/[0.04] blur-[100px]" />
+        <div className="absolute inset-0 dot-grid-fine pointer-events-none" />
+        <div className="absolute left-[5%] top-[20%] h-60 w-60 rounded-full bg-purple/[0.06] blur-[100px]" />
+        <div className="absolute right-[10%] bottom-[10%] h-48 w-48 rounded-full bg-indigo-400/[0.04] blur-[80px] hidden lg:block" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
             <AnimateOnScroll animation="fade-up">
@@ -246,7 +291,9 @@ export default function BrandingPage() {
 
       {/* Pricing Tiers */}
       <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20" id="pricing">
-        <div className="absolute left-[5%] top-[20%] h-60 w-60 rounded-full bg-purple/[0.04] blur-[100px]" />
+        <div className="absolute inset-0 gradient-mesh-rich pointer-events-none" />
+        <div className="absolute left-[5%] top-[20%] h-60 w-60 rounded-full bg-purple/[0.06] blur-[100px]" />
+        <div className="absolute right-[8%] top-[40%] h-40 w-40 rounded-full bg-sky-500/[0.04] blur-[80px] hidden lg:block" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">

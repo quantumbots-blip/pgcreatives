@@ -7,9 +7,19 @@ import { Play } from "lucide-react";
 import { MagneticButton } from "@/components/magnetic-button";
 import { FloatingParticles } from "@/components/floating-particles";
 
+const MIN_SPLASH_MS = 2200;
+
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoReady, setVideoReady] = useState(false);
+  const [splashDone, setSplashDone] = useState(false);
+  const splashStart = useRef(Date.now());
+
+  const dismiss = useCallback(() => {
+    const elapsed = Date.now() - splashStart.current;
+    const remaining = Math.max(0, MIN_SPLASH_MS - elapsed);
+    setTimeout(() => setSplashDone(true), remaining);
+  }, []);
 
   const tryPlay = useCallback(() => {
     const video = videoRef.current;
@@ -20,11 +30,17 @@ export function VideoHero() {
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise
-        .then(() => setVideoReady(true))
+        .then(() => {
+          setVideoReady(true);
+          dismiss();
+        })
         .catch(() => {
           // Autoplay blocked — retry on first user interaction
           const resume = () => {
-            video.play().then(() => setVideoReady(true)).catch(() => {});
+            video.play().then(() => {
+              setVideoReady(true);
+              dismiss();
+            }).catch(() => {});
             document.removeEventListener("click", resume);
             document.removeEventListener("touchstart", resume);
             document.removeEventListener("scroll", resume);
@@ -34,6 +50,12 @@ export function VideoHero() {
           document.addEventListener("scroll", resume, { once: true });
         });
     }
+  }, [dismiss]);
+
+  // Fallback: dismiss splash after 4s even if video never loads
+  useEffect(() => {
+    const fallback = setTimeout(() => setSplashDone(true), 4000);
+    return () => clearTimeout(fallback);
   }, []);
 
   useEffect(() => {
@@ -52,20 +74,22 @@ export function VideoHero() {
 
   return (
     <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-hidden">
-      {/* Loading overlay — black with logo, fades out when video is playing */}
+      {/* Loading overlay — black with logo, fades out after min splash time */}
       <div
-        className={`absolute inset-0 z-20 flex items-center justify-center bg-black transition-opacity duration-700 ${
-          videoReady ? "opacity-0 pointer-events-none" : "opacity-100"
+        className={`absolute inset-0 z-20 flex items-center justify-center bg-black transition-opacity duration-1000 ${
+          splashDone ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
-        <Image
-          src="/images/pg-logo.png"
-          alt="PG Creatives"
-          width={280}
-          height={80}
-          className="animate-logo-loading w-48 sm:w-64 h-auto"
-          priority
-        />
+        <div className="animate-logo-loading">
+          <Image
+            src="/images/pg-logo.png"
+            alt="PG Creatives"
+            width={280}
+            height={80}
+            className="w-48 sm:w-64 h-auto"
+            priority
+          />
+        </div>
       </div>
 
       {/* Poster — shows while video loads or if video fails */}
@@ -96,7 +120,7 @@ export function VideoHero() {
       </video>
 
       {/* Overlay gradients — purple-tinted */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/70 via-[#000000]/45 to-[#000000]/85" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/75 via-[#000000]/55 to-[#000000]/90" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/75 via-[#000000]/15 to-transparent" />
 
       {/* Single subtle ambient glow */}
