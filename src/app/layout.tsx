@@ -23,7 +23,7 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://pgcreatives.vercel.app"),
+  metadataBase: new URL("https://pgcreativeswi.com"),
   title: {
     default: "PG Creatives | Professional Grade Media",
     template: "%s | PG Creatives",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     title: "PG Creatives | Professional Grade Media",
     description:
       "Professional grade media for tailored experiences in Green Bay & Madison, WI.",
-    url: "https://pgcreatives.vercel.app",
+    url: "https://pgcreativeswi.com",
     siteName: "PG Creatives",
     locale: "en_US",
     type: "website",
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     images: ["/og-home.jpg"],
   },
   robots: { index: true, follow: true },
-  alternates: { canonical: "https://pgcreatives.vercel.app" },
+  alternates: { canonical: "https://pgcreativeswi.com" },
 };
 
 export default function RootLayout({

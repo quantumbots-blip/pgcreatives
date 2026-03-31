@@ -67,21 +67,23 @@ export function ScrollCards3D() {
     if (!motionOk || !isDesktop) return;
 
     let rafId = 0;
+    let sectionTop = 0;
+
+    function updateRect() {
+      const section = sectionRef.current;
+      if (section) sectionTop = section.offsetTop;
+    }
 
     function onScroll() {
       if (rafId) cancelAnimationFrame(rafId);
 
       rafId = requestAnimationFrame(() => {
-        const section = sectionRef.current;
-        if (!section) return;
-
-        const rect = section.getBoundingClientRect();
         const windowHeight = window.innerHeight;
 
-        // Progress: 0 when section top hits viewport bottom, 1 when section top hits 30% from top
+        // Use cached offsetTop + scrollY instead of getBoundingClientRect
+        const current = sectionTop - window.scrollY;
         const start = windowHeight;
         const end = windowHeight * 0.3;
-        const current = rect.top;
 
         const raw = 1 - (current - end) / (start - end);
         const progress = Math.max(0, Math.min(1, raw));
@@ -93,11 +95,14 @@ export function ScrollCards3D() {
       });
     }
 
+    updateRect();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", updateRect);
     onScroll();
 
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", updateRect);
       if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);

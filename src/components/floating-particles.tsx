@@ -17,6 +17,9 @@ export function FloatingParticles({
   >([]);
 
   useEffect(() => {
+    // Respect reduced motion preference
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     // Generate particles only on the client to avoid hydration mismatch
     setParticles(
       Array.from({ length: count }, (_, i) => ({
@@ -48,7 +51,7 @@ export function FloatingParticles({
             height: `${p.size}px`,
             left: `${p.left}%`,
             bottom: `-${p.size}px`,
-            backgroundColor: "#3461d1",
+            backgroundColor: "#2b6fb8",
             opacity: 0,
             animation: `particle-float ${p.duration}s ease-in-out ${p.delay}s infinite`,
           }}

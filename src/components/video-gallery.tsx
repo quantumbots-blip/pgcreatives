@@ -70,12 +70,13 @@ export function VideoGallery({
             <X className="h-5 w-5" />
           </button>
           <div
-            className="relative w-full max-w-6xl aspect-video rounded-none sm:rounded-xl overflow-hidden"
+            className="relative w-full h-full max-w-6xl max-h-[90vh] sm:max-h-[85vh] flex items-center justify-center rounded-none sm:rounded-xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <iframe
-              src={`https://player.vimeo.com/video/${activeVideo}?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&title=0&byline=0&portrait=0`}
-              className="absolute inset-0 h-full w-full"
+              src={`https://player.vimeo.com/video/${activeVideo}?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&title=0&byline=0&portrait=0&responsive=1`}
+              className="w-full h-full"
+              style={{ maxHeight: "90vh" }}
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
               allowFullScreen
             />

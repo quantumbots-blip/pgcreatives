@@ -330,7 +330,7 @@ export default async function BrandingPage() {
                       {tier.description}
                     </p>
                     <Link
-                      href="/#portals"
+                      href="/contact"
                       className="mt-6 flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 border border-white/15 text-white/70 hover:border-white/30 hover:bg-white/5 hover:text-white"
                     >
                       Get Started
@@ -420,7 +420,7 @@ export default async function BrandingPage() {
               for you.
             </p>
             <Link
-              href="/#portals"
+              href="/contact"
               className="relative mt-10 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-base font-semibold tracking-wide text-black transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-[1.03]"
             >
               Get Started <ArrowRight className="h-4 w-4" />

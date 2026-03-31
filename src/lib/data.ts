@@ -25,5 +25,5 @@ export const BUSINESS = {
       href: "https://portal.spiro.media/order/pg/madison",
     },
   },
-  url: "https://pgcreatives.vercel.app",
+  url: "https://pgcreativeswi.com",
 } as const;

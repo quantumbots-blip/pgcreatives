@@ -2,6 +2,8 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PortfolioFilter } from "@/components/portfolio-filter";
 import { getVimeoThumbnails } from "@/lib/vimeo";
 
+export const revalidate = 3600;
+
 const projects = [
   // Videos
   {

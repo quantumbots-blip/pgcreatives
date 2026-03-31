@@ -5,6 +5,8 @@ import { FacebookIcon, InstagramIcon } from "@/components/icons";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { BUSINESS } from "@/lib/data";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "Contact | Get a Free Quote",
   description:

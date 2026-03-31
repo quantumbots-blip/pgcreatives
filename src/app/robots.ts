@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://pgcreatives.vercel.app/sitemap.xml",
+    sitemap: "https://pgcreativeswi.com/sitemap.xml",
   };
 }

@@ -397,7 +397,6 @@ export default function HomePage() {
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.08] blur-[100px]" />
         <div className="absolute right-[10%] top-[20%] h-[200px] w-[200px] rounded-full bg-sky-500/[0.05] blur-[80px] hidden lg:block" />
         <div className="absolute left-[5%] bottom-[10%] h-[150px] w-[150px] rounded-full bg-indigo-400/[0.04] blur-[70px] hidden lg:block" />
-        <FloatingParticles count={8} className="hidden sm:block" />
 
         <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
