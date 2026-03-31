@@ -193,7 +193,7 @@ export function FAQ() {
               <div
                 key={`${activeCategory}-${i}`}
                 className={cn(
-                  "rounded-xl border transition-colors duration-200",
+                  "rounded-xl border",
                   isOpen
                     ? "border-purple/20 bg-purple/[0.04]"
                     : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1]"
@@ -219,15 +219,13 @@ export function FAQ() {
                   id={`faq-${activeCategory}-${i}`}
                   role="region"
                   className={cn(
-                    "grid transition-[grid-template-rows,opacity] duration-200",
-                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    "overflow-hidden transition-[max-height,opacity] duration-300 ease-out",
+                    isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                   )}
                 >
-                  <div className="overflow-hidden">
-                    <p className="px-4 sm:px-6 pb-4 sm:pb-5 text-sm leading-relaxed text-white/60 sm:text-base">
-                      {faq.answer}
-                    </p>
-                  </div>
+                  <p className="px-4 sm:px-6 pb-4 sm:pb-5 text-sm leading-relaxed text-white/60 sm:text-base">
+                    {faq.answer}
+                  </p>
                 </div>
               </div>
             );
