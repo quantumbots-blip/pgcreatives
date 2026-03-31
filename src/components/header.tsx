@@ -271,7 +271,7 @@ export function Header() {
               alt="PG Creatives"
               width={956}
               height={1044}
-              className="h-18 w-auto sm:h-20 lg:h-22 object-contain"
+              className="h-22 w-auto sm:h-24 lg:h-26 object-contain"
               priority
             />
           </Link>
