@@ -265,7 +265,7 @@ export function Header() {
         )}
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:h-18">
           {/* Logo */}
-          <Link href="/" className="relative z-50 -ml-[14px] flex items-center">
+          <Link href="/" className="relative z-50 -ml-[16px] flex items-center">
             <Image
               src="/logo.png"
               alt="PG Creatives"
