@@ -132,7 +132,7 @@ export function PricingSection() {
   return (
     <section className="relative overflow-hidden bg-background py-12 sm:py-16" id="pricing">
       <div className="absolute left-[5%] top-[20%] h-60 w-60 rounded-full bg-purple/[0.04] blur-[100px]" />
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6">
         {/* Header */}
         <AnimateOnScroll animation="fade-up">
           <div className="mx-auto max-w-2xl text-center">
@@ -157,7 +157,7 @@ export function PricingSection() {
                   key={loc.key}
                   onClick={() => setActiveLocation(loc.key)}
                   className={cn(
-                    "flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300",
+                    "flex items-center gap-1.5 sm:gap-2 rounded-full px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium transition-all duration-300",
                     activeLocation === loc.key
                       ? "bg-purple/20 text-purple-light border border-purple/30 shadow-[0_0_15px_rgba(79,110,247,0.15)]"
                       : "text-white/50 border border-transparent hover:text-white/70"
@@ -185,14 +185,33 @@ export function PricingSection() {
             <AnimateOnScroll key={pkg.name} animation="fade-up" delay={i * 0.1}>
               <div
                 className={cn(
-                  "relative flex flex-col rounded-2xl border p-6 lg:p-8 transition-all duration-300 hover:-translate-y-1",
+                  "relative flex flex-col rounded-2xl border overflow-hidden transition-all duration-300 hover:-translate-y-1",
                   pkg.popular
-                    ? "border-purple/30 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] shadow-[0_0_40px_rgba(79,110,247,0.15)]"
-                    : "border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06]"
+                    ? "border-purple/40 bg-gradient-to-br from-purple/[0.22] via-purple-dim/[0.3] to-purple-light/[0.1] shadow-[0_0_50px_rgba(79,110,247,0.2),inset_0_1px_0_rgba(165,180,252,0.1)]"
+                    : pkg.name === "PG Platinum"
+                      ? "border-purple-light/30 bg-gradient-to-br from-purple-light/[0.15] via-indigo-500/[0.08] to-blue-500/[0.1] shadow-[0_0_40px_rgba(165,180,252,0.12)]"
+                      : "border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06]"
                 )}
               >
+                {/* Gradient top accent */}
+                {(pkg.popular || pkg.name === "PG Platinum") && (
+                  <div className={cn(
+                    "h-1 w-full",
+                    pkg.popular
+                      ? "bg-gradient-to-r from-purple-dim via-purple to-purple-light"
+                      : "bg-gradient-to-r from-blue-500 via-purple-light to-purple"
+                  )} />
+                )}
+                {/* Corner glow */}
+                {(pkg.popular || pkg.name === "PG Platinum") && (
+                  <div className={cn(
+                    "pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full blur-[60px]",
+                    pkg.popular ? "bg-purple/25" : "bg-purple-light/20"
+                  )} />
+                )}
+                <div className="p-6 lg:p-8 flex flex-col flex-1">
                 {pkg.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-purple px-4 py-1 text-xs font-semibold text-white">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 rounded-full bg-gradient-to-r from-purple to-purple-light px-4 py-1 text-xs font-semibold text-white shadow-[0_0_20px_rgba(79,110,247,0.4)]">
                     Most Popular
                   </div>
                 )}
@@ -222,12 +241,15 @@ export function PricingSection() {
                     "mt-6 flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300",
                     pkg.popular
                       ? "bg-gradient-to-r from-purple-dim to-purple text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
-                      : "border border-white/15 text-white/70 hover:border-white/30 hover:bg-white/5 hover:text-white"
+                      : pkg.name === "PG Platinum"
+                        ? "bg-gradient-to-r from-blue-500/80 to-purple-light/80 text-white shadow-[0_0_15px_rgba(165,180,252,0.2)] hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(165,180,252,0.4)]"
+                        : "border border-white/15 text-white/70 hover:border-white/30 hover:bg-white/5 hover:text-white"
                   )}
                 >
                   Get Started
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
+                </div>
               </div>
             </AnimateOnScroll>
           ))}
