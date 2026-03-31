@@ -64,14 +64,14 @@ export default function ContactPage() {
         {/* Floating decorative orb */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-32 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_#4f6ef740_0%,_#3730a320_40%,_transparent_70%)] blur-3xl"
+          className="pointer-events-none absolute -right-32 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_#378cd240_0%,_#3730a320_40%,_transparent_70%)] blur-3xl"
         />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#4f6ef720_0%,_transparent_55%)]" />
-        <div className="absolute left-[8%] bottom-[20%] h-28 w-28 rounded-full border border-dashed border-[#4f6ef7]/10 spin-ring hidden lg:block" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#378cd220_0%,_transparent_55%)]" />
+        <div className="absolute left-[8%] bottom-[20%] h-28 w-28 rounded-full border border-dashed border-[#378cd2]/10 spin-ring hidden lg:block" />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
           <div className="max-w-2xl">
-            <span className="mb-5 inline-flex items-center justify-center rounded-full border border-[#4f6ef7]/25 bg-[#4f6ef7]/10 px-3 h-7 sm:px-4 sm:h-8 text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#a5b4fc] leading-none">
+            <span className="mb-5 inline-flex items-center justify-center rounded-full border border-[#378cd2]/25 bg-[#378cd2]/10 px-3 h-7 sm:px-4 sm:h-8 text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#85c5e0] leading-none">
               Contact Us
             </span>
             <h1 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
@@ -93,7 +93,7 @@ export default function ContactPage() {
           <div className="grid gap-6 sm:gap-8 lg:grid-cols-5">
             {/* Form */}
             <AnimateOnScroll animation="slide-in-left" className="lg:col-span-3">
-              <div className="rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-4 sm:p-6 lg:p-10 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]">
+              <div className="rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-4 sm:p-6 lg:p-10 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(55,140,210,0.2)]">
                 <ContactForm />
               </div>
             </AnimateOnScroll>
@@ -109,9 +109,9 @@ export default function ContactPage() {
                   {contactInfo.map((item) => {
                     const content = (
                       <div className="flex items-start gap-3 text-sm">
-                        <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-[#4f6ef7]/60" />
+                        <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-[#378cd2]/60" />
                         <div>
-                          <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#a5b4fc]">
+                          <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#85c5e0]">
                             {item.label}
                           </p>
                           <p className="mt-0.5 text-white/60 break-all">{item.value}</p>
@@ -148,7 +148,7 @@ export default function ContactPage() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-11 w-11 items-center justify-center rounded-lg border border-[#4f6ef7]/20 text-[#4f6ef7]/60 transition-colors hover:border-[#4f6ef7]/50 hover:text-[#a5b4fc]"
+                      className="flex h-11 w-11 items-center justify-center rounded-lg border border-[#378cd2]/20 text-[#378cd2]/60 transition-colors hover:border-[#378cd2]/50 hover:text-[#85c5e0]"
                     >
                       <social.icon className="h-3.5 w-3.5" />
                       <span className="sr-only">{social.name}</span>

@@ -157,7 +157,7 @@ export default function TeamPage() {
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
             {team.map((member, index) => (
               <AnimateOnScroll key={member.name} animation="fade-up" delay={index * 0.08}>
-                <div className={`card-shine group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cardGradients[index]} border border-white/[0.08] transition-all duration-500 hover:border-white/20 hover:shadow-[0_0_40px_rgba(79,110,247,0.15)]`}>
+                <div className={`card-shine group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cardGradients[index]} border border-white/[0.08] transition-all duration-500 hover:border-white/20 hover:shadow-[0_0_40px_rgba(55,140,210,0.15)]`}>
                   {/* Photo with aspect-[3/4] */}
                   <div className="relative aspect-[3/4] overflow-hidden">
                     <Image
@@ -191,7 +191,7 @@ export default function TeamPage() {
             </h2>
             <div className="space-y-6 text-base sm:text-lg leading-relaxed text-white/60 text-center">
               <p>
-                PG Creatives started at 19 years old with a simple goal — create
+                I started PG Creatives at 19 years old with a simple goal — create
                 better media for real estate and help agents stand out in a crowded
                 market. What began as just me with a camera has grown into a full
                 team working with hundreds of agents and continuing to raise the

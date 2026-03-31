@@ -57,9 +57,9 @@
 :root {
   --background: #000000;
   --foreground: oklch(0.98 0 0);
-  --purple: #3461d1;
-  --purple-light: #7e9ae6;
-  --purple-dim: #0a1a5c;
+  --purple: #2b6fb8;
+  --purple-light: #6ab0d4;
+  --purple-dim: #091e48;
   --card: #0a0a0a;
   --card-foreground: oklch(0.98 0 0);
   --popover: #0a0a0a;
@@ -70,28 +70,28 @@
   --secondary-foreground: oklch(0.90 0 0);
   --muted: #141414;
   --muted-foreground: oklch(0.55 0 0);
-  --accent: rgba(52, 97, 209, 0.12);
-  --accent-foreground: #7e9ae6;
+  --accent: rgba(43, 111, 184, 0.12);
+  --accent-foreground: #6ab0d4;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: rgba(52, 97, 209, 0.12);
-  --input: rgba(52, 97, 209, 0.15);
-  --ring: #3461d1;
+  --border: rgba(43, 111, 184, 0.12);
+  --input: rgba(43, 111, 184, 0.15);
+  --ring: #2b6fb8;
   --navy: #111111;
   --navy-light: #1a1a1a;
-  --chart-1: #3461d1;
-  --chart-2: #7e9ae6;
-  --chart-3: #0a1a5c;
-  --chart-4: #0a1a5c;
-  --chart-5: #020516;
+  --chart-1: #2b6fb8;
+  --chart-2: #6ab0d4;
+  --chart-3: #091e48;
+  --chart-4: #091e48;
+  --chart-5: #020d16;
   --radius: 0.625rem;
   --sidebar: #0a0a0a;
   --sidebar-foreground: oklch(0.98 0 0);
   --sidebar-primary: oklch(0.98 0 0);
   --sidebar-primary-foreground: #000000;
-  --sidebar-accent: rgba(52, 97, 209, 0.12);
-  --sidebar-accent-foreground: #7e9ae6;
-  --sidebar-border: rgba(52, 97, 209, 0.1);
-  --sidebar-ring: #3461d1;
+  --sidebar-accent: rgba(43, 111, 184, 0.12);
+  --sidebar-accent-foreground: #6ab0d4;
+  --sidebar-border: rgba(43, 111, 184, 0.1);
+  --sidebar-ring: #2b6fb8;
 }
 
 @layer base {
@@ -235,14 +235,14 @@ html {
 /* ── Gradient text utilities ── */
 
 .gradient-text {
-  background: linear-gradient(135deg, #0a1a5c, #3461d1, #7e9ae6);
+  background: linear-gradient(135deg, #091e48, #2b6fb8, #6ab0d4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-bold {
-  background: linear-gradient(135deg, #0a1a5c, #0a1a5c, #3461d1);
+  background: linear-gradient(135deg, #091e48, #091e48, #2b6fb8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -367,7 +367,7 @@ html {
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, #0a1a5c, #0a1a5c, #0a1a5c, #3461d1);
+  background: linear-gradient(135deg, #091e48, #091e48, #091e48, #2b6fb8);
   background-size: 300% 300%;
   animation: gradient-shift 12s ease infinite;
   z-index: -1;
@@ -432,13 +432,13 @@ html {
   bottom: -6px;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, #0a1a5c, #3461d1, transparent);
+  background: linear-gradient(90deg, #091e48, #2b6fb8, transparent);
   border-radius: 2px;
   animation: reveal-right 1.2s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
 .gradient-text-animated {
-  background: linear-gradient(135deg, #0a1a5c, #0a1a5c, #3461d1, #7e9ae6, #3461d1, #0a1a5c);
+  background: linear-gradient(135deg, #091e48, #091e48, #2b6fb8, #6ab0d4, #2b6fb8, #091e48);
   background-size: 300% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -449,13 +449,13 @@ html {
 .rainbow-shimmer {
   background: linear-gradient(
     90deg,
-    #0a1a5c 0%,
-    #0a1a5c 15%,
-    #3461d1 30%,
+    #091e48 0%,
+    #091e48 15%,
+    #2b6fb8 30%,
     #ffffff 50%,
-    #3461d1 70%,
-    #0a1a5c 85%,
-    #0a1a5c 100%
+    #2b6fb8 70%,
+    #091e48 85%,
+    #091e48 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -467,11 +467,11 @@ html {
 .shimmer-text {
   background: linear-gradient(
     90deg,
-    #0a1a5c 0%,
-    #3461d1 25%,
-    #7e9ae6 50%,
-    #3461d1 75%,
-    #0a1a5c 100%
+    #091e48 0%,
+    #2b6fb8 25%,
+    #6ab0d4 50%,
+    #2b6fb8 75%,
+    #091e48 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -534,7 +534,7 @@ html {
 
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #0a1a5c, #3461d1, #0a1a5c, transparent);
+  background: linear-gradient(90deg, transparent, #091e48, #2b6fb8, #091e48, transparent);
   opacity: 0.3;
 }
 
@@ -587,7 +587,7 @@ html {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3461d1;
+  background: #2b6fb8;
 }
 
 /* ── Premium card shine sweep on hover ── */
@@ -795,7 +795,7 @@ html {
   left: 0;
   width: 0;
   height: 1px;
-  background: linear-gradient(90deg, #3461d1, #7e9ae6);
+  background: linear-gradient(90deg, #2b6fb8, #6ab0d4);
   transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 

@@ -40,7 +40,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
     <div
       key={project.title}
       className={cn(
-        "group relative overflow-hidden rounded-xl bg-[#0a0a0a] transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(52,97,209,0.15)]",
+        "group relative overflow-hidden rounded-xl bg-[#0a0a0a] transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(43,111,184,0.15)]",
         project.type === "video" ? "aspect-video cursor-pointer" : "aspect-[4/3]"
       )}
       onClick={

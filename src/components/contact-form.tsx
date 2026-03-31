@@ -137,7 +137,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           id="service"
           name="service"
           defaultValue=""
-          className="h-12 w-full rounded-lg border border-purple/12 bg-[#000000]/60 px-3.5 text-base text-white focus:border-purple/40 focus:ring-1 focus:ring-purple/20 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(52%2C97%2C209%2C0.4)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat"
+          className="h-12 w-full rounded-lg border border-purple/12 bg-[#000000]/60 px-3.5 text-base text-white focus:border-purple/40 focus:ring-1 focus:ring-purple/20 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(43%2C111%2C184%2C0.4)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat"
         >
           <option value="" disabled className="bg-[#000000] text-white/60">
             Select a service...

@@ -147,8 +147,8 @@ export function ScrollCards3D() {
               <div
                 className={`relative flex h-full flex-col rounded-2xl border transition-all duration-300 ${
                   service.popular
-                    ? "border-purple/30 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] hover:border-purple/50 hover:shadow-[0_0_40px_rgba(52,97,209,0.25)]"
-                    : "border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] hover:border-purple/40 hover:shadow-[0_0_40px_rgba(52,97,209,0.2)]"
+                    ? "border-purple/30 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] hover:border-purple/50 hover:shadow-[0_0_40px_rgba(43,111,184,0.25)]"
+                    : "border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] hover:border-purple/40 hover:shadow-[0_0_40px_rgba(43,111,184,0.2)]"
                 }`}
               >
                 {/* Popular badge */}
@@ -188,7 +188,7 @@ export function ScrollCards3D() {
                       href="/#portals"
                       className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm tracking-wide transition-all duration-300 ${
                         service.popular
-                          ? "bg-gradient-to-r from-purple-dim to-purple font-semibold text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
+                          ? "bg-gradient-to-r from-purple-dim to-purple font-semibold text-white shadow-[0_0_20px_rgba(55,140,210,0.3)] hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(55,140,210,0.5)]"
                           : "border border-white/15 font-medium text-white/70 hover:border-white/30 hover:bg-white/5 hover:text-white"
                       }`}
                     >

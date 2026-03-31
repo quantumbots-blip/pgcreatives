@@ -269,28 +269,6 @@ export default async function BrandingPage() {
         </div>
       </section>
 
-      {/* How the Program Works */}
-      <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
-        <div className="mx-auto max-w-3xl px-5 sm:px-6 text-center">
-          <AnimateOnScroll animation="fade-up">
-            <SectionLabel>The Process</SectionLabel>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white md:text-4xl">
-              How the Program Works
-            </h2>
-            <p className="mx-auto mt-5 max-w-xl text-white/60">
-              This is a monthly program built around consistency and growth. We
-              start with a strategy call to understand your goals, your market,
-              and the type of content that will work best for you. From there, we
-              create and film content on a consistent basis, delivering
-              ready-to-post videos that are built to perform.
-            </p>
-            <p className="mx-auto mt-4 max-w-xl text-white/60">
-              We keep things simple, efficient, and focused on results.
-            </p>
-          </AnimateOnScroll>
-        </div>
-      </section>
-
       {/* Pricing Tiers */}
       <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20" id="pricing">
         <div className="absolute inset-0 gradient-mesh-rich pointer-events-none" />
@@ -316,7 +294,7 @@ export default async function BrandingPage() {
               <AnimateOnScroll key={tier.name} animation="fade-up" delay={i * 0.1}>
                 <div className={`relative ${tier.popular ? "mt-4" : ""}`}>
                   {tier.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10 rounded-full bg-gradient-to-r from-purple to-purple-light px-5 py-1.5 text-xs font-semibold text-white shadow-[0_0_20px_rgba(52,97,209,0.4)]">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10 rounded-full bg-gradient-to-r from-purple to-purple-light px-5 py-1.5 text-xs font-semibold text-white shadow-[0_0_20px_rgba(43,111,184,0.4)]">
                       Most Popular
                     </div>
                   )}
@@ -431,7 +409,7 @@ export default async function BrandingPage() {
         <div className="absolute left-1/2 top-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.08] blur-[120px]" />
         <div className="absolute left-[20%] top-[30%] h-[200px] w-[200px] rounded-full bg-sky-500/[0.05] blur-[100px]" />
         <div className="relative mx-auto max-w-4xl px-5 sm:px-6">
-          <div className="relative overflow-hidden rounded-3xl border border-purple/25 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] p-10 sm:p-16 text-center shadow-[0_0_80px_rgba(52,97,209,0.12),inset_0_1px_0_rgba(126,154,230,0.1)]">
+          <div className="relative overflow-hidden rounded-3xl border border-purple/25 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] p-10 sm:p-16 text-center shadow-[0_0_80px_rgba(43,111,184,0.12),inset_0_1px_0_rgba(106,176,212,0.1)]">
             <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-purple/20 blur-[80px]" />
             <div className="pointer-events-none absolute -left-12 -bottom-12 h-40 w-40 rounded-full bg-purple-light/15 blur-[70px]" />
             <h2 className="relative text-3xl sm:text-4xl font-bold text-white md:text-5xl">

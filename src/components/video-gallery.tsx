@@ -33,7 +33,7 @@ export function VideoGallery({
           <button
             key={video.vimeoId}
             onClick={() => setActiveVideo(video.vimeoId)}
-            className="group relative aspect-video overflow-hidden rounded-xl bg-[#0a0a0a] transition-all duration-500 hover:shadow-[0_0_30px_rgba(52,97,209,0.15)]"
+            className="group relative aspect-video overflow-hidden rounded-xl bg-[#0a0a0a] transition-all duration-500 hover:shadow-[0_0_30px_rgba(43,111,184,0.15)]"
           >
             {video.thumbnail && (
               /* eslint-disable-next-line @next/next/no-img-element */

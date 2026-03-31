@@ -135,7 +135,7 @@ export function Footer() {
                   href={portal.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/60 transition-all duration-500 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white hover:shadow-[0_0_30px_rgba(79,110,247,0.15)]"
+                  className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/60 transition-all duration-500 hover:border-purple/20 hover:bg-purple/[0.06] hover:text-white hover:shadow-[0_0_30px_rgba(55,140,210,0.15)]"
                 >
                   <span>{portal.label}</span>
                   <ArrowRight className="h-3.5 w-3.5 text-white/20" />

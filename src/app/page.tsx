@@ -91,7 +91,7 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:gap-8 px-5 sm:px-6 py-8 sm:py-14 sm:grid-cols-3">
           {stats.map((stat, i) => (
             <AnimateOnScroll key={stat.label} animation="fade-up" delay={i * 0.15}>
-              <div className="relative text-center rounded-xl p-3 sm:p-4 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
+              <div className="relative text-center rounded-xl p-3 sm:p-4 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(55,140,210,0.12),inset_0_0_60px_rgba(55,140,210,0.03)]">
                 <p className="font-heading text-3xl font-bold sm:text-5xl text-white">
                   <Counter
                     value={stat.value}
@@ -147,7 +147,7 @@ export default function HomePage() {
                 <div className="card-3d-enhanced relative z-10 h-full">
                   <Link
                     href="/services"
-                    className="card-shine group relative flex h-full flex-col rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] overflow-hidden transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(52,97,209,0.2)]"
+                    className="card-shine group relative flex h-full flex-col rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] overflow-hidden transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(43,111,184,0.2)]"
                   >
                     {/* Image */}
                     <div className="relative h-48 w-full overflow-hidden">
@@ -224,7 +224,7 @@ export default function HomePage() {
               {photos.map((photo) => (
                 <div
                   key={photo.alt}
-                  className={`group relative overflow-hidden rounded-xl bg-navy-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(79,110,247,0.15)] ${photo.colSpan} ${
+                  className={`group relative overflow-hidden rounded-xl bg-navy-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(55,140,210,0.15)] ${photo.colSpan} ${
                     photo.colSpan ? "aspect-auto min-h-[250px] sm:min-h-[350px]" : "aspect-[4/3]"
                   }`}
                 >
@@ -286,7 +286,7 @@ export default function HomePage() {
                   <MagneticButton>
                     <Link
                       href="/services"
-                      className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-purple-dim to-purple px-7 py-3.5 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-[0_0_15px_rgba(52,97,209,0.25)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(52,97,209,0.4)]"
+                      className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-purple-dim to-purple px-7 py-3.5 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-[0_0_15px_rgba(43,111,184,0.25)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(43,111,184,0.4)]"
                     >
                       Learn More
                       <ArrowRight className="h-3.5 w-3.5" />
@@ -348,7 +348,7 @@ export default function HomePage() {
                 href="https://portal.spiro.media/order/pg/northeast-wisconsin"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-shine border-trace group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-6 sm:p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(52,97,209,0.2)]"
+                className="card-shine border-trace group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-6 sm:p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(43,111,184,0.2)]"
               >
                 <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-purple/20 blur-[60px] transition-all duration-300 group-hover:bg-purple/30" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
@@ -369,7 +369,7 @@ export default function HomePage() {
                 href="https://portal.spiro.media/order/pg/madison"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-shine border-trace group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple-light/[0.08] via-black to-purple/[0.1] p-6 sm:p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(52,97,209,0.2)]"
+                className="card-shine border-trace group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple-light/[0.08] via-black to-purple/[0.1] p-6 sm:p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(43,111,184,0.2)]"
               >
                 <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-purple-light/15 blur-[60px] transition-all duration-300 group-hover:bg-purple-light/25" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
@@ -420,7 +420,7 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-up" delay={0.15}>
-            <div className="relative z-10 rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-6 sm:p-8 lg:p-10 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(52,97,209,0.2)]">
+            <div className="relative z-10 rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-6 sm:p-8 lg:p-10 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(43,111,184,0.2)]">
               <ContactForm />
             </div>
           </AnimateOnScroll>
