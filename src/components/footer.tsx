@@ -32,14 +32,12 @@ export function Footer() {
       <div className="pointer-events-none absolute -right-40 bottom-20 h-80 w-80 rounded-full bg-purple/[0.03] blur-[120px]" />
 
       {/* ── CTA Banner ── */}
-      <div className="mx-auto max-w-7xl px-6 pt-12 sm:pt-16">
-        <div className="relative rounded-2xl border border-purple/15 bg-gradient-to-br from-[#0d0d2a] via-[#0a1035] to-[#0d0d2a] p-8 sm:p-12 lg:p-16 overflow-hidden transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.15),inset_0_0_60px_rgba(79,110,247,0.05)]">
-          {/* Decorative corner glow */}
-          <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/10 blur-[80px]" />
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 pt-10 sm:pt-16">
+        <div className="relative rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.06] via-black to-purple-light/[0.03] p-6 sm:p-8 overflow-hidden transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]">
 
-          <div className="relative flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="relative flex flex-col items-start gap-5 sm:gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-lg">
-              <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
+              <h2 className="text-xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
                 Ready to Elevate
                 <br />
                 <span className="text-white">Your Visual Story?</span>
@@ -51,7 +49,7 @@ export function Footer() {
             </div>
             <Link
               href="/#portals"
-              className="group inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-purple-dim to-purple px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)] shrink-0"
+              className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-all duration-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] shrink-0"
             >
               Start a Project
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -61,8 +59,8 @@ export function Footer() {
       </div>
 
       {/* ── Main Footer Content ── */}
-      <div className="mx-auto max-w-7xl px-6 pt-14 pb-6 sm:pt-20 sm:pb-8">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_1fr_1fr] lg:gap-12">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 pt-12 pb-6 sm:pt-20 sm:pb-8">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_1fr_1fr] lg:gap-12">
           {/* Brand column */}
           <div className="sm:col-span-2 lg:col-span-1 space-y-3">
             <Link href="/" className="-ml-2.5 inline-block">

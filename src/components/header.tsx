@@ -298,12 +298,12 @@ export function Header() {
                   </Link>
                 )
               )}
-              <Link
+              <a
                 href="/#portals"
                 className="rounded-full bg-white px-4 py-1.5 text-[13px] font-medium tracking-wide text-black transition-all duration-200 hover:bg-white/80"
               >
                 Book Now
-              </Link>
+              </a>
             </div>
           </nav>
 
@@ -336,7 +336,7 @@ export function Header() {
         {/* Content */}
         <div
           className={cn(
-            "relative flex h-full flex-col pt-24 pb-8 px-6 transition-transform duration-500",
+            "relative flex h-full flex-col pt-24 pb-8 px-5 sm:px-6 transition-transform duration-500",
             mobileOpen ? "translate-y-0" : "-translate-y-8"
           )}
         >
@@ -417,13 +417,13 @@ export function Header() {
 
           {/* Bottom CTA */}
           <div className="pt-4">
-            <Link
+            <a
               href="/#portals"
               onClick={() => setMobileOpen(false)}
-              className="flex w-full items-center justify-center rounded-full bg-gradient-to-r from-purple-dim to-purple py-4 text-base font-semibold text-white tracking-wide shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all active:scale-[0.98]"
+              className="flex w-full items-center justify-center rounded-full bg-gradient-to-r from-purple-dim to-purple py-4 text-base font-semibold text-white tracking-wide ring-1 ring-purple/40 shadow-[0_0_15px_rgba(79,110,247,0.25),0_0_40px_rgba(79,110,247,0.1)] transition-all active:scale-[0.98]"
             >
               Book a Shoot
-            </Link>
+            </a>
             <p className="mt-3 text-center text-xs text-white/40">
               Green Bay · Madison · Fox Valley
             </p>

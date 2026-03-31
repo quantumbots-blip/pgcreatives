@@ -81,7 +81,7 @@ export default function ContactPage() {
         />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#4f6ef720_0%,_transparent_55%)]" />
         <div className="absolute left-[8%] bottom-[20%] h-28 w-28 rounded-full border border-dashed border-[#4f6ef7]/10 spin-ring hidden lg:block" />
-        <div className="relative mx-auto max-w-7xl px-6">
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
           <div className="max-w-2xl">
             <span className="mb-5 inline-flex items-center justify-center rounded-full border border-[#4f6ef7]/25 bg-[#4f6ef7]/10 px-3 h-7 sm:px-4 sm:h-8 text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#a5b4fc] leading-none">
               Contact Us
@@ -100,7 +100,7 @@ export default function ContactPage() {
 
       {/* Form + Info */}
       <section className="bg-background py-10 sm:py-14">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <div className="grid gap-6 sm:gap-8 lg:grid-cols-5">
             {/* Form */}
             <AnimateOnScroll animation="slide-in-left" className="lg:col-span-3">

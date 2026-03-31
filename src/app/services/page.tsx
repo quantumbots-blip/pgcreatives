@@ -164,7 +164,7 @@ export default function ServicesPage() {
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_rgba(139,92,246,0.12)_0%,transparent_60%)]" />
         <div className="absolute right-[10%] top-[30%] h-40 w-40 rounded-full border border-dashed border-purple/8 spin-ring hidden lg:block" />
         <div className="absolute left-[5%] bottom-[20%] h-24 w-24 morph-blob bg-gradient-to-br from-purple/8 via-purple-light/5 to-transparent hidden lg:block" />
-        <div className="relative mx-auto max-w-7xl px-6">
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
           <div className="max-w-2xl">
             <SectionLabel>Our Services</SectionLabel>
             <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
@@ -182,13 +182,13 @@ export default function ServicesPage() {
       {/* Services List */}
       <section className="relative overflow-hidden bg-background py-10 sm:py-14">
         <div className="absolute right-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px] animate-float-slow" />
-        <div className="mx-auto max-w-7xl space-y-5 px-6">
+        <div className="mx-auto max-w-7xl space-y-4 sm:space-y-5 px-5 sm:px-6">
           {services.map((service, index) => (
             <AnimateOnScroll key={service.title} animation="fade-up" delay={index * 0.1}>
               <div
                 className="group grid grid-cols-1 gap-0 rounded-2xl glass-card transition-all duration-300 hover:-translate-y-1 lg:grid-cols-2"
               >
-                <div className="space-y-5 p-5 sm:p-6 lg:p-10">
+                <div className="space-y-4 sm:space-y-5 p-5 sm:p-6 lg:p-10">
                   <div className="flex items-center gap-3">
                     <div className="icon-3d flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
                       <service.icon className="h-5 w-5 text-purple-light" />
@@ -206,6 +206,7 @@ export default function ServicesPage() {
                 </div>
 
                 <div className="rounded-b-2xl bg-purple/[0.06] p-5 sm:p-6 lg:rounded-b-none lg:rounded-r-2xl lg:p-10">
+
                   <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-purple-light/50">
                     What&apos;s Included
                   </p>
@@ -232,7 +233,7 @@ export default function ServicesPage() {
 
       {/* Process */}
       <section className="bg-background py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Process</SectionLabel>
@@ -242,7 +243,7 @@ export default function ServicesPage() {
             </div>
           </AnimateOnScroll>
 
-          <div className="mt-10 sm:mt-16 grid grid-cols-1 gap-4 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 sm:mt-16 grid grid-cols-2 gap-3 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {process.map((item, i) => (
               <AnimateOnScroll key={item.step} animation="fade-up" delay={i * 0.1}>
                 <div className="rounded-xl p-5 transition-shadow duration-500 hover:shadow-[0_0_20px_rgba(79,110,247,0.25)]">
@@ -263,12 +264,12 @@ export default function ServicesPage() {
 
       {/* CTA */}
       <section className="py-16 sm:py-20 text-center">
-        <div className="mx-auto max-w-xl px-6">
+        <div className="mx-auto max-w-xl px-5 sm:px-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-white">Ready to get started?</h2>
           <p className="mt-3 text-white/50">Get in touch for a free consultation and custom quote.</p>
-          <Link href="/#portals" className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-dim to-purple px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]">
+          <a href="/#portals" className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-dim to-purple px-8 py-3.5 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-[0_0_15px_rgba(79,110,247,0.25),0_0_40px_rgba(79,110,247,0.1)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(79,110,247,0.4),0_0_50px_rgba(79,110,247,0.15)]">
             Get a Quote <ArrowRight className="h-4 w-4" />
-          </Link>
+          </a>
         </div>
       </section>
 

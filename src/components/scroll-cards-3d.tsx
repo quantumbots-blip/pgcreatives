@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
-import Link from "next/link";
-
 const services = [
   {
     title: "PG Core",
@@ -111,9 +109,9 @@ export function ScrollCards3D() {
       {/* Ambient glow */}
       <div className="absolute left-1/2 top-1/3 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple/[0.04] blur-[120px]" />
 
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
         {/* Heading */}
-        <div className="mb-10 text-center sm:mb-16">
+        <div className="mb-8 text-center sm:mb-16">
           <div className="flex justify-center">
             <div className="mb-4 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 h-7 sm:px-4 sm:h-8">
               <span className="text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-purple-light leading-none">
@@ -133,7 +131,7 @@ export function ScrollCards3D() {
 
         {/* Cards container */}
         <div
-          className="perspective-container relative mx-auto flex max-w-5xl flex-col items-center gap-4 lg:flex-row lg:items-stretch lg:justify-center lg:gap-8"
+          className="perspective-container relative mx-auto flex max-w-5xl flex-col items-center gap-3 sm:gap-4 lg:flex-row lg:items-stretch lg:justify-center lg:gap-8"
         >
           {services.map((service, i) => (
             <div
@@ -192,7 +190,7 @@ export function ScrollCards3D() {
 
                   {/* CTA */}
                   <div className="mt-8">
-                    <Link
+                    <a
                       href="/#portals"
                       className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm tracking-wide transition-all duration-300 ${
                         service.popular
@@ -202,7 +200,7 @@ export function ScrollCards3D() {
                     >
                       Get Started
                       <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>

@@ -136,7 +136,7 @@ export default function TeamPage() {
         <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-gradient-to-br from-purple/20 via-blue-500/10 to-transparent blur-[100px]" />
         <div className="absolute bottom-0 left-10 h-60 w-60 rounded-full bg-gradient-to-tr from-indigo-500/10 to-transparent blur-[80px]" />
 
-        <div className="relative mx-auto max-w-7xl px-6">
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
           <div className="max-w-2xl">
             <SectionLabel>About Us</SectionLabel>
 
@@ -158,7 +158,7 @@ export default function TeamPage() {
         {/* Floating decorative orb */}
         <div className="pointer-events-none absolute right-0 top-1/4 h-96 w-96 rounded-full bg-purple/10 blur-[120px]" />
 
-        <div className="relative mx-auto max-w-7xl px-6">
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
             {team.map((member, index) => (
               <AnimateOnScroll key={member.name} animation="fade-up" delay={index * 0.08}>
@@ -189,7 +189,7 @@ export default function TeamPage() {
 
       {/* Values */}
       <section className="bg-background py-12 sm:py-16 lg:py-20">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6">
           {/* Heading */}
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
@@ -230,7 +230,7 @@ export default function TeamPage() {
 
       {/* About */}
       <section className="relative bg-gradient-to-b from-transparent via-purple/[0.02] to-transparent py-12 sm:py-16 lg:py-20">
-        <div className="mx-auto max-w-3xl px-6 text-center">
+        <div className="mx-auto max-w-3xl px-5 sm:px-6 text-center">
           {/* Decorative rainbow top border accent */}
           <div className="mx-auto mb-8 h-px w-24 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
 
@@ -260,7 +260,7 @@ export default function TeamPage() {
             <div className="absolute -right-10 top-1/2 h-32 w-32 -translate-y-1/2 rounded-full bg-gradient-to-br from-blue-500/10 to-indigo-500/10 blur-[60px]" />
             <Link
               href="/#portals"
-              className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-dim to-purple px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-[0_0_20px_rgba(79,110,247,0.3)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(79,110,247,0.5)]"
+              className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-dim to-purple px-8 py-3.5 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-[0_0_15px_rgba(79,110,247,0.25),0_0_40px_rgba(79,110,247,0.1)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(79,110,247,0.4),0_0_50px_rgba(79,110,247,0.15)]"
             >
               Work With Us
               <ArrowRight className="h-3.5 w-3.5" />

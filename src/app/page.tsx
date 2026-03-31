@@ -79,11 +79,11 @@ export default function HomePage() {
         {/* Single subtle background glow */}
         <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/[0.04] blur-[80px]" />
 
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:gap-8 px-6 py-10 sm:py-14 sm:grid-cols-3">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:gap-8 px-5 sm:px-6 py-8 sm:py-14 sm:grid-cols-3">
           {stats.map((stat, i) => (
             <AnimateOnScroll key={stat.label} animation="fade-up" delay={i * 0.15}>
-              <div className="relative text-center rounded-xl p-4 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
-                <p className="font-heading text-4xl font-bold sm:text-5xl text-white">
+              <div className="relative text-center rounded-xl p-3 sm:p-4 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(79,110,247,0.12),inset_0_0_60px_rgba(79,110,247,0.03)]">
+                <p className="font-heading text-3xl font-bold sm:text-5xl text-white">
                   <Counter
                     value={stat.value}
                     prefix={stat.prefix}
@@ -110,7 +110,7 @@ export default function HomePage() {
         <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.03] blur-[80px]" />
         <FloatingParticles count={10} className="hidden sm:block" />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6">
+        <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
@@ -131,7 +131,7 @@ export default function HomePage() {
             </div>
           </AnimateOnScroll>
 
-          <div className="mt-10 sm:mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="mt-8 sm:mt-16 grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3">
             {services.map((service, i) => (
               <AnimateOnScroll key={service.title} animation="fade-up" delay={i * 0.12}>
                 <div className="card-3d-enhanced relative z-10 h-full">
@@ -176,7 +176,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="mt-10 text-center md:hidden">
+          <div className="mt-8 text-center md:hidden">
             <Link
               href="/services"
               className="inline-flex items-center gap-2 text-sm text-purple-light/60 transition-colors hover:text-purple-light"
@@ -192,7 +192,7 @@ export default function HomePage() {
       <section className="py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-background">
         {/* Subtle ambient glow */}
         <div className="absolute right-[5%] top-[10%] h-48 w-48 rounded-full bg-purple/[0.04] blur-[100px] hidden lg:block" />
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Work</SectionLabel>
@@ -234,7 +234,7 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-up" delay={0.3}>
-            <div className="mt-14 text-center">
+            <div className="mt-10 sm:mt-14 text-center">
               <MagneticButton>
                 <Link
                   href="/portfolio"
@@ -259,7 +259,7 @@ export default function HomePage() {
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[100px]" />
         <FloatingParticles count={8} className="hidden sm:block" />
 
-        <div className="relative z-10 mx-auto max-w-4xl px-6">
+        <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="text-center mb-8 sm:mb-12">
               <SectionLabel>Get Started</SectionLabel>
@@ -288,21 +288,19 @@ export default function HomePage() {
       </section>
 
       {/* Client Portals */}
-      <section id="portals" className="relative overflow-hidden bg-black py-20 sm:py-28">
+      <section id="portals" className="relative overflow-hidden bg-black py-16 sm:py-28">
         {/* Background glow effects */}
         <div className="pointer-events-none absolute left-1/4 top-1/2 -translate-y-1/2 h-[400px] w-[400px] rounded-full bg-purple/[0.08] blur-[120px]" />
         <div className="pointer-events-none absolute right-1/4 top-1/2 -translate-y-1/2 h-[300px] w-[300px] rounded-full bg-purple-light/[0.06] blur-[100px]" />
         <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-5xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/30 to-transparent" />
 
-        <div className="relative mx-auto max-w-4xl px-6">
+        <div className="relative mx-auto max-w-4xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="text-center">
               <SectionLabel>Book Now</SectionLabel>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
+              <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
                 Ready to{" "}
-                <span className="bg-gradient-to-r from-purple-light via-purple to-purple-light bg-clip-text text-transparent">
-                  Get Started?
-                </span>
+Get Started?
               </h2>
               <p className="mx-auto mt-5 max-w-lg text-base text-white/60 sm:text-lg">
                 Choose your region to book a session, view galleries, and manage
@@ -311,18 +309,18 @@ export default function HomePage() {
             </div>
           </AnimateOnScroll>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2">
+          <div className="mt-10 sm:mt-12 grid gap-4 sm:gap-5 sm:grid-cols-2">
               <a
                 href="https://portal.spiro.media/order/pg/northeast-wisconsin"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]"
+                className="group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-6 sm:p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]"
               >
                 <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-purple/20 blur-[60px] transition-all duration-300 group-hover:bg-purple/30" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   Northeast Wisconsin
                 </p>
-                <p className="relative mt-2 text-2xl font-bold text-white">
+                <p className="relative mt-2 text-xl sm:text-2xl font-bold text-white">
                   Green Bay Portal
                 </p>
                 <p className="relative mt-2 text-sm text-white/50">
@@ -337,13 +335,13 @@ export default function HomePage() {
                 href="https://portal.spiro.media/order/pg/madison"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple-light/[0.08] via-black to-purple/[0.1] p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]"
+                className="group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple-light/[0.08] via-black to-purple/[0.1] p-6 sm:p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]"
               >
                 <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-purple-light/15 blur-[60px] transition-all duration-300 group-hover:bg-purple-light/25" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   South-Central Wisconsin
                 </p>
-                <p className="relative mt-2 text-2xl font-bold text-white">
+                <p className="relative mt-2 text-xl sm:text-2xl font-bold text-white">
                   Madison Portal
                 </p>
                 <p className="relative mt-2 text-sm text-white/50">
