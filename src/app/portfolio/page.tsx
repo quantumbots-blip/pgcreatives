@@ -179,6 +179,133 @@ const projects = [
     type: "photo" as const,
     image: "/images/pendant-kitchen.jpg",
   },
+  // New photos
+  {
+    title: "Stone Ranch Estate",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/stone-ranch-exterior.jpg",
+  },
+  {
+    title: "Staged Master Suite",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/staged-master-bedroom.jpg",
+  },
+  {
+    title: "Open-Plan Living & Kitchen",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/open-living-kitchen.jpg",
+  },
+  {
+    title: "Lakefront Kitchen Island",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/lakefront-kitchen-island.jpg",
+  },
+  {
+    title: "Coastal Living Room",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/coastal-living-room.jpg",
+  },
+  {
+    title: "Modern Great Room",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/modern-great-room.jpg",
+  },
+  {
+    title: "Game Room with Fireplace",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/game-room-fireplace.jpg",
+  },
+  {
+    title: "Marble Kitchen & Dining",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/marble-kitchen-dining.jpg",
+  },
+  {
+    title: "Modern Dining & Kitchen",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/modern-dining-kitchen.jpg",
+  },
+  {
+    title: "Lakefront Living Room",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/lakefront-living-room.jpg",
+  },
+  {
+    title: "Lakefront Screened Porch",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/lakefront-screened-porch.jpg",
+  },
+  {
+    title: "Marble Chef Kitchen",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/marble-chef-kitchen.jpg",
+  },
+  {
+    title: "Sunset Dining Room",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/sunset-dining-room.jpg",
+  },
+  {
+    title: "Home Office",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/dark-home-office.jpg",
+  },
+  {
+    title: "Designer Powder Room",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/floral-powder-room.jpg",
+  },
+  {
+    title: "Lakefront Garden Path",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/lakefront-garden-path.jpg",
+  },
+  {
+    title: "Cottage Bedroom with Stone Fireplace",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/cottage-bedroom-fireplace.jpg",
+  },
+  {
+    title: "Modern Master Bathroom",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/modern-master-bath.jpg",
+  },
+  {
+    title: "Lakefront Sunset Living",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/lakefront-sunset-living.jpg",
+  },
+  {
+    title: "Golf Simulator Room",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/golf-simulator-room.jpg",
+  },
+  {
+    title: "Twilight Wooded Estate",
+    category: "Real Estate",
+    type: "photo" as const,
+    image: "/images/twilight-wooded-exterior.jpg",
+  },
 ];
 
 export default async function PortfolioPage() {

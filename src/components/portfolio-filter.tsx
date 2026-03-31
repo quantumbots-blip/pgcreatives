@@ -62,7 +62,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         <img
           src={project.thumbnail || `https://vumbnail.com/${project.vimeoId}.jpg`}
           alt={project.title}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="absolute inset-0 h-full w-full object-cover object-[center_35%] transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
         />
       ) : null}

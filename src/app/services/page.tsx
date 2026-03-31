@@ -312,25 +312,20 @@ export default async function BrandingPage() {
           <div className="mt-10 sm:mt-14 grid gap-5 sm:grid-cols-3">
             {tiers.map((tier, i) => (
               <AnimateOnScroll key={tier.name} animation="fade-up" delay={i * 0.1}>
+                <div className={`relative ${tier.popular ? "mt-4" : ""}`}>
+                  {tier.popular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10 rounded-full bg-gradient-to-r from-purple to-purple-light px-5 py-1.5 text-xs font-semibold text-white shadow-[0_0_20px_rgba(52,97,209,0.4)]">
+                      Most Popular
+                    </div>
+                  )}
                 <div
-                  className={`relative flex flex-col rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                  className={`relative flex flex-col rounded-2xl border overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
                     tier.popular
-                      ? "border-purple/40 bg-gradient-to-br from-purple/[0.22] via-purple-dim/[0.3] to-purple-light/[0.1] shadow-[0_0_50px_rgba(52,97,209,0.2),inset_0_1px_0_rgba(126,154,230,0.1)]"
+                      ? "border-purple/40 bg-gradient-to-br from-purple/[0.18] via-black to-purple-light/[0.08]"
                       : "border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06]"
                   }`}
                 >
-                  {tier.popular && (
-                    <div className="h-1 w-full bg-gradient-to-r from-purple-dim via-purple to-purple-light" />
-                  )}
-                  {tier.popular && (
-                    <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple/25 blur-[60px]" />
-                  )}
                   <div className="p-6 lg:p-8 flex flex-col flex-1">
-                    {tier.popular && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 rounded-full bg-gradient-to-r from-purple to-purple-light px-4 py-1 text-xs font-semibold text-white shadow-[0_0_20px_rgba(52,97,209,0.4)]">
-                        Most Popular
-                      </div>
-                    )}
                     <h3 className="text-lg font-bold text-white">{tier.name}</h3>
                     <div className="mt-4">
                       <div className="flex items-baseline gap-1">
@@ -356,16 +351,13 @@ export default async function BrandingPage() {
                     </p>
                     <Link
                       href="/#portals"
-                      className={`mt-6 flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 ${
-                        tier.popular
-                          ? "bg-gradient-to-r from-purple-dim to-purple text-white shadow-[0_0_20px_rgba(52,97,209,0.3)] hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(52,97,209,0.5)]"
-                          : "border border-white/15 text-white/70 hover:border-white/30 hover:bg-white/5 hover:text-white"
-                      }`}
+                      className="mt-6 flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 border border-white/15 text-white/70 hover:border-white/30 hover:bg-white/5 hover:text-white"
                     >
                       Get Started
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                   </div>
+                </div>
                 </div>
               </AnimateOnScroll>
             ))}
@@ -433,20 +425,23 @@ export default async function BrandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="relative py-16 sm:py-20 overflow-hidden">
-        <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[120px]" />
-        <div className="relative mx-auto max-w-3xl px-5 sm:px-6">
-          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-8 sm:p-12 text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white">
+      <section className="relative py-16 sm:py-24 overflow-hidden">
+        <div className="absolute left-1/2 top-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.08] blur-[120px]" />
+        <div className="absolute left-[20%] top-[30%] h-[200px] w-[200px] rounded-full bg-sky-500/[0.05] blur-[100px]" />
+        <div className="relative mx-auto max-w-4xl px-5 sm:px-6">
+          <div className="relative overflow-hidden rounded-3xl border border-purple/25 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] p-10 sm:p-16 text-center shadow-[0_0_80px_rgba(52,97,209,0.12),inset_0_1px_0_rgba(126,154,230,0.1)]">
+            <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-purple/20 blur-[80px]" />
+            <div className="pointer-events-none absolute -left-12 -bottom-12 h-40 w-40 rounded-full bg-purple-light/15 blur-[70px]" />
+            <h2 className="relative text-3xl sm:text-4xl font-bold text-white md:text-5xl">
               Ready to grow your brand?
             </h2>
-            <p className="mx-auto mt-3 max-w-md text-white/50">
+            <p className="relative mx-auto mt-4 max-w-md text-base text-white/55 sm:text-lg">
               Get in touch for a free consultation and see if the program is right
               for you.
             </p>
             <Link
               href="/#portals"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+              className="relative mt-10 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-base font-semibold tracking-wide text-black transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-[1.03]"
             >
               Get Started <ArrowRight className="h-4 w-4" />
             </Link>

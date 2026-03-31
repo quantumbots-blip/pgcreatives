@@ -25,35 +25,6 @@ export function Footer() {
       <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-purple/[0.04] blur-[120px]" />
       <div className="pointer-events-none absolute -right-40 bottom-20 h-80 w-80 rounded-full bg-purple/[0.03] blur-[120px]" />
 
-      {/* ── CTA Banner ── */}
-      <AnimateOnScroll animation="fade-up">
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 pt-10 sm:pt-16">
-        <div className="relative rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-6 sm:p-8 overflow-hidden transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(52,97,209,0.2)]">
-
-          <div className="relative flex flex-col items-start gap-5 sm:gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-lg">
-              <h2 className="text-xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
-                Ready to Elevate
-                <br />
-                <span className="text-white">Your Visual Story?</span>
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-white/60 sm:text-base">
-                Let&apos;s create professional-grade media that makes a lasting
-                impression.
-              </p>
-            </div>
-            <Link
-              href="/#portals"
-              className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-all duration-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] shrink-0"
-            >
-              Start a Project
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </div>
-        </div>
-      </div>
-      </AnimateOnScroll>
-
       {/* ── Main Footer Content ── */}
       <div className="mx-auto max-w-7xl px-5 sm:px-6 pt-12 pb-6 sm:pt-20 sm:pb-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_1fr_1fr] lg:gap-12">

@@ -41,7 +41,7 @@ const services = [
     title: "Social Media",
     description:
       "Social media is essential if you're looking to stand out in a competitive market. It builds trust and credibility, creates a consistent and memorable identity, and showcases your unique value proposition.",
-    image: "/images/video-studio.jpg",
+    image: "/images/dark-home-office.jpg",
   },
   {
     number: "02",
@@ -49,7 +49,7 @@ const services = [
     title: "Real Estate",
     description:
       "Listing videos and pictures, drone shots, 3D tours and more. Professional photography, editing and content to sell homes faster.",
-    image: "/images/luxury-living-room.jpg",
+    image: "/images/marble-kitchen-dining.jpg",
   },
   {
     number: "03",
@@ -57,7 +57,7 @@ const services = [
     title: "Commercial",
     description:
       "Cinema quality videography for businesses of all types. Have an idea? Let's connect and make it happen.",
-    image: "/images/aerial-lakefront.jpg",
+    image: "/images/twilight-wooded-exterior.jpg",
   },
 ];
 
@@ -70,11 +70,11 @@ const brandingBenefits = [
 ];
 
 const photos = [
-  { image: images.luxuryLakefront, alt: "Open-concept living room with vaulted ceiling", colSpan: "col-span-2 row-span-2" },
-  { image: images.downtownCommercial, alt: "Modern downtown penthouse interior", colSpan: "" },
-  { image: images.aerialProperty, alt: "Lakefront estate drone aerial", colSpan: "" },
-  { image: images.modernHome, alt: "Lakehouse kitchen with spiral staircase", colSpan: "" },
-  { image: images.waterfrontDev, alt: "Charming cottage exterior", colSpan: "" },
+  { image: "/images/lakefront-sunset-living.jpg", alt: "Lakefront living room at sunset", colSpan: "col-span-2 row-span-2" },
+  { image: "/images/marble-kitchen-dining.jpg", alt: "Marble kitchen and dining room", colSpan: "" },
+  { image: "/images/twilight-wooded-exterior.jpg", alt: "Twilight wooded estate exterior", colSpan: "" },
+  { image: "/images/staged-master-bedroom.jpg", alt: "Staged master bedroom with lake view", colSpan: "" },
+  { image: "/images/stone-ranch-exterior.jpg", alt: "Stone ranch estate exterior", colSpan: "" },
 ];
 
 export default function HomePage() {

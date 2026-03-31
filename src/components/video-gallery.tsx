@@ -40,7 +40,7 @@ export function VideoGallery({
               <img
                 src={video.thumbnail}
                 alt={video.title}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="absolute inset-0 h-full w-full object-cover object-[center_35%] transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
               />
             )}
