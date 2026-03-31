@@ -110,7 +110,7 @@ function DesktopDropdown({
         aria-expanded={open}
         aria-haspopup="true"
         className={cn(
-          "flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[13px] font-medium tracking-wide transition-all duration-200",
+          "flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium tracking-wide transition-all duration-200",
           isActive
             ? "text-white bg-purple/15"
             : "text-white/60 hover:text-white hover:bg-white/[0.05]"
@@ -211,7 +211,7 @@ function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
 /* ---------- Mobile nav item icons ---------- */
 const mobileNavItems = [
   { name: "Home", href: "/", icon: Home },
-  { name: "Services", href: "/services", icon: Sparkles },
+  { name: "Branding", href: "/services", icon: Sparkles },
   { name: "Portfolio", href: "/portfolio", icon: Camera },
   { name: "Team", href: "/team", icon: Users },
   { name: "Contact", href: "/contact", icon: Mail },
@@ -256,18 +256,22 @@ export function Header() {
           "fixed top-0 z-50 w-full transition-all duration-500",
           transparent
             ? "bg-transparent"
-            : "bg-[#000000]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/10"
+            : "bg-[#000000]/80 backdrop-blur-xl"
         )}
       >
-        <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 lg:h-22">
+        {/* Bottom fade — softens the hard edge */}
+        {!transparent && (
+          <div className="pointer-events-none absolute inset-x-0 -bottom-6 h-6 bg-gradient-to-b from-[#000000]/60 to-transparent" />
+        )}
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:h-18">
           {/* Logo */}
-          <Link href="/" className="relative z-50 -ml-2.5 flex items-center">
+          <Link href="/" className="relative z-50 -ml-[18px] flex items-center">
             <Image
               src="/logo.png"
               alt="PG Creatives"
-              width={478}
-              height={522}
-              className="h-16 w-auto sm:h-18 lg:h-20 object-contain"
+              width={956}
+              height={1044}
+              className="h-18 w-auto sm:h-20 lg:h-22 object-contain"
               priority
             />
           </Link>
@@ -288,7 +292,7 @@ export function Header() {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "rounded-full px-4 py-1.5 text-[13px] font-medium tracking-wide transition-all duration-200",
+                      "rounded-full px-5 py-2 text-sm font-medium tracking-wide transition-all duration-200",
                       pathname === item.href
                         ? "bg-purple/15 text-white"
                         : "text-white/60 hover:text-white hover:bg-white/[0.05]"
@@ -298,19 +302,19 @@ export function Header() {
                   </Link>
                 )
               )}
-              <a
+              <Link
                 href="/#portals"
-                className="rounded-full bg-white px-4 py-1.5 text-[13px] font-medium tracking-wide text-black transition-all duration-200 hover:bg-white/80"
+                className="rounded-full bg-white px-5 py-2 text-sm font-medium tracking-wide text-black transition-all duration-200 hover:bg-white/80"
               >
                 Book Now
-              </a>
+              </Link>
             </div>
           </nav>
 
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="relative z-50 flex h-10 w-10 items-center justify-center rounded-full transition-colors md:hidden hover:bg-white/[0.06]"
+            className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full transition-colors md:hidden hover:bg-white/[0.06]"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
             <HamburgerIcon isOpen={mobileOpen} />
@@ -417,13 +421,13 @@ export function Header() {
 
           {/* Bottom CTA */}
           <div className="pt-4">
-            <a
+            <Link
               href="/#portals"
               onClick={() => setMobileOpen(false)}
               className="flex w-full items-center justify-center rounded-full bg-gradient-to-r from-purple-dim to-purple py-4 text-base font-semibold text-white tracking-wide ring-1 ring-purple/40 shadow-[0_0_15px_rgba(79,110,247,0.25),0_0_40px_rgba(79,110,247,0.1)] transition-all active:scale-[0.98]"
             >
               Book a Shoot
-            </a>
+            </Link>
             <p className="mt-3 text-center text-xs text-white/40">
               Green Bay · Madison · Fox Valley
             </p>

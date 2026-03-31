@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 const services = [
   {
@@ -55,27 +56,22 @@ function easeOutCubic(t: number) {
 
 export function ScrollCards3D() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [progress, setProgress] = useState(0);
-  const [mounted, setMounted] = useState(false);
-  const rafRef = useRef<number>(0);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    setMounted(true);
-    // Skip 3D effect on mobile / reduced-motion
     const motionOk = !window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
     const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
 
-    if (!motionOk || !isDesktop) {
-      setProgress(1);
-      return;
-    }
+    if (!motionOk || !isDesktop) return;
+
+    let rafId = 0;
 
     function onScroll() {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (rafId) cancelAnimationFrame(rafId);
 
-      rafRef.current = requestAnimationFrame(() => {
+      rafId = requestAnimationFrame(() => {
         const section = sectionRef.current;
         if (!section) return;
 
@@ -88,16 +84,21 @@ export function ScrollCards3D() {
         const current = rect.top;
 
         const raw = 1 - (current - end) / (start - end);
-        setProgress(Math.max(0, Math.min(1, raw)));
+        const progress = Math.max(0, Math.min(1, raw));
+
+        // Apply transforms directly to DOM — no React re-render
+        cardRefs.current.forEach((card, i) => {
+          if (card) card.style.transform = getCardTransform(i, progress);
+        });
       });
     }
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll(); // initial check
+    onScroll();
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -136,19 +137,18 @@ export function ScrollCards3D() {
           {services.map((service, i) => (
             <div
               key={service.title}
+              ref={(el) => { cardRefs.current[i] = el; }}
               className="w-full max-w-sm lg:w-1/3 lg:max-w-none"
-              suppressHydrationWarning
-              style={mounted ? {
-                transform: getCardTransform(i, progress),
+              style={{
                 transition: "transform 0.1s linear",
                 willChange: "transform",
-              } : {}}
+              }}
             >
               <div
                 className={`relative flex h-full flex-col rounded-2xl border transition-all duration-300 ${
                   service.popular
-                    ? "border-purple/30 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] hover:border-purple/50 hover:shadow-[0_0_40px_rgba(79,110,247,0.25)]"
-                    : "border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] hover:border-purple/40 hover:shadow-[0_0_40px_rgba(79,110,247,0.2)]"
+                    ? "border-purple/30 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] hover:border-purple/50 hover:shadow-[0_0_40px_rgba(52,97,209,0.25)]"
+                    : "border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] hover:border-purple/40 hover:shadow-[0_0_40px_rgba(52,97,209,0.2)]"
                 }`}
               >
                 {/* Popular badge */}
@@ -169,12 +169,6 @@ export function ScrollCards3D() {
                     {service.description}
                   </p>
 
-                  <div className="mt-6">
-                    <span className="text-2xl font-bold text-white">
-                      {service.price}
-                    </span>
-                  </div>
-
                   {/* Features */}
                   <ul className="mt-6 flex-1 space-y-3">
                     {service.features.map((feature) => (
@@ -190,7 +184,7 @@ export function ScrollCards3D() {
 
                   {/* CTA */}
                   <div className="mt-8">
-                    <a
+                    <Link
                       href="/#portals"
                       className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm tracking-wide transition-all duration-300 ${
                         service.popular
@@ -200,7 +194,7 @@ export function ScrollCards3D() {
                     >
                       Get Started
                       <ArrowRight className="h-3.5 w-3.5" />
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

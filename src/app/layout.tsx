@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { PageViewTracker } from "@/components/page-view-tracker";
+import { BUSINESS } from "@/lib/data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,6 +15,12 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover" as const,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://pgcreatives.vercel.app"),
@@ -81,7 +88,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden">
+      <body className="min-h-full flex flex-col overflow-x-hidden pb-[env(safe-area-inset-bottom)]">
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:rounded-lg focus:bg-purple focus:px-4 focus:py-2 focus:text-white">
           Skip to main content
         </a>
@@ -91,12 +98,11 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
-              name: "PG Creatives",
-              description:
-                "Professional grade media — real estate photography, videography, drone shots, 3D tours, and commercial branding.",
-              url: "https://pgcreatives.vercel.app",
-              telephone: ["(920) 777-0127", "(608) 420-6199"],
-              image: "https://pgcreatives.vercel.app/og-home.jpg",
+              name: BUSINESS.name,
+              description: BUSINESS.description,
+              url: BUSINESS.url,
+              telephone: Object.values(BUSINESS.phones).map((p) => p.number),
+              image: `${BUSINESS.url}/og-home.jpg`,
               priceRange: "$$",
               areaServed: [
                 { "@type": "City", name: "Green Bay, WI" },
@@ -109,10 +115,7 @@ export default function RootLayout({
                 "3D Virtual Tours",
                 "Commercial Branding",
               ],
-              sameAs: [
-                "https://www.facebook.com/p/PG-Creatives-Wisconsin-61556298299463/",
-                "https://www.instagram.com/pgcreativeswi/",
-              ],
+              sameAs: Object.values(BUSINESS.socials),
             }),
           }}
         />

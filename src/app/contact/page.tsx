@@ -3,11 +3,12 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { FacebookIcon, InstagramIcon } from "@/components/icons";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { BUSINESS } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Contact | Get a Free Quote",
   description:
-    "Contact PG Creatives for a free consultation and custom quote. Professional media services in Green Bay (920) 777-0127 and Madison (608) 420-6199, Wisconsin.",
+    `Contact PG Creatives for a free consultation and custom quote. Professional media services in Green Bay ${BUSINESS.phones.greenBay.number} and Madison ${BUSINESS.phones.madison.number}, Wisconsin.`,
   keywords: [
     "contact PG Creatives",
     "free quote",
@@ -24,28 +25,22 @@ export const metadata: Metadata = {
 };
 
 const contactInfo = [
-  {
+  ...Object.values(BUSINESS.phones).map((phone) => ({
     icon: Phone,
-    label: "Green Bay",
-    value: "(920) 777-0127",
-    href: "tel:+19207770127",
-  },
-  {
-    icon: Phone,
-    label: "Madison",
-    value: "(608) 420-6199",
-    href: "tel:+16084206199",
-  },
+    label: phone.label,
+    value: phone.number,
+    href: phone.href,
+  })),
   {
     icon: Mail,
     label: "Email",
-    value: "pgcreativeswisconsin@gmail.com",
-    href: "mailto:pgcreativeswisconsin@gmail.com",
+    value: BUSINESS.email,
+    href: `mailto:${BUSINESS.email}`,
   },
   {
     icon: MapPin,
     label: "Serving",
-    value: "Green Bay & Madison, WI",
+    value: BUSINESS.locationText,
     href: null,
   },
   {
@@ -57,16 +52,8 @@ const contactInfo = [
 ];
 
 const socialLinks = [
-  {
-    name: "Facebook",
-    href: "https://www.facebook.com/pgcreativeswi/",
-    icon: FacebookIcon,
-  },
-  {
-    name: "Instagram",
-    href: "https://www.instagram.com/pgcreativeswi/",
-    icon: InstagramIcon,
-  },
+  { name: "Facebook", href: BUSINESS.socials.facebook, icon: FacebookIcon },
+  { name: "Instagram", href: BUSINESS.socials.instagram, icon: InstagramIcon },
 ];
 
 export default function ContactPage() {

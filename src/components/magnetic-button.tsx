@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface MagneticButtonProps {
@@ -15,17 +15,18 @@ export function MagneticButton({
   className,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  function handleMouseEnter() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    rectRef.current = ref.current?.getBoundingClientRect() ?? null;
+  }
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const el = ref.current;
-    if (!el) return;
+    const rect = rectRef.current;
+    if (!el || !rect) return;
 
-    // Respect prefers-reduced-motion
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const rect = el.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
@@ -37,28 +38,27 @@ export function MagneticButton({
     const x = Math.max(-maxPx, Math.min(maxPx, deltaX * strength));
     const y = Math.max(-maxPx, Math.min(maxPx, deltaY * strength));
 
-    setOffset({ x, y });
-    setIsHovering(true);
+    el.style.transform = `translate(${x}px, ${y}px)`;
+    el.style.transition = "transform 0.15s ease-out";
   }
 
   function handleMouseLeave() {
-    setOffset({ x: 0, y: 0 });
-    setIsHovering(false);
+    const el = ref.current;
+    if (el) {
+      el.style.transform = "translate(0px, 0px)";
+      el.style.transition = "transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)";
+    }
+    rectRef.current = null;
   }
 
   return (
     <div
       ref={ref}
       className={cn("inline-block", className)}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{
-        transform: `translate(${offset.x}px, ${offset.y}px)`,
-        transition: isHovering
-          ? "transform 0.15s ease-out"
-          : "transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)",
-        willChange: "transform",
-      }}
+      style={{ willChange: "transform" }}
     >
       {children}
     </div>
