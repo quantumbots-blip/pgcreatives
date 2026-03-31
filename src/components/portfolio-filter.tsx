@@ -147,7 +147,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
       {/* Video Modal */}
       {activeVideo && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 sm:p-8"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm p-2 sm:p-8"
           onClick={closeModal}
         >
           <button
@@ -158,7 +158,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
             <X className="h-5 w-5" />
           </button>
           <div
-            className="relative w-full max-w-5xl aspect-video rounded-xl overflow-hidden"
+            className="relative w-full max-w-6xl aspect-video rounded-none sm:rounded-xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <iframe
