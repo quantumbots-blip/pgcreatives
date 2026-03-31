@@ -42,7 +42,7 @@ const services = [
     description:
       "Social media is essential if you're looking to stand out in a competitive market. It builds trust and credibility, creates a consistent and memorable identity, and showcases your unique value proposition.",
     image: "/images/dark-home-office.jpg",
-    glow: "-top-10 -left-10 bg-purple/20",
+    glow: "-bottom-10 -right-10 bg-purple/25",
   },
   {
     number: "02",
@@ -51,7 +51,7 @@ const services = [
     description:
       "Listing videos and pictures, drone shots, 3D tours and more. Professional photography, editing and content to sell homes faster.",
     image: "/images/marble-kitchen-dining.jpg",
-    glow: "-bottom-12 right-4 bg-sky-500/15",
+    glow: "-top-10 -left-10 bg-sky-500/20",
   },
   {
     number: "03",
@@ -60,7 +60,7 @@ const services = [
     description:
       "Cinema quality videography for businesses of all types. Have an idea? Let's connect and make it happen.",
     image: "/images/twilight-wooded-exterior.jpg",
-    glow: "top-1/2 -right-8 bg-indigo-400/15",
+    glow: "-bottom-10 left-1/3 bg-indigo-400/20",
   },
 ];
 

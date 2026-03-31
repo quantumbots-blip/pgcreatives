@@ -142,11 +142,12 @@ export function FAQ() {
   return (
     <section className="relative overflow-hidden bg-black py-16 sm:py-28">
       {/* Background accents */}
-      <div className="absolute inset-0 gradient-mesh-warm pointer-events-none" />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-5xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/20 to-transparent" />
-      <div className="pointer-events-none absolute -right-40 top-40 h-80 w-80 rounded-full bg-purple/[0.05] blur-[120px]" />
-      <div className="pointer-events-none absolute left-[10%] bottom-[20%] h-60 w-60 rounded-full bg-sky-500/[0.05] blur-[60px] sm:blur-[100px]" />
-      <div className="pointer-events-none absolute right-[15%] top-[15%] h-28 w-28 rounded-full border border-dashed border-purple/[0.06] spin-ring hidden lg:block" />
+      <div className="absolute inset-0 gradient-mesh-rich pointer-events-none" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-5xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/30 to-transparent" />
+      <div className="pointer-events-none absolute -right-40 top-40 h-80 w-80 rounded-full bg-purple/[0.12] blur-[120px]" />
+      <div className="pointer-events-none absolute left-[10%] bottom-[20%] h-60 w-60 rounded-full bg-sky-500/[0.10] blur-[60px] sm:blur-[100px]" />
+      <div className="pointer-events-none absolute right-[15%] top-[15%] h-28 w-28 rounded-full border border-dashed border-purple/[0.10] spin-ring hidden lg:block" />
+      <div className="pointer-events-none absolute left-[25%] top-[40%] h-48 w-48 rounded-full bg-teal-400/[0.06] blur-[100px]" />
 
       <div className="mx-auto max-w-4xl px-5 sm:px-6">
         {/* Heading */}
@@ -174,7 +175,7 @@ export function FAQ() {
               className={cn(
                 "rounded-full px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all duration-200",
                 activeCategory === cat
-                  ? "bg-purple/20 text-purple-light border border-purple/30"
+                  ? "bg-gradient-to-r from-purple/25 to-sky-500/15 text-purple-light border border-purple/35 shadow-[0_0_16px_rgba(43,111,184,0.15)]"
                   : "bg-white/[0.04] text-white/50 border border-white/[0.06] hover:bg-white/[0.08] hover:text-white/70"
               )}
             >
@@ -195,8 +196,8 @@ export function FAQ() {
                 className={cn(
                   "rounded-xl border",
                   isOpen
-                    ? "border-purple/20 bg-purple/[0.04]"
-                    : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1]"
+                    ? "border-purple/25 bg-gradient-to-r from-purple/[0.06] to-sky-500/[0.03] shadow-[0_0_24px_rgba(43,111,184,0.08)]"
+                    : "border-white/[0.06] bg-white/[0.02] hover:border-purple/15 hover:bg-purple/[0.02]"
                 )}
               >
                 <button
