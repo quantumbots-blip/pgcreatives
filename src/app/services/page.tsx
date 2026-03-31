@@ -24,6 +24,8 @@ const showcaseVideos = [
   { vimeoId: "1175629817", title: "Content Strategy in Action" },
   { vimeoId: "1168240392", title: "Agent Highlight Reel" },
   { vimeoId: "1127088549", title: "Brand Growth Campaign" },
+  { vimeoId: "1177445392", title: "Client Success Story" },
+  { vimeoId: "1174488968", title: "Content Creator Showcase" },
 ];
 
 export const revalidate = 3600;
