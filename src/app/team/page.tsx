@@ -72,12 +72,12 @@ const team = [
   },
   {
     name: "Claudio Ondoy Jr",
-    role: "Editor",
+    role: "Video Editor",
     image: images.claudioOndoyJr,
   },
   {
     name: "Gvy Teleron",
-    role: "Editor",
+    role: "Video Editor",
     image: images.gvyTeleron,
   },
   {
