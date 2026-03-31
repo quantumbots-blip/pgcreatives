@@ -116,7 +116,7 @@ export default function HomePage() {
       <section className="section-blend isolate bg-background py-12 sm:py-16 lg:py-20 relative overflow-hidden">
         <div className="absolute inset-0 gradient-mesh" />
         <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.05] blur-[80px]" />
-        <div className="absolute right-[15%] bottom-[10%] h-48 w-48 rounded-full bg-sky-500/[0.04] blur-[100px] hidden lg:block" />
+        <div className="absolute right-[15%] bottom-[10%] h-48 w-48 rounded-full bg-sky-500/[0.05] blur-[80px] sm:blur-[100px]" />
         <div className="absolute right-[8%] top-[15%] h-32 w-32 rounded-full border border-dashed border-purple/[0.08] spin-ring hidden lg:block" />
         <FloatingParticles count={10} className="hidden sm:block" />
 
@@ -201,8 +201,8 @@ export default function HomePage() {
       {/* Portfolio */}
       <section className="section-blend py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-background">
         <div className="absolute inset-0 gradient-mesh-warm" />
-        <div className="absolute right-[5%] top-[10%] h-48 w-48 rounded-full bg-purple/[0.06] blur-[100px] hidden lg:block" />
-        <div className="absolute left-[8%] bottom-[15%] h-36 w-36 rounded-full bg-indigo-500/[0.05] blur-[80px] hidden lg:block" />
+        <div className="absolute right-[5%] top-[10%] h-48 w-48 rounded-full bg-purple/[0.07] blur-[80px] sm:blur-[100px]" />
+        <div className="absolute left-[8%] bottom-[15%] h-36 w-36 rounded-full bg-indigo-500/[0.06] blur-[60px] sm:blur-[80px]" />
         <div className="absolute left-[12%] top-[20%] h-24 w-24 rounded-full border border-dashed border-white/[0.04] spin-ring hidden xl:block" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
@@ -266,8 +266,8 @@ export default function HomePage() {
 
       {/* Content Creator Program */}
       <section className="section-blend relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
-        <div className="absolute right-[10%] top-[20%] h-64 w-64 rounded-full bg-purple/[0.05] blur-[100px] hidden lg:block" />
-        <div className="absolute left-[5%] bottom-[15%] h-40 w-40 rounded-full bg-sky-500/[0.04] blur-[80px] hidden lg:block" />
+        <div className="absolute right-[10%] top-[20%] h-64 w-64 rounded-full bg-purple/[0.06] blur-[80px] sm:blur-[100px]" />
+        <div className="absolute left-[5%] bottom-[15%] h-40 w-40 rounded-full bg-sky-500/[0.05] blur-[60px] sm:blur-[80px]" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
             <AnimateOnScroll animation="fade-up">
@@ -395,8 +395,8 @@ export default function HomePage() {
       <section className="section-blend isolate relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
         <div className="absolute inset-0 dot-grid" />
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.08] blur-[100px]" />
-        <div className="absolute right-[10%] top-[20%] h-[200px] w-[200px] rounded-full bg-sky-500/[0.05] blur-[80px] hidden lg:block" />
-        <div className="absolute left-[5%] bottom-[10%] h-[150px] w-[150px] rounded-full bg-indigo-400/[0.04] blur-[70px] hidden lg:block" />
+        <div className="absolute right-[10%] top-[20%] h-[200px] w-[200px] rounded-full bg-sky-500/[0.06] blur-[60px] sm:blur-[80px]" />
+        <div className="absolute left-[5%] bottom-[10%] h-[150px] w-[150px] rounded-full bg-indigo-400/[0.05] blur-[50px] sm:blur-[70px]" />
 
         <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">

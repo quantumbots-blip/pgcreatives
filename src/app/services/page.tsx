@@ -191,7 +191,7 @@ export default async function BrandingPage() {
       <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
         <div className="absolute inset-0 gradient-mesh" />
         <div className="absolute right-10 top-20 h-64 w-64 rounded-full bg-purple/[0.05] blur-[80px]" />
-        <div className="absolute left-[8%] bottom-[15%] h-40 w-40 rounded-full bg-sky-500/[0.04] blur-[80px] hidden lg:block" />
+        <div className="absolute left-[8%] bottom-[15%] h-40 w-40 rounded-full bg-sky-500/[0.05] blur-[60px] sm:blur-[80px]" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <SectionLabel>What We Do</SectionLabel>
@@ -228,7 +228,7 @@ export default async function BrandingPage() {
       <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
         <div className="absolute inset-0 dot-grid-fine pointer-events-none" />
         <div className="absolute left-[5%] top-[20%] h-60 w-60 rounded-full bg-purple/[0.06] blur-[100px]" />
-        <div className="absolute right-[10%] bottom-[10%] h-48 w-48 rounded-full bg-indigo-400/[0.04] blur-[80px] hidden lg:block" />
+        <div className="absolute right-[10%] bottom-[10%] h-48 w-48 rounded-full bg-indigo-400/[0.05] blur-[60px] sm:blur-[80px]" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
             <AnimateOnScroll animation="fade-up">
@@ -273,7 +273,7 @@ export default async function BrandingPage() {
       <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20" id="pricing">
         <div className="absolute inset-0 gradient-mesh-rich pointer-events-none" />
         <div className="absolute left-[5%] top-[20%] h-60 w-60 rounded-full bg-purple/[0.06] blur-[100px]" />
-        <div className="absolute right-[8%] top-[40%] h-40 w-40 rounded-full bg-sky-500/[0.04] blur-[80px] hidden lg:block" />
+        <div className="absolute right-[8%] top-[40%] h-40 w-40 rounded-full bg-sky-500/[0.05] blur-[60px] sm:blur-[80px]" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
