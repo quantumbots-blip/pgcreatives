@@ -384,7 +384,7 @@ html {
   overflow: hidden;
   background: linear-gradient(135deg, rgba(52, 97, 209, 0.1), rgba(0, 0, 0, 0.9), rgba(126, 154, 230, 0.06));
   border: 1px solid rgba(52, 97, 209, 0.15);
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Shine sweep built into glass-card */
@@ -853,5 +853,72 @@ html {
   .hover-lift:hover,
   .glow-hover:hover {
     transform: none !important;
+  }
+}
+
+/* ── Mobile performance optimizations ── */
+
+@media (max-width: 768px) {
+  /* Kill expensive infinite animations on mobile */
+  .animate-float,
+  .animate-float-slow,
+  .animate-pulse-glow,
+  .animate-rotate-slow,
+  .morph-blob,
+  .glow-orb,
+  .spin-ring,
+  .animate-border-glow,
+  .grain::before,
+  .glow-breathe {
+    animation: none !important;
+  }
+
+  /* Disable text shimmer animations on mobile */
+  .shimmer-text,
+  .gradient-text-animated,
+  .rainbow-shimmer {
+    animation: none !important;
+    background-position: 50% center !important;
+  }
+
+  /* Remove backdrop-blur on mobile (very expensive on Safari iOS) */
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-sm {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Cap blur radius on decorative orbs to reduce GPU pressure */
+  [class*="blur-[100px]"],
+  [class*="blur-[120px]"] {
+    filter: blur(40px) !important;
+  }
+
+  [class*="blur-[80px]"] {
+    filter: blur(30px) !important;
+  }
+
+  /* Disable 3D card transforms on mobile */
+  .card-3d-enhanced:hover > * {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Simplify hover effects — no box-shadow transitions */
+  .glass-card:hover {
+    box-shadow: none;
+  }
+
+  .card-shine::before,
+  .card-shine:hover::before {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* Remove border-trace animation on mobile */
+  .border-trace::after {
+    animation: none !important;
+    opacity: 0 !important;
   }
 }

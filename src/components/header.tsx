@@ -256,7 +256,7 @@ export function Header() {
           "fixed top-0 z-50 w-full transition-all duration-500",
           transparent
             ? "bg-transparent"
-            : "bg-[#000000]/80 backdrop-blur-xl"
+            : "bg-[#000000]/90 sm:bg-[#000000]/80 sm:backdrop-blur-xl"
         )}
       >
         {/* Bottom fade — softens the hard edge */}

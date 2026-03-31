@@ -20,9 +20,13 @@ export function FloatingParticles({
     // Respect reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    // Reduce particles on mobile for performance
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const actualCount = isMobile ? Math.min(count, 4) : count;
+
     // Generate particles only on the client to avoid hydration mismatch
     setParticles(
-      Array.from({ length: count }, (_, i) => ({
+      Array.from({ length: actualCount }, (_, i) => ({
         id: i,
         size: +(2 + Math.random() * 4).toFixed(1),
         left: +(Math.random() * 100).toFixed(1),

@@ -109,7 +109,7 @@ export function VideoHero() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         poster="/images/hero-poster.jpg"
         onLoadedData={tryPlay}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
