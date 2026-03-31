@@ -42,6 +42,7 @@ const services = [
     description:
       "Social media is essential if you're looking to stand out in a competitive market. It builds trust and credibility, creates a consistent and memorable identity, and showcases your unique value proposition.",
     image: "/images/dark-home-office.jpg",
+    glow: "-top-10 -left-10 bg-purple/20",
   },
   {
     number: "02",
@@ -50,6 +51,7 @@ const services = [
     description:
       "Listing videos and pictures, drone shots, 3D tours and more. Professional photography, editing and content to sell homes faster.",
     image: "/images/marble-kitchen-dining.jpg",
+    glow: "-bottom-12 right-4 bg-sky-500/15",
   },
   {
     number: "03",
@@ -58,6 +60,7 @@ const services = [
     description:
       "Cinema quality videography for businesses of all types. Have an idea? Let's connect and make it happen.",
     image: "/images/twilight-wooded-exterior.jpg",
+    glow: "top-1/2 -right-8 bg-indigo-400/15",
   },
 ];
 
@@ -91,7 +94,7 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:gap-8 px-5 sm:px-6 py-8 sm:py-14 sm:grid-cols-3">
           {stats.map((stat, i) => (
             <AnimateOnScroll key={stat.label} animation="fade-up" delay={i * 0.15}>
-              <div className="relative text-center rounded-xl p-3 sm:p-4 transition-shadow duration-500 hover:shadow-[0_8px_32px_rgba(55,140,210,0.12),inset_0_0_60px_rgba(55,140,210,0.03)]">
+              <div className="relative text-center rounded-xl p-3 sm:p-4 ">
                 <p className="font-heading text-3xl font-bold sm:text-5xl text-white">
                   <Counter
                     value={stat.value}
@@ -150,6 +153,7 @@ export default function HomePage() {
                     href="/services"
                     className="card-shine group relative flex h-full flex-col rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] overflow-hidden transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(43,111,184,0.2)]"
                   >
+                    <div className={`pointer-events-none absolute h-32 w-32 rounded-full blur-[60px] transition-all duration-300 group-hover:opacity-80 ${service.glow}`} />
                     {/* Image */}
                     <div className="relative h-48 w-full overflow-hidden">
                       <Image
