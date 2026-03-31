@@ -120,8 +120,8 @@ export function VideoHero() {
       </video>
 
       {/* Overlay gradients — purple-tinted */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/75 via-[#000000]/55 to-[#000000]/90" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/75 via-[#000000]/15 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/55 via-[#000000]/30 to-[#000000]/75" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/60 via-transparent to-transparent" />
 
       {/* Single subtle ambient glow */}
       <div className="absolute bottom-0 left-1/3 h-[200px] w-[500px] bg-purple/[0.06] blur-[120px]" />

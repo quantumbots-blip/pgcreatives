@@ -84,9 +84,9 @@ export default function HomePage() {
 
       {/* Stats Bar */}
       <section className="bg-background relative overflow-hidden">
-        <div className="absolute inset-0 dot-grid-fine" />
-        <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/[0.06] blur-[80px]" />
-        <div className="absolute -left-10 bottom-0 h-40 w-40 rounded-full bg-sky-500/[0.04] blur-[60px]" />
+        <div className="absolute inset-0 dot-grid" />
+        <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/[0.1] blur-[80px]" />
+        <div className="absolute -left-10 bottom-0 h-40 w-40 rounded-full bg-sky-500/[0.07] blur-[60px]" />
 
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:gap-8 px-5 sm:px-6 py-8 sm:py-14 sm:grid-cols-3">
           {stats.map((stat, i) => (
