@@ -111,6 +111,7 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+      <div className="section-sep" />
 
       {/* Services */}
       <section className="section-blend isolate bg-background py-12 sm:py-16 lg:py-20 relative overflow-hidden">
@@ -197,6 +198,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <div className="section-sep" />
 
       {/* Portfolio */}
       <section className="section-blend py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-background">
@@ -260,9 +262,11 @@ export default function HomePage() {
           </AnimateOnScroll>
         </div>
       </section>
+      <div className="section-sep" />
 
       {/* Packages – 3D scroll fan */}
       <ScrollCards3D />
+      <div className="section-sep" />
 
       {/* Content Creator Program */}
       <section className="section-blend relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
@@ -320,6 +324,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <div className="section-sep" />
 
       {/* Client Portals */}
       <section id="portals" className="relative overflow-hidden bg-black py-16 sm:py-28">
@@ -390,6 +395,7 @@ export default function HomePage() {
           </AnimateOnScroll>
         </div>
       </section>
+      <div className="section-sep" />
 
       {/* Contact Form */}
       <section className="section-blend isolate relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
