@@ -57,14 +57,15 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             First Name <span className="text-purple-light/50">*</span>
           </Label>
           <div className="relative">
-            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/25" />
             <Input
               id="firstName"
               name="firstName"
               placeholder="John"
               required
               maxLength={50}
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              autoComplete="given-name"
+              className="h-12 rounded-lg border-white/[0.08] bg-white/[0.02] pl-11 text-base text-white placeholder:text-white/20 focus:border-white/20 focus:ring-1 focus:ring-white/10 transition-all"
             />
           </div>
         </div>
@@ -73,14 +74,15 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             Last Name <span className="text-purple-light/50">*</span>
           </Label>
           <div className="relative">
-            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/25" />
             <Input
               id="lastName"
               name="lastName"
               placeholder="Doe"
               required
               maxLength={50}
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              autoComplete="family-name"
+              className="h-12 rounded-lg border-white/[0.08] bg-white/[0.02] pl-11 text-base text-white placeholder:text-white/20 focus:border-white/20 focus:ring-1 focus:ring-white/10 transition-all"
             />
           </div>
         </div>
@@ -93,7 +95,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             Email <span className="text-purple-light/50">*</span>
           </Label>
           <div className="relative">
-            <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/25" />
             <Input
               id="email"
               name="email"
@@ -101,7 +103,8 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               placeholder="john@example.com"
               required
               maxLength={254}
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              autoComplete="email"
+              className="h-12 rounded-lg border-white/[0.08] bg-white/[0.02] pl-11 text-base text-white placeholder:text-white/20 focus:border-white/20 focus:ring-1 focus:ring-white/10 transition-all"
             />
           </div>
         </div>
@@ -110,14 +113,16 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             Phone
           </Label>
           <div className="relative">
-            <Phone className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <Phone className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/25" />
             <Input
               id="phone"
               name="phone"
               type="tel"
               placeholder="(555) 123-4567"
               maxLength={20}
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              autoComplete="tel"
+              inputMode="tel"
+              className="h-12 rounded-lg border-white/[0.08] bg-white/[0.02] pl-11 text-base text-white placeholder:text-white/20 focus:border-white/20 focus:ring-1 focus:ring-white/10 transition-all"
             />
           </div>
         </div>
@@ -132,13 +137,12 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           id="service"
           name="service"
           defaultValue=""
-          className="h-12 w-full rounded-lg border border-purple/12 bg-[#000000]/60 px-3.5 text-sm text-white focus:border-purple/40 focus:ring-1 focus:ring-purple/20 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(139%2C92%2C246%2C0.4)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat"
+          className="h-12 w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3.5 text-base text-white focus:border-white/20 focus:ring-1 focus:ring-white/10 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(255%2C255%2C255%2C0.3)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat"
         >
           <option value="" disabled className="bg-[#000000] text-white/60">
             Select a service...
           </option>
           <option value="Real Estate" className="bg-[#000000]">Real Estate</option>
-          <option value="Branding" className="bg-[#000000]">Branding</option>
           <option value="Social Media" className="bg-[#000000]">Social Media</option>
           <option value="Commercial" className="bg-[#000000]">Commercial</option>
         </select>
@@ -155,7 +159,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           placeholder="Any additional details..."
           rows={4}
           maxLength={5000}
-          className="rounded-lg border-purple/12 bg-[#000000]/60 text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all resize-none"
+          className="rounded-lg border-white/[0.08] bg-white/[0.02] text-base text-white placeholder:text-white/20 focus:border-white/20 focus:ring-1 focus:ring-white/10 transition-all resize-none"
         />
       </div>
 

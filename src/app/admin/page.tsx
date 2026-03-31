@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { verifySessionToken } from "@/lib/auth";
 import {
   Archive,
@@ -121,12 +122,12 @@ export default async function AdminDashboard() {
             </h1>
           </div>
           <div className="flex items-center gap-4">
-            <a
+            <Link
               href="/"
               className="text-sm text-white/40 hover:text-white transition-colors"
             >
               View Site
-            </a>
+            </Link>
             <form action={logoutAction}>
               <button
                 type="submit"

@@ -19,17 +19,13 @@ export function AnimateOnScroll({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const noMotion = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    // Respect prefers-reduced-motion
-    const motionOk = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!motionOk) {
-      setIsVisible(true);
-      return;
-    }
+    noMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -38,7 +34,9 @@ export function AnimateOnScroll({
           observer.unobserve(el);
         }
       },
-      { threshold: 0.05, rootMargin: "0px 0px 80px 0px" }
+      noMotion.current
+        ? { threshold: 0 }
+        : { threshold: 0.05, rootMargin: "0px 0px 80px 0px" }
     );
 
     observer.observe(el);

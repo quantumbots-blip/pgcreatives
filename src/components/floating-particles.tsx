@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 interface FloatingParticlesProps {
@@ -8,26 +8,27 @@ interface FloatingParticlesProps {
   className?: string;
 }
 
+// Deterministic pseudo-random based on seed (render-safe, no Math.random)
+function hash(seed: number) {
+  const x = Math.sin(seed * 9301 + 49297) * 233280;
+  return x - Math.floor(x);
+}
+
 export function FloatingParticles({
   count = 15,
   className,
 }: FloatingParticlesProps) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  const particles = useMemo(() => {
-    if (!mounted) return [];
-    return Array.from({ length: count }, (_, i) => {
-      const size = 2 + Math.random() * 4;
-      const left = Math.random() * 100;
-      const duration = 8 + Math.random() * 12;
-      const delay = Math.random() * 10;
-
-      return { id: i, size, left, duration, delay };
-    });
-  }, [count, mounted]);
-
-  if (!mounted) return null;
+  const particles = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => ({
+        id: i,
+        size: 2 + hash(i) * 4,
+        left: hash(i + 100) * 100,
+        duration: 8 + hash(i + 200) * 12,
+        delay: hash(i + 300) * 10,
+      })),
+    [count]
+  );
 
   return (
     <div

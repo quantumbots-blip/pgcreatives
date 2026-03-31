@@ -6,6 +6,7 @@ import {
   Sparkles,
   Target,
   Video,
+  TrendingUp,
   Zap,
   Users,
   BarChart3,

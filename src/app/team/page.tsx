@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Star, Users, Zap, MapPin } from "lucide-react";
+import { Star, Users, Zap, MapPin } from "lucide-react";
 import { images } from "@/lib/images";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { SectionLabel } from "@/components/section-label";
@@ -125,29 +124,59 @@ const values = [
 export default function TeamPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-background pt-24 pb-12 sm:pt-28 sm:pb-16">
+      {/* Hero + About (merged) */}
+      <section className="relative overflow-hidden bg-background pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pb-20">
         {/* Ambient glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_70%_0%,rgba(139,92,246,0.12),transparent)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_60%_at_0%_100%,rgba(139,92,246,0.07),transparent)]" />
-        <div className="absolute right-[12%] top-[35%] h-36 w-36 rounded-full border border-dashed border-purple/8 spin-ring hidden lg:block" />
-
-        {/* Decorative colored gradient orbs */}
-        <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-gradient-to-br from-purple/20 via-blue-500/10 to-transparent blur-[100px]" />
-        <div className="absolute bottom-0 left-10 h-60 w-60 rounded-full bg-gradient-to-tr from-indigo-500/10 to-transparent blur-[80px]" />
 
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
-          <div className="max-w-2xl">
+          {/* Heading */}
+          <div className="mx-auto max-w-3xl text-center">
             <SectionLabel>About Us</SectionLabel>
-
-            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
+            <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white md:text-6xl">
               The Creatives{" "}
-              <span className="text-purple-light">Behind the Lens</span>
+              <span className="text-purple-light">Behind the Scenes</span>
             </h1>
-            <p className="mt-5 text-base sm:text-lg leading-relaxed text-white/60">
+            <p className="mx-auto mt-5 max-w-2xl text-base sm:text-lg leading-relaxed text-white/60">
               PG Creatives has a growing group of editors, photographers, and
-              content strategists. Meet the most experienced group in the
-              Midwest, elevating your game.
+              content strategists. Meet the most experienced group in Wisconsin
+              elevating your media game.
+            </p>
+          </div>
+
+          {/* Divider */}
+          <div className="mx-auto my-12 sm:my-16 h-px w-16 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+
+          {/* About text — single centered column */}
+          <div className="mx-auto max-w-3xl space-y-6 text-base sm:text-lg leading-relaxed text-white/60 text-center">
+            <p>
+              PG Creatives started at 19 years old with a simple goal — create
+              better media for real estate and help agents stand out in a crowded
+              market. What began as just me with a camera has grown into a full
+              team working with hundreds of agents and continuing to raise the
+              standard of what real estate content should look like.
+            </p>
+            <p>
+              From the beginning, this was never just about photos and videos. It
+              was about helping agents build a brand, get attention online, and
+              create real opportunities through their content. As we have grown,
+              that mindset has never changed.
+            </p>
+            <p>
+              We take pride in being reliable, fast, and detail-focused. But more
+              than anything, we care about the people we work with. Every project
+              is approached as a partnership. We are not just there to shoot a
+              listing. We are there to help you create content that represents
+              who you are and moves your business forward.
+            </p>
+            <p>
+              When you work with PG Creatives, you are not just hiring a media
+              company. You are working with a team that is invested in your
+              success.
+            </p>
+            <p className="text-xl font-semibold text-white sm:text-2xl pt-2">
+              When you win, we win.
             </p>
           </div>
         </div>
@@ -228,46 +257,6 @@ export default function TeamPage() {
         </div>
       </section>
 
-      {/* About */}
-      <section className="relative bg-gradient-to-b from-transparent via-purple/[0.02] to-transparent py-12 sm:py-16 lg:py-20">
-        <div className="mx-auto max-w-3xl px-5 sm:px-6 text-center">
-          {/* Decorative rainbow top border accent */}
-          <div className="mx-auto mb-8 h-px w-24 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
-
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-            About{" "}
-            <span className="gradient-text">PG Creatives</span>
-          </h2>
-          <div className="mt-6 space-y-4 text-white/60">
-            <p>
-              Based in Green Bay and Madison, Wisconsin, PG Creatives is a
-              professional media company specializing in real estate photography,
-              cinema-quality videography, drone aerial photography, 3D virtual
-              tours, and commercial branding.
-            </p>
-            <p>
-              We believe that professional-grade media is the key to making a
-              lasting impression. Whether you&apos;re selling a home, launching a
-              brand, or documenting a project, our team delivers content that
-              elevates your vision and drives results.
-            </p>
-          </div>
-
-          {/* CTA */}
-          <div className="relative mt-10">
-            {/* Floating gradient orbs behind CTA */}
-            <div className="absolute -left-10 top-1/2 h-32 w-32 -translate-y-1/2 rounded-full bg-gradient-to-br from-purple-500/10 to-pink-500/10 blur-[60px]" />
-            <div className="absolute -right-10 top-1/2 h-32 w-32 -translate-y-1/2 rounded-full bg-gradient-to-br from-blue-500/10 to-indigo-500/10 blur-[60px]" />
-            <Link
-              href="/#portals"
-              className="relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-dim to-purple px-8 py-3.5 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-[0_0_15px_rgba(79,110,247,0.25),0_0_40px_rgba(79,110,247,0.1)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(79,110,247,0.4),0_0_50px_rgba(79,110,247,0.15)]"
-            >
-              Work With Us
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

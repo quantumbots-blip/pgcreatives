@@ -61,12 +61,6 @@ const faqs: FAQItem[] = [
   },
   {
     category: "Pricing & Booking",
-    question: "Are there discounts for recurring clients?",
-    answer:
-      "Yes! We offer volume discounts and retainer packages for agents and businesses that book regularly. The more you shoot with us, the better the rates.",
-  },
-  {
-    category: "Pricing & Booking",
     question: "What if I need to reschedule?",
     answer:
       "We understand plans change. Reschedules with at least 24 hours notice are free. Same-day cancellations may incur a fee depending on the project scope.",
@@ -101,13 +95,13 @@ const faqs: FAQItem[] = [
     category: "Delivery & Licensing",
     question: "How quickly do I get my photos and videos?",
     answer:
-      "Standard turnaround is 24–48 hours for real estate photo packages and 3–5 business days for video projects. Rush delivery is available for an additional fee.",
+      "Photo turnaround is next morning. Video turnaround is three business days. Yes, we do include rush delivery for time-sensitive projects.",
   },
   {
     category: "Delivery & Licensing",
     question: "Do I own the photos and videos?",
     answer:
-      "You receive a full commercial usage license for all delivered content. You can use it across your website, social media, MLS listings, print materials, and ads without restrictions.",
+      "Clients do not technically own the work, but you do receive the full commercial usage license from PG Creatives for all delivered content. You can use it across your website, social media, MLS listings, print materials, and ads without restrictions.",
   },
   {
     category: "Delivery & Licensing",
@@ -171,7 +165,7 @@ export function FAQ() {
                 setOpenIndex(null);
               }}
               className={cn(
-                "rounded-full px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-medium tracking-wide transition-all duration-200",
+                "rounded-full px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all duration-200",
                 activeCategory === cat
                   ? "bg-purple/20 text-purple-light border border-purple/30"
                   : "bg-white/[0.04] text-white/50 border border-white/[0.06] hover:bg-white/[0.08] hover:text-white/70"
