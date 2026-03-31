@@ -88,6 +88,12 @@ const projects = [
     type: "video" as const,
     vimeoId: "1068497296",
   },
+  {
+    title: "Property Cinematic Tour",
+    category: "Real Estate",
+    type: "video" as const,
+    vimeoId: "1172649130",
+  },
   // Photos
   {
     title: "Open-Concept Living Room",
