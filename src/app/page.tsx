@@ -252,7 +252,7 @@ export default function HomePage() {
               <MagneticButton>
                 <Link
                   href="/portfolio"
-                  className="inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:bg-white/90"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-[#ffffff] px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:bg-[#f0f0f0]"
                 >
                   View Full Portfolio
                   <ArrowRight className="h-3.5 w-3.5" />
