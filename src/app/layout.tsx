@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { PageViewTracker } from "@/components/page-view-tracker";
+import { SplashScreen } from "@/components/splash-screen";
 import { BUSINESS } from "@/lib/data";
 
 const geistSans = Geist({
@@ -121,6 +122,7 @@ export default function RootLayout({
         />
         <PageViewTracker />
         <Header />
+        <SplashScreen />
         <main id="main-content" className="flex-1 pt-16 lg:pt-20">{children}</main>
         <Footer />
       </body>

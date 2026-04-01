@@ -43,6 +43,7 @@ const services = [
       "Social media is essential if you're looking to stand out in a competitive market. It builds trust and credibility, creates a consistent and memorable identity, and showcases your unique value proposition.",
     image: "/images/dark-home-office.jpg",
     glow: "-bottom-10 -right-10 bg-purple/25",
+    objectPosition: "center 60%",
   },
   {
     number: "02",
@@ -61,6 +62,7 @@ const services = [
       "Cinema quality videography for businesses of all types. Have an idea? Let's connect and make it happen.",
     image: "/images/twilight-wooded-exterior.jpg",
     glow: "-bottom-10 left-1/3 bg-indigo-400/20",
+    objectPosition: "center 60%",
   },
 ];
 
@@ -74,8 +76,8 @@ const brandingBenefits = [
 
 const photos = [
   { image: "/images/lakefront-sunset-living.jpg", alt: "Lakefront living room at sunset", colSpan: "col-span-2 row-span-2" },
-  { image: "/images/marble-kitchen-dining.jpg", alt: "Marble kitchen and dining room", colSpan: "" },
-  { image: "/images/twilight-wooded-exterior.jpg", alt: "Twilight wooded estate exterior", colSpan: "" },
+  { image: "/images/aerial-lakefront.jpg", alt: "Aerial view of lakefront property", colSpan: "" },
+  { image: "/images/luxury-estate-night.jpg", alt: "Luxury estate at night", colSpan: "" },
   { image: "/images/staged-master-bedroom.jpg", alt: "Staged master bedroom with lake view", colSpan: "" },
   { image: "/images/stone-ranch-exterior.jpg", alt: "Stone ranch estate exterior", colSpan: "" },
 ];
@@ -161,6 +163,7 @@ export default function HomePage() {
                         alt={service.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        style={service.objectPosition ? { objectPosition: service.objectPosition } : undefined}
                         sizes="(max-width: 640px) 100vw, 33vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/30 to-transparent" />
@@ -256,7 +259,7 @@ export default function HomePage() {
               <MagneticButton>
                 <Link
                   href="/portfolio"
-                  className="inline-flex items-center gap-2.5 rounded-full bg-[#ffffff] px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:bg-[#f0f0f0]"
+                  className="relative z-10 inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:bg-[#f0f0f0]"
                 >
                   View Full Portfolio
                   <ArrowRight className="h-3.5 w-3.5" />

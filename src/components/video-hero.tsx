@@ -74,24 +74,6 @@ export function VideoHero() {
 
   return (
     <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-hidden">
-      {/* Loading overlay — black with logo, fades out after min splash time */}
-      <div
-        className={`absolute inset-0 z-20 flex items-center justify-center bg-black transition-opacity duration-1000 ${
-          splashDone ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
-      >
-        <div className="animate-logo-loading">
-          <Image
-            src="/images/pg-logo.png"
-            alt="PG Creatives"
-            width={280}
-            height={80}
-            className="w-48 sm:w-64 h-auto"
-            priority
-          />
-        </div>
-      </div>
-
       {/* Poster — shows while video loads or if video fails */}
       <Image
         src="/images/hero-poster.jpg"
