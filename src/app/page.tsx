@@ -62,7 +62,7 @@ const services = [
       "Cinema quality videography for businesses of all types. Have an idea? Let's connect and make it happen.",
     image: "/images/twilight-wooded-exterior.jpg",
     glow: "-bottom-10 left-1/3 bg-indigo-400/20",
-    objectPosition: "center 60%",
+    objectPosition: "center 40%",
   },
 ];
 
