@@ -43,7 +43,7 @@ const services = [
       "Social media is essential if you're looking to stand out in a competitive market. It builds trust and credibility, creates a consistent and memorable identity, and showcases your unique value proposition.",
     image: "/images/dark-home-office.jpg",
     glow: "-bottom-10 -right-10 bg-purple/25",
-    objectPosition: "center 30%",
+    objectPosition: "center 15%",
   },
   {
     number: "02",
