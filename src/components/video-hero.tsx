@@ -73,7 +73,7 @@ export function VideoHero() {
   }, [tryPlay]);
 
   return (
-    <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-hidden">
+    <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-x-clip">
       {/* Poster — shows while video loads or if video fails */}
       <Image
         src="/images/hero-poster.jpg"
@@ -102,8 +102,10 @@ export function VideoHero() {
       </video>
 
       {/* Overlay gradients — purple-tinted */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/65 via-[#000000]/40 to-[#000000]/85" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/70 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/80 via-[#000000]/55 to-[#000000]/95" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/85 via-transparent to-transparent" />
+      {/* Bottom fade to blend into next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-48 sm:h-72 bg-gradient-to-t from-[#000000] via-[#000000]/70 to-transparent" />
 
       {/* Single subtle ambient glow */}
       <div className="absolute bottom-0 left-1/3 h-[200px] w-[500px] bg-purple/[0.06] blur-[120px]" />

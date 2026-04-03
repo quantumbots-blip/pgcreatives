@@ -59,7 +59,7 @@ const services = [
     icon: Video,
     title: "Commercial",
     description:
-      "Cinema quality videography for businesses of all types. Have an idea? Let's connect and make it happen.",
+      "Media for businesses of all types. Have an idea? Let's connect and make it happen.",
     image: "/images/twilight-wooded-exterior.jpg",
     glow: "-bottom-10 left-1/3 bg-indigo-400/20",
     objectPosition: "center 40%",
@@ -76,9 +76,9 @@ const brandingBenefits = [
 
 const photos = [
   { image: "/images/lakefront-sunset-living.jpg", alt: "Lakefront living room at sunset", colSpan: "col-span-2 row-span-2" },
-  { image: "/images/aerial-lakefront.jpg", alt: "Aerial view of lakefront property", colSpan: "" },
+  { image: "/images/marble-kitchen-dining.jpg", alt: "Marble kitchen and dining room with chandelier", colSpan: "" },
   { image: "/images/luxury-estate-night.jpg", alt: "Luxury estate at night", colSpan: "" },
-  { image: "/images/staged-master-bedroom.jpg", alt: "Staged master bedroom with lake view", colSpan: "" },
+  { image: "/images/fireplace-living.jpg", alt: "Modern linear fireplace living room", colSpan: "" },
   { image: "/images/stone-ranch-exterior.jpg", alt: "Stone ranch estate exterior", colSpan: "" },
 ];
 
@@ -87,11 +87,10 @@ export default function HomePage() {
     <>
       <VideoHero />
 
+      <div className="relative">
       {/* Stats Bar */}
-      <section className="bg-background relative overflow-hidden">
-        <div className="absolute inset-0 dot-grid" />
-        <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple/[0.1] blur-[80px]" />
-        <div className="absolute -left-10 bottom-0 h-40 w-40 rounded-full bg-sky-500/[0.07] blur-[60px]" />
+      <section className="relative overflow-x-clip">
+        <div className="absolute inset-0 dot-grid pointer-events-none" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 25%, black 75%, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 25%, black 75%, transparent)' }} />
 
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:gap-8 px-5 sm:px-6 py-8 sm:py-14 sm:grid-cols-3">
           {stats.map((stat, i) => (
@@ -116,15 +115,11 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-      <div className="section-sep" />
+
 
       {/* Services */}
-      <section className="section-blend isolate bg-background py-12 sm:py-16 lg:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 gradient-mesh" />
-        <div className="absolute left-10 top-20 h-64 w-64 rounded-full bg-purple/[0.05] blur-[80px]" />
-        <div className="absolute right-[15%] bottom-[10%] h-48 w-48 rounded-full bg-sky-500/[0.05] blur-[80px] sm:blur-[100px]" />
-        <div className="absolute right-[8%] top-[15%] h-32 w-32 rounded-full border border-dashed border-purple/[0.08] spin-ring hidden lg:block" />
-        <FloatingParticles count={10} className="hidden sm:block" />
+      <section className="isolate py-12 sm:py-16 lg:py-20 relative overflow-x-clip">
+
 
         <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
@@ -205,14 +200,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <div className="section-sep" />
+
 
       {/* Portfolio */}
-      <section className="section-blend py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-background">
-        <div className="absolute inset-0 gradient-mesh-warm" />
-        <div className="absolute right-[5%] top-[10%] h-48 w-48 rounded-full bg-purple/[0.07] blur-[80px] sm:blur-[100px]" />
-        <div className="absolute left-[8%] bottom-[15%] h-36 w-36 rounded-full bg-indigo-500/[0.06] blur-[60px] sm:blur-[80px]" />
-        <div className="absolute left-[12%] top-[20%] h-24 w-24 rounded-full border border-dashed border-white/[0.04] spin-ring hidden xl:block" />
+      <section className="py-12 sm:py-16 lg:py-20 relative overflow-x-clip">
+
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
@@ -269,16 +261,15 @@ export default function HomePage() {
           </AnimateOnScroll>
         </div>
       </section>
-      <div className="section-sep" />
+
 
       {/* Packages – 3D scroll fan */}
       <ScrollCards3D />
-      <div className="section-sep" />
+
 
       {/* Content Creator Program */}
-      <section className="section-blend relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
-        <div className="absolute right-[10%] top-[20%] h-64 w-64 rounded-full bg-purple/[0.06] blur-[80px] sm:blur-[100px]" />
-        <div className="absolute left-[5%] bottom-[15%] h-40 w-40 rounded-full bg-sky-500/[0.05] blur-[60px] sm:blur-[80px]" />
+      <section className="relative overflow-x-clip py-12 sm:py-16 lg:py-20">
+        <div className="absolute right-[10%] top-[20%] h-64 w-64 rounded-full bg-purple/[0.06] blur-[100px]" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
             <AnimateOnScroll animation="fade-up">
@@ -331,14 +322,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <div className="section-sep" />
+
 
       {/* Client Portals */}
-      <section id="portals" className="relative overflow-hidden bg-black py-16 sm:py-28">
-        <div className="absolute inset-0 gradient-mesh-rich" />
-        <div className="pointer-events-none absolute left-1/4 top-1/2 -translate-y-1/2 h-[350px] w-[350px] rounded-full bg-purple/[0.06] blur-[120px]" />
-        <div className="pointer-events-none absolute right-1/4 top-1/3 h-[250px] w-[250px] rounded-full bg-sky-500/[0.04] blur-[100px]" />
-        <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-5xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/30 to-transparent" />
+      <section id="portals" className="relative overflow-x-clip py-16 sm:py-28">
 
         <div className="relative mx-auto max-w-4xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
@@ -360,19 +347,19 @@ export default function HomePage() {
                 href="https://portal.spiro.media/order/pg/northeast-wisconsin"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-shine border-trace group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] p-6 sm:p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(43,111,184,0.2)]"
+                className="card-shine border-trace group relative block overflow-hidden rounded-2xl border border-purple/30 bg-gradient-to-br from-purple/[0.12] via-[#020810]/90 to-purple-light/[0.05] p-8 sm:p-10 transition-all duration-300 hover:border-purple/45 hover:shadow-[0_0_40px_rgba(43,111,184,0.25)]"
               >
-                <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-purple/20 blur-[60px] transition-all duration-300 group-hover:bg-purple/30" />
+                <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-purple/15 blur-[60px] transition-all duration-300 group-hover:bg-purple/25" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   Northeast Wisconsin
                 </p>
-                <p className="relative mt-2 text-xl sm:text-2xl font-bold text-white">
+                <p className="relative mt-3 text-2xl sm:text-3xl font-bold text-white">
                   Green Bay Portal
                 </p>
-                <p className="relative mt-2 text-sm text-white/50">
+                <p className="relative mt-3 text-sm sm:text-base text-white/50">
                   Green Bay, Fox Valley &amp; surrounding areas
                 </p>
-                <div className="relative mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-all duration-200 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                <div className="relative mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-all duration-200 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
                   Book a Session
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
@@ -381,19 +368,19 @@ export default function HomePage() {
                 href="https://portal.spiro.media/order/pg/madison"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-shine border-trace group relative block overflow-hidden rounded-2xl border border-purple/20 bg-gradient-to-br from-purple-light/[0.08] via-black to-purple/[0.1] p-6 sm:p-8 transition-all duration-300 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(43,111,184,0.2)]"
+                className="card-shine border-trace group relative block overflow-hidden rounded-2xl border border-purple/30 bg-gradient-to-br from-purple-light/[0.08] via-[#020810]/90 to-purple/[0.08] p-8 sm:p-10 transition-all duration-300 hover:border-purple/45 hover:shadow-[0_0_40px_rgba(43,111,184,0.25)]"
               >
                 <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-purple-light/15 blur-[60px] transition-all duration-300 group-hover:bg-purple-light/25" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   South-Central Wisconsin
                 </p>
-                <p className="relative mt-2 text-xl sm:text-2xl font-bold text-white">
+                <p className="relative mt-3 text-2xl sm:text-3xl font-bold text-white">
                   Madison Portal
                 </p>
-                <p className="relative mt-2 text-sm text-white/50">
+                <p className="relative mt-3 text-sm sm:text-base text-white/50">
                   Madison, Dane County &amp; surrounding areas
                 </p>
-                <div className="relative mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-all duration-200 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                <div className="relative mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-all duration-200 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
                   Book a Session
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
@@ -402,14 +389,12 @@ export default function HomePage() {
           </AnimateOnScroll>
         </div>
       </section>
-      <div className="section-sep" />
+
 
       {/* Contact Form */}
-      <section className="section-blend isolate relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
-        <div className="absolute inset-0 dot-grid" />
-        <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.08] blur-[100px]" />
-        <div className="absolute right-[10%] top-[20%] h-[200px] w-[200px] rounded-full bg-sky-500/[0.06] blur-[60px] sm:blur-[80px]" />
-        <div className="absolute left-[5%] bottom-[10%] h-[150px] w-[150px] rounded-full bg-indigo-400/[0.05] blur-[50px] sm:blur-[70px]" />
+      <section className="isolate relative overflow-x-clip py-12 sm:py-16 lg:py-20">
+        <div className="absolute inset-0 dot-grid pointer-events-none" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 25%, black 75%, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 25%, black 75%, transparent)' }} />
+        <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[120px]" />
 
         <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
@@ -441,6 +426,7 @@ export default function HomePage() {
 
       {/* FAQ */}
       <FAQ />
+      </div>
     </>
   );
 }

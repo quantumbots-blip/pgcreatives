@@ -62,14 +62,14 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background pt-24 pb-12 sm:pt-28 sm:pb-16">
+      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-16">
         {/* Floating decorative orb */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-32 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_#378cd240_0%,_#3730a320_40%,_transparent_70%)] blur-3xl"
         />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#378cd220_0%,_transparent_55%)]" />
-        <div className="absolute left-[8%] bottom-[20%] h-28 w-28 rounded-full border border-dashed border-[#378cd2]/10 spin-ring hidden lg:block" />
+
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
           <div className="max-w-2xl">
@@ -90,7 +90,7 @@ export default function ContactPage() {
       </section>
 
       {/* Form + Info */}
-      <section className="bg-background py-10 sm:py-14">
+      <section className="py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <div className="grid gap-6 sm:gap-8 lg:grid-cols-5">
             {/* Form */}

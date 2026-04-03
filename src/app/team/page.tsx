@@ -125,7 +125,7 @@ export default function TeamPage() {
   return (
     <>
       {/* Hero + About (merged) */}
-      <section className="relative overflow-hidden bg-background pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pb-20">
+      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pb-20">
         {/* Ambient glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_70%_0%,rgba(139,92,246,0.12),transparent)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_60%_at_0%_100%,rgba(139,92,246,0.07),transparent)]" />
@@ -149,7 +149,7 @@ export default function TeamPage() {
       </section>
 
       {/* Team Grid */}
-      <section className="relative bg-background py-12 sm:py-16 lg:py-20">
+      <section className="relative py-12 sm:py-16 lg:py-20">
         {/* Floating decorative orb */}
         <div className="pointer-events-none absolute right-0 top-1/4 h-96 w-96 rounded-full bg-purple/10 blur-[120px]" />
 
@@ -183,7 +183,7 @@ export default function TeamPage() {
       </section>
 
       {/* About Story */}
-      <section className="relative bg-background py-12 sm:py-16 lg:py-20">
+      <section className="relative py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-3xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white md:text-4xl text-center mb-10">
@@ -221,7 +221,7 @@ export default function TeamPage() {
       </section>
 
       {/* Values */}
-      <section className="bg-background py-12 sm:py-16 lg:py-20">
+      <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           {/* Heading */}
           <AnimateOnScroll animation="fade-up">

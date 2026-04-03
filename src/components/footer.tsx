@@ -19,11 +19,7 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-black">
-      {/* Subtle background gradient accents */}
-      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-7xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/30 to-transparent" />
-      <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-purple/[0.04] blur-[120px]" />
-      <div className="pointer-events-none absolute -right-40 bottom-20 h-80 w-80 rounded-full bg-purple/[0.03] blur-[120px]" />
+    <footer className="relative overflow-x-clip">
 
       {/* ── Main Footer Content ── */}
       <div className="mx-auto max-w-7xl px-5 sm:px-6 pt-12 pb-6 sm:pt-20 sm:pb-8">

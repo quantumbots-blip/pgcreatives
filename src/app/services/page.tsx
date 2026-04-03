@@ -147,10 +147,9 @@ export default async function BrandingPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background pt-24 pb-12 sm:pt-28 sm:pb-16">
+      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-16">
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_rgba(139,92,246,0.12)_0%,transparent_60%)]" />
-        <div className="absolute right-[10%] top-[30%] h-40 w-40 rounded-full border border-dashed border-purple/8 spin-ring hidden lg:block" />
-        <div className="absolute left-[5%] bottom-[20%] h-24 w-24 morph-blob bg-gradient-to-br from-purple/8 via-purple-light/5 to-transparent hidden lg:block" />
+
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
           <div className="max-w-2xl">
             <SectionLabel>Content Creator Program</SectionLabel>
@@ -167,7 +166,7 @@ export default async function BrandingPage() {
       </section>
 
       {/* Video Showcase */}
-      <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
+      <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center mb-10 sm:mb-14">
@@ -188,10 +187,7 @@ export default async function BrandingPage() {
       </section>
 
       {/* What We Do */}
-      <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
-        <div className="absolute inset-0 gradient-mesh" />
-        <div className="absolute right-10 top-20 h-64 w-64 rounded-full bg-purple/[0.05] blur-[80px]" />
-        <div className="absolute left-[8%] bottom-[15%] h-40 w-40 rounded-full bg-sky-500/[0.05] blur-[60px] sm:blur-[80px]" />
+      <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <SectionLabel>What We Do</SectionLabel>
@@ -209,7 +205,7 @@ export default async function BrandingPage() {
               const Icon = item.icon;
               return (
                 <AnimateOnScroll key={item.text} animation="fade-up" delay={i * 0.08} className="h-full">
-                  <div className="flex items-start gap-4 rounded-2xl glass-card p-6 sm:p-7 h-full">
+                  <div className="flex flex-col items-center text-center gap-3 rounded-2xl glass-card p-6 sm:p-7 h-full">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple/25 to-purple-dim/15 border border-purple/20">
                       <Icon className="h-5 w-5 text-purple-light" />
                     </div>
@@ -225,10 +221,7 @@ export default async function BrandingPage() {
       </section>
 
       {/* How This Helps You Win */}
-      <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
-        <div className="absolute inset-0 dot-grid-fine pointer-events-none" />
-        <div className="absolute left-[5%] top-[20%] h-60 w-60 rounded-full bg-purple/[0.06] blur-[100px]" />
-        <div className="absolute right-[10%] bottom-[10%] h-48 w-48 rounded-full bg-indigo-400/[0.05] blur-[60px] sm:blur-[80px]" />
+      <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
             <AnimateOnScroll animation="fade-up">
@@ -270,10 +263,7 @@ export default async function BrandingPage() {
       </section>
 
       {/* Pricing Tiers */}
-      <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20" id="pricing">
-        <div className="absolute inset-0 gradient-mesh-rich pointer-events-none" />
-        <div className="absolute left-[5%] top-[20%] h-60 w-60 rounded-full bg-purple/[0.06] blur-[100px]" />
-        <div className="absolute right-[8%] top-[40%] h-40 w-40 rounded-full bg-sky-500/[0.05] blur-[60px] sm:blur-[80px]" />
+      <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20" id="pricing">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">
@@ -331,7 +321,7 @@ export default async function BrandingPage() {
                     </p>
                     <Link
                       href="/contact"
-                      className="mt-6 flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 border border-white/15 text-white/70 hover:border-white/30 hover:bg-white/5 hover:text-white"
+                      className="mt-6 flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 bg-gradient-to-r from-purple-dim to-purple text-white shadow-[0_0_15px_rgba(43,111,184,0.25)] hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(43,111,184,0.45)]"
                     >
                       Get Started
                       <ArrowRight className="h-3.5 w-3.5" />
@@ -346,7 +336,7 @@ export default async function BrandingPage() {
       </section>
 
       {/* Why This Program Is Different */}
-      <section className="relative overflow-hidden bg-background py-12 sm:py-16 lg:py-20">
+      <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20">
         <div className="absolute right-[10%] top-[20%] h-64 w-64 rounded-full bg-purple/[0.04] blur-[100px]" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
@@ -360,7 +350,7 @@ export default async function BrandingPage() {
 
           <div className="mt-10 sm:mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <AnimateOnScroll animation="fade-up" delay={0}>
-              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 sm:p-7 h-full">
+              <div className="rounded-2xl border border-purple/30 bg-gradient-to-br from-purple/[0.12] via-[#020810]/90 to-purple-light/[0.05] p-6 sm:p-7 h-full">
                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-purple/15">
                   <Zap className="h-5 w-5 text-purple-light" />
                 </div>
@@ -373,7 +363,7 @@ export default async function BrandingPage() {
               </div>
             </AnimateOnScroll>
             <AnimateOnScroll animation="fade-up" delay={0.1}>
-              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 sm:p-7 h-full">
+              <div className="rounded-2xl border border-purple/30 bg-gradient-to-br from-purple/[0.12] via-[#020810]/90 to-purple-light/[0.05] p-6 sm:p-7 h-full">
                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-purple/15">
                   <Users className="h-5 w-5 text-purple-light" />
                 </div>
@@ -386,7 +376,7 @@ export default async function BrandingPage() {
               </div>
             </AnimateOnScroll>
             <AnimateOnScroll animation="fade-up" delay={0.2}>
-              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 sm:p-7 h-full sm:col-span-2 lg:col-span-1">
+              <div className="rounded-2xl border border-purple/30 bg-gradient-to-br from-purple/[0.12] via-[#020810]/90 to-purple-light/[0.05] p-6 sm:p-7 h-full sm:col-span-2 lg:col-span-1">
                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-purple/15">
                   <TrendingUp className="h-5 w-5 text-purple-light" />
                 </div>
@@ -408,20 +398,20 @@ export default async function BrandingPage() {
       <section className="relative py-16 sm:py-24 overflow-hidden">
         <div className="absolute left-1/2 top-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.08] blur-[120px]" />
         <div className="absolute left-[20%] top-[30%] h-[200px] w-[200px] rounded-full bg-sky-500/[0.05] blur-[100px]" />
-        <div className="relative mx-auto max-w-4xl px-5 sm:px-6">
-          <div className="relative overflow-hidden rounded-3xl border border-purple/25 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] p-10 sm:p-16 text-center shadow-[0_0_80px_rgba(43,111,184,0.12),inset_0_1px_0_rgba(106,176,212,0.1)]">
+        <div className="relative mx-auto max-w-3xl px-5 sm:px-6">
+          <div className="relative overflow-hidden rounded-3xl border border-purple/25 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] p-8 sm:p-12 text-center shadow-[0_0_80px_rgba(43,111,184,0.12),inset_0_1px_0_rgba(106,176,212,0.1)]">
             <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-purple/20 blur-[80px]" />
             <div className="pointer-events-none absolute -left-12 -bottom-12 h-40 w-40 rounded-full bg-purple-light/15 blur-[70px]" />
-            <h2 className="relative text-3xl sm:text-4xl font-bold text-white md:text-5xl">
+            <h2 className="relative text-2xl sm:text-3xl font-bold text-white md:text-4xl">
               Ready to grow your brand?
             </h2>
-            <p className="relative mx-auto mt-4 max-w-md text-base text-white/55 sm:text-lg">
+            <p className="relative mx-auto mt-3 max-w-md text-sm text-white/55 sm:text-base">
               Get in touch for a free consultation and see if the program is right
               for you.
             </p>
             <Link
               href="/contact"
-              className="relative mt-10 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-base font-semibold tracking-wide text-black transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-[1.03]"
+              className="relative mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-[1.03]"
             >
               Get Started <ArrowRight className="h-4 w-4" />
             </Link>

@@ -13,7 +13,7 @@ export const BUSINESS = {
   },
   socials: {
     facebook: "https://www.facebook.com/p/PG-Creatives-Wisconsin-61556298299463/",
-    instagram: "https://www.instagram.com/pgcreativeswi/",
+    instagram: "https://www.instagram.com/pg.creatives/",
   },
   portals: {
     greenBay: {

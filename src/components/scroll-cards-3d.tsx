@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
+import { FloatingParticles } from "@/components/floating-particles";
 const services = [
   {
     title: "PG Core",
@@ -110,10 +111,12 @@ export function ScrollCards3D() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-background py-16 sm:py-24 lg:py-32"
+      className="relative overflow-x-clip py-16 sm:py-24 lg:py-32"
     >
-      {/* Ambient glow */}
-      <div className="absolute left-1/2 top-1/3 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple/[0.04] blur-[120px]" />
+      {/* Ambient glows */}
+      <div className="absolute left-1/2 top-1/3 h-[500px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple/[0.04] blur-[200px]" />
+      <div className="absolute bottom-0 left-1/4 h-[300px] w-[400px] rounded-full bg-purple-light/[0.03] blur-[160px]" />
+      <FloatingParticles count={10} className="hidden sm:block" />
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
         {/* Heading */}
@@ -152,8 +155,8 @@ export function ScrollCards3D() {
               <div
                 className={`relative flex h-full flex-col rounded-2xl border transition-all duration-300 ${
                   service.popular
-                    ? "border-purple/30 bg-gradient-to-br from-purple/[0.15] via-black to-purple-light/[0.08] hover:border-purple/50 hover:shadow-[0_0_40px_rgba(43,111,184,0.25)]"
-                    : "border-purple/20 bg-gradient-to-br from-purple/[0.12] via-black to-purple-light/[0.06] hover:border-purple/40 hover:shadow-[0_0_40px_rgba(43,111,184,0.2)]"
+                    ? "border-purple/50 bg-gradient-to-br from-purple/[0.18] via-[#020810]/90 to-purple-light/[0.08] hover:border-purple/60 hover:shadow-[0_0_50px_rgba(43,111,184,0.35)] shadow-[0_0_25px_rgba(43,111,184,0.15)]"
+                    : "border-purple/30 bg-gradient-to-br from-purple/[0.12] via-[#020810]/90 to-purple-light/[0.05] hover:border-purple/45 hover:shadow-[0_0_40px_rgba(43,111,184,0.25)]"
                 }`}
               >
                 {/* Popular badge */}

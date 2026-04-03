@@ -89,7 +89,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden pb-[env(safe-area-inset-bottom)]">
+      <body className="min-h-full flex flex-col overflow-x-hidden pb-[env(safe-area-inset-bottom)] bg-background">
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:rounded-lg focus:bg-purple focus:px-4 focus:py-2 focus:text-white">
           Skip to main content
         </a>
@@ -123,8 +123,11 @@ export default function RootLayout({
         <PageViewTracker />
         <Header />
         <SplashScreen />
-        <main id="main-content" className="flex-1 pt-16 lg:pt-20">{children}</main>
-        <Footer />
+        <div className="relative flex-1 flex flex-col">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden gradient-mesh-unified" />
+          <main id="main-content" className="flex-1 pt-16 lg:pt-20">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );

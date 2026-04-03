@@ -140,14 +140,9 @@ export function FAQ() {
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
 
   return (
-    <section className="relative overflow-hidden bg-black py-16 sm:py-28">
-      {/* Background accents */}
-      <div className="absolute inset-0 gradient-mesh-rich pointer-events-none" />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-full max-w-5xl -translate-x-1/2 bg-gradient-to-r from-transparent via-purple/30 to-transparent" />
-      <div className="pointer-events-none absolute -right-40 top-40 h-80 w-80 rounded-full bg-purple/[0.12] blur-[120px]" />
-      <div className="pointer-events-none absolute left-[10%] bottom-[20%] h-60 w-60 rounded-full bg-sky-500/[0.10] blur-[60px] sm:blur-[100px]" />
-      <div className="pointer-events-none absolute right-[15%] top-[15%] h-28 w-28 rounded-full border border-dashed border-purple/[0.10] spin-ring hidden lg:block" />
-      <div className="pointer-events-none absolute left-[25%] top-[40%] h-48 w-48 rounded-full bg-teal-400/[0.06] blur-[100px]" />
+    <section className="relative overflow-x-clip py-16 sm:py-28">
+      <div className="pointer-events-none absolute -right-40 top-40 h-80 w-80 rounded-full bg-purple/[0.08] blur-[120px]" />
+      <div className="pointer-events-none absolute left-[10%] bottom-[20%] h-60 w-60 rounded-full bg-sky-500/[0.06] blur-[100px]" />
 
       <div className="mx-auto max-w-4xl px-5 sm:px-6">
         {/* Heading */}

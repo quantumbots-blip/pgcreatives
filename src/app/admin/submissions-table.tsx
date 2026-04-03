@@ -46,7 +46,7 @@ const STATUS_OPTIONS: {
   {
     value: "archived",
     label: "Archived",
-    color: "text-white/40",
+    color: "text-white/55",
     bg: "bg-white/5",
     border: "border-white/10",
   },
@@ -182,13 +182,13 @@ export function SubmissionsTable({
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         {/* Search */}
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/45" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search name, email, company..."
-            className="w-full rounded-lg border border-purple/15 bg-purple/[0.04] py-2 pl-9 pr-3 text-sm text-white placeholder:text-white/25 outline-none transition-colors focus:border-purple/30"
+            className="w-full rounded-lg border border-purple/20 bg-purple/[0.06] py-2 pl-9 pr-3 text-sm text-white placeholder:text-white/40 outline-none transition-colors focus:border-purple/30"
           />
         </div>
 
@@ -199,7 +199,7 @@ export function SubmissionsTable({
             onChange={(e) =>
               setStatusFilter(e.target.value as SubmissionStatus | "all")
             }
-            className="rounded-lg border border-purple/15 bg-purple/[0.04] px-3 py-2 text-xs text-white/60 outline-none transition-colors focus:border-purple/30"
+            className="rounded-lg border border-purple/20 bg-purple/[0.06] px-3 py-2 text-xs text-white/70 outline-none transition-colors focus:border-purple/30"
           >
             <option value="all">All Status</option>
             {STATUS_OPTIONS.map((s) => (
@@ -213,7 +213,7 @@ export function SubmissionsTable({
           <select
             value={serviceFilter}
             onChange={(e) => setServiceFilter(e.target.value)}
-            className="rounded-lg border border-purple/15 bg-purple/[0.04] px-3 py-2 text-xs text-white/60 outline-none transition-colors focus:border-purple/30"
+            className="rounded-lg border border-purple/20 bg-purple/[0.06] px-3 py-2 text-xs text-white/70 outline-none transition-colors focus:border-purple/30"
           >
             <option value="all">All Services</option>
             {services.map((s) => (
@@ -226,7 +226,7 @@ export function SubmissionsTable({
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
-              className="flex items-center gap-1 rounded-lg border border-purple/15 px-3 py-2 text-xs text-white/40 transition-colors hover:border-purple/30 hover:text-white/60"
+              className="flex items-center gap-1 rounded-lg border border-purple/15 px-3 py-2 text-xs text-white/55 transition-colors hover:border-purple/30 hover:text-white/70"
             >
               <X className="h-3 w-3" />
               Clear
@@ -236,7 +236,7 @@ export function SubmissionsTable({
           {/* Export */}
           <button
             onClick={exportCSV}
-            className="flex items-center gap-1.5 rounded-lg border border-purple/15 px-3 py-2 text-xs text-white/40 transition-colors hover:border-purple/30 hover:text-white/60"
+            className="flex items-center gap-1.5 rounded-lg border border-purple/15 px-3 py-2 text-xs text-white/55 transition-colors hover:border-purple/30 hover:text-white/70"
           >
             <Download className="h-3.5 w-3.5" />
             Export CSV
@@ -246,14 +246,14 @@ export function SubmissionsTable({
 
       {/* Results count */}
       {hasActiveFilters && (
-        <p className="mb-3 text-xs text-white/30">
+        <p className="mb-3 text-xs text-white/45">
           Showing {filtered.length} of {localSubmissions.length} submissions
         </p>
       )}
 
       {/* Table */}
       {filtered.length === 0 ? (
-        <p className="py-16 text-center text-sm text-white/30">
+        <p className="py-16 text-center text-sm text-white/45">
           {localSubmissions.length === 0
             ? "No submissions yet. They'll appear here when someone fills out the contact form."
             : "No submissions match your filters."}
@@ -261,7 +261,7 @@ export function SubmissionsTable({
       ) : (
         <div className="space-y-2">
           {/* Header — desktop only */}
-          <div className="hidden sm:grid sm:grid-cols-12 gap-4 px-4 py-2 text-xs font-medium uppercase tracking-[0.15em] text-white/30">
+          <div className="hidden sm:grid sm:grid-cols-12 gap-4 px-4 py-2 text-xs font-medium uppercase tracking-[0.15em] text-white/45">
             <div className="col-span-3">Name</div>
             <div className="col-span-3">Email</div>
             <div className="col-span-2">Service</div>
@@ -289,7 +289,7 @@ export function SubmissionsTable({
             return (
               <div
                 key={sub.id}
-                className="rounded-lg border border-purple/8 bg-purple/[0.02] transition-colors hover:border-purple/15"
+                className="rounded-lg border border-purple/15 bg-purple/[0.05] transition-colors hover:border-purple/25"
               >
                 <button
                   onClick={() =>
@@ -302,10 +302,10 @@ export function SubmissionsTable({
                     <div className="col-span-3 text-sm font-medium text-white truncate">
                       {sub.first_name} {sub.last_name}
                     </div>
-                    <div className="col-span-3 text-sm text-white/50 truncate">
+                    <div className="col-span-3 text-sm text-white/65 truncate">
                       {sub.email}
                     </div>
-                    <div className="col-span-2 text-sm text-white/40 truncate">
+                    <div className="col-span-2 text-sm text-white/55 truncate">
                       {sub.service || "General"}
                     </div>
                     <div
@@ -334,13 +334,13 @@ export function SubmissionsTable({
                         ))}
                       </select>
                     </div>
-                    <div className="col-span-1 text-xs text-white/30">
+                    <div className="col-span-1 text-xs text-white/45">
                       {ago}
                     </div>
                     <div className="col-span-1 flex justify-end">
                       <ChevronDown
                         className={cn(
-                          "h-4 w-4 text-white/30 transition-transform",
+                          "h-4 w-4 text-white/45 transition-transform",
                           isExpanded && "rotate-180"
                         )}
                       />
@@ -354,7 +354,7 @@ export function SubmissionsTable({
                         <p className="text-sm font-medium text-white">
                           {sub.first_name} {sub.last_name}
                         </p>
-                        <p className="mt-0.5 text-xs text-white/40">
+                        <p className="mt-0.5 text-xs text-white/55">
                           {sub.service || "General inquiry"} &middot;{" "}
                           {ago}
                         </p>
@@ -372,7 +372,7 @@ export function SubmissionsTable({
                         </span>
                         <ChevronDown
                           className={cn(
-                            "h-4 w-4 text-white/30 transition-transform",
+                            "h-4 w-4 text-white/45 transition-transform",
                             isExpanded && "rotate-180"
                           )}
                         />
@@ -383,13 +383,13 @@ export function SubmissionsTable({
 
                 {/* Expanded details */}
                 {isExpanded && (
-                  <div className="border-t border-purple/8 px-4 py-5 space-y-4">
+                  <div className="border-t border-purple/15 px-4 py-5 space-y-4">
                     <div className="grid gap-3 sm:grid-cols-2">
                       <div className="flex items-center gap-2 text-sm">
                         <Mail className="h-3.5 w-3.5 text-purple/50 shrink-0" />
                         <a
                           href={`mailto:${sub.email}`}
-                          className="text-white/60 hover:text-purple-light transition-colors"
+                          className="text-white/70 hover:text-purple-light transition-colors"
                         >
                           {sub.email}
                         </a>
@@ -399,7 +399,7 @@ export function SubmissionsTable({
                           <Phone className="h-3.5 w-3.5 text-purple/50 shrink-0" />
                           <a
                             href={`tel:${sub.phone}`}
-                            className="text-white/60 hover:text-purple-light transition-colors"
+                            className="text-white/70 hover:text-purple-light transition-colors"
                           >
                             {sub.phone}
                           </a>
@@ -408,14 +408,14 @@ export function SubmissionsTable({
                       {sub.company && (
                         <div className="flex items-center gap-2 text-sm">
                           <Building2 className="h-3.5 w-3.5 text-purple/50 shrink-0" />
-                          <span className="text-white/60">
+                          <span className="text-white/70">
                             {sub.company}
                           </span>
                         </div>
                       )}
                       <div className="flex items-center gap-2 text-sm">
                         <Clock className="h-3.5 w-3.5 text-purple/50 shrink-0" />
-                        <span className="text-white/60">
+                        <span className="text-white/70">
                           {dateStr} at {timeStr}
                         </span>
                       </div>
@@ -423,7 +423,7 @@ export function SubmissionsTable({
 
                     {/* Mobile status change */}
                     <div className="sm:hidden" onClick={(e) => e.stopPropagation()}>
-                      <p className="mb-1.5 text-xs font-medium uppercase tracking-[0.15em] text-white/30">
+                      <p className="mb-1.5 text-xs font-medium uppercase tracking-[0.15em] text-white/45">
                         Status
                       </p>
                       <div className="flex flex-wrap gap-2">
@@ -437,7 +437,7 @@ export function SubmissionsTable({
                               "rounded-full px-3 py-1 text-xs font-medium border transition-all",
                               status === opt.value
                                 ? cn(opt.bg, opt.border, opt.color)
-                                : "border-white/8 text-white/30 hover:border-white/15 hover:text-white/50"
+                                : "border-white/8 text-white/45 hover:border-white/15 hover:text-white/65"
                             )}
                           >
                             {opt.label}
@@ -447,10 +447,10 @@ export function SubmissionsTable({
                     </div>
 
                     <div>
-                      <p className="mb-1.5 text-xs font-medium uppercase tracking-[0.15em] text-white/30">
+                      <p className="mb-1.5 text-xs font-medium uppercase tracking-[0.15em] text-white/45">
                         Message
                       </p>
-                      <p className="whitespace-pre-wrap text-sm leading-relaxed text-white/60">
+                      <p className="whitespace-pre-wrap text-sm leading-relaxed text-white/70">
                         {sub.message}
                       </p>
                     </div>
