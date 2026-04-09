@@ -114,34 +114,35 @@ export default async function AdminDashboard() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-purple/10 bg-purple/[0.02]">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+          <div className="flex items-center gap-2 sm:gap-3">
             <BarChart3 className="h-5 w-5 text-purple-light" />
-            <h1 className="text-lg font-semibold text-white">
-              Admin Dashboard
+            <h1 className="text-base sm:text-lg font-semibold text-white">
+              Dashboard
             </h1>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Link
               href="/"
-              className="text-sm text-white/60 hover:text-white transition-colors"
+              className="text-xs sm:text-sm text-white/60 hover:text-white transition-colors"
             >
               View Site
             </Link>
             <form action={logoutAction}>
               <button
                 type="submit"
-                className="flex items-center gap-2 rounded-lg border border-purple/15 px-4 py-2 text-sm text-white/60 transition-colors hover:border-purple/30 hover:text-white"
+                className="flex items-center gap-1.5 sm:gap-2 rounded-lg border border-purple/15 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm text-white/60 transition-colors hover:border-purple/30 hover:text-white"
               >
                 <LogOut className="h-3.5 w-3.5" />
-                Sign Out
+                <span className="hidden sm:inline">Sign Out</span>
+                <span className="sm:hidden">Out</span>
               </button>
             </form>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-6 py-10">
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-10">
         {dbError && (
           <div className="mb-8 rounded-lg border border-yellow-500/20 bg-yellow-500/5 px-5 py-4">
             <p className="text-sm text-yellow-400">
@@ -151,62 +152,62 @@ export default async function AdminDashboard() {
         )}
 
         {/* ── Stats Cards ── */}
-        <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
           {/* Total */}
-          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple/15">
-                <MessageSquare className="h-5 w-5 text-purple-light" />
+          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-3.5 sm:p-5">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-purple/15 shrink-0">
+                <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-purple-light" />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-white">{stats.total}</p>
-                <p className="text-xs text-white/60">Total Submissions</p>
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-white">{stats.total}</p>
+                <p className="text-[10px] sm:text-xs text-white/60">Total Submissions</p>
               </div>
             </div>
           </div>
 
           {/* New Leads */}
-          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-5 relative overflow-hidden">
+          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-3.5 sm:p-5 relative overflow-hidden">
             {stats.newLeads > 0 && (
               <div className="absolute inset-0 bg-purple/[0.04] animate-pulse pointer-events-none" />
             )}
-            <div className="relative flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple/20">
-                <Sparkles className="h-5 w-5 text-purple-light" />
+            <div className="relative flex items-center gap-2.5 sm:gap-3">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-purple/20 shrink-0">
+                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-purple-light" />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-purple-light">
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-purple-light">
                   {stats.newLeads}
                 </p>
-                <p className="text-xs text-white/60">New Leads</p>
+                <p className="text-[10px] sm:text-xs text-white/60">New Leads</p>
               </div>
             </div>
           </div>
 
           {/* This Month */}
-          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple/15">
-                <Calendar className="h-5 w-5 text-purple-light" />
+          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-3.5 sm:p-5">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-purple/15 shrink-0">
+                <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-purple-light" />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-white">
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-white">
                   {stats.thisMonth}
                 </p>
-                <p className="text-xs text-white/60">This Month</p>
+                <p className="text-[10px] sm:text-xs text-white/60">This Month</p>
               </div>
             </div>
           </div>
 
           {/* This Week + trend */}
-          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple/15">
-                <TrendingUp className="h-5 w-5 text-purple-light" />
+          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-3.5 sm:p-5">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-purple/15 shrink-0">
+                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-purple-light" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <p className="text-2xl font-bold text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-white">
                     {stats.thisWeek}
                   </p>
                   {weekTrendPct !== 0 && (
@@ -226,52 +227,52 @@ export default async function AdminDashboard() {
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-white/60">This Week</p>
+                <p className="text-[10px] sm:text-xs text-white/60">This Week</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* ── Website Traffic ── */}
-        <div className="mt-8 rounded-xl border border-purple/20 bg-purple/[0.06] p-6">
-          <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-white/60">
+        <div className="mt-6 sm:mt-8 rounded-xl border border-purple/20 bg-purple/[0.06] p-4 sm:p-6">
+          <div className="mb-4 sm:mb-5 flex items-center justify-between">
+            <h2 className="text-xs sm:text-sm font-medium uppercase tracking-[0.15em] text-white/60">
               Website Traffic
             </h2>
-            <span className="text-xs text-white/60">Last 30 days</span>
+            <span className="text-[10px] sm:text-xs text-white/60">Last 30 days</span>
           </div>
 
           {/* Traffic stat cards */}
-          <div className="grid gap-3 grid-cols-2 lg:grid-cols-4 mb-6">
-            <div className="rounded-lg border border-purple/20 bg-purple/[0.08] p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Eye className="h-4 w-4 text-purple/60" />
-                <span className="text-[10px] uppercase tracking-wider text-white/60">Views</span>
+          <div className="grid gap-2.5 sm:gap-3 grid-cols-2 lg:grid-cols-4 mb-5 sm:mb-6">
+            <div className="rounded-lg border border-purple/20 bg-purple/[0.08] p-3 sm:p-4">
+              <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-purple/60" />
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-white/60">Views</span>
               </div>
-              <p className="text-2xl font-bold text-white">{traffic.monthViews.toLocaleString()}</p>
-              <p className="text-[10px] text-white/60 mt-1">{traffic.totalViews.toLocaleString()} all time</p>
+              <p className="text-lg sm:text-2xl font-bold text-white">{traffic.monthViews.toLocaleString()}</p>
+              <p className="text-[9px] sm:text-[10px] text-white/60 mt-0.5 sm:mt-1">{traffic.totalViews.toLocaleString()} all time</p>
             </div>
-            <div className="rounded-lg border border-purple/20 bg-purple/[0.08] p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Users className="h-4 w-4 text-purple/60" />
-                <span className="text-[10px] uppercase tracking-wider text-white/60">Visitors</span>
+            <div className="rounded-lg border border-purple/20 bg-purple/[0.08] p-3 sm:p-4">
+              <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-purple/60" />
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-white/60">Visitors</span>
               </div>
-              <p className="text-2xl font-bold text-white">{traffic.monthUnique.toLocaleString()}</p>
-              <p className="text-[10px] text-white/60 mt-1">{traffic.totalUnique.toLocaleString()} all time</p>
+              <p className="text-lg sm:text-2xl font-bold text-white">{traffic.monthUnique.toLocaleString()}</p>
+              <p className="text-[9px] sm:text-[10px] text-white/60 mt-0.5 sm:mt-1">{traffic.totalUnique.toLocaleString()} all time</p>
             </div>
-            <div className="rounded-lg border border-purple/20 bg-purple/[0.08] p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="h-4 w-4 text-purple/60" />
-                <span className="text-[10px] uppercase tracking-wider text-white/60">This Week</span>
+            <div className="rounded-lg border border-purple/20 bg-purple/[0.08] p-3 sm:p-4">
+              <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-purple/60" />
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-white/60">This Week</span>
               </div>
-              <p className="text-2xl font-bold text-white">{traffic.weekViews.toLocaleString()}</p>
+              <p className="text-lg sm:text-2xl font-bold text-white">{traffic.weekViews.toLocaleString()}</p>
             </div>
-            <div className="rounded-lg border border-purple/20 bg-purple/[0.08] p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="h-4 w-4 text-purple/60" />
-                <span className="text-[10px] uppercase tracking-wider text-white/60">Today</span>
+            <div className="rounded-lg border border-purple/20 bg-purple/[0.08] p-3 sm:p-4">
+              <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-purple/60" />
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-white/60">Today</span>
               </div>
-              <p className="text-2xl font-bold text-white">{traffic.todayViews.toLocaleString()}</p>
+              <p className="text-lg sm:text-2xl font-bold text-white">{traffic.todayViews.toLocaleString()}</p>
             </div>
           </div>
 
@@ -306,9 +307,9 @@ export default async function AdminDashboard() {
           )}
 
           {/* Bottom row: Top Pages, Devices, Referrers */}
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {/* Top Pages */}
-            <div>
+            <div className="sm:col-span-2 lg:col-span-1">
               <p className="mb-3 text-xs font-medium uppercase tracking-wider text-white/60">
                 Top Pages
               </p>
@@ -319,14 +320,14 @@ export default async function AdminDashboard() {
                   {traffic.topPages.map((page) => (
                     <div
                       key={page.path}
-                      className="flex items-center justify-between rounded-lg bg-white/[0.05] px-3 py-2"
+                      className="flex items-center justify-between gap-2 rounded-lg bg-white/[0.05] px-3 py-2"
                     >
-                      <span className="text-xs text-white/70 font-mono truncate max-w-[140px]">
+                      <span className="text-xs text-white/70 font-mono truncate min-w-0">
                         {page.path}
                       </span>
-                      <div className="flex items-center gap-3 text-[10px] text-white/60 shrink-0">
+                      <div className="flex items-center gap-2 sm:gap-3 text-[10px] text-white/60 shrink-0">
                         <span>{Number(page.views).toLocaleString()} views</span>
-                        <span>{Number(page.visitors).toLocaleString()} visitors</span>
+                        <span className="hidden sm:inline">{Number(page.visitors).toLocaleString()} visitors</span>
                       </div>
                     </div>
                   ))}
@@ -410,9 +411,9 @@ export default async function AdminDashboard() {
         </div>
 
         {/* ── Lead Pipeline ── */}
-        <div className="mt-8 rounded-xl border border-purple/20 bg-purple/[0.06] p-6">
-          <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-white/60">
+        <div className="mt-6 sm:mt-8 rounded-xl border border-purple/20 bg-purple/[0.06] p-4 sm:p-6">
+          <div className="mb-4 sm:mb-5 flex items-center justify-between">
+            <h2 className="text-xs sm:text-sm font-medium uppercase tracking-[0.15em] text-white/60">
               Lead Pipeline
             </h2>
             {activePipeline > 0 && (
@@ -421,61 +422,61 @@ export default async function AdminDashboard() {
               </span>
             )}
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-3 sm:grid-cols-4">
             {/* New */}
-            <div className="relative rounded-lg border border-purple/20 bg-purple/10 p-4 text-center">
-              <Sparkles className="mx-auto mb-2 h-5 w-5 text-purple-light" />
-              <p className="text-2xl font-bold text-purple-light">
+            <div className="relative rounded-lg border border-purple/20 bg-purple/10 p-3 sm:p-4 text-center">
+              <Sparkles className="mx-auto mb-1.5 sm:mb-2 h-4 w-4 sm:h-5 sm:w-5 text-purple-light" />
+              <p className="text-xl sm:text-2xl font-bold text-purple-light">
                 {statusCounts.new}
               </p>
-              <p className="mt-1 text-xs text-white/60">New</p>
+              <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-white/60">New</p>
               <ChevronRight className="absolute right-0 top-1/2 hidden h-4 w-4 -translate-y-1/2 translate-x-1/2 text-white/15 sm:block" />
             </div>
 
             {/* Contacted */}
-            <div className="relative rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 text-center">
-              <Send className="mx-auto mb-2 h-5 w-5 text-amber-400" />
-              <p className="text-2xl font-bold text-amber-400">
+            <div className="relative rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 sm:p-4 text-center">
+              <Send className="mx-auto mb-1.5 sm:mb-2 h-4 w-4 sm:h-5 sm:w-5 text-amber-400" />
+              <p className="text-xl sm:text-2xl font-bold text-amber-400">
                 {statusCounts.contacted}
               </p>
-              <p className="mt-1 text-xs text-white/60">Contacted</p>
+              <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-white/60">Contacted</p>
               <ChevronRight className="absolute right-0 top-1/2 hidden h-4 w-4 -translate-y-1/2 translate-x-1/2 text-white/15 sm:block" />
             </div>
 
             {/* Booked */}
-            <div className="relative rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4 text-center">
-              <CheckCircle2 className="mx-auto mb-2 h-5 w-5 text-emerald-400" />
-              <p className="text-2xl font-bold text-emerald-400">
+            <div className="relative rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3 sm:p-4 text-center">
+              <CheckCircle2 className="mx-auto mb-1.5 sm:mb-2 h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
+              <p className="text-xl sm:text-2xl font-bold text-emerald-400">
                 {statusCounts.booked}
               </p>
-              <p className="mt-1 text-xs text-white/60">Booked</p>
+              <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-white/60">Booked</p>
               <ChevronRight className="absolute right-0 top-1/2 hidden h-4 w-4 -translate-y-1/2 translate-x-1/2 text-white/15 sm:block" />
             </div>
 
             {/* Archived */}
-            <div className="rounded-lg border border-white/8 bg-white/[0.03] p-4 text-center">
-              <Archive className="mx-auto mb-2 h-5 w-5 text-white/60" />
-              <p className="text-2xl font-bold text-white/60">
+            <div className="rounded-lg border border-white/8 bg-white/[0.03] p-3 sm:p-4 text-center">
+              <Archive className="mx-auto mb-1.5 sm:mb-2 h-4 w-4 sm:h-5 sm:w-5 text-white/60" />
+              <p className="text-xl sm:text-2xl font-bold text-white/60">
                 {statusCounts.archived}
               </p>
-              <p className="mt-1 text-xs text-white/60">Archived</p>
+              <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs text-white/60">Archived</p>
             </div>
           </div>
         </div>
 
         {/* ── Charts Row ── */}
-        <div className="mt-8 grid gap-4 lg:grid-cols-12">
+        <div className="mt-6 sm:mt-8 grid gap-4 lg:grid-cols-12">
           {/* Service Demand */}
-          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-6 lg:col-span-5">
-            <h2 className="mb-6 text-sm font-medium uppercase tracking-[0.15em] text-white/60">
+          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-4 sm:p-6 lg:col-span-5">
+            <h2 className="mb-4 sm:mb-6 text-xs sm:text-sm font-medium uppercase tracking-[0.15em] text-white/60">
               Service Demand
             </h2>
             <ServiceChart data={serviceBreakdown} />
           </div>
 
           {/* 30-Day Trend */}
-          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-6 lg:col-span-7">
-            <h2 className="mb-6 text-sm font-medium uppercase tracking-[0.15em] text-white/60">
+          <div className="rounded-xl border border-purple/20 bg-purple/[0.06] p-4 sm:p-6 lg:col-span-7">
+            <h2 className="mb-4 sm:mb-6 text-xs sm:text-sm font-medium uppercase tracking-[0.15em] text-white/60">
               Submissions &mdash; Last 30 Days
             </h2>
             {stats.daily.length === 0 ? (
@@ -505,11 +506,11 @@ export default async function AdminDashboard() {
         </div>
 
         {/* ── Contact Info ── */}
-        <div className="mt-8 rounded-xl border border-purple/20 bg-purple/[0.06] p-6">
-          <h2 className="mb-4 text-sm font-medium uppercase tracking-[0.15em] text-white/60">
+        <div className="mt-6 sm:mt-8 rounded-xl border border-purple/20 bg-purple/[0.06] p-4 sm:p-6">
+          <h2 className="mb-3 sm:mb-4 text-xs sm:text-sm font-medium uppercase tracking-[0.15em] text-white/60">
             Contact Numbers
           </h2>
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-6">
             <div className="flex items-center gap-3">
               <Phone className="h-4 w-4 text-purple/60" />
               <div>
@@ -550,8 +551,8 @@ export default async function AdminDashboard() {
         </div>
 
         {/* ── Submissions Table ── */}
-        <div className="mt-8 rounded-xl border border-purple/20 bg-purple/[0.06] p-6">
-          <h2 className="mb-6 text-sm font-medium uppercase tracking-[0.15em] text-white/60">
+        <div className="mt-6 sm:mt-8 rounded-xl border border-purple/20 bg-purple/[0.06] p-4 sm:p-6">
+          <h2 className="mb-4 sm:mb-6 text-xs sm:text-sm font-medium uppercase tracking-[0.15em] text-white/60">
             All Submissions
           </h2>
           <SubmissionsTable submissions={submissions} />

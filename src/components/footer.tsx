@@ -151,6 +151,10 @@ export function Footer() {
               <a href="/privacy" className="text-xs text-white/40 tracking-wide hover:text-white/60 transition-colors">
                 Privacy Policy
               </a>
+              <span className="h-3 w-px bg-white/10" />
+              <Link href="/admin" className="text-xs text-white/40 tracking-wide hover:text-white/60 transition-colors">
+                Admin
+              </Link>
               <span className="hidden h-3 w-px bg-white/10 sm:block" />
               <span className="hidden text-xs text-white/40 sm:block">
                 Wisconsin

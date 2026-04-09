@@ -38,7 +38,7 @@ export function ServiceChart({
         return (
           <div key={item.service} className="group">
             <div className="mb-1.5 flex items-center justify-between">
-              <span className="max-w-[200px] truncate text-sm text-white/60 group-hover:text-white/80 transition-colors">
+              <span className="max-w-[140px] sm:max-w-[200px] truncate text-xs sm:text-sm text-white/60 group-hover:text-white/80 transition-colors">
                 {item.service}
               </span>
               <span className="text-xs font-medium tabular-nums text-white/40">
