@@ -8,24 +8,24 @@ const services = [
   {
     title: "PG Core",
     description:
-      "Essential listing media — professional HDR photos, drone aerials, and MLS-ready formatting.",
-    features: ["HDR Photography", "Drone Aerials", "MLS-Ready", "Fast Turnaround"],
+      "Daytime photography, premium listing video, drone photography, and 3 virtual twilights.",
+    features: ["Daytime Photography", "Premium Listing Video", "Drone Photography", "3 Virtual Twilights"],
     price: "From $550",
     popular: false,
   },
   {
     title: "PG Growth",
     description:
-      "Our most popular package — listing video, HDR photos, drone footage, and social media edits.",
-    features: ["Listing Video", "HDR Photos", "Drone Footage", "Social Edits"],
+      "Our most popular package — photography, video, 3D tour, 2D floor plan, drone, and virtual twilights.",
+    features: ["Daytime Photography", "Premium Listing Video", "Matterport or Zillow 3D Tour", "2D Floor Plan", "Drone Photography", "3 Virtual Twilights"],
     price: "From $725",
     popular: true,
   },
   {
     title: "PG Platinum",
     description:
-      "The full premium experience — premium video, photos, drone, 3D tour, and priority scheduling.",
-    features: ["Premium Video", "3D Virtual Tour", "Drone Aerial", "Priority Scheduling"],
+      "The full premium experience — daytime & twilight photography, day to night video, coming soon video, and drone.",
+    features: ["Daytime & Twilight Photography", "Platinum Day to Night Listing Video", "Coming Soon Video", "Drone Photography"],
     price: "From $1,000",
     popular: false,
   },

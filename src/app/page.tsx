@@ -75,11 +75,11 @@ const brandingBenefits = [
 ];
 
 const photos = [
-  { image: "/images/lakefront-sunset-living.jpg", alt: "Lakefront living room at sunset", colSpan: "col-span-2 row-span-2" },
-  { image: "/images/marble-kitchen-dining.jpg", alt: "Marble kitchen and dining room with chandelier", colSpan: "" },
-  { image: "/images/luxury-estate-night.jpg", alt: "Luxury estate at night", colSpan: "" },
-  { image: "/images/fireplace-living.jpg", alt: "Modern linear fireplace living room", colSpan: "" },
-  { image: "/images/stone-ranch-exterior.jpg", alt: "Stone ranch estate exterior", colSpan: "" },
+  { image: "/images/fireplace-living.jpg", alt: "Modern linear fireplace living room", colSpan: "col-span-2 row-span-2" },
+  { image: "/images/marble-chef-kitchen.jpg", alt: "Marble chef kitchen", colSpan: "" },
+  { image: "/images/modern-entryway.jpg", alt: "Modern home entryway", colSpan: "" },
+  { image: "/images/luxury-living-room.jpg", alt: "Open-concept living room with vaulted ceiling", colSpan: "" },
+  { image: "/images/pendant-kitchen.jpg", alt: "Kitchen detail and backsplash", colSpan: "" },
 ];
 
 export default function HomePage() {
