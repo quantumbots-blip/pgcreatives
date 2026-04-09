@@ -109,7 +109,9 @@ export function VideoHero() {
 
       {/* Single subtle ambient glow */}
       <div className="absolute bottom-0 left-1/3 h-[200px] w-[500px] bg-purple/[0.06] blur-[120px]" />
-      <FloatingParticles count={12} />
+      <div className="hidden sm:block">
+        <FloatingParticles count={12} />
+      </div>
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-6 pt-24 sm:pt-20">
@@ -147,7 +149,7 @@ export function VideoHero() {
             <MagneticButton>
               <Link
                 href="/#portals"
-                className="rounded-full bg-gradient-to-r from-purple-dim to-purple px-7 sm:px-8 py-3.5 sm:py-4 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-[0_0_15px_rgba(55,140,210,0.25),0_0_40px_rgba(55,140,210,0.1)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(55,140,210,0.4),0_0_50px_rgba(55,140,210,0.15)]"
+                className="rounded-full bg-gradient-to-r from-purple-dim to-purple px-7 sm:px-8 py-3.5 sm:py-4 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-none sm:shadow-[0_0_15px_rgba(55,140,210,0.25),0_0_40px_rgba(55,140,210,0.1)] transition-all duration-300 hover:scale-[1.03] sm:hover:shadow-[0_0_20px_rgba(55,140,210,0.4),0_0_50px_rgba(55,140,210,0.15)]"
               >
                 Book a Shoot
               </Link>
