@@ -141,7 +141,7 @@ export function VideoHero() {
           </p>
 
           <div
-            className="animate-hero-fade-up mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4"
+            className="animate-hero-fade-up mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-4"
             style={{ animationDelay: "0.45s" }}
           >
             <MagneticButton>
