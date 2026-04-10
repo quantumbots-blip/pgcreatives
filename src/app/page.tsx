@@ -358,10 +358,7 @@ export default function HomePage() {
               >
                 <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-purple/15 blur-[60px] transition-all duration-300 group-hover:bg-purple/25" />
                 {/* Wisconsin state outline */}
-                <svg className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 text-white/[0.07]" viewBox="0 0 520 530" fill="none" stroke="currentColor" strokeWidth="3">
-                  <path d="M10,75 L15,70 L25,60 L30,50 L40,42 L55,38 L65,35 L75,30 L90,28 L105,22 L120,18 L135,15 L150,12 L160,8 L170,5 L180,3 L190,5 L195,10 L200,18 L210,20 L225,18 L235,14 L250,10 L258,6 L262,2 L268,5 L270,12 L266,18 L268,25 L275,22 L285,18 L295,15 L310,18 L320,20 L340,22 L355,20 L365,22 L370,28 L368,35 L362,40 L358,48 L362,55 L368,60 L375,55 L382,48 L390,42 L400,36 L408,30 L415,28 L420,32 L418,40 L412,50 L408,60 L410,72 L415,82 L420,95 L425,108 L428,120 L425,130 L418,138 L410,135 L404,128 L398,125 L392,130 L386,140 L380,152 L375,165 L370,178 L365,192 L358,200 L350,195 L345,205 L348,218 L352,232 L355,248 L358,265 L362,282 L365,300 L362,318 L358,332 L352,345 L345,360 L338,375 L328,390 L318,405 L305,418 L290,430 L275,440 L258,448 L240,455 L222,460 L205,465 L188,468 L172,470 L158,472 L145,475 L130,478 L115,480 L100,478 L88,475 L78,480 L68,482 L55,485 L42,488 L30,490 L22,492 L18,495 L15,498 L12,500 L10,498 L8,490 L10,480 L15,468 L18,455 L15,440 L12,425 L10,408 L8,390 L6,370 L5,348 L6,325 L8,302 L10,278 L8,255 L6,230 L5,205 L6,180 L8,158 L10,138 L12,118 L10,98 Z" />
-                  <circle cx="385" cy="105" r="5" fill="currentColor" opacity="0.5" />
-                </svg>
+                <img src="/images/wisconsin-outline.png" alt="" className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 opacity-[0.07] invert" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   Northeast Wisconsin
                 </p>
@@ -384,10 +381,7 @@ export default function HomePage() {
               >
                 <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-purple-light/15 blur-[60px] transition-all duration-300 group-hover:bg-purple-light/25" />
                 {/* Wisconsin state outline */}
-                <svg className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 text-white/[0.07]" viewBox="0 0 520 530" fill="none" stroke="currentColor" strokeWidth="3">
-                  <path d="M10,75 L15,70 L25,60 L30,50 L40,42 L55,38 L65,35 L75,30 L90,28 L105,22 L120,18 L135,15 L150,12 L160,8 L170,5 L180,3 L190,5 L195,10 L200,18 L210,20 L225,18 L235,14 L250,10 L258,6 L262,2 L268,5 L270,12 L266,18 L268,25 L275,22 L285,18 L295,15 L310,18 L320,20 L340,22 L355,20 L365,22 L370,28 L368,35 L362,40 L358,48 L362,55 L368,60 L375,55 L382,48 L390,42 L400,36 L408,30 L415,28 L420,32 L418,40 L412,50 L408,60 L410,72 L415,82 L420,95 L425,108 L428,120 L425,130 L418,138 L410,135 L404,128 L398,125 L392,130 L386,140 L380,152 L375,165 L370,178 L365,192 L358,200 L350,195 L345,205 L348,218 L352,232 L355,248 L358,265 L362,282 L365,300 L362,318 L358,332 L352,345 L345,360 L338,375 L328,390 L318,405 L305,418 L290,430 L275,440 L258,448 L240,455 L222,460 L205,465 L188,468 L172,470 L158,472 L145,475 L130,478 L115,480 L100,478 L88,475 L78,480 L68,482 L55,485 L42,488 L30,490 L22,492 L18,495 L15,498 L12,500 L10,498 L8,490 L10,480 L15,468 L18,455 L15,440 L12,425 L10,408 L8,390 L6,370 L5,348 L6,325 L8,302 L10,278 L8,255 L6,230 L5,205 L6,180 L8,158 L10,138 L12,118 L10,98 Z" />
-                  <circle cx="240" cy="350" r="5" fill="currentColor" opacity="0.5" />
-                </svg>
+                <img src="/images/wisconsin-outline.png" alt="" className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 opacity-[0.07] invert" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   South-Central Wisconsin
                 </p>
