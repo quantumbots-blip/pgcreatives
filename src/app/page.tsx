@@ -358,7 +358,7 @@ export default function HomePage() {
               >
                 <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-purple/15 blur-[60px] transition-all duration-300 group-hover:bg-purple/25" />
                 {/* Wisconsin state outline */}
-                <img src="/images/wisconsin-outline.png" alt="" className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 opacity-[0.07] invert" />
+                <img src="/images/wisconsin-outline.png" alt="" className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 opacity-[0.15] invert" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   Northeast Wisconsin
                 </p>
@@ -381,7 +381,7 @@ export default function HomePage() {
               >
                 <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-purple-light/15 blur-[60px] transition-all duration-300 group-hover:bg-purple-light/25" />
                 {/* Wisconsin state outline */}
-                <img src="/images/wisconsin-outline.png" alt="" className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 opacity-[0.07] invert" />
+                <img src="/images/wisconsin-outline.png" alt="" className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 opacity-[0.15] invert" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   South-Central Wisconsin
                 </p>
