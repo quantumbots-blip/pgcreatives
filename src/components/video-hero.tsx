@@ -98,7 +98,7 @@ export function VideoHero() {
           videoReady ? "opacity-100" : "opacity-0"
         }`}
       >
-        <source src="/hero-video-v3.mp4" type="video/mp4" />
+        <source src="/hero-video-v4.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay gradients — purple-tinted */}
