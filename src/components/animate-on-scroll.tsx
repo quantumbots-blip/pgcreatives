@@ -19,28 +19,57 @@ export function AnimateOnScroll({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const noMotion = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    noMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Eager check: if the element is already in (or near) the viewport on
+    // mount, reveal immediately. iOS Safari sometimes skips the initial
+    // IntersectionObserver callback for elements that are intersecting at the
+    // moment the observer is attached — this guards against that.
+    const eagerCheck = () => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      if (rect.top < vh + 120 && rect.bottom > -120) {
+        setIsVisible(true);
+        return true;
+      }
+      return false;
+    };
+
+    if (eagerCheck()) return;
+
+    // Bail to immediate reveal if IntersectionObserver isn't supported.
+    if (typeof IntersectionObserver === "undefined") {
+      setIsVisible(true);
+      return;
+    }
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+            return;
+          }
         }
       },
-      noMotion.current
-        ? { threshold: 0 }
-        : { threshold: 0.05, rootMargin: "0px 0px 80px 0px" }
+      { threshold: 0, rootMargin: "0px 0px 200px 0px" }
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+
+    // Safety net: if for any reason the observer never fires (e.g. mobile
+    // Safari quirks while the splash screen is fading), force-reveal after a
+    // short delay so content is never permanently stuck invisible.
+    const fallback = setTimeout(() => setIsVisible(true), 2500);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallback);
+    };
   }, []);
 
   return (
