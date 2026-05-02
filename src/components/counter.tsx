@@ -40,7 +40,7 @@ export function Counter({
       if (hasAnimated.current) return;
       hasAnimated.current = true;
       animate();
-      cleanup();
+      cleanup?.();
     };
 
     const isNearViewport = () => {
@@ -50,7 +50,8 @@ export function Counter({
     };
 
     if (isNearViewport()) {
-      start();
+      hasAnimated.current = true;
+      animate();
       return;
     }
 
@@ -77,12 +78,12 @@ export function Counter({
 
     const fallback = setTimeout(start, 1500);
 
-    function cleanup() {
+    const cleanup = () => {
       observer?.disconnect();
       window.removeEventListener("scroll", onScroll);
       if (frame) cancelAnimationFrame(frame);
       clearTimeout(fallback);
-    }
+    };
 
     return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
