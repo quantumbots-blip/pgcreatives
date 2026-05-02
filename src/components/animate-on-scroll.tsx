@@ -24,52 +24,63 @@ export function AnimateOnScroll({
     const el = ref.current;
     if (!el) return;
 
-    // Eager check: if the element is already in (or near) the viewport on
-    // mount, reveal immediately. iOS Safari sometimes skips the initial
-    // IntersectionObserver callback for elements that are intersecting at the
-    // moment the observer is attached — this guards against that.
-    const eagerCheck = () => {
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      if (rect.top < vh + 120 && rect.bottom > -120) {
-        setIsVisible(true);
-        return true;
-      }
-      return false;
+    let revealed = false;
+    const reveal = () => {
+      if (revealed) return;
+      revealed = true;
+      setIsVisible(true);
+      cleanup();
     };
 
-    if (eagerCheck()) return;
+    const isNearViewport = () => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      // Reveal anything within ~1.5 viewports of the visible area so the
+      // animation has already finished by the time it scrolls into view.
+      return rect.top < vh * 1.5 && rect.bottom > -vh * 0.5;
+    };
 
-    // Bail to immediate reveal if IntersectionObserver isn't supported.
-    if (typeof IntersectionObserver === "undefined") {
-      setIsVisible(true);
+    if (isNearViewport()) {
+      revealed = true;
+      queueMicrotask(() => setIsVisible(true));
       return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.disconnect();
-            return;
-          }
-        }
-      },
-      { threshold: 0, rootMargin: "0px 0px 200px 0px" }
-    );
+    let observer: IntersectionObserver | undefined;
+    if (typeof IntersectionObserver !== "undefined") {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) reveal();
+        },
+        { threshold: 0, rootMargin: "0px 0px 50% 0px" }
+      );
+      observer.observe(el);
+    }
 
-    observer.observe(el);
-
-    // Safety net: if for any reason the observer never fires (e.g. mobile
-    // Safari quirks while the splash screen is fading), force-reveal after a
-    // short delay so content is never permanently stuck invisible.
-    const fallback = setTimeout(() => setIsVisible(true), 2500);
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(fallback);
+    // Scroll-based fallback for browsers/contexts where IntersectionObserver
+    // callbacks fire late or get dropped (notably iOS Safari during momentum
+    // scrolling). rAF-throttled so 30+ instances stay cheap.
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        if (isNearViewport()) reveal();
+      });
     };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Final safety net — content can never stay permanently invisible.
+    const fallback = setTimeout(reveal, 1500);
+
+    function cleanup() {
+      observer?.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+      clearTimeout(fallback);
+    }
+
+    return cleanup;
   }, []);
 
   return (
