@@ -31,7 +31,7 @@ const showcaseVideos = [
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Content Creator Program | PG Creatives",
+  title: "Content Creator Program",
   description:
     "A monthly content creator program for real estate agents. Strategy, filming, editing, and coaching — we handle everything so you can focus on your business.",
   keywords: [
