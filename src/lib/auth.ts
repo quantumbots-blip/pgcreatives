@@ -4,21 +4,26 @@ import bcrypt from "bcryptjs";
 /**
  * SESSION_SECRET should be a random 64+ character string.
  * Generate one with: node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+ *
+ * Read lazily so that builds in environments without the secret (e.g. Vercel
+ * preview deployments where only production has the variable set) don't fail
+ * at module-load. Runtime callers still get a clear error.
  */
-const _secret = process.env.SESSION_SECRET || process.env.ADMIN_PASSWORD;
-if (!_secret) {
-  throw new Error(
-    "Missing SESSION_SECRET (or ADMIN_PASSWORD as fallback). " +
-      "Set SESSION_SECRET to a random 64+ character string in your environment.",
-  );
+function getSessionSecret(): string | null {
+  return process.env.SESSION_SECRET || process.env.ADMIN_PASSWORD || null;
 }
-const SESSION_SECRET: string = _secret;
+
+const MISSING_SECRET_MESSAGE =
+  "Missing SESSION_SECRET (or ADMIN_PASSWORD as fallback). " +
+  "Set SESSION_SECRET to a random 64+ character string in your environment.";
 
 /** Create an HMAC-signed session token (token.signature). */
 export function createSessionToken(): string {
+  const secret = getSessionSecret();
+  if (!secret) throw new Error(MISSING_SECRET_MESSAGE);
   const token = crypto.randomUUID();
   const sig = crypto
-    .createHmac("sha256", SESSION_SECRET)
+    .createHmac("sha256", secret)
     .update(token)
     .digest("hex");
   return `${token}.${sig}`;
@@ -26,7 +31,8 @@ export function createSessionToken(): string {
 
 /** Verify that a cookie value is a valid signed session token (HMAC check only). */
 export function verifySessionToken(cookie: string): boolean {
-  if (!SESSION_SECRET) return false;
+  const secret = getSessionSecret();
+  if (!secret) return false;
 
   const dotIndex = cookie.indexOf(".");
   if (dotIndex === -1) return false;
@@ -36,7 +42,7 @@ export function verifySessionToken(cookie: string): boolean {
   if (!token || !sig) return false;
 
   const expected = crypto
-    .createHmac("sha256", SESSION_SECRET)
+    .createHmac("sha256", secret)
     .update(token)
     .digest("hex");
 
