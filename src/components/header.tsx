@@ -59,33 +59,36 @@ const navigation: NavItem[] = [
 function DesktopDropdown({
   item,
   pathname,
+  open,
+  onOpenChange,
 }: {
   item: NavDropdown;
   pathname: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }) {
-  const [open, setOpen] = useState(false);
   const timeout = useRef<ReturnType<typeof setTimeout>>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const enter = () => {
     if (timeout.current) clearTimeout(timeout.current);
-    setOpen(true);
+    onOpenChange(true);
   };
   const leave = () => {
-    timeout.current = setTimeout(() => setOpen(false), 150);
+    timeout.current = setTimeout(() => onOpenChange(false), 150);
   };
 
   useEffect(() => {
     if (!open) return;
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") onOpenChange(false);
     };
     const handleClick = (e: MouseEvent) => {
       if (
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
       ) {
-        setOpen(false);
+        onOpenChange(false);
       }
     };
     document.addEventListener("keydown", handleKey);
@@ -94,7 +97,7 @@ function DesktopDropdown({
       document.removeEventListener("keydown", handleKey);
       document.removeEventListener("mousedown", handleClick);
     };
-  }, [open]);
+  }, [open, onOpenChange]);
 
   const isActive = item.children.some((c) => pathname === c.href);
 
@@ -106,7 +109,7 @@ function DesktopDropdown({
       onMouseLeave={leave}
     >
       <button
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => onOpenChange(!open)}
         aria-expanded={open}
         aria-haspopup="true"
         className={cn(
@@ -168,7 +171,7 @@ function DesktopDropdown({
                 key={child.href}
                 href={child.href}
                 role="menuitem"
-                onClick={() => setOpen(false)}
+                onClick={() => onOpenChange(false)}
                 className={linkClass}
               >
                 {Icon && <Icon className="h-3.5 w-3.5 text-purple-light/60" />}
@@ -222,6 +225,7 @@ export function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -286,6 +290,13 @@ export function Header() {
                     key={item.name}
                     item={item}
                     pathname={pathname}
+                    open={openMenu === item.name}
+                    onOpenChange={(next) =>
+                      setOpenMenu((prev) => {
+                        if (next) return item.name;
+                        return prev === item.name ? null : prev;
+                      })
+                    }
                   />
                 ) : (
                   <Link
