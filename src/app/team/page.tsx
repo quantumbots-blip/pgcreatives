@@ -61,6 +61,11 @@ const team = [
     image: images.liamJanowski,
   },
   {
+    name: "Calvin Lee",
+    role: "Creative Specialist (Appleton)",
+    image: images.calvinLee,
+  },
+  {
     name: "Diether Ryan Ybañez",
     role: "Senior Video Editor",
     image: images.ryanYbanez,

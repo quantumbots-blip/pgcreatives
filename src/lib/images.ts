@@ -24,6 +24,7 @@ export const images = {
   isaiahBastian: "/team/isaiah-bastian.jpg",
   brendenGruber: "/team/brenden-gruber.jpg",
   liamJanowski: "/team/liam-janowski.jpg",
+  calvinLee: "/team/calvin-lee.jpg",
   ryanYbanez: "/team/ryan-ybanez.png",
   lyleAlquilos: "/team/lyle-alquilos.jpg",
   charlibethSicad: "/team/charlibeth-sicad.png",
