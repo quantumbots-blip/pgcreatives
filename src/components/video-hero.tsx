@@ -1,53 +1,22 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useCallback,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Play } from "lucide-react";
 import { MagneticButton } from "@/components/magnetic-button";
 import { FloatingParticles } from "@/components/floating-particles";
-
-// The background video is ~50MB, so we only load it on larger screens and when
-// the visitor hasn't opted out of heavy media. Mobile / data-saver /
-// reduced-motion visitors just get the (already-visible) poster image. Read via
-// useSyncExternalStore so SSR + first client render agree (no hydration flash)
-// and the decision re-evaluates if the viewport changes.
-function subscribeMedia(callback: () => void) {
-  const queries = [
-    window.matchMedia("(min-width: 768px)"),
-    window.matchMedia("(prefers-reduced-motion: reduce)"),
-  ];
-  queries.forEach((q) => q.addEventListener("change", callback));
-  return () => queries.forEach((q) => q.removeEventListener("change", callback));
-}
-
-function shouldLoadVideo() {
-  type NavigatorWithConnection = Navigator & {
-    connection?: { saveData?: boolean };
-  };
-  const saveData =
-    (navigator as NavigatorWithConnection).connection?.saveData === true;
-  const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-  const isLargeScreen = window.matchMedia("(min-width: 768px)").matches;
-  return isLargeScreen && !saveData && !reduceMotion;
-}
+import { markHeroVideoReady } from "@/lib/hero-video";
 
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoReady, setVideoReady] = useState(false);
-  const loadVideo = useSyncExternalStore(
-    subscribeMedia,
-    shouldLoadVideo,
-    () => false
-  );
+
+  const handleReady = useCallback(() => {
+    setVideoReady(true);
+    // Let the splash screen know it can hand off to the (now playing) video.
+    markHeroVideoReady();
+  }, []);
 
   const tryPlay = useCallback(() => {
     const video = videoRef.current;
@@ -58,11 +27,11 @@ export function VideoHero() {
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise
-        .then(() => setVideoReady(true))
+        .then(handleReady)
         .catch(() => {
           // Autoplay blocked — retry on first user interaction
           const resume = () => {
-            video.play().then(() => setVideoReady(true)).catch(() => {});
+            video.play().then(handleReady).catch(() => {});
             document.removeEventListener("click", resume);
             document.removeEventListener("touchstart", resume);
             document.removeEventListener("scroll", resume);
@@ -72,10 +41,9 @@ export function VideoHero() {
           document.addEventListener("scroll", resume, { once: true });
         });
     }
-  }, []);
+  }, [handleReady]);
 
   useEffect(() => {
-    if (!loadVideo) return;
     const video = videoRef.current;
     if (!video) return;
 
@@ -84,14 +52,14 @@ export function VideoHero() {
       return;
     }
 
-    const onReady = () => tryPlay();
-    video.addEventListener("canplay", onReady);
-    return () => video.removeEventListener("canplay", onReady);
-  }, [loadVideo, tryPlay]);
+    const onCanPlay = () => tryPlay();
+    video.addEventListener("canplay", onCanPlay);
+    return () => video.removeEventListener("canplay", onCanPlay);
+  }, [tryPlay]);
 
   return (
     <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-x-clip">
-      {/* Poster — shows while video loads, on mobile, or if video fails */}
+      {/* Poster — shows while video loads or if video fails */}
       <Image
         src="/images/hero-poster.jpg"
         alt="Property showcase"
@@ -101,23 +69,21 @@ export function VideoHero() {
         sizes="100vw"
       />
 
-      {/* Video — desktop only, hidden until ready to prevent flash */}
-      {loadVideo && (
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          onLoadedData={tryPlay}
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
-            videoReady ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <source src="/hero-video-v4.mp4" type="video/mp4" />
-        </video>
-      )}
+      {/* Video — autoplays on all devices, hidden until ready to prevent flash */}
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        onLoadedData={tryPlay}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+          videoReady ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <source src="/hero-video-v4.mp4" type="video/mp4" />
+      </video>
 
       {/* Overlay gradients — purple-tinted */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/68 via-[#000000]/47 to-[#000000]/81" />
