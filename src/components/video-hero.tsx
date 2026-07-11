@@ -6,19 +6,16 @@ import Image from "next/image";
 import { Play } from "lucide-react";
 import { MagneticButton } from "@/components/magnetic-button";
 import { FloatingParticles } from "@/components/floating-particles";
-
-const MIN_SPLASH_MS = 2200;
+import { markHeroVideoReady } from "@/lib/hero-video";
 
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoReady, setVideoReady] = useState(false);
-  const [splashDone, setSplashDone] = useState(false);
-  const splashStart = useRef(Date.now());
 
-  const dismiss = useCallback(() => {
-    const elapsed = Date.now() - splashStart.current;
-    const remaining = Math.max(0, MIN_SPLASH_MS - elapsed);
-    setTimeout(() => setSplashDone(true), remaining);
+  const handleReady = useCallback(() => {
+    setVideoReady(true);
+    // Let the splash screen know it can hand off to the (now playing) video.
+    markHeroVideoReady();
   }, []);
 
   const tryPlay = useCallback(() => {
@@ -30,17 +27,11 @@ export function VideoHero() {
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise
-        .then(() => {
-          setVideoReady(true);
-          dismiss();
-        })
+        .then(handleReady)
         .catch(() => {
           // Autoplay blocked — retry on first user interaction
           const resume = () => {
-            video.play().then(() => {
-              setVideoReady(true);
-              dismiss();
-            }).catch(() => {});
+            video.play().then(handleReady).catch(() => {});
             document.removeEventListener("click", resume);
             document.removeEventListener("touchstart", resume);
             document.removeEventListener("scroll", resume);
@@ -50,13 +41,7 @@ export function VideoHero() {
           document.addEventListener("scroll", resume, { once: true });
         });
     }
-  }, [dismiss]);
-
-  // Fallback: dismiss splash after 4s even if video never loads
-  useEffect(() => {
-    const fallback = setTimeout(() => setSplashDone(true), 4000);
-    return () => clearTimeout(fallback);
-  }, []);
+  }, [handleReady]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -67,9 +52,9 @@ export function VideoHero() {
       return;
     }
 
-    const onReady = () => tryPlay();
-    video.addEventListener("canplay", onReady);
-    return () => video.removeEventListener("canplay", onReady);
+    const onCanPlay = () => tryPlay();
+    video.addEventListener("canplay", onCanPlay);
+    return () => video.removeEventListener("canplay", onCanPlay);
   }, [tryPlay]);
 
   return (
@@ -84,15 +69,14 @@ export function VideoHero() {
         sizes="100vw"
       />
 
-      {/* Video — hidden until ready to prevent flash of old cached frame */}
+      {/* Video — autoplays on all devices, hidden until ready to prevent flash */}
       <video
         ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
-        poster="/images/hero-poster.jpg"
+        preload="auto"
         onLoadedData={tryPlay}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
           videoReady ? "opacity-100" : "opacity-0"
