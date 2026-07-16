@@ -69,20 +69,23 @@ export function VideoHero() {
         sizes="100vw"
       />
 
-      {/* Video — autoplays on all devices, hidden until ready to prevent flash */}
+      {/* Video — autoplays on all devices, hidden until ready to prevent flash.
+          Compressed 720p / audio-stripped source keeps the download small and
+          decode cheap so mobile Safari doesn't choke. preload="metadata" avoids
+          eagerly buffering the whole file into memory. */}
       <video
         ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         onLoadedData={tryPlay}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
           videoReady ? "opacity-100" : "opacity-0"
         }`}
       >
-        <source src="/hero-video-v4.mp4" type="video/mp4" />
+        <source src="/hero-video-v5.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay gradients — purple-tinted */}
