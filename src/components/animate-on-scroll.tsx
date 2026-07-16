@@ -35,9 +35,11 @@ export function AnimateOnScroll({
     const isNearViewport = () => {
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
-      // Reveal anything within ~1.5 viewports of the visible area so the
-      // animation has already finished by the time it scrolls into view.
-      return rect.top < vh * 1.5 && rect.bottom > -vh * 0.5;
+      // Reveal anything within ~2 viewports of the visible area so the
+      // animation has already finished well before it scrolls into view.
+      // The wide margin is what prevents late "pop-in" during fast mobile
+      // momentum scrolling.
+      return rect.top < vh * 2 && rect.bottom > -vh * 1;
     };
 
     if (isNearViewport()) {
@@ -52,7 +54,7 @@ export function AnimateOnScroll({
         (entries) => {
           if (entries.some((e) => e.isIntersecting)) reveal();
         },
-        { threshold: 0, rootMargin: "0px 0px 50% 0px" }
+        { threshold: 0, rootMargin: "0px 0px 150% 0px" }
       );
       observer.observe(el);
     }
