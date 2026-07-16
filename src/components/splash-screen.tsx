@@ -59,6 +59,12 @@ export function SplashScreen() {
 
   return (
     <div
+      // splash-failsafe is a CSS-only safety net: if JavaScript never runs
+      // (content blockers, strict privacy modes, Lockdown Mode), React can't
+      // remove this overlay and the page would be stuck on a black screen.
+      // The CSS animation hides it regardless. The JS path removes the node
+      // well before the animation's delay, so it only fires when JS didn't.
+      className="splash-failsafe"
       style={{
         position: "fixed",
         inset: 0,
