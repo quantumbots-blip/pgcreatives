@@ -217,6 +217,19 @@ html {
   30% { filter: brightness(1); }
 }
 
+/* Splash failsafe — hides the loading overlay even if JavaScript never runs
+   (content blockers, strict privacy protections, Lockdown Mode). Without this,
+   the server-rendered splash would stay up forever and the site would look
+   broken. The JS path removes the overlay from the DOM well before this 6s
+   delay elapses, so this animation only ever takes effect when JS did not. */
+@keyframes splash-failsafe-hide {
+  to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+
+.splash-failsafe {
+  animation: splash-failsafe-hide 0.6s ease-out 6s forwards;
+}
+
 /* Hero entrance — reuses fade-up with custom timing */
 .animate-hero-fade-up {
   animation: fade-up 0.8s ease-out both;
