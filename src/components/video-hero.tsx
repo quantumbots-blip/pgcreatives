@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Play } from "lucide-react";
@@ -12,50 +12,76 @@ export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoReady, setVideoReady] = useState(false);
 
-  const handleReady = useCallback(() => {
-    setVideoReady(true);
-    // Let the splash screen know it can hand off to the (now playing) video.
-    markHeroVideoReady();
-  }, []);
-
-  const tryPlay = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.muted = true;
-
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(handleReady)
-        .catch(() => {
-          // Autoplay blocked — retry on first user interaction
-          const resume = () => {
-            video.play().then(handleReady).catch(() => {});
-            document.removeEventListener("click", resume);
-            document.removeEventListener("touchstart", resume);
-            document.removeEventListener("scroll", resume);
-          };
-          document.addEventListener("click", resume, { once: true });
-          document.addEventListener("touchstart", resume, { once: true });
-          document.addEventListener("scroll", resume, { once: true });
-        });
-    }
-  }, [handleReady]);
-
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (video.readyState >= 2) {
-      tryPlay();
-      return;
-    }
+    let inView = true;
+    let readyMarked = false;
 
-    const onCanPlay = () => tryPlay();
-    video.addEventListener("canplay", onCanPlay);
-    return () => video.removeEventListener("canplay", onCanPlay);
-  }, [tryPlay]);
+    const markReady = () => {
+      if (readyMarked) return;
+      readyMarked = true;
+      setVideoReady(true);
+      // Let the splash screen hand off to the (now playing) video.
+      markHeroVideoReady();
+    };
+
+    // Attempt playback, but only when it makes sense (on-screen, page in the
+    // foreground, and actually paused). iOS pauses background videos when they
+    // scroll off-screen, when the tab is backgrounded, in Low Power Mode, and
+    // after brief stalls — and never resumes on its own. We re-arm play() on
+    // every signal that we're visible again so it keeps looping.
+    const play = () => {
+      if (document.hidden || !inView || !video.paused) return;
+      video.muted = true; // required for autoplay to be allowed
+      const p = video.play();
+      if (p) p.then(markReady).catch(() => {});
+    };
+
+    if (video.readyState >= 2) play();
+    video.addEventListener("canplay", play);
+    video.addEventListener("loadeddata", play);
+
+    // Resume when the video scrolls back into view.
+    const io = new IntersectionObserver(
+      (entries) => {
+        inView = entries.some((e) => e.isIntersecting);
+        if (inView) play();
+      },
+      { threshold: 0.05 }
+    );
+    io.observe(video);
+
+    // Resume when the tab/app comes back to the foreground.
+    const onVisible = () => play();
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", play);
+    window.addEventListener("pageshow", play);
+
+    // If iOS pauses it while it's still on-screen, bring it right back.
+    const onPause = () => {
+      if (!document.hidden && inView) requestAnimationFrame(play);
+    };
+    video.addEventListener("pause", onPause);
+
+    // Low Power Mode blocks programmatic play entirely; recover on the first
+    // user gesture. Kept live (not once) so repeated blocks also recover.
+    document.addEventListener("click", play, { passive: true });
+    document.addEventListener("touchstart", play, { passive: true });
+
+    return () => {
+      video.removeEventListener("canplay", play);
+      video.removeEventListener("loadeddata", play);
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", play);
+      window.removeEventListener("pageshow", play);
+      video.removeEventListener("pause", onPause);
+      document.removeEventListener("click", play);
+      document.removeEventListener("touchstart", play);
+    };
+  }, []);
 
   return (
     <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-x-clip">
@@ -80,7 +106,6 @@ export function VideoHero() {
         loop
         playsInline
         preload="metadata"
-        onLoadedData={tryPlay}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
           videoReady ? "opacity-100" : "opacity-0"
         }`}
