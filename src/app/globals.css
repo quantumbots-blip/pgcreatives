@@ -896,6 +896,15 @@ html {
 /* ── Mobile performance optimizations ── */
 
 @media (max-width: 768px) {
+  /* Disable scroll-reveal entrance animations on phones — they caused
+     content to "pop in" late while scrolling. Show everything immediately,
+     regardless of JavaScript timing. */
+  .scroll-reveal {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
   /* Kill expensive infinite animations on mobile */
   .animate-float,
   .animate-float-slow,
