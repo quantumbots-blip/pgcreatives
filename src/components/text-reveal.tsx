@@ -28,8 +28,11 @@ export function TextReveal({
     const motionOk = !window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    if (!motionOk) {
-      setIsVisible(true);
+    // Skip the per-word animation on phones (and for reduced-motion) — just
+    // show the text so nothing animates in late while scrolling.
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (!motionOk || isMobile) {
+      queueMicrotask(() => setIsVisible(true));
       return;
     }
 

@@ -951,6 +951,14 @@ html {
     box-shadow: none !important;
   }
 
+  /* The hover tilt is off on phones, so flatten the 3D containers entirely —
+     perspective / preserve-3d only add compositing cost during scroll. */
+  .card-3d-enhanced,
+  .card-3d {
+    perspective: none !important;
+    transform-style: flat !important;
+  }
+
   /* Simplify hover effects — no box-shadow transitions */
   .glass-card:hover {
     box-shadow: none;
