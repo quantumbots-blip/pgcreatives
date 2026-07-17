@@ -24,6 +24,14 @@ export function AnimateOnScroll({
     const el = ref.current;
     if (!el) return;
 
+    // On mobile, don't animate at all — just show the content. The scroll
+    // reveals were causing late "pop-in" while scrolling, so phones get the
+    // section immediately (CSS also forces it visible with no animation).
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      queueMicrotask(() => setIsVisible(true));
+      return;
+    }
+
     let revealed = false;
     const reveal = () => {
       if (revealed) return;
@@ -88,7 +96,7 @@ export function AnimateOnScroll({
   return (
     <div
       ref={ref}
-      className={className}
+      className={`scroll-reveal ${className}`}
       style={{
         opacity: isVisible ? 1 : 0,
         animation: isVisible
