@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { FacebookIcon, InstagramIcon } from "@/components/icons";
-import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { BUSINESS } from "@/lib/data";
 
 const footerLinks = [

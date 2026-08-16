@@ -67,6 +67,15 @@ export function ScrollCards3D() {
 
     if (!motionOk || !isDesktop) return;
 
+    // Only promote these to compositor layers once we know the scroll effect is
+    // actually going to drive them. Declaring will-change in the markup pins a
+    // layer per card on phones too, where this effect never runs.
+    const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+    cards.forEach((card) => {
+      card.style.transition = "transform 0.1s linear";
+      card.style.willChange = "transform";
+    });
+
     let rafId = 0;
     let sectionTop = 0;
 
@@ -105,6 +114,9 @@ export function ScrollCards3D() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", updateRect);
       if (rafId) cancelAnimationFrame(rafId);
+      cards.forEach((card) => {
+        card.style.willChange = "";
+      });
     };
   }, []);
 
@@ -147,10 +159,6 @@ export function ScrollCards3D() {
               key={service.title}
               ref={(el) => { cardRefs.current[i] = el; }}
               className="w-full max-w-sm lg:w-1/3 lg:max-w-none"
-              style={{
-                transition: "transform 0.1s linear",
-                willChange: "transform",
-              }}
             >
               <div
                 className={`relative flex h-full flex-col rounded-2xl border transition-all duration-300 ${

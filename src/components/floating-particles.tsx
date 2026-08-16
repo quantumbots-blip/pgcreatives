@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 interface FloatingParticlesProps {
@@ -8,40 +8,41 @@ interface FloatingParticlesProps {
   className?: string;
 }
 
+// Deterministic pseudo-random in [0, 1) from a seed (mulberry32-style). Uses
+// only integer ops, so it produces bit-identical results on the server and in
+// every browser — which is what lets the particles be server-rendered without a
+// hydration mismatch. Math.random() cannot be used here, and Math.sin-based
+// hashes are not guaranteed identical across JS engines.
+function seededRandom(seed: number): number {
+  let t = (seed + 0x6d2b79f5) | 0;
+  t = Math.imul(t ^ (t >>> 15), t | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
+
 export function FloatingParticles({
   count = 15,
   className,
 }: FloatingParticlesProps) {
-  const [particles, setParticles] = useState<
-    { id: number; size: number; left: number; duration: number; delay: number }[]
-  >([]);
-
-  useEffect(() => {
-    // Respect reduced motion preference
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    // Reduce particles on mobile for performance
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const actualCount = isMobile ? Math.min(count, 4) : count;
-
-    // Generate particles only on the client to avoid hydration mismatch
-    setParticles(
-      Array.from({ length: actualCount }, (_, i) => ({
+  // Rendered straight away rather than populated from an effect. The old
+  // version generated these with Math.random() after mount, which forced an
+  // extra render pass on every page and popped the particles in late.
+  const particles = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => ({
         id: i,
-        size: +(2 + Math.random() * 4).toFixed(1),
-        left: +(Math.random() * 100).toFixed(1),
-        duration: +(8 + Math.random() * 12).toFixed(1),
-        delay: +(Math.random() * 10).toFixed(1),
-      }))
-    );
-  }, [count]);
-
-  if (particles.length === 0) return null;
+        size: +(2 + seededRandom(i * 4 + 1) * 4).toFixed(1),
+        left: +(seededRandom(i * 4 + 2) * 100).toFixed(1),
+        duration: +(8 + seededRandom(i * 4 + 3) * 12).toFixed(1),
+        delay: +(seededRandom(i * 4 + 4) * 10).toFixed(1),
+      })),
+    [count]
+  );
 
   return (
     <div
       className={cn(
-        "pointer-events-none absolute inset-0 overflow-hidden z-0",
+        "floating-particles pointer-events-none absolute inset-0 overflow-hidden z-0",
         className
       )}
       aria-hidden="true"

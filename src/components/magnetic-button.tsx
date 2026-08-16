@@ -20,6 +20,10 @@ export function MagneticButton({
   function handleMouseEnter() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     rectRef.current = ref.current?.getBoundingClientRect() ?? null;
+    // Promote to its own layer only for the duration of the hover. Leaving
+    // will-change on permanently pins a compositor layer per button for the
+    // life of the page — pure cost on phones, where this effect never runs.
+    if (ref.current) ref.current.style.willChange = "transform";
   }
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
@@ -47,6 +51,7 @@ export function MagneticButton({
     if (el) {
       el.style.transform = "translate(0px, 0px)";
       el.style.transition = "transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)";
+      el.style.willChange = "";
     }
     rectRef.current = null;
   }
@@ -58,7 +63,6 @@ export function MagneticButton({
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ willChange: "transform" }}
     >
       {children}
     </div>
