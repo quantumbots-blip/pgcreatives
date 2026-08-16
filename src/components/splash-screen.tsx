@@ -7,9 +7,12 @@ import { isHeroVideoReady, onHeroVideoReady } from "@/lib/hero-video";
 
 // Keep the logo up at least this long (branding), but let it linger until the
 // hero video is actually playing so the hand-off is seamless…
-const MIN_SPLASH_MS = 2000;
+const MIN_SPLASH_MS = 1600;
 // …and never longer than this, so a slow/failed video can't trap the visitor.
-const MAX_SPLASH_MS = 5000;
+// This must stay comfortably below the CSS failsafe delay in globals.css
+// (MAX_SPLASH_MS + FADE_MS < failsafe delay), otherwise the failsafe animation
+// races the React path and snaps the splash away mid-fade.
+const MAX_SPLASH_MS = 3000;
 const FADE_MS = 600;
 
 export function SplashScreen() {
@@ -74,6 +77,11 @@ export function SplashScreen() {
         justifyContent: "center",
         backgroundColor: "#000000",
         opacity: fading ? 0 : 1,
+        // Stop intercepting taps and scrolls the instant the fade starts. The
+        // node lingers for the length of the fade, and while it does the page
+        // underneath looks fully interactive — without this it silently
+        // swallows every touch for that whole window.
+        pointerEvents: fading ? "none" : "auto",
         transition: `opacity ${FADE_MS}ms ease-out`,
       }}
     >
@@ -84,7 +92,7 @@ export function SplashScreen() {
           width={280}
           height={80}
           className="w-48 sm:w-64 h-auto"
-          priority
+          preload
         />
       </div>
     </div>

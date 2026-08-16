@@ -8,16 +8,50 @@ import { MagneticButton } from "@/components/magnetic-button";
 import { FloatingParticles } from "@/components/floating-particles";
 import { markHeroVideoReady } from "@/lib/hero-video";
 
+type NavigatorWithConnection = Navigator & {
+  connection?: { saveData?: boolean };
+};
+
+// How many times we may call play() on our own before waiting for a real user
+// gesture. Without a cap, a refused play() and the `pause` event it triggers
+// feed each other and peg the main thread — which reads as a frozen page.
+const MAX_AUTO_ATTEMPTS = 3;
+// Delay before retrying after an unexpected pause. Long enough that a retry
+// storm can never occupy consecutive frames.
+const RETRY_DELAY_MS = 400;
+
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoReady, setVideoReady] = useState(false);
+  const [videoEnabled, setVideoEnabled] = useState(false);
+
+  // Decide whether to fetch the hero video at all. It's a multi-megabyte file,
+  // so visitors who asked for reduced motion or switched on Data Saver keep the
+  // poster instead. They must not be left waiting behind the splash, so signal
+  // readiness immediately — there is nothing to hand off to.
+  useEffect(() => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const saveData =
+      (navigator as NavigatorWithConnection).connection?.saveData === true;
+
+    if (reduceMotion || saveData) {
+      markHeroVideoReady();
+      return;
+    }
+    setVideoEnabled(true);
+  }, []);
 
   useEffect(() => {
+    if (!videoEnabled) return;
     const video = videoRef.current;
     if (!video) return;
 
     let inView = true;
     let readyMarked = false;
+    let attempts = 0;
+    let retryTimer: ReturnType<typeof setTimeout> | undefined;
 
     const markReady = () => {
       if (readyMarked) return;
@@ -27,16 +61,49 @@ export function VideoHero() {
       markHeroVideoReady();
     };
 
+    // The source failed for good — unsupported codec, 404, corrupt file. The
+    // poster is already painted underneath, so release the splash now rather
+    // than making every visitor sit out the full cap waiting for a video that
+    // is never going to arrive. Deliberately does not reveal the video element.
+    const onError = () => markHeroVideoReady();
+    video.addEventListener("error", onError);
+
     // Attempt playback, but only when it makes sense (on-screen, page in the
     // foreground, and actually paused). iOS pauses background videos when they
     // scroll off-screen, when the tab is backgrounded, in Low Power Mode, and
-    // after brief stalls — and never resumes on its own. We re-arm play() on
-    // every signal that we're visible again so it keeps looping.
+    // after brief stalls — and never resumes on its own.
+    //
+    // The attempt budget is what keeps this safe. When playback is refused
+    // outright (Low Power Mode, "Never autoplay", memory pressure) the browser
+    // fires `pause` for every rejected play(), so retrying from that event
+    // without a cap loops forever. After the budget is spent we go quiet and
+    // wait for a signal that actually changes the odds — a user gesture, or the
+    // page becoming visible again.
     const play = () => {
       if (document.hidden || !inView || !video.paused) return;
+      // A decode/network error is terminal for this source; retrying only
+      // burns frames.
+      if (video.error) return;
+      if (attempts >= MAX_AUTO_ATTEMPTS) return;
+
+      attempts++;
       video.muted = true; // required for autoplay to be allowed
       const p = video.play();
-      if (p) p.then(markReady).catch(() => {});
+      if (p) {
+        p.then(() => {
+          attempts = 0;
+          markReady();
+        }).catch(() => {
+          // Budget stays spent; only an external signal re-arms us.
+        });
+      }
+    };
+
+    // Signals driven by the user or the browser — not by us — so it's safe to
+    // refill the budget here without risking a self-sustaining loop.
+    const playFromSignal = () => {
+      attempts = 0;
+      play();
     };
 
     if (video.readyState >= 2) play();
@@ -46,72 +113,86 @@ export function VideoHero() {
     // Resume when the video scrolls back into view.
     const io = new IntersectionObserver(
       (entries) => {
-        inView = entries.some((e) => e.isIntersecting);
-        if (inView) play();
+        const nowInView = entries.some((e) => e.isIntersecting);
+        const reentered = nowInView && !inView;
+        inView = nowInView;
+        if (reentered) playFromSignal();
+        else if (nowInView) play();
       },
       { threshold: 0.05 }
     );
     io.observe(video);
 
     // Resume when the tab/app comes back to the foreground.
-    const onVisible = () => play();
+    const onVisible = () => {
+      if (!document.hidden) playFromSignal();
+    };
     document.addEventListener("visibilitychange", onVisible);
-    window.addEventListener("focus", play);
-    window.addEventListener("pageshow", play);
+    window.addEventListener("focus", playFromSignal);
+    window.addEventListener("pageshow", playFromSignal);
 
-    // If iOS pauses it while it's still on-screen, bring it right back.
+    // If iOS pauses it while it's still on-screen, bring it back — on a timer
+    // rather than a frame callback, and still bounded by the attempt budget.
     const onPause = () => {
-      if (!document.hidden && inView) requestAnimationFrame(play);
+      if (document.hidden || !inView || video.ended) return;
+      clearTimeout(retryTimer);
+      retryTimer = setTimeout(play, RETRY_DELAY_MS);
     };
     video.addEventListener("pause", onPause);
 
-    // Low Power Mode blocks programmatic play entirely; recover on the first
-    // user gesture. Kept live (not once) so repeated blocks also recover.
-    document.addEventListener("click", play, { passive: true });
-    document.addEventListener("touchstart", play, { passive: true });
+    // Low Power Mode blocks programmatic play entirely; recover on a user
+    // gesture. Kept live (not once) so repeated blocks also recover — each
+    // gesture buys exactly one fresh round of attempts.
+    document.addEventListener("click", playFromSignal, { passive: true });
+    document.addEventListener("touchstart", playFromSignal, { passive: true });
 
     return () => {
+      clearTimeout(retryTimer);
+      video.removeEventListener("error", onError);
       video.removeEventListener("canplay", play);
       video.removeEventListener("loadeddata", play);
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisible);
-      window.removeEventListener("focus", play);
-      window.removeEventListener("pageshow", play);
+      window.removeEventListener("focus", playFromSignal);
+      window.removeEventListener("pageshow", playFromSignal);
       video.removeEventListener("pause", onPause);
-      document.removeEventListener("click", play);
-      document.removeEventListener("touchstart", play);
+      document.removeEventListener("click", playFromSignal);
+      document.removeEventListener("touchstart", playFromSignal);
     };
-  }, []);
+  }, [videoEnabled]);
 
   return (
     <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-x-clip">
-      {/* Poster — shows while video loads or if video fails */}
+      {/* Poster — shows while video loads or if video fails. Loaded eagerly
+          rather than preloaded: the splash logo owns the preload slot, and
+          competing <link rel="preload"> tags just delay each other. */}
       <Image
         src="/images/hero-poster.jpg"
         alt="Property showcase"
         fill
         className="object-cover"
-        priority
+        loading="eager"
+        fetchPriority="high"
         sizes="100vw"
       />
 
-      {/* Video — autoplays on all devices, hidden until ready to prevent flash.
-          Compressed 720p / audio-stripped source keeps the download small and
-          decode cheap so mobile Safari doesn't choke. preload="metadata" avoids
-          eagerly buffering the whole file into memory. */}
+      {/* Video — hidden until ready to prevent flash. The src is attached from
+          an effect rather than rendered up front, so reduced-motion and
+          Data Saver visitors never pay for the download at all.
+          preload="metadata" avoids eagerly buffering the whole file. */}
       <video
         ref={videoRef}
+        src={videoEnabled ? "/hero-video-v5.mp4" : undefined}
         autoPlay
         muted
         loop
         playsInline
         preload="metadata"
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
           videoReady ? "opacity-100" : "opacity-0"
         }`}
-      >
-        <source src="/hero-video-v5.mp4" type="video/mp4" />
-      </video>
+      />
 
       {/* Overlay gradients — purple-tinted */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/68 via-[#000000]/47 to-[#000000]/81" />

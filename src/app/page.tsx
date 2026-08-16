@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowRight,
-  Check,
   Home,
   Sparkles,
   Video,
@@ -16,13 +15,6 @@ import { Counter } from "@/components/counter";
 import { MagneticButton } from "@/components/magnetic-button";
 import { TextReveal } from "@/components/text-reveal";
 import { FAQ } from "@/components/faq";
-import { images } from "@/lib/images";
-
-const FloatingParticles = dynamic(() =>
-  import("@/components/floating-particles").then(
-    (mod) => mod.FloatingParticles
-  )
-);
 
 const ScrollCards3D = dynamic(() =>
   import("@/components/scroll-cards-3d").then((mod) => mod.ScrollCards3D)
@@ -157,7 +149,6 @@ export default function HomePage() {
                         src={service.image}
                         alt={service.title}
                         fill
-                        loading="eager"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         style={service.objectPosition ? { objectPosition: service.objectPosition } : undefined}
                         sizes="(max-width: 640px) 100vw, 33vw"
@@ -234,7 +225,6 @@ export default function HomePage() {
                     src={photo.image}
                     alt={photo.alt}
                     fill
-                    loading="eager"
                     className="object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110"
                     sizes={
                       photo.colSpan
@@ -360,7 +350,7 @@ export default function HomePage() {
               >
                 <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-purple/15 blur-[60px] transition-all duration-300 group-hover:bg-purple/25" />
                 {/* Wisconsin state outline */}
-                <img src="/images/wisconsin-outline.png" alt="" className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 opacity-[0.3] invert" />
+                <Image src="/images/wisconsin-outline.png" alt="" width={128} height={137} className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 opacity-[0.3] invert" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   Northeast Wisconsin
                 </p>
@@ -383,7 +373,7 @@ export default function HomePage() {
               >
                 <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-purple-light/15 blur-[60px] transition-all duration-300 group-hover:bg-purple-light/25" />
                 {/* Wisconsin state outline */}
-                <img src="/images/wisconsin-outline.png" alt="" className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 opacity-[0.3] invert" />
+                <Image src="/images/wisconsin-outline.png" alt="" width={128} height={137} className="pointer-events-none absolute right-4 top-4 h-28 w-28 sm:h-32 sm:w-32 opacity-[0.3] invert" />
                 <p className="relative text-xs font-medium uppercase tracking-[0.2em] text-purple-light">
                   South-Central Wisconsin
                 </p>

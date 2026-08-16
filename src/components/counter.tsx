@@ -36,11 +36,20 @@ export function Counter({
       return;
     }
 
+    // Declared as a function so `start` can call it before the listeners below
+    // are wired up — a `const` arrow would be in its temporal dead zone here.
+    function cleanup() {
+      observer?.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+      clearTimeout(fallback);
+    }
+
     const start = () => {
       if (hasAnimated.current) return;
       hasAnimated.current = true;
       animate();
-      cleanup?.();
+      cleanup();
     };
 
     const isNearViewport = () => {
@@ -77,13 +86,6 @@ export function Counter({
     window.addEventListener("scroll", onScroll, { passive: true });
 
     const fallback = setTimeout(start, 1500);
-
-    const cleanup = () => {
-      observer?.disconnect();
-      window.removeEventListener("scroll", onScroll);
-      if (frame) cancelAnimationFrame(frame);
-      clearTimeout(fallback);
-    };
 
     return cleanup;
     // eslint-disable-next-line react-hooks/exhaustive-deps

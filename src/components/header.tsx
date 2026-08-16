@@ -245,10 +245,15 @@ export function Header() {
     };
   }, [mobileOpen]);
 
-  // Close mobile menu on route change
-  useEffect(() => {
+  // Close the mobile menu on route change. Adjusted during render rather than
+  // in an effect: every nav link already closes the menu on click, so this only
+  // catches back/forward navigation, and doing it in an effect costs an extra
+  // render pass on every route change.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
     setMobileOpen(false);
-  }, [pathname]);
+  }
 
   const isHome = pathname === "/";
   const transparent = isHome && !scrolled && !mobileOpen;
@@ -276,7 +281,7 @@ export function Header() {
               width={956}
               height={1044}
               className="h-22 w-auto sm:h-24 lg:h-26 object-contain"
-              priority
+              loading="eager"
             />
           </Link>
 
@@ -334,12 +339,18 @@ export function Header() {
       </header>
 
       {/* ========== MOBILE FULLSCREEN MENU ========== */}
+      {/* Kept mounted so it can transition, but toggled with `visibility` as
+          well as opacity. A fullscreen fixed layer that is merely opacity-0
+          still gets composited on every frame — including its blurred backdrop
+          — which costs real GPU work during scroll on phones. `visibility`
+          transitions discretely, so it stays visible for the length of the
+          fade-out and flips off only once the animation is done. */}
       <div
         className={cn(
           "fixed inset-0 z-40 md:hidden transition-all duration-500",
           mobileOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+            ? "visible opacity-100 pointer-events-auto"
+            : "invisible opacity-0 pointer-events-none"
         )}
       >
         {/* Backdrop */}
