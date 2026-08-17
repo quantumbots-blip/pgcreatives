@@ -3,70 +3,39 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { isHeroVideoReady, onHeroVideoReady } from "@/lib/hero-video";
 
-// Keep the logo up at least this long (branding), but let it linger until the
-// hero video is actually playing so the hand-off is seamless…
-const MIN_SPLASH_MS = 1600;
-// …and never longer than this, so a slow/failed video can't trap the visitor.
-// This must stay comfortably below the CSS failsafe delay in globals.css
-// (MAX_SPLASH_MS + FADE_MS < failsafe delay), otherwise the failsafe animation
-// races the React path and snaps the splash away mid-fade.
-const MAX_SPLASH_MS = 3000;
-const FADE_MS = 600;
+// The splash is driven entirely by CSS — see `.splash-failsafe` in globals.css.
+// It fades itself out and stops accepting input on a fixed schedule measured
+// from first paint, with no JavaScript involved.
+//
+// That division of labour is deliberate. This overlay is server-rendered and
+// covers the whole viewport at z-index 9999, so for as long as it is up the
+// site is unusable. Driving it from React meant its removal was gated on
+// hydration, and on a phone that needs several seconds to hydrate the visitor
+// sat behind a black screen for all of them — indistinguishable from a frozen
+// page. Now hydration speed cannot hold the site hostage.
+//
+// React's only remaining job is to drop the node once the animation is over,
+// so it stops costing memory and compositing.
+const REMOVE_AFTER_MS = 2600; // CSS delay (1.6s) + duration (0.6s) + slack
 
 export function SplashScreen() {
   const pathname = usePathname();
   const [done, setDone] = useState(pathname !== "/");
-  const [fading, setFading] = useState(false);
 
   useEffect(() => {
     if (pathname !== "/") return;
-
-    const start = Date.now();
-    let minTimer: ReturnType<typeof setTimeout> | undefined;
-
-    // Fade out once we've shown the logo for the minimum time AND the hero
-    // video is ready — whichever of those is later.
-    const finishWhenReady = () => {
-      const remaining = MIN_SPLASH_MS - (Date.now() - start);
-      if (remaining <= 0) setFading(true);
-      else minTimer = setTimeout(() => setFading(true), remaining);
-    };
-
-    let unsubscribe = () => {};
-    if (isHeroVideoReady()) {
-      finishWhenReady();
-    } else {
-      unsubscribe = onHeroVideoReady(finishWhenReady);
-    }
-
-    // Hard cap — the splash always clears even if the video stalls or fails.
-    const maxTimer = setTimeout(() => setFading(true), MAX_SPLASH_MS);
-
-    return () => {
-      if (minTimer) clearTimeout(minTimer);
-      clearTimeout(maxTimer);
-      unsubscribe();
-    };
-  }, [pathname]);
-
-  // Remove from DOM after fade completes
-  useEffect(() => {
-    if (!fading) return;
-    const timer = setTimeout(() => setDone(true), FADE_MS);
+    // performance.now() is time since navigation start, so a late hydration
+    // shortens this wait rather than adding to it.
+    const remaining = Math.max(0, REMOVE_AFTER_MS - performance.now());
+    const timer = setTimeout(() => setDone(true), remaining);
     return () => clearTimeout(timer);
-  }, [fading]);
+  }, [pathname]);
 
   if (done) return null;
 
   return (
     <div
-      // splash-failsafe is a CSS-only safety net: if JavaScript never runs
-      // (content blockers, strict privacy modes, Lockdown Mode), React can't
-      // remove this overlay and the page would be stuck on a black screen.
-      // The CSS animation hides it regardless. The JS path removes the node
-      // well before the animation's delay, so it only fires when JS didn't.
       className="splash-failsafe"
       style={{
         position: "fixed",
@@ -76,13 +45,6 @@ export function SplashScreen() {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#000000",
-        opacity: fading ? 0 : 1,
-        // Stop intercepting taps and scrolls the instant the fade starts. The
-        // node lingers for the length of the fade, and while it does the page
-        // underneath looks fully interactive — without this it silently
-        // swallows every touch for that whole window.
-        pointerEvents: fading ? "none" : "auto",
-        transition: `opacity ${FADE_MS}ms ease-out`,
       }}
     >
       <div className="animate-logo-loading">

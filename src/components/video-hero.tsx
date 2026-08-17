@@ -6,10 +6,11 @@ import Image from "next/image";
 import { Play } from "lucide-react";
 import { MagneticButton } from "@/components/magnetic-button";
 import { FloatingParticles } from "@/components/floating-particles";
-import { markHeroVideoReady } from "@/lib/hero-video";
+
+const VIDEO_SRC = "/hero-video-v5.mp4";
 
 type NavigatorWithConnection = Navigator & {
-  connection?: { saveData?: boolean };
+  connection?: { saveData?: boolean; effectiveType?: string };
 };
 
 // How many times we may call play() on our own before waiting for a real user
@@ -25,22 +26,40 @@ export function VideoHero() {
   const [videoReady, setVideoReady] = useState(false);
   const [videoEnabled, setVideoEnabled] = useState(false);
 
-  // Decide whether to fetch the hero video at all. It's a multi-megabyte file,
-  // so visitors who asked for reduced motion or switched on Data Saver keep the
-  // poster instead. They must not be left waiting behind the splash, so signal
-  // readiness immediately — there is nothing to hand off to.
+  // Decide whether to fetch the hero video at all, and never during hydration.
+  // The file is multiple megabytes; downloading and decoding it is the single
+  // largest memory cost on this page, and on iOS an over-budget tab stops
+  // responding entirely rather than degrading. Reduced-motion, Data Saver and
+  // 2G visitors keep the poster and never pay for it.
   useEffect(() => {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    const saveData =
-      (navigator as NavigatorWithConnection).connection?.saveData === true;
+    const conn = (navigator as NavigatorWithConnection).connection;
+    const frugal =
+      conn?.saveData === true || /(^|-)2g$/.test(conn?.effectiveType ?? "");
 
-    if (reduceMotion || saveData) {
-      markHeroVideoReady();
-      return;
-    }
-    setVideoEnabled(true);
+    if (reduceMotion || frugal) return;
+
+    // Wait for an idle moment. Hydration is the busiest point in the page's
+    // life and this video is decorative — it must never compete with it.
+    let cancelled = false;
+    const start = () => {
+      if (!cancelled) setVideoEnabled(true);
+    };
+
+    // requestIdleCallback is unsupported on Safari before 17, which is exactly
+    // the population this change is aimed at — fall back to a plain timer.
+    const useIdle = typeof window.requestIdleCallback === "function";
+    const handle: number = useIdle
+      ? window.requestIdleCallback(start, { timeout: 2500 })
+      : window.setTimeout(start, 1200);
+
+    return () => {
+      cancelled = true;
+      if (useIdle) window.cancelIdleCallback(handle);
+      else clearTimeout(handle);
+    };
   }, []);
 
   useEffect(() => {
@@ -57,15 +76,29 @@ export function VideoHero() {
       if (readyMarked) return;
       readyMarked = true;
       setVideoReady(true);
-      // Let the splash screen hand off to the (now playing) video.
-      markHeroVideoReady();
     };
 
-    // The source failed for good — unsupported codec, 404, corrupt file. The
-    // poster is already painted underneath, so release the splash now rather
-    // than making every visitor sit out the full cap waiting for a video that
-    // is never going to arrive. Deliberately does not reveal the video element.
-    const onError = () => markHeroVideoReady();
+    // Detaching the source is what actually stops the transfer. Without it the
+    // browser keeps pulling the whole file down for a video it has already
+    // refused to play — measured at the full 8.6 MB on a phone in Low Power
+    // Mode. That download is wasted bandwidth and, worse, wasted memory on the
+    // devices least able to spare it.
+    const releaseSource = () => {
+      if (!video.getAttribute("src")) return;
+      video.removeAttribute("src");
+      video.load(); // aborts the in-flight fetch and frees the buffer
+    };
+
+    // Re-attach before an attempt that has a real chance of succeeding, i.e.
+    // one prompted by a user gesture.
+    const attachSource = () => {
+      if (video.getAttribute("src")) return;
+      video.setAttribute("src", VIDEO_SRC);
+    };
+
+    // The source failed for good — unsupported codec, 404, corrupt file. Give
+    // the memory back and leave the poster showing.
+    const onError = () => releaseSource();
     video.addEventListener("error", onError);
 
     // Attempt playback, but only when it makes sense (on-screen, page in the
@@ -81,6 +114,10 @@ export function VideoHero() {
     // page becoming visible again.
     const play = () => {
       if (document.hidden || !inView || !video.paused) return;
+      // Source already handed back — nothing to play until a gesture re-attaches
+      // it. Without this, the pause-driven retries below would keep calling
+      // play() on an empty element.
+      if (!video.getAttribute("src")) return;
       // A decode/network error is terminal for this source; retrying only
       // burns frames.
       if (video.error) return;
@@ -94,19 +131,41 @@ export function VideoHero() {
           attempts = 0;
           markReady();
         }).catch(() => {
-          // Budget stays spent; only an external signal re-arms us.
+          if (!readyMarked) {
+            // It has never played, and the very first attempt was refused:
+            // this device will not autoplay unprompted, full stop. Drop the
+            // source immediately rather than finishing a multi-megabyte
+            // download for a video that is not going to be shown. Retrying
+            // here only prolongs the transfer — a user gesture is the one
+            // thing that changes the answer, and that re-attaches the source.
+            releaseSource();
+            return;
+          }
+          // It was playing and got interrupted; the budget governs retries.
+          if (attempts >= MAX_AUTO_ATTEMPTS) releaseSource();
         });
       }
     };
 
     // Signals driven by the user or the browser — not by us — so it's safe to
-    // refill the budget here without risking a self-sustaining loop.
+    // refill the budget here without risking a self-sustaining loop. A real
+    // gesture also unlocks playback on devices that refuse it unprompted, so
+    // this is the moment it's worth re-fetching the file.
     const playFromSignal = () => {
       attempts = 0;
+      attachSource();
       play();
     };
 
-    if (video.readyState >= 2) play();
+    // Attach imperatively rather than through JSX: this effect takes ownership
+    // of the src so it can drop and restore it without fighting React's diff.
+    // With preload="none" and no autoplay attribute, attaching the src costs
+    // nothing on its own — this play() call is what actually starts the
+    // transfer, and a device that refuses playback rejects it before any
+    // meaningful number of bytes moves.
+    attachSource();
+    play();
+
     video.addEventListener("canplay", play);
     video.addEventListener("loadeddata", play);
 
@@ -158,6 +217,8 @@ export function VideoHero() {
       video.removeEventListener("pause", onPause);
       document.removeEventListener("click", playFromSignal);
       document.removeEventListener("touchstart", playFromSignal);
+      // Hand the buffer back on navigation instead of leaving it held.
+      releaseSource();
     };
   }, [videoEnabled]);
 
@@ -180,14 +241,16 @@ export function VideoHero() {
           an effect rather than rendered up front, so reduced-motion and
           Data Saver visitors never pay for the download at all.
           preload="metadata" avoids eagerly buffering the whole file. */}
+      {/* No `autoPlay` attribute on purpose: it overrides preload="none" and
+          makes the browser start pulling the file the moment a src appears,
+          which defeats the whole point of asking permission first. Playback is
+          driven explicitly from the effect instead. */}
       <video
         ref={videoRef}
-        src={videoEnabled ? "/hero-video-v5.mp4" : undefined}
-        autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         aria-hidden="true"
         className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
           videoReady ? "opacity-100" : "opacity-0"
