@@ -957,14 +957,24 @@ html {
     -webkit-backdrop-filter: none !important;
   }
 
-  /* Cap blur radius on decorative orbs to reduce GPU pressure */
-  [class*="blur-[100px]"],
-  [class*="blur-[120px]"] {
-    filter: blur(40px) !important;
-  }
+  /* Ambient glow orbs — 17 empty divs across the site, each an element behind
+     a 60-200px filter: blur(). Blur is the most expensive thing iOS is asked
+     to rasterise on this site, and it is charged per tile, every time a tile
+     is painted during a scroll.
 
-  [class*="blur-[80px]"] {
-    filter: blur(30px) !important;
+     This replaces a set of rules that enumerated blur-[100px], blur-[120px]
+     and blur-[80px] individually. That list silently missed the two largest
+     on the site — blur-[200px] on a 700x500 box and blur-[160px] on a 400x300
+     one, both in the Packages section — so they kept costing full price in
+     exactly the area where content stopped painting on a phone. A substring
+     match cannot be escaped by a new blur value the way those two were.
+
+     Dropping them beats capping them: at 3-20% opacity behind a heavy blur on
+     a black page the glow is barely perceptible, while its cost is not. Every
+     one is an empty, absolutely-positioned div, so nothing reflows and no
+     content is hidden. */
+  [class*="blur-["] {
+    display: none !important;
   }
 
   /* Disable 3D card transforms on mobile */

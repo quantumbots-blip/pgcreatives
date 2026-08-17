@@ -7,7 +7,23 @@ import { Play } from "lucide-react";
 import { MagneticButton } from "@/components/magnetic-button";
 import { FloatingParticles } from "@/components/floating-particles";
 
-const VIDEO_SRC = "/hero-video-v5.mp4";
+// Two renditions of the same footage. The desktop file is 16:9 at 720p; the
+// phone file is the 9:16 centre crop that `object-cover` actually displays on a
+// portrait screen, so none of its bytes are spent on pixels that get cropped
+// away. That crop alone is most of the saving: 8.61 MB -> 3.33 MB at SSIM 0.973
+// against a lossless reference, behind a hero overlay that is 47-81% black.
+const VIDEO_SRC_DESKTOP = "/hero-video-v5.mp4";
+const VIDEO_SRC_MOBILE = "/hero-video-mobile.mp4";
+
+// Matches the site's mobile breakpoint. A phone in landscape is wider than this
+// and correctly gets the 16:9 file, which is the one that fits that shape.
+const MOBILE_QUERY = "(max-width: 768px)";
+
+function heroVideoSrc() {
+  return window.matchMedia(MOBILE_QUERY).matches
+    ? VIDEO_SRC_MOBILE
+    : VIDEO_SRC_DESKTOP;
+}
 
 type NavigatorWithConnection = Navigator & {
   connection?: { saveData?: boolean; effectiveType?: string };
@@ -93,7 +109,7 @@ export function VideoHero() {
     // one prompted by a user gesture.
     const attachSource = () => {
       if (video.getAttribute("src")) return;
-      video.setAttribute("src", VIDEO_SRC);
+      video.setAttribute("src", heroVideoSrc());
     };
 
     // The source failed for good — unsupported codec, 404, corrupt file. Give
