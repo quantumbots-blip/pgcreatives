@@ -149,6 +149,10 @@ export default function HomePage() {
                         src={service.image}
                         alt={service.title}
                         fill
+                        // Eager on purpose. These are the section's entire
+                        // visual content, and lazy-loading them left a black
+                        // void that only filled in as you scrolled past.
+                        loading="eager"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         style={service.objectPosition ? { objectPosition: service.objectPosition } : undefined}
                         sizes="(max-width: 640px) 100vw, 33vw"
@@ -225,11 +229,16 @@ export default function HomePage() {
                     src={photo.image}
                     alt={photo.alt}
                     fill
+                    loading="eager"
                     className="object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110"
+                    // The grid is 2 columns on phones, so only the col-span-2
+                    // feature image is full width — the rest are half. They
+                    // previously all claimed 100vw and so downloaded roughly
+                    // four times the pixels they could display.
                     sizes={
                       photo.colSpan
                         ? "(max-width: 640px) 100vw, 50vw"
-                        : "(max-width: 640px) 100vw, 25vw"
+                        : "(max-width: 640px) 50vw, 25vw"
                     }
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />

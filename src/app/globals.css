@@ -918,6 +918,15 @@ html {
     transform: none !important;
   }
 
+  /* Same reasoning for the per-word reveal. Its spans are server-rendered at
+     opacity 0 and only revealed once React runs, so on a slow phone the text
+     was missing entirely until hydration finished. */
+  .text-reveal > span {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
   /* Kill expensive infinite animations on mobile */
   .animate-float,
   .animate-float-slow,
