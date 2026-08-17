@@ -1003,4 +1003,32 @@ html {
   .floating-particles {
     display: none !important;
   }
+
+  /* The unified mesh is 17 stacked radial gradients painted across the FULL
+     height of the document — on the home page that box is 390 x 9113px, which
+     is roughly 32 megapixels at a phone's 3x pixel ratio, every one of them
+     evaluating all 17 gradients. WebKit cannot rasterize that fast enough while
+     scrolling, so it gives up and paints the page background instead: entire
+     screens of content come up black until they eventually catch up. One
+     linear gradient keeps the tint for a tiny fraction of the cost. */
+  .gradient-mesh-unified {
+    background: linear-gradient(
+      180deg,
+      rgba(52, 97, 209, 0.07),
+      transparent 35%,
+      transparent 65%,
+      rgba(52, 97, 209, 0.06)
+    ) !important;
+  }
+
+  /* Same problem, different mechanism: a mask forces an offscreen compositing
+     pass over the whole element, and these two are section-sized. The dotted
+     texture sits at 0.06-0.15 alpha on black, so dropping it on phones costs
+     nothing anyone can see. Set from inline styles, hence !important. */
+  .dot-grid,
+  .dot-grid-fine {
+    background-image: none !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
 }
