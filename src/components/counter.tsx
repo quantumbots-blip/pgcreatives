@@ -19,7 +19,12 @@ export function Counter({
   className,
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState("0");
+  // Start at the real figure, not at zero. This is server-rendered, so a phone
+  // that is still downloading or hydrating used to show visitors "$0B in Real
+  // Estate Captured" — a wrong number is far worse than a missing animation.
+  // The count-up is re-armed below, but only while the element is off-screen,
+  // so nobody ever watches a correct number reset itself to zero.
+  const [display, setDisplay] = useState(() => formatNumber(value));
   const hasAnimated = useRef(false);
 
   useEffect(() => {
@@ -30,11 +35,20 @@ export function Counter({
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (reduceMotion) {
-      setDisplay(formatNumber(value));
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const onScreen = rect.bottom > 0 && rect.top < vh;
+
+    // Already in front of the visitor, or motion is unwelcome: keep the figure
+    // exactly as rendered.
+    if (reduceMotion || onScreen) {
       hasAnimated.current = true;
       return;
     }
+
+    // Off-screen, so it is safe to wind back to zero and count up when it
+    // arrives.
+    setDisplay(formatNumber(0));
 
     // Declared as a function so `start` can call it before the listeners below
     // are wired up — a `const` arrow would be in its temporal dead zone here.

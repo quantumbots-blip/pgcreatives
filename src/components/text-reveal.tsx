@@ -58,7 +58,11 @@ export function TextReveal({
   let tokenIndex = 0;
 
   return (
-    <div ref={containerRef} className={cn("inline", className)}>
+    // `text-reveal` is the hook for the mobile override in globals.css. The
+    // spans below are server-rendered at opacity 0, so without it this text is
+    // invisible until hydration — on a slow phone that's a paragraph of the
+    // page simply missing for several seconds.
+    <div ref={containerRef} className={cn("text-reveal inline", className)}>
       {segments.map((segment, i) => {
         // Whitespace segments render as-is (no animation)
         if (mode === "words" && /^\s+$/.test(segment)) {
