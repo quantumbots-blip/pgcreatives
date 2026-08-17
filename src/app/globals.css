@@ -217,26 +217,24 @@ html {
   30% { filter: brightness(1); }
 }
 
-/* Splash failsafe — hides the loading overlay even if JavaScript never runs
-   (content blockers, strict privacy protections, Lockdown Mode). Without this,
-   the server-rendered splash would stay up forever and the site would look
-   broken. The JS path removes the overlay from the DOM well before this delay
-   elapses, so this animation only ever takes effect when JS did not.
+/* Splash overlay — this animation is the ONLY thing that dismisses it.
+   Deliberately CSS-driven rather than React-driven: the overlay is
+   server-rendered and covers the viewport at z-index 9999, so gating its
+   removal on hydration made the whole site unusable for however long
+   hydration took (seconds, on a phone in Low Power Mode). A CSS animation
+   runs off the main thread and starts at first paint, so a busy or blocked
+   main thread cannot keep the visitor trapped behind it.
 
-   The 5s delay must stay ahead of the React path's worst case
-   (MAX_SPLASH_MS + FADE_MS in splash-screen.tsx, currently 3.6s). This clock
-   starts at first paint while the React clock starts at hydration, so the gap
-   is also the budget for slow hydration on a phone. Shortening it risks the
-   animation snapping the splash away while React is still fading it out.
-
-   `visibility: hidden` is what actually stops the overlay from eating taps —
-   pointer-events is not an animatable property, so it cannot be set here. */
+   `visibility: hidden` is what actually stops the overlay eating taps —
+   pointer-events is not animatable, so it cannot be set from a keyframe.
+   Keep REMOVE_AFTER_MS in splash-screen.tsx at or above delay + duration;
+   React only removes the node afterwards, it never controls the reveal. */
 @keyframes splash-failsafe-hide {
   to { opacity: 0; visibility: hidden; }
 }
 
 .splash-failsafe {
-  animation: splash-failsafe-hide 0.6s ease-out 5s forwards;
+  animation: splash-failsafe-hide 0.6s ease-out 1.6s forwards;
 }
 
 /* Hero entrance — reuses fade-up with custom timing */

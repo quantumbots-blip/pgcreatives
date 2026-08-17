@@ -89,7 +89,11 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden pb-[env(safe-area-inset-bottom)] bg-background">
+      {/* overflow-x-clip, not -hidden: `hidden` makes the body a scroll
+          container, and on iOS Safari a scroll container on the body can
+          swallow the page's vertical scrolling outright. `clip` suppresses the
+          same horizontal overflow without ever creating one. */}
+      <body className="min-h-full flex flex-col overflow-x-clip pb-[env(safe-area-inset-bottom)] bg-background">
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:rounded-lg focus:bg-purple focus:px-4 focus:py-2 focus:text-white">
           Skip to main content
         </a>
