@@ -1,9 +1,16 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { FloatingParticles } from "@/components/floating-particles";
+
+// This section used to be a client component driving a scroll-linked 3D fan:
+// three cards rotated into place from a scroll listener on desktop. The effect
+// never ran on phones or for reduced-motion visitors, but the cost did — every
+// package name, price and feature list shipped to every browser as JavaScript
+// and had to be hydrated, because the markup was defined inside the client
+// component rather than passed into it.
+//
+// The section is now server-rendered: no JavaScript at all. The cards keep
+// their hover treatment, which is CSS.
 const services = [
   {
     title: "PG Core",
@@ -31,98 +38,10 @@ const services = [
   },
 ];
 
-function getCardTransform(index: number, progress: number) {
-  const configs = [
-    // Card 0 (left): fans in from left rotation
-    { rotateY: 35, translateZ: -100, translateX: -80 },
-    // Card 1 (center/popular): slightly forward
-    { rotateY: 0, translateZ: 50, translateX: 0 },
-    // Card 2 (right): fans in from right rotation
-    { rotateY: -35, translateZ: -100, translateX: 80 },
-  ];
-
-  const config = configs[index];
-  const eased = easeOutCubic(progress);
-
-  const rotateY = config.rotateY * (1 - eased);
-  const translateZ = config.translateZ * (1 - eased);
-  const translateX = config.translateX * (1 - eased);
-
-  return `perspective(1200px) rotateY(${rotateY}deg) translateZ(${translateZ}px) translateX(${translateX}px)`;
-}
-
-function easeOutCubic(t: number) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
 export function ScrollCards3D() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const motionOk = !window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-
-    if (!motionOk || !isDesktop) return;
-
-    // Only promote these to compositor layers once we know the scroll effect is
-    // actually going to drive them. Declaring will-change in the markup pins a
-    // layer per card on phones too, where this effect never runs.
-    const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
-    cards.forEach((card) => {
-      card.style.transition = "transform 0.1s linear";
-      card.style.willChange = "transform";
-    });
-
-    let rafId = 0;
-    let sectionTop = 0;
-
-    function updateRect() {
-      const section = sectionRef.current;
-      if (section) sectionTop = section.offsetTop;
-    }
-
-    function onScroll() {
-      if (rafId) cancelAnimationFrame(rafId);
-
-      rafId = requestAnimationFrame(() => {
-        const windowHeight = window.innerHeight;
-
-        // Use cached offsetTop + scrollY instead of getBoundingClientRect
-        const current = sectionTop - window.scrollY;
-        const start = windowHeight;
-        const end = windowHeight * 0.3;
-
-        const raw = 1 - (current - end) / (start - end);
-        const progress = Math.max(0, Math.min(1, raw));
-
-        // Apply transforms directly to DOM — no React re-render
-        cardRefs.current.forEach((card, i) => {
-          if (card) card.style.transform = getCardTransform(i, progress);
-        });
-      });
-    }
-
-    updateRect();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", updateRect);
-    onScroll();
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", updateRect);
-      if (rafId) cancelAnimationFrame(rafId);
-      cards.forEach((card) => {
-        card.style.willChange = "";
-      });
-    };
-  }, []);
 
   return (
     <section
-      ref={sectionRef}
       className="relative overflow-x-clip py-16 sm:py-24 lg:py-32"
     >
       {/* Ambient glows */}
@@ -154,10 +73,9 @@ export function ScrollCards3D() {
         <div
           className="perspective-container relative mx-auto flex max-w-5xl flex-col items-center gap-3 sm:gap-4 lg:flex-row lg:items-stretch lg:justify-center lg:gap-8"
         >
-          {services.map((service, i) => (
+          {services.map((service) => (
             <div
               key={service.title}
-              ref={(el) => { cardRefs.current[i] = el; }}
               className="w-full max-w-sm lg:w-1/3 lg:max-w-none"
             >
               <div

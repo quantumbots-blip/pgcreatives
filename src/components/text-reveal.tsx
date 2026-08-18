@@ -1,96 +1,32 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface TextRevealProps {
   text: string;
   className?: string;
-  mode?: "words" | "chars";
   delay?: number;
-  staggerDelay?: number;
 }
 
-export function TextReveal({
-  text,
-  className,
-  mode = "words",
-  delay = 0,
-  staggerDelay = 0.05,
-}: TextRevealProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const motionOk = !window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    // Skip the per-word animation on phones (and for reduced-motion) — just
-    // show the text so nothing animates in late while scrolling.
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    if (!motionOk || isMobile) {
-      queueMicrotask(() => setIsVisible(true));
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const segments =
-    mode === "words"
-      ? text.split(/(\s+)/)
-      : text.split("");
-
-  let tokenIndex = 0;
-
+/**
+ * Text with a soft entrance, done entirely in CSS.
+ *
+ * This used to split the string into one <span> per word — each with its own
+ * inline transition and staggered delay — and reveal them from a client effect.
+ * Two problems: the spans were server-rendered at opacity 0, so the paragraph
+ * was missing entirely until hydration, and a sentence became dozens of extra
+ * DOM nodes for React to hydrate. Phones already skipped the effect.
+ *
+ * One element, one animation, no JavaScript. The per-word stagger is gone; the
+ * paragraph now fades up as a whole.
+ */
+export function TextReveal({ text, className, delay = 0 }: TextRevealProps) {
   return (
-    // `text-reveal` is the hook for the mobile override in globals.css. The
-    // spans below are server-rendered at opacity 0, so without it this text is
-    // invisible until hydration — on a slow phone that's a paragraph of the
-    // page simply missing for several seconds.
-    <div ref={containerRef} className={cn("text-reveal inline", className)}>
-      {segments.map((segment, i) => {
-        // Whitespace segments render as-is (no animation)
-        if (mode === "words" && /^\s+$/.test(segment)) {
-          return (
-            <span key={i} style={{ whiteSpace: "pre" }}>
-              {segment}
-            </span>
-          );
-        }
-
-        const currentIndex = tokenIndex++;
-        const transitionDelay = `${delay + currentIndex * staggerDelay}s`;
-
-        return (
-          <span
-            key={i}
-            style={{
-              display: "inline-block",
-              transition: `opacity 0.5s ease ${transitionDelay}, transform 0.5s ease ${transitionDelay}`,
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? "translateY(0) scale(1)" : "translateY(0.5em) scale(0.98)",
-              whiteSpace: mode === "chars" ? "pre" : undefined,
-            }}
-          >
-            {segment}
-          </span>
-        );
-      })}
-    </div>
+    <span
+      className={cn("text-reveal inline-block", className)}
+      style={{
+        animation: `fade-up 0.7s cubic-bezier(0.23, 1, 0.32, 1) ${delay}s both`,
+      }}
+    >
+      {text}
+    </span>
   );
 }

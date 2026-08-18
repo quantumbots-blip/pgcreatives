@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -12,13 +11,11 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { ContactForm } from "@/components/contact-form";
 import { SectionLabel } from "@/components/section-label";
 import { Counter } from "@/components/counter";
-import { MagneticButton } from "@/components/magnetic-button";
 import { TextReveal } from "@/components/text-reveal";
 import { FAQ } from "@/components/faq";
-
-const ScrollCards3D = dynamic(() =>
-  import("@/components/scroll-cards-3d").then((mod) => mod.ScrollCards3D)
-);
+// A plain import now that this renders on the server — there is no client
+// bundle left to defer.
+import { ScrollCards3D } from "@/components/scroll-cards-3d";
 
 const stats = [
   { value: 3, prefix: "$", suffix: "B", label: "In Real Estate Captured" },
@@ -249,7 +246,7 @@ export default function HomePage() {
 
           <AnimateOnScroll animation="fade-up" delay={0.3}>
             <div className="mt-10 sm:mt-14 text-center">
-              <MagneticButton>
+              <span className="hover-magnetic inline-block">
                 <Link
                   href="/portfolio"
                   className="relative z-10 inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:bg-[#f0f0f0]"
@@ -257,7 +254,7 @@ export default function HomePage() {
                   View Full Portfolio
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
-              </MagneticButton>
+              </span>
             </div>
           </AnimateOnScroll>
         </div>
@@ -286,7 +283,7 @@ export default function HomePage() {
                   you show up and be yourself.
                 </p>
                 <div className="mt-8 flex flex-wrap items-center gap-4">
-                  <MagneticButton>
+                  <span className="hover-magnetic inline-block">
                     <Link
                       href="/services"
                       className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-purple-dim to-purple px-7 py-3.5 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-[0_0_15px_rgba(43,111,184,0.25)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(43,111,184,0.4)]"
@@ -294,7 +291,7 @@ export default function HomePage() {
                       Learn More
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
-                  </MagneticButton>
+                  </span>
                   <span className="text-sm text-white/40">
                     Starting at $1,500/mo
                   </span>
@@ -422,7 +419,6 @@ export default function HomePage() {
                 <TextReveal
                   text="Let's create something extraordinary together. Fill out the form below for a free consultation and custom quote."
                   delay={0.3}
-                  staggerDelay={0.04}
                 />
               </div>
             </div>

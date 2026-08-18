@@ -1,6 +1,3 @@
-"use client";
-
-import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 interface FloatingParticlesProps {
@@ -24,20 +21,17 @@ export function FloatingParticles({
   count = 15,
   className,
 }: FloatingParticlesProps) {
-  // Rendered straight away rather than populated from an effect. The old
-  // version generated these with Math.random() after mount, which forced an
-  // extra render pass on every page and popped the particles in late.
-  const particles = useMemo(
-    () =>
-      Array.from({ length: count }, (_, i) => ({
-        id: i,
-        size: +(2 + seededRandom(i * 4 + 1) * 4).toFixed(1),
-        left: +(seededRandom(i * 4 + 2) * 100).toFixed(1),
-        duration: +(8 + seededRandom(i * 4 + 3) * 12).toFixed(1),
-        delay: +(seededRandom(i * 4 + 4) * 10).toFixed(1),
-      })),
-    [count]
-  );
+  // Purely decorative and entirely deterministic, so there is nothing for the
+  // browser to do here: no state, no effects, no "use client". This renders on
+  // the server and ships no JavaScript. CSS hides it on phones and for
+  // reduced-motion visitors.
+  const particles = Array.from({ length: count }, (_, i) => ({
+    id: i,
+    size: +(2 + seededRandom(i * 4 + 1) * 4).toFixed(1),
+    left: +(seededRandom(i * 4 + 2) * 100).toFixed(1),
+    duration: +(8 + seededRandom(i * 4 + 3) * 12).toFixed(1),
+    delay: +(seededRandom(i * 4 + 4) * 10).toFixed(1),
+  }));
 
   return (
     <div

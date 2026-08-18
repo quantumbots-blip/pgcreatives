@@ -859,6 +859,93 @@ html {
   width: 100%;
 }
 
+/* ── FAQ: tabs and accordion with no JavaScript ──
+   The radios hold the selected category and are visually hidden but still
+   focusable, so the tab strip is keyboard-operable. Each `:checked` radio
+   reveals the matching panel and lights its own label. The accordion itself is
+   a native <details>, which needs no help at all. */
+
+.faq-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
+.faq-panel {
+  display: none;
+}
+
+.faq-pill {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.faq-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* One pair of rules per category. `~` reaches forward from the checked radio to
+   the pill strip and the panel stack, both of which follow it in the markup. */
+#faq-cat-general:checked ~ * .faq-panel[data-category="general"],
+#faq-cat-pricing-booking:checked ~ * .faq-panel[data-category="pricing-booking"],
+#faq-cat-production:checked ~ * .faq-panel[data-category="production"],
+#faq-cat-delivery-licensing:checked ~ * .faq-panel[data-category="delivery-licensing"],
+#faq-cat-results:checked ~ * .faq-panel[data-category="results"] {
+  display: block;
+}
+
+#faq-cat-general:checked ~ * .faq-pill[for="faq-cat-general"],
+#faq-cat-pricing-booking:checked ~ * .faq-pill[for="faq-cat-pricing-booking"],
+#faq-cat-production:checked ~ * .faq-pill[for="faq-cat-production"],
+#faq-cat-delivery-licensing:checked ~ * .faq-pill[for="faq-cat-delivery-licensing"],
+#faq-cat-results:checked ~ * .faq-pill[for="faq-cat-results"] {
+  background: linear-gradient(to right, rgba(43, 111, 184, 0.25), rgba(14, 165, 233, 0.15));
+  color: #6ab0d4;
+  border-color: rgba(43, 111, 184, 0.35);
+  box-shadow: 0 0 16px rgba(43, 111, 184, 0.15);
+}
+
+/* Keyboard focus has to be visible on the label, since the radio itself is
+   hidden — without this the tab strip is unusable without a mouse. */
+.faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-general"],
+.faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-pricing-booking"],
+.faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-production"],
+.faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-delivery-licensing"],
+.faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-results"] {
+  outline: 2px solid #2b6fb8;
+  outline-offset: 2px;
+}
+
+.faq-item {
+  border-color: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.faq-item:hover {
+  border-color: rgba(43, 111, 184, 0.15);
+  background: rgba(43, 111, 184, 0.02);
+}
+
+.faq-item[open] {
+  border-color: rgba(43, 111, 184, 0.25);
+  background: linear-gradient(to right, rgba(43, 111, 184, 0.06), rgba(14, 165, 233, 0.03));
+  box-shadow: 0 0 24px rgba(43, 111, 184, 0.08);
+}
+
+.faq-item[open] .faq-chevron {
+  transform: rotate(180deg);
+  color: #6ab0d4;
+}
+
+/* Safari still paints its own disclosure triangle without both of these. */
+.faq-item > summary { list-style: none; }
+.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-item > summary::marker { content: ""; }
+
 /* ── Reduced motion ── */
 
 @media (prefers-reduced-motion: reduce) {
@@ -887,6 +974,17 @@ html {
 
   .stagger-children > * {
     opacity: 1;
+  }
+
+  /* These entrance animations are now pure CSS on every viewport, so this is
+     the only thing standing between a reduced-motion visitor and them. The
+     opacity reset matters as much as the animation: `animation-fill-mode: both`
+     would otherwise strand the element on its opening keyframe. */
+  .scroll-reveal,
+  .text-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .card-3d:hover .card-3d-inner,
@@ -918,13 +1016,12 @@ html {
     transform: none !important;
   }
 
-  /* Same reasoning for the per-word reveal. Its spans are server-rendered at
-     opacity 0 and only revealed once React runs, so on a slow phone the text
-     was missing entirely until hydration finished. */
-  .text-reveal > span {
+  /* Same reasoning for the text reveal: phones show it immediately rather than
+     animating it in as you arrive. */
+  .text-reveal {
     opacity: 1 !important;
+    animation: none !important;
     transform: none !important;
-    transition: none !important;
   }
 
   /* Kill expensive infinite animations on mobile */

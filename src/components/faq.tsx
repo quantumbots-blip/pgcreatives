@@ -1,8 +1,3 @@
-"use client";
-
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 const categories = [
@@ -131,103 +126,112 @@ const faqs: FAQItem[] = [
   },
 ];
 
+function slug(category: Category) {
+  return category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+/**
+ * Frequently asked questions — server-rendered, zero JavaScript.
+ *
+ * This was a client component holding two pieces of state: which category is
+ * selected and which answer is open. That meant all eighteen questions and
+ * answers were shipped to every visitor as JavaScript and hydrated, to power
+ * behaviour the browser already provides for free.
+ *
+ * The accordion is now a native <details>, and the category tabs are radio
+ * inputs styled by their labels, switched in CSS (see `.faq-*` in globals.css).
+ * Both are keyboard accessible by construction, and both work before — or
+ * entirely without — JavaScript.
+ */
 export function FAQ() {
-  const [activeCategory, setActiveCategory] = useState<Category>("General");
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const filtered = faqs.filter((f) => f.category === activeCategory);
-
-  const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
-
   return (
     <section className="relative overflow-x-clip py-16 sm:py-28">
       <div className="pointer-events-none absolute -right-40 top-40 h-80 w-80 rounded-full bg-purple/[0.08] blur-[120px]" />
       <div className="pointer-events-none absolute left-[10%] bottom-[20%] h-60 w-60 rounded-full bg-sky-500/[0.06] blur-[100px]" />
 
       <div className="mx-auto max-w-4xl px-5 sm:px-6">
-        {/* Heading */}
         <AnimateOnScroll animation="fade-up">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-            Frequently Asked Questions
-          </h2>
-          <p className="mt-4 text-base text-white/60">
-            Everything you need to know about working with us.
-          </p>
-        </div>
+          <div className="text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+              Frequently Asked Questions
+            </h2>
+            <p className="mt-4 text-base text-white/60">
+              Everything you need to know about working with us.
+            </p>
+          </div>
         </AnimateOnScroll>
 
-        {/* Category pills */}
-        <AnimateOnScroll animation="fade-up" delay={0.1}>
-        <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-2">
-          {categories.map((cat) => (
-            <button
+        <div className="faq">
+          {/* The radios carry the selected-tab state. They sit ahead of both the
+              pills and the panels so CSS sibling selectors can reach each. */}
+          {categories.map((cat, i) => (
+            <input
               key={cat}
-              onClick={() => {
-                setActiveCategory(cat);
-                setOpenIndex(null);
-              }}
-              className={cn(
-                "rounded-full px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all duration-200",
-                activeCategory === cat
-                  ? "bg-gradient-to-r from-purple/25 to-sky-500/15 text-purple-light border border-purple/35 shadow-[0_0_16px_rgba(43,111,184,0.15)]"
-                  : "bg-white/[0.04] text-white/50 border border-white/[0.06] hover:bg-white/[0.08] hover:text-white/70"
-              )}
-            >
-              {cat}
-            </button>
+              type="radio"
+              name="faq-category"
+              id={`faq-cat-${slug(cat)}`}
+              className="faq-radio"
+              defaultChecked={i === 0}
+            />
           ))}
-        </div>
-        </AnimateOnScroll>
 
-        {/* FAQ items */}
-        <AnimateOnScroll animation="fade-up" delay={0.2}>
-        <div className="mt-8 sm:mt-10 space-y-2.5 sm:space-y-3">
-          {filtered.map((faq, i) => {
-            const isOpen = openIndex === i;
-            return (
-              <div
-                key={`${activeCategory}-${i}`}
-                className={cn(
-                  "rounded-xl border",
-                  isOpen
-                    ? "border-purple/25 bg-gradient-to-r from-purple/[0.06] to-sky-500/[0.03] shadow-[0_0_24px_rgba(43,111,184,0.08)]"
-                    : "border-white/[0.06] bg-white/[0.02] hover:border-purple/15 hover:bg-purple/[0.02]"
-                )}
-              >
-                <button
-                  onClick={() => toggle(i)}
-                  aria-expanded={isOpen}
-                  aria-controls={`faq-${activeCategory}-${i}`}
-                  className="flex w-full items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 text-left"
+          <AnimateOnScroll animation="fade-up" delay={0.1}>
+            <div
+              className="faq-pills mt-8 sm:mt-10 flex flex-wrap justify-center gap-2"
+              role="tablist"
+              aria-label="Question categories"
+            >
+              {categories.map((cat) => (
+                <label
+                  key={cat}
+                  htmlFor={`faq-cat-${slug(cat)}`}
+                  className="faq-pill cursor-pointer rounded-full px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all duration-200"
                 >
-                  <span className="text-sm font-semibold text-white sm:text-lg">
-                    {faq.question}
-                  </span>
-                  <ChevronDown
-                    className={cn(
-                      "h-5 w-5 shrink-0 text-white/30 transition-transform duration-200",
-                      isOpen && "rotate-180 text-purple-light"
-                    )}
-                  />
-                </button>
+                  {cat}
+                </label>
+              ))}
+            </div>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll animation="fade-up" delay={0.2}>
+            <div className="faq-panels mt-8 sm:mt-10">
+              {categories.map((cat) => (
                 <div
-                  id={`faq-${activeCategory}-${i}`}
-                  role="region"
-                  className={cn(
-                    "overflow-hidden transition-[max-height,opacity] duration-300 ease-out",
-                    isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-                  )}
+                  key={cat}
+                  className="faq-panel space-y-2.5 sm:space-y-3"
+                  data-category={slug(cat)}
                 >
-                  <p className="px-4 sm:px-6 pb-4 sm:pb-5 text-sm leading-relaxed text-white/60 sm:text-base">
-                    {faq.answer}
-                  </p>
+                  {faqs
+                    .filter((f) => f.category === cat)
+                    .map((faq) => (
+                      <details key={faq.question} className="faq-item rounded-xl border">
+                        <summary className="flex w-full cursor-pointer items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 text-left">
+                          <span className="text-sm font-semibold text-white sm:text-lg">
+                            {faq.question}
+                          </span>
+                          <svg
+                            className="faq-chevron h-5 w-5 shrink-0 text-white/30 transition-transform duration-200"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            <path d="m6 9 6 6 6-6" />
+                          </svg>
+                        </summary>
+                        <p className="px-4 sm:px-6 pb-4 sm:pb-5 text-sm leading-relaxed text-white/60 sm:text-base">
+                          {faq.answer}
+                        </p>
+                      </details>
+                    ))}
                 </div>
-              </div>
-            );
-          })}
+              ))}
+            </div>
+          </AnimateOnScroll>
         </div>
-        </AnimateOnScroll>
       </div>
     </section>
   );
