@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Play } from "lucide-react";
-import { MagneticButton } from "@/components/magnetic-button";
 import { FloatingParticles } from "@/components/floating-particles";
 
-// Two renditions of the same footage. The desktop file is 16:9 at 720p; the
-// phone file is the 9:16 centre crop that `object-cover` actually displays on a
-// portrait screen, so none of its bytes are spent on pixels that get cropped
-// away. That crop alone is most of the saving: 8.61 MB -> 3.33 MB at SSIM 0.973
-// against a lossless reference, behind a hero overlay that is 47-81% black.
+// Two renditions of the same 25-second loop. The desktop file is 16:9 at 720p;
+// the phone file is the 9:16 centre crop that `object-cover` actually displays
+// on a portrait screen, so none of its bytes are spent on pixels that get
+// cropped away. Together with the shorter loop that took the original 75-second
+// 8.61 MB file to 2.71 MB on desktop and 1.06 MB on phones. The loop ends on a
+// real scene cut at 24.43s, so it repeats on an edit rather than mid-shot.
 const VIDEO_SRC_DESKTOP = "/hero-video-v5.mp4";
 const VIDEO_SRC_MOBILE = "/hero-video-mobile.mp4";
 
@@ -318,15 +318,15 @@ export function VideoHero() {
             className="animate-hero-fade-up mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-4"
             style={{ animationDelay: "0.45s" }}
           >
-            <MagneticButton>
+            <span className="hover-magnetic inline-block">
               <Link
                 href="/#portals"
                 className="rounded-full bg-gradient-to-r from-purple-dim to-purple px-7 sm:px-8 py-3.5 sm:py-4 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-none sm:shadow-[0_0_15px_rgba(55,140,210,0.25),0_0_40px_rgba(55,140,210,0.1)] transition-all duration-300 hover:scale-[1.03] sm:hover:shadow-[0_0_20px_rgba(55,140,210,0.4),0_0_50px_rgba(55,140,210,0.15)]"
               >
                 Book a Shoot
               </Link>
-            </MagneticButton>
-            <MagneticButton>
+            </span>
+            <span className="hover-magnetic inline-block">
               <Link
                 href="/portfolio"
                 className="flex items-center gap-2.5 rounded-full border border-white/20 px-7 sm:px-8 py-3.5 sm:py-4 text-sm font-medium tracking-wide text-white/80 transition-all duration-300 hover:border-white/40 hover:bg-white/5 hover:text-white"
@@ -334,7 +334,7 @@ export function VideoHero() {
                 <Play className="h-3.5 w-3.5" />
                 View Our Work
               </Link>
-            </MagneticButton>
+            </span>
           </div>
         </div>
       </div>
