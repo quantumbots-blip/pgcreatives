@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { VideoModal } from "@/components/video-modal";
+import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 interface VideoItem {
   vimeoId: string;
@@ -32,15 +33,19 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
             : "sm:grid-cols-2 lg:grid-cols-3"
         )}
       >
-        {videos.map((video) => (
-          <button
+        {videos.map((video, i) => (
+          <AnimateOnScroll
             key={video.vimeoId}
+            animation="fade-up"
+            delay={(i % (portrait ? 4 : 3)) * 0.08}
+          >
+          <button
             type="button"
             onClick={() => setActive(video)}
             aria-label={`Play video: ${video.title}`}
             className={cn(
-              "group relative overflow-hidden rounded-xl bg-[#0a0a0a] text-left transition-all duration-500 hover:shadow-[0_0_30px_rgba(43,111,184,0.15)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-light",
-              portrait ?"aspect-[4/5]" : "aspect-video"
+              "group relative block w-full overflow-hidden rounded-xl bg-[#0a0a0a] text-left transition-all duration-500 hover:shadow-[0_0_30px_rgba(43,111,184,0.15)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-light",
+              portrait ? "aspect-[4/5]" : "aspect-video"
             )}
           >
             {video.thumbnail && (
@@ -50,7 +55,7 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
                 alt=""
                 className={cn(
                   "absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105",
-                  portrait ?"object-[center_30%]" : "object-[center_35%]"
+                  portrait ? "object-[center_30%]" : "object-[center_35%]"
                 )}
                 loading="lazy"
                 decoding="async"
@@ -66,6 +71,7 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
               <h3 className="text-sm font-medium text-white">{video.title}</h3>
             </div>
           </button>
+          </AnimateOnScroll>
         ))}
       </div>
 

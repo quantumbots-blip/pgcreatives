@@ -50,15 +50,22 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
     </div>
   );
 
-  const renderVideo = (project: Project) => (
-    <button
+  // Stagger by column so each row cascades left to right as it arrives.
+  const stagger = (i: number, cols: number) => (i % cols) * 0.08;
+
+  const renderVideo = (project: Project, i: number) => (
+    <AnimateOnScroll
       key={project.title}
+      animation="fade-up"
+      delay={stagger(i, videosPortrait ? 4 : 3)}
+    >
+    <button
       type="button"
       onClick={() => setActiveVideo(project)}
       aria-label={`Play video: ${project.title}`}
       className={cn(
-        "group relative overflow-hidden rounded-xl bg-[#0a0a0a] text-left transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(43,111,184,0.15)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-light",
-        videosPortrait ?"aspect-[4/5]" : "aspect-video"
+        "group relative block w-full overflow-hidden rounded-xl bg-[#0a0a0a] text-left transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(43,111,184,0.15)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-light",
+        videosPortrait ? "aspect-[4/5]" : "aspect-video"
       )}
     >
       {(project.thumbnail || project.vimeoId) && (
@@ -68,7 +75,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
           alt=""
           className={cn(
             "absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105",
-            videosPortrait ?"object-[center_30%]" : "object-[center_35%]"
+            videosPortrait ? "object-[center_30%]" : "object-[center_35%]"
           )}
           loading="lazy"
           decoding="async"
@@ -82,11 +89,14 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
       </div>
       {caption(project)}
     </button>
+    </AnimateOnScroll>
   );
 
-  const renderPhoto = (project: Project) => (
-    <div
+  const renderPhoto = (project: Project, i: number) => (
+    <AnimateOnScroll
       key={project.title}
+      animation="fade-in-scale"
+      delay={stagger(i, 3)}
       className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-[#0a0a0a] transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(43,111,184,0.15)]"
     >
       {project.image && (
@@ -100,7 +110,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/85 via-[#000000]/20 to-transparent" />
       {caption(project)}
-    </div>
+    </AnimateOnScroll>
   );
 
   const showVideos = activeCategory !== "Photo";

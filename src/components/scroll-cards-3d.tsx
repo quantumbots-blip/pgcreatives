@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { FloatingParticles } from "@/components/floating-particles";
+import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 // This section used to be a client component driving a scroll-linked 3D fan:
 // three cards rotated into place from a scroll listener on desktop. The effect
@@ -51,7 +52,7 @@ export function ScrollCards3D() {
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
         {/* Heading */}
-        <div className="mb-8 text-center sm:mb-16">
+        <AnimateOnScroll animation="rise" className="mb-8 text-center sm:mb-16">
           <div className="flex justify-center">
             <div className="mb-4 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 h-7 sm:px-4 sm:h-8">
               <span className="text-[11px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-purple-light leading-none">
@@ -67,15 +68,17 @@ export function ScrollCards3D() {
             Tailored media packages for every stage of your project — from
             single-property shoots to full-scale production.
           </p>
-        </div>
+        </AnimateOnScroll>
 
         {/* Cards container */}
         <div
           className="perspective-container relative mx-auto flex max-w-5xl flex-col items-center gap-6 lg:flex-row lg:items-stretch lg:justify-center lg:gap-8"
         >
-          {services.map((service) => (
-            <div
+          {services.map((service, i) => (
+            <AnimateOnScroll
               key={service.title}
+              animation="fade-up"
+              delay={i * 0.12}
               className="w-full max-w-sm lg:w-1/3 lg:max-w-none"
             >
               <div
@@ -132,7 +135,7 @@ export function ScrollCards3D() {
                   </div>
                 </div>
               </div>
-            </div>
+            </AnimateOnScroll>
           ))}
         </div>
       </div>

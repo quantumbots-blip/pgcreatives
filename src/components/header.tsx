@@ -16,6 +16,7 @@ import {
   Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ScrollProgress } from "@/components/scroll-progress";
 
 type NavLink = { name: string; href: string; children?: never };
 type NavDropdown = {
@@ -273,6 +274,7 @@ export function Header() {
             : "bg-[#000000]/90 backdrop-blur-xl sm:bg-[#000000]/80"
         )}
       >
+        <ScrollProgress />
         {/* Bottom fade — softens the hard edge */}
         {!transparent && (
           <div className="pointer-events-none absolute inset-x-0 -bottom-6 h-6 bg-gradient-to-b from-[#000000]/60 to-transparent" />

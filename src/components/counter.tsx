@@ -11,11 +11,16 @@ interface CounterProps {
   className?: string;
 }
 
+// Small figures like "$3B" would otherwise tick 0, 1, 2, 3 — four frames of
+// "animation". Below this threshold the count shows one decimal while it
+// runs ("$2.7B") and snaps to the real integer at the end.
+const DECIMAL_BELOW = 20;
+
 export function Counter({
   value,
   suffix = "",
   prefix = "",
-  duration = 2,
+  duration = 2.2,
   className,
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -24,8 +29,8 @@ export function Counter({
   // Estate Captured" — a wrong number is far worse than a missing animation.
   // The count-up is re-armed below, but only while the element is off-screen,
   // so nobody ever watches a correct number reset itself to zero.
-  const [display, setDisplay] = useState(() => formatNumber(value));
-  const hasAnimated = useRef(false);
+  const [display, setDisplay] = useState(() => format(value, value, 1));
+  const started = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -35,98 +40,78 @@ export function Counter({
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    const rect = el.getBoundingClientRect();
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    const onScreen = rect.bottom > 0 && rect.top < vh;
+    const onScreen = () => {
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      return r.bottom > 0 && r.top < vh;
+    };
 
     // Already in front of the visitor, or motion is unwelcome: keep the figure
     // exactly as rendered.
-    if (reduceMotion || onScreen) {
-      hasAnimated.current = true;
+    if (reduceMotion || onScreen()) {
+      started.current = true;
       return;
     }
 
-    // Off-screen, so it is safe to wind back to zero and count up when it
-    // arrives.
-    setDisplay(formatNumber(0));
+    // Off-screen, so it is safe to wind back to zero and count up when the
+    // number actually scrolls into view — not before, or the show is over by
+    // the time anyone looks. (Deliberate: this is the one-time re-arm, not a
+    // render-loop hazard — it runs once per mount, off-screen only.)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDisplay(format(0, value, 0));
 
-    // Declared as a function so `start` can call it before the listeners below
-    // are wired up — a `const` arrow would be in its temporal dead zone here.
-    function cleanup() {
+    let frame = 0;
+    let observer: IntersectionObserver | undefined;
+    let failsafe = 0;
+
+    const cleanup = () => {
       observer?.disconnect();
       window.removeEventListener("scroll", onScroll);
-      if (frame) cancelAnimationFrame(frame);
-      clearTimeout(fallback);
-    }
+      window.clearInterval(failsafe);
+    };
 
     const start = () => {
-      if (hasAnimated.current) return;
-      hasAnimated.current = true;
-      animate();
+      if (started.current) return;
+      started.current = true;
       cleanup();
+      const t0 = performance.now();
+      const ms = duration * 1000;
+      const tick = (now: number) => {
+        const p = Math.min((now - t0) / ms, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setDisplay(format(eased * value, value, p));
+        if (p < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
     };
 
-    const isNearViewport = () => {
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      return rect.top < vh * 1.5 && rect.bottom > -vh * 0.5;
-    };
-
-    if (isNearViewport()) {
-      hasAnimated.current = true;
-      animate();
-      return;
-    }
-
-    let observer: IntersectionObserver | undefined;
     if (typeof IntersectionObserver !== "undefined") {
       observer = new IntersectionObserver(
         (entries) => {
           if (entries.some((e) => e.isIntersecting)) start();
         },
-        { threshold: 0, rootMargin: "0px 0px 50% 0px" }
+        // Fire once a third of the number is showing — it is clearly in view,
+        // and the count is still in its opening beat as the eye lands on it.
+        { threshold: 0.3 }
       );
       observer.observe(el);
     }
 
-    let frame = 0;
+    // Fallbacks for a starved observer or a browser without one: a scroll
+    // check, and a slow poll so the number can never be stuck at zero.
     const onScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        if (isNearViewport()) start();
-      });
+      if (onScreen()) start();
     };
     window.addEventListener("scroll", onScroll, { passive: true });
+    failsafe = window.setInterval(() => {
+      if (onScreen()) start();
+    }, 1000);
 
-    const fallback = setTimeout(start, 1500);
-
-    return cleanup;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      cleanup();
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, [value, duration]);
-
-  function formatNumber(n: number): string {
-    const decimals = (value.toString().split(".")[1] || "").length;
-    if (decimals > 0) return n.toFixed(decimals);
-    const rounded = Math.round(n);
-    return (rounded === 0 ? 0 : rounded).toLocaleString();
-  }
-
-  function animate() {
-    const durationMs = duration * 1000;
-    const start = performance.now();
-
-    function tick(now: number) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / durationMs, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = eased * value;
-      setDisplay(formatNumber(current));
-      if (progress < 1) requestAnimationFrame(tick);
-    }
-
-    requestAnimationFrame(tick);
-  }
 
   return (
     <span ref={ref} className={cn("tabular-nums", className)}>
@@ -135,4 +120,12 @@ export function Counter({
       {suffix}
     </span>
   );
+}
+
+/** Format an in-progress figure; `progress` 1 means the final, settled value. */
+function format(n: number, target: number, progress: number): string {
+  const decimals = (target.toString().split(".")[1] || "").length;
+  if (decimals > 0) return n.toFixed(decimals);
+  if (progress < 1 && target < DECIMAL_BELOW) return n.toFixed(1);
+  return Math.round(n).toLocaleString();
 }

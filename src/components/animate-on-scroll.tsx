@@ -1,48 +1,48 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
-type Animation = "fade-up" | "fade-in-scale" | "slide-in-left" | "slide-in-right";
+export type RevealAnimation =
+  | "fade-up"
+  | "rise"
+  | "fade-in-scale"
+  | "slide-in-left"
+  | "slide-in-right";
 
 /**
- * Entrance animation, done entirely in CSS.
+ * Scroll-triggered entrance. Server component — ships no JavaScript of its
+ * own. The element renders fully visible; `ScrollReveal` (mounted once in the
+ * root layout) hides below-the-fold `.reveal` elements after hydration and
+ * reveals each one as it scrolls into view. See `.reveal` in globals.css for
+ * the variants and the rules that keep this cheap on phones.
  *
- * This used to be a client component: it rendered its children at opacity 0 and
- * revealed them from an IntersectionObserver once they neared the viewport.
- * That made every wrapped section — nineteen of them on the home page — depend
- * on JavaScript merely to become visible, so a slow or blocked script left the
- * page full of blank gaps. Phones were already opted out of it in CSS for
- * exactly that reason; this extends the same guarantee to every viewport.
- *
- * A CSS animation runs off the main thread and does not wait for hydration, so
- * the content is guaranteed to appear. The trade is that the animation is no
- * longer scroll-triggered — everything plays on load. Below the fold it has
- * long finished before you scroll there, which is what phones have been doing
- * all along.
- *
- * No hooks, no "use client": this renders on the server and ships no JavaScript.
+ * Because visibility is only ever removed *after* hydration, a slow phone or a
+ * blocked script can never leave a section blank — the failure mode that made
+ * the previous scroll-triggered version get switched off on mobile.
  */
 export function AnimateOnScroll({
   children,
   animation = "fade-up",
   delay = 0,
-  duration = 0.6,
+  duration,
   className = "",
+  as: Tag = "div",
 }: {
   children: ReactNode;
-  animation?: Animation;
+  animation?: RevealAnimation;
+  /** Seconds. Applied as a transition delay once the element is in view. */
   delay?: number;
+  /** Seconds. Defaults to the CSS value (0.7s). */
   duration?: number;
   className?: string;
+  as?: "div" | "section" | "li" | "span";
 }) {
+  const vars: Record<string, string> = {};
+  if (delay) vars["--reveal-delay"] = `${delay}s`;
+  if (duration) vars["--reveal-duration"] = `${duration}s`;
+  const style = Object.keys(vars).length ? (vars as CSSProperties) : undefined;
+
   return (
-    <div
-      className={`scroll-reveal ${className}`}
-      style={{
-        // `both` holds the opening frame through the delay and the closing
-        // frame afterwards, so the element is never left in an undefined state.
-        animation: `${animation} ${duration}s cubic-bezier(0.23, 1, 0.32, 1) ${delay}s both`,
-      }}
-    >
+    <Tag className={`reveal ${className}`} data-reveal={animation} style={style}>
       {children}
-    </div>
+    </Tag>
   );
 }

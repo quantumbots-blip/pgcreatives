@@ -219,7 +219,7 @@ export default function TeamPage() {
       <section className="py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           {/* Heading */}
-          <AnimateOnScroll animation="fade-up">
+          <AnimateOnScroll animation="rise">
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Values</SectionLabel>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">

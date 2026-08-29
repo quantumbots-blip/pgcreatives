@@ -578,6 +578,84 @@ html {
   .section-sep { opacity: 0; }
 }
 
+/* ── Scroll reveals ──
+   Driven by `ScrollReveal` (one IntersectionObserver for the whole site).
+   Elements are visible by default. Only once <html> carries
+   `data-reveal-ready` — set after hydration, after everything on screen has
+   already been marked `.is-visible` — are the remaining below-the-fold
+   elements hidden, then transitioned in as they arrive. Transform and
+   opacity only: both are composited, so this is safe on phones. */
+
+.reveal {
+  --reveal-delay: 0s;
+  --reveal-duration: 0.7s;
+  --reveal-from: translate3d(0, 28px, 0);
+}
+
+.reveal[data-reveal="rise"] {
+  --reveal-from: translate3d(0, 44px, 0);
+  --reveal-duration: 0.9s;
+}
+
+.reveal[data-reveal="fade-in-scale"] {
+  --reveal-from: scale(0.94);
+  --reveal-duration: 0.9s;
+}
+
+.reveal[data-reveal="slide-in-left"] {
+  --reveal-from: translate3d(-40px, 0, 0);
+}
+
+.reveal[data-reveal="slide-in-right"] {
+  --reveal-from: translate3d(40px, 0, 0);
+}
+
+html[data-reveal-ready] .reveal {
+  transition:
+    opacity var(--reveal-duration) cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay),
+    transform var(--reveal-duration) cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay);
+}
+
+html[data-reveal-ready] .reveal:not(.is-visible) {
+  opacity: 0;
+  transform: var(--reveal-from);
+}
+
+html[data-reveal-ready] .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Hero parallax layers (transform set from JS on pointer devices) ── */
+
+.hero-parallax-bg,
+.hero-parallax-content {
+  will-change: transform;
+}
+
+/* ── FAQ answer entrance ── */
+
+@keyframes faq-answer-in {
+  from { opacity: 0; transform: translate3d(0, -6px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+.faq-item[open] > .faq-answer {
+  animation: faq-answer-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Hero scroll cue ── */
+
+@keyframes scroll-cue {
+  0%, 100% { transform: scaleY(1); opacity: 0.9; }
+  50% { transform: scaleY(0.4); opacity: 0.4; }
+}
+
+.animate-scroll-cue {
+  transform-origin: top;
+  animation: scroll-cue 2.2s ease-in-out 1.4s infinite;
+}
+
 /* ── Scroll-driven 3D card fan ── */
 
 .perspective-container {
@@ -976,15 +1054,23 @@ html {
     opacity: 1;
   }
 
-  /* These entrance animations are now pure CSS on every viewport, so this is
-     the only thing standing between a reduced-motion visitor and them. The
-     opacity reset matters as much as the animation: `animation-fill-mode: both`
-     would otherwise strand the element on its opening keyframe. */
-  .scroll-reveal,
-  .text-reveal {
-    animation: none !important;
+  /* ScrollReveal never sets the ready flag for reduced-motion visitors, so
+     nothing is hidden; this is the CSS-side guarantee of the same thing. */
+  .reveal {
     opacity: 1 !important;
     transform: none !important;
+    transition: none !important;
+  }
+
+  .faq-item[open] > .faq-answer,
+  .animate-scroll-cue {
+    animation: none !important;
+  }
+
+  .hero-parallax-bg,
+  .hero-parallax-content {
+    transform: none !important;
+    opacity: 1 !important;
   }
 
   .card-3d:hover .card-3d-inner,
@@ -1007,21 +1093,25 @@ html {
 /* ── Mobile performance optimizations ── */
 
 @media (max-width: 768px) {
-  /* Disable scroll-reveal entrance animations on phones — they caused
-     content to "pop in" late while scrolling. Show everything immediately,
-     regardless of JavaScript timing. */
-  .scroll-reveal {
-    opacity: 1 !important;
-    animation: none !important;
-    transform: none !important;
+  /* Scroll reveals stay ON for phones. The earlier version hid content until
+     JavaScript ran and was rightly switched off here; the current one only
+     hides below-the-fold elements after hydration and uses composited
+     properties only, so it is cheap and can never leave a gap. Shorter travel
+     and duration keep it snappy on a small screen. */
+  .reveal {
+    --reveal-duration: 0.55s;
   }
-
-  /* Same reasoning for the text reveal: phones show it immediately rather than
-     animating it in as you arrive. */
-  .text-reveal {
-    opacity: 1 !important;
-    animation: none !important;
-    transform: none !important;
+  .reveal[data-reveal="fade-up"],
+  .reveal:not([data-reveal]) {
+    --reveal-from: translate3d(0, 20px, 0);
+  }
+  .reveal[data-reveal="rise"] {
+    --reveal-from: translate3d(0, 28px, 0);
+    --reveal-duration: 0.65s;
+  }
+  .reveal[data-reveal="slide-in-left"],
+  .reveal[data-reveal="slide-in-right"] {
+    --reveal-from: translate3d(0, 20px, 0);
   }
 
   /* Kill expensive infinite animations on mobile */

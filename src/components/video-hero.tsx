@@ -39,8 +39,49 @@ const RETRY_DELAY_MS = 400;
 
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [videoReady, setVideoReady] = useState(false);
   const [videoEnabled, setVideoEnabled] = useState(false);
+
+  // Parallax: the backdrop drifts at a quarter of scroll speed and the copy
+  // lifts and fades as the visitor leaves the hero. Pointer devices only —
+  // the same transform on a phone's full-screen video layer is a compositor
+  // cost with no payoff, since the hero is gone in one flick. One passive
+  // scroll listener, one rAF, two transforms; nothing here touches layout.
+  useEffect(() => {
+    const bg = bgRef.current;
+    const content = contentRef.current;
+    if (!bg || !content) return;
+    const mq = window.matchMedia(
+      "(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)"
+    );
+    if (!mq.matches) return;
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = window.scrollY;
+      const vh = window.innerHeight || 1;
+      if (y > vh) return; // hero is off-screen; leave it where it was
+      const t = Math.min(1, y / vh);
+      bg.style.transform = `translate3d(0, ${Math.round(y * 0.25)}px, 0)`;
+      content.style.transform = `translate3d(0, ${Math.round(y * 0.12)}px, 0)`;
+      content.style.opacity = String(1 - t * 1.1);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      bg.style.transform = "";
+      content.style.transform = "";
+      content.style.opacity = "";
+    };
+  }, []);
 
   // Decide whether to fetch the hero video at all, and never during hydration.
   // The file is multiple megabytes; downloading and decoding it is the single
@@ -239,7 +280,9 @@ export function VideoHero() {
   }, [videoEnabled]);
 
   return (
-    <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-x-clip">
+    <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-clip">
+      {/* Backdrop layer — moved as one unit by the parallax effect. */}
+      <div ref={bgRef} className="hero-parallax-bg absolute inset-0">
       {/* Poster — shows while video loads or if video fails. Loaded eagerly
           rather than preloaded: the splash logo owns the preload slot, and
           competing <link rel="preload"> tags just delay each other. */}
@@ -276,7 +319,9 @@ export function VideoHero() {
       {/* Overlay gradients — purple-tinted */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/68 via-[#000000]/47 to-[#000000]/81" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/72 via-transparent to-transparent" />
-      {/* Bottom fade to blend into next section */}
+      </div>
+      {/* Bottom fade to blend into next section — outside the parallax layer
+          so the seam with the next section never moves. */}
       <div className="absolute bottom-0 left-0 right-0 h-48 sm:h-72 bg-gradient-to-t from-[#000000]/85 via-[#000000]/60 to-transparent" />
 
       {/* Single subtle ambient glow */}
@@ -286,7 +331,7 @@ export function VideoHero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-6 pt-24 sm:pt-20">
+      <div ref={contentRef} className="hero-parallax-content relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-6 pt-24 sm:pt-20">
         <div className="max-w-3xl">
           <div
             className="animate-hero-fade-up mb-4 sm:mb-6 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 h-7 sm:px-4 sm:h-8 backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_20px_rgba(55,140,210,0.25)]"
@@ -348,7 +393,9 @@ export function VideoHero() {
           <span className="text-[11px] font-medium uppercase tracking-[0.3em] text-purple-light/50">
             Scroll
           </span>
-          <div className="animate-hero-line h-10 w-px bg-gradient-to-b from-purple/40 to-transparent" />
+          <div className="animate-hero-line h-10 w-px overflow-hidden">
+            <div className="animate-scroll-cue h-full w-px bg-gradient-to-b from-purple/60 to-transparent" />
+          </div>
         </div>
       </div>
     </section>

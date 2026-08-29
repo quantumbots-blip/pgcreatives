@@ -193,7 +193,7 @@ export function FAQ() {
             </div>
           </AnimateOnScroll>
 
-          <AnimateOnScroll animation="fade-up" delay={0.2}>
+          <div>
             <div className="faq-panels mt-8 sm:mt-10">
               {categories.map((cat) => (
                 <div
@@ -203,8 +203,13 @@ export function FAQ() {
                 >
                   {faqs
                     .filter((f) => f.category === cat)
-                    .map((faq) => (
-                      <details key={faq.question} className="faq-item rounded-xl border">
+                    .map((faq, i) => (
+                      <details
+                        key={faq.question}
+                        className="faq-item reveal rounded-xl border"
+                        data-reveal="fade-up"
+                        style={{ "--reveal-delay": `${i * 0.07}s` } as React.CSSProperties}
+                      >
                         <summary className="flex w-full cursor-pointer items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 text-left">
                           <span className="text-sm font-semibold text-white sm:text-lg">
                             {faq.question}
@@ -222,7 +227,7 @@ export function FAQ() {
                             <path d="m6 9 6 6 6-6" />
                           </svg>
                         </summary>
-                        <p className="px-4 sm:px-6 pb-4 sm:pb-5 text-sm leading-relaxed text-white/60 sm:text-base">
+                        <p className="faq-answer px-4 sm:px-6 pb-4 sm:pb-5 text-sm leading-relaxed text-white/60 sm:text-base">
                           {faq.answer}
                         </p>
                       </details>
@@ -230,7 +235,7 @@ export function FAQ() {
                 </div>
               ))}
             </div>
-          </AnimateOnScroll>
+          </div>
         </div>
       </div>
     </section>

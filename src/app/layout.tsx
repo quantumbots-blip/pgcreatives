@@ -5,6 +5,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { PageViewTracker } from "@/components/page-view-tracker";
 import { SplashScreen } from "@/components/splash-screen";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { BUSINESS } from "@/lib/data";
 
 const geistSans = Geist({
@@ -135,6 +136,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
         <PageViewTracker />
+        <ScrollReveal />
         <Header />
         <SplashScreen />
         <div className="relative flex-1 flex flex-col">

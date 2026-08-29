@@ -169,8 +169,8 @@ export default async function BrandingPage() {
       {/* Video Showcase */}
       <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
-            <div className="mx-auto max-w-2xl text-center mb-10 sm:mb-14">
+          <AnimateOnScroll animation="rise">
+            <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>See Our Work</SectionLabel>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white md:text-4xl">
                 Content We Have Created
@@ -266,7 +266,7 @@ export default async function BrandingPage() {
       {/* Pricing Tiers */}
       <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20 scroll-mt-20" id="pricing">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
+          <AnimateOnScroll animation="rise">
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Pricing</SectionLabel>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">
@@ -340,7 +340,7 @@ export default async function BrandingPage() {
       <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20">
         <div className="absolute right-[10%] top-[20%] h-64 w-64 rounded-full bg-purple/[0.04] blur-[100px]" />
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
+          <AnimateOnScroll animation="rise">
             <div className="text-center">
               <SectionLabel>The Difference</SectionLabel>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white md:text-4xl">

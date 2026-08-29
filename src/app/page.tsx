@@ -127,7 +127,7 @@ export default function HomePage() {
 
 
         <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
+          <AnimateOnScroll animation="rise">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
                 <SectionLabel>What We Do</SectionLabel>
@@ -216,7 +216,7 @@ export default function HomePage() {
       <section className="py-12 sm:py-16 lg:py-20 relative overflow-x-clip">
 
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
+          <AnimateOnScroll animation="rise">
             <div className="mx-auto max-w-2xl text-center">
               <SectionLabel>Our Work</SectionLabel>
               <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
@@ -229,13 +229,14 @@ export default function HomePage() {
             </div>
           </AnimateOnScroll>
 
-          {/* Bento-style grid */}
-          <AnimateOnScroll animation="fade-in-scale" delay={0.2}>
-            <div className="mt-10 sm:mt-16 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:grid-rows-2">
-              {photos.map((photo) => (
-                <div
+          {/* Bento-style grid — each tile scales in on its own beat */}
+          <div className="mt-10 sm:mt-16 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:grid-rows-2">
+              {photos.map((photo, i) => (
+                <AnimateOnScroll
                   key={photo.alt}
-                  className={`group relative overflow-hidden rounded-xl bg-navy-light transition-all duration-500 hover:shadow-[0_0_30px_rgba(55,140,210,0.15)] ${photo.colSpan} ${
+                  animation="fade-in-scale"
+                  delay={i * 0.08}
+                  className={`group relative overflow-hidden rounded-xl bg-navy-light transition-shadow duration-500 hover:shadow-[0_0_30px_rgba(55,140,210,0.15)] ${photo.colSpan} ${
                     photo.colSpan ? "aspect-auto min-h-[250px] sm:min-h-[350px]" : "aspect-[4/3]"
                   }`}
                 >
@@ -256,10 +257,9 @@ export default function HomePage() {
                     }
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                </div>
+                </AnimateOnScroll>
               ))}
-            </div>
-          </AnimateOnScroll>
+          </div>
 
           <AnimateOnScroll animation="fade-up" delay={0.3}>
             <div className="mt-10 sm:mt-14 text-center">
@@ -350,7 +350,7 @@ export default function HomePage() {
       <section id="portals" className="relative overflow-x-clip py-16 sm:py-28 scroll-mt-16 lg:scroll-mt-20">
 
         <div className="relative mx-auto max-w-4xl px-5 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
+          <AnimateOnScroll animation="rise">
             <div className="text-center">
               <SectionLabel>Book Now</SectionLabel>
               <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
@@ -363,8 +363,8 @@ export default function HomePage() {
             </div>
           </AnimateOnScroll>
 
-          <AnimateOnScroll animation="fade-up" delay={0.15}>
           <div className="mt-10 sm:mt-12 grid gap-4 sm:gap-5 sm:grid-cols-2">
+            <AnimateOnScroll animation="slide-in-left" delay={0.1}>
               <a
                 href="https://portal.spiro.media/order/pg/northeast-wisconsin"
                 target="_blank"
@@ -388,6 +388,8 @@ export default function HomePage() {
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </a>
+            </AnimateOnScroll>
+            <AnimateOnScroll animation="slide-in-right" delay={0.2}>
               <a
                 href="https://portal.spiro.media/order/pg/madison"
                 target="_blank"
@@ -411,8 +413,8 @@ export default function HomePage() {
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </a>
+            </AnimateOnScroll>
           </div>
-          </AnimateOnScroll>
         </div>
       </section>
 
@@ -423,7 +425,7 @@ export default function HomePage() {
         <div className="absolute left-1/2 top-1/2 h-[300px] w-[500px] -translate-x-1/2 -translate-y-1/2 bg-purple/[0.06] blur-[120px]" />
 
         <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
+          <AnimateOnScroll animation="rise">
             <div className="text-center mb-8 sm:mb-12">
               <SectionLabel>Get Started</SectionLabel>
               <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
