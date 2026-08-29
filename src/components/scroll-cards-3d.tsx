@@ -54,7 +54,7 @@ export function ScrollCards3D() {
         <div className="mb-8 text-center sm:mb-16">
           <div className="flex justify-center">
             <div className="mb-4 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 h-7 sm:px-4 sm:h-8">
-              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-purple-light leading-none">
+              <span className="text-[11px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-purple-light leading-none">
                 Packages
               </span>
             </div>
@@ -71,7 +71,7 @@ export function ScrollCards3D() {
 
         {/* Cards container */}
         <div
-          className="perspective-container relative mx-auto flex max-w-5xl flex-col items-center gap-3 sm:gap-4 lg:flex-row lg:items-stretch lg:justify-center lg:gap-8"
+          className="perspective-container relative mx-auto flex max-w-5xl flex-col items-center gap-6 lg:flex-row lg:items-stretch lg:justify-center lg:gap-8"
         >
           {services.map((service) => (
             <div

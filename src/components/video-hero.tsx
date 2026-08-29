@@ -300,7 +300,7 @@ export function VideoHero() {
             className="animate-hero-fade-up text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-7xl"
             style={{ animationDelay: "0.15s" }}
           >
-            <span className="text-white">Professional</span>
+            <span className="text-white">Professional</span>{" "}
             <br />
             <span className="text-white">Grade Media</span>
           </h1>
@@ -345,7 +345,7 @@ export function VideoHero() {
         style={{ animationDelay: "0.8s" }}
       >
         <div className="flex flex-col items-center gap-2">
-          <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-purple-light/40">
+          <span className="text-[11px] font-medium uppercase tracking-[0.3em] text-purple-light/50">
             Scroll
           </span>
           <div className="animate-hero-line h-10 w-px bg-gradient-to-b from-purple/40 to-transparent" />

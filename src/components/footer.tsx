@@ -29,7 +29,7 @@ export function Footer() {
               <Image
                 src="/images/pg-logo.png"
                 alt="PG Creatives"
-                width={280}
+                width={96}
                 height={80}
                 className="h-16 sm:h-20 w-auto object-contain opacity-90 transition-opacity duration-300 hover:opacity-100"
               />
@@ -65,7 +65,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/60 transition-colors duration-200 hover:text-white"
+                    className="inline-block py-1 text-sm text-white/60 transition-colors duration-200 hover:text-white"
                   >
                     {link.name}
                   </Link>
@@ -90,7 +90,7 @@ export function Footer() {
                       <Phone className="h-3.5 w-3.5 text-purple/50 transition-colors group-hover:text-purple-light" />
                     </div>
                     <div>
-                      <span className="text-[10px] uppercase tracking-[0.15em] text-white/40">{phone.label}</span>
+                      <span className="text-[11px] uppercase tracking-[0.15em] text-white/40">{phone.label}</span>
                       <span className="block">{phone.number}</span>
                     </div>
                   </a>
@@ -147,11 +147,11 @@ export function Footer() {
               &copy; {new Date().getFullYear()} {BUSINESS.legalName}. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <a href="/privacy" className="text-xs text-white/40 tracking-wide hover:text-white/60 transition-colors">
+              <Link href="/privacy" className="py-2 text-xs text-white/40 tracking-wide hover:text-white/60 transition-colors">
                 Privacy Policy
-              </a>
+              </Link>
               <span className="h-3 w-px bg-white/10" />
-              <Link href="/admin" className="text-xs text-white/40 tracking-wide hover:text-white/60 transition-colors">
+              <Link href="/admin" className="py-2 text-xs text-white/40 tracking-wide hover:text-white/60 transition-colors">
                 Admin
               </Link>
               <span className="hidden h-3 w-px bg-white/10 sm:block" />

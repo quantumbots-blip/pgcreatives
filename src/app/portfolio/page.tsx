@@ -1,6 +1,6 @@
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PortfolioFilter } from "@/components/portfolio-filter";
-import { getVimeoThumbnails } from "@/lib/vimeo";
+import { getVimeoMetas } from "@/lib/vimeo";
 
 export const revalidate = 3600;
 
@@ -308,15 +308,21 @@ export default async function PortfolioPage() {
   const videoIds = projects
     .filter((p) => p.type === "video" && p.vimeoId)
     .map((p) => p.vimeoId!);
-  const thumbnails = await getVimeoThumbnails(videoIds);
+  const metas = await getVimeoMetas(videoIds);
   const projectsWithThumbs = projects.map((p) =>
-    p.vimeoId ? { ...p, thumbnail: thumbnails[p.vimeoId] } : p
+    p.vimeoId
+      ? {
+          ...p,
+          thumbnail: metas[p.vimeoId]?.thumbnail,
+          portrait: metas[p.vimeoId]?.portrait,
+        }
+      : p
   );
 
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden pt-24 pb-4 sm:pt-28 sm:pb-6">
+      <section className="relative overflow-hidden pt-12 pb-4 sm:pt-20 sm:pb-6">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,#111111_0%,transparent_55%)]" />
         <div className="absolute left-10 top-40 h-48 w-48 rounded-full bg-purple/[0.03] blur-[60px] animate-float" />
 
@@ -324,7 +330,7 @@ export default async function PortfolioPage() {
           <AnimateOnScroll animation="fade-up">
             <div className="max-w-2xl">
               <div className="mb-5 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 h-7 sm:px-4 sm:h-8">
-                <span className="text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.25em] text-purple-light leading-none">
+                <span className="text-[11px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.25em] text-purple-light leading-none">
                   Portfolio
                 </span>
               </div>

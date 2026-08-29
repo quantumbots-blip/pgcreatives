@@ -51,8 +51,11 @@ export function SplashScreen() {
         <Image
           src="/images/pg-logo.png"
           alt="PG Creatives"
-          width={280}
-          height={80}
+          // Real aspect ratio of the file (400x333). The previous 280x80
+          // declaration was a 3.5:1 box for a 1.2:1 image, so the logo
+          // reflowed the moment the bytes arrived.
+          width={256}
+          height={213}
           className="w-48 sm:w-64 h-auto"
           preload
         />

@@ -12,7 +12,7 @@ import { ContactForm } from "@/components/contact-form";
 import { SectionLabel } from "@/components/section-label";
 import { Counter } from "@/components/counter";
 import { TextReveal } from "@/components/text-reveal";
-import { FAQ } from "@/components/faq";
+import { FAQ, faqs } from "@/components/faq";
 // A plain import now that this renders on the server — there is no client
 // bundle left to defer.
 import { ScrollCards3D } from "@/components/scroll-cards-3d";
@@ -71,9 +71,25 @@ const photos = [
   { image: "/images/pendant-kitchen.jpg", alt: "Kitchen detail and backsplash", colSpan: "" },
 ];
 
+// The FAQ section is real, visible content, so it qualifies for FAQ rich
+// results. Kept in sync automatically by reading the same list the UI renders.
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.question,
+    acceptedAnswer: { "@type": "Answer", text: f.answer },
+  })),
+};
+
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <VideoHero />
 
       <div className="relative">
@@ -123,7 +139,7 @@ export default function HomePage() {
               </div>
               <Link
                 href="/services"
-                className="hidden items-center gap-2 text-sm text-purple-light/60 transition-colors hover:text-purple-light md:flex"
+                className="hidden items-center gap-2 py-2 text-sm text-purple-light/60 transition-colors hover:text-purple-light md:flex"
               >
                 All Services
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -159,7 +175,7 @@ export default function HomePage() {
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple/20 backdrop-blur-sm border border-purple/20">
                           <service.icon className="h-4 w-4 text-purple-light" />
                         </div>
-                        <span className="font-mono text-xs text-white/40">
+                        <span className="text-xs tabular-nums tracking-wider text-white/40">
                           {service.number}
                         </span>
                       </div>
@@ -172,7 +188,8 @@ export default function HomePage() {
                       <p className="mt-3 flex-1 text-sm leading-relaxed text-white/60 transition-colors group-hover:text-white/75">
                         {service.description}
                       </p>
-                      <div className="mt-6 flex items-center gap-2 text-sm text-purple-light opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100">
+                      {/* Always visible on touch screens — there is no hover to reveal it. */}
+                      <div className="mt-6 flex items-center gap-2 text-sm text-purple-light transition-all md:opacity-0 md:group-hover:translate-x-1 md:group-hover:opacity-100">
                         Learn More <ArrowRight className="h-3 w-3" />
                       </div>
                     </div>
@@ -185,7 +202,7 @@ export default function HomePage() {
           <div className="mt-8 text-center md:hidden">
             <Link
               href="/services"
-              className="inline-flex items-center gap-2 text-sm text-purple-light/60 transition-colors hover:text-purple-light"
+              className="inline-flex items-center gap-2 px-4 py-3 text-sm text-purple-light/60 transition-colors hover:text-purple-light"
             >
               View All Services
               <ArrowRight className="h-3.5 w-3.5" />
@@ -330,7 +347,7 @@ export default function HomePage() {
 
 
       {/* Client Portals */}
-      <section id="portals" className="relative overflow-x-clip py-16 sm:py-28">
+      <section id="portals" className="relative overflow-x-clip py-16 sm:py-28 scroll-mt-16 lg:scroll-mt-20">
 
         <div className="relative mx-auto max-w-4xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
@@ -411,7 +428,7 @@ export default function HomePage() {
               <SectionLabel>Get Started</SectionLabel>
               <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
                 <span className="text-white">Ready to </span>
-                <span className="rainbow-shimmer">Elevate</span>
+                <span className="rainbow-shimmer">Elevate</span>{" "}
                 <br />
                 <span className="text-white">Your Brand?</span>
               </h2>

@@ -3,6 +3,7 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { FacebookIcon, InstagramIcon } from "@/components/icons";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { SectionLabel } from "@/components/section-label";
 import { BUSINESS } from "@/lib/data";
 
 export const revalidate = 86400;
@@ -18,10 +19,12 @@ export const metadata: Metadata = {
     "Madison videographer",
     "Wisconsin media booking",
   ],
+  alternates: { canonical: "/contact" },
   openGraph: {
     title: "Contact | PG Creatives",
     description:
       "Get in touch for a free consultation. Serving Green Bay & Madison, WI.",
+    url: "/contact",
     images: [{ url: "/og-contact.jpg", width: 1200, height: 630, alt: "Contact PG Creatives - Get a Free Quote" }],
   },
 };
@@ -62,21 +65,19 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-16">
+      <section className="relative overflow-hidden pt-12 pb-12 sm:pt-20 sm:pb-16">
         {/* Floating decorative orb */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-32 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_#378cd240_0%,_#3730a320_40%,_transparent_70%)] blur-3xl"
+          className="pointer-events-none absolute -right-32 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_rgba(43,111,184,0.25)_0%,_rgba(9,30,72,0.15)_40%,_transparent_70%)] blur-3xl"
         />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#378cd220_0%,_transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(43,111,184,0.14)_0%,_transparent_55%)]" />
 
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
           <div className="max-w-2xl">
-            <span className="mb-5 inline-flex items-center justify-center rounded-full border border-[#378cd2]/25 bg-[#378cd2]/10 px-3 h-7 sm:px-4 sm:h-8 text-[10px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#85c5e0] leading-none">
-              Contact Us
-            </span>
-            <h1 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
+            <SectionLabel>Contact Us</SectionLabel>
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
               Let&apos;s <span className="gradient-text">Create</span>{" "}
               Something Together
             </h1>
@@ -104,16 +105,16 @@ export default function ContactPage() {
             <AnimateOnScroll animation="slide-in-right" delay={0.15} className="lg:col-span-2">
             <div className="space-y-6">
               <div className="rounded-2xl glass-card p-6">
-                <h3 className="font-semibold text-white">
+                <h2 className="font-semibold text-white">
                   Contact Information
-                </h3>
+                </h2>
                 <ul className="mt-5 space-y-5">
                   {contactInfo.map((item) => {
                     const content = (
                       <div className="flex items-start gap-3 text-sm">
-                        <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-[#378cd2]/60" />
+                        <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-purple/70" />
                         <div>
-                          <p className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#85c5e0]">
+                          <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-purple-light">
                             {item.label}
                           </p>
                           <p className="mt-0.5 text-white/60 break-all">{item.value}</p>
@@ -125,7 +126,7 @@ export default function ContactPage() {
                         {item.href ? (
                           <a
                             href={item.href}
-                            className="transition-colors hover:text-white [&_p:last-child]:hover:text-white"
+                            className="block rounded-md py-1 transition-colors hover:text-white [&_p:last-child]:hover:text-white"
                           >
                             {content}
                           </a>
@@ -139,7 +140,7 @@ export default function ContactPage() {
               </div>
 
               <div className="rounded-2xl glass-card p-6">
-                <h3 className="font-semibold text-white">Follow Us</h3>
+                <h2 className="font-semibold text-white">Follow Us</h2>
                 <p className="mt-1 text-sm text-white/60">
                   See our latest work on social media.
                 </p>
@@ -150,7 +151,7 @@ export default function ContactPage() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-11 w-11 items-center justify-center rounded-lg border border-[#378cd2]/20 text-[#378cd2]/60 transition-colors hover:border-[#378cd2]/50 hover:text-[#85c5e0]"
+                      className="flex h-11 w-11 items-center justify-center rounded-lg border border-purple/25 text-purple-light/70 transition-colors hover:border-purple/50 hover:text-purple-light"
                     >
                       <social.icon className="h-3.5 w-3.5" />
                       <span className="sr-only">{social.name}</span>

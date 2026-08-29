@@ -233,14 +233,19 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll while the mobile menu is open, and let Escape close it.
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
+    if (!mobileOpen) {
       document.body.style.overflow = "";
+      return;
     }
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
     return () => {
+      document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
@@ -278,8 +283,11 @@ export function Header() {
             <Image
               src="/logo.png"
               alt="PG Creatives"
-              width={956}
-              height={1044}
+              // Declared at its rendered size, not the file's. next/image
+              // builds the srcset from `width`, and 956 made every page
+              // preload a 1080px and a 1920px rendition of a 104px logo.
+              width={96}
+              height={105}
               className="h-22 w-auto sm:h-24 lg:h-26 object-contain"
               loading="eager"
             />
@@ -332,6 +340,8 @@ export function Header() {
             onClick={() => setMobileOpen((v) => !v)}
             className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full transition-colors md:hidden hover:bg-white/[0.06]"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
           >
             <HamburgerIcon isOpen={mobileOpen} />
           </button>
@@ -346,6 +356,8 @@ export function Header() {
           transitions discretely, so it stays visible for the length of the
           fade-out and flips off only once the animation is done. */}
       <div
+        id="mobile-menu"
+        aria-hidden={!mobileOpen}
         className={cn(
           "fixed inset-0 z-40 md:hidden transition-all duration-500",
           mobileOpen
@@ -407,7 +419,7 @@ export function Header() {
             <div className="!my-4 h-px bg-gradient-to-r from-transparent via-purple/20 to-transparent" />
 
             {/* Portal login links */}
-            <p className="px-5 pb-2 pt-2 text-xs font-medium uppercase tracking-[0.2em] text-white/50">
+            <p className="px-5 pb-2 pt-2 text-[11px] font-medium uppercase tracking-[0.2em] text-white/50">
               Client Portal
             </p>
             {[

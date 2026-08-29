@@ -11,9 +11,11 @@ export const metadata: Metadata = {
     "drone shots",
     "Wisconsin photographer portfolio",
   ],
+  alternates: { canonical: "/portfolio" },
   openGraph: {
     title: "Portfolio | PG Creatives",
     description: "Our best professional media work across Wisconsin.",
+    url: "/portfolio",
     images: [{ url: "/og-portfolio.jpg", width: 1200, height: 630, alt: "PG Creatives Portfolio - Our Best Work" }],
   },
 };

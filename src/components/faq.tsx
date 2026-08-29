@@ -16,7 +16,7 @@ interface FAQItem {
   category: Category;
 }
 
-const faqs: FAQItem[] = [
+export const faqs: FAQItem[] = [
   // General
   {
     category: "General",

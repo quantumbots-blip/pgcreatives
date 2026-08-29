@@ -18,26 +18,15 @@ export const metadata: Metadata = {
     "Madison media company",
     "professional creatives",
   ],
+  alternates: { canonical: "/team" },
   openGraph: {
     title: "About | PG Creatives Team",
     description:
       "Meet the talented team behind PG Creatives in Wisconsin.",
+    url: "/team",
     images: [{ url: "/og-team.jpg", width: 1200, height: 630, alt: "PG Creatives Team - The Creatives Behind the Lens" }],
   },
 };
-
-const cardGradients = [
-  "from-blue-600/20 to-indigo-600/20",
-  "from-purple-500/20 to-pink-500/20",
-  "from-emerald-500/20 to-teal-500/20",
-  "from-amber-500/20 to-orange-500/20",
-  "from-rose-500/20 to-red-500/20",
-  "from-cyan-500/20 to-blue-500/20",
-  "from-violet-500/20 to-fuchsia-500/20",
-  "from-blue-600/20 to-indigo-600/20",
-  "from-purple-500/20 to-pink-500/20",
-  "from-emerald-500/20 to-teal-500/20",
-];
 
 const team = [
   {
@@ -130,10 +119,10 @@ export default function TeamPage() {
   return (
     <>
       {/* Hero + About (merged) */}
-      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pb-20">
+      <section className="relative overflow-hidden pt-12 pb-12 sm:pt-20 sm:pb-16 lg:pb-20">
         {/* Ambient glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_70%_0%,rgba(139,92,246,0.12),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_60%_at_0%_100%,rgba(139,92,246,0.07),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_70%_0%,rgba(43,111,184,0.14),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_60%_at_0%_100%,rgba(106,176,212,0.07),transparent)]" />
 
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
           {/* Heading */}
@@ -159,10 +148,11 @@ export default function TeamPage() {
         <div className="pointer-events-none absolute right-0 top-1/4 h-96 w-96 rounded-full bg-purple/10 blur-[120px]" />
 
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
+          <h2 className="sr-only">Meet the Team</h2>
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
             {team.map((member, index) => (
               <AnimateOnScroll key={member.name} animation="fade-up" delay={index * 0.08}>
-                <div className={`card-shine group relative overflow-hidden rounded-2xl bg-gradient-to-br ${cardGradients[index]} border border-white/[0.08] transition-all duration-500 hover:border-white/20 hover:shadow-[0_0_40px_rgba(55,140,210,0.15)]`}>
+                <div className="card-shine group relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple/[0.12] via-[#020810]/90 to-purple-light/[0.05] border border-purple/20 transition-all duration-500 hover:border-purple/40 hover:shadow-[0_0_40px_rgba(43,111,184,0.2)]">
                   {/* Photo with aspect-[3/4] */}
                   <div className="relative aspect-[3/4] overflow-hidden">
                     <Image
@@ -170,7 +160,7 @@ export default function TeamPage() {
                       alt={member.name}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      sizes="(max-width: 1024px) 50vw, 25vw"
                     />
                     {/* Bottom gradient overlay for text readability */}
                     <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent" />

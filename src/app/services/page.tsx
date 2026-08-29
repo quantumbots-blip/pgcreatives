@@ -14,7 +14,7 @@ import {
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { SectionLabel } from "@/components/section-label";
 import { VideoGallery } from "@/components/video-gallery";
-import { getVimeoThumbnails } from "@/lib/vimeo";
+import { getVimeoMetas } from "@/lib/vimeo";
 
 const showcaseVideos = [
   { vimeoId: "1163714583", title: "Agent Brand Content" },
@@ -42,10 +42,12 @@ export const metadata: Metadata = {
     "Wisconsin real estate marketing",
     "PG Creatives branding",
   ],
+  alternates: { canonical: "/services" },
   openGraph: {
     title: "Content Creator Program | PG Creatives",
     description:
       "Monthly video content built to grow your brand and win more deals.",
+    url: "/services",
     images: [
       {
         url: "/og-services.jpg",
@@ -136,19 +138,18 @@ const tiers = [
 ];
 
 export default async function BrandingPage() {
-  const thumbnails = await getVimeoThumbnails(
-    showcaseVideos.map((v) => v.vimeoId)
-  );
+  const metas = await getVimeoMetas(showcaseVideos.map((v) => v.vimeoId));
   const videosWithThumbs = showcaseVideos.map((v) => ({
     ...v,
-    thumbnail: thumbnails[v.vimeoId],
+    thumbnail: metas[v.vimeoId]?.thumbnail,
+    portrait: metas[v.vimeoId]?.portrait,
   }));
 
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-16">
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_rgba(139,92,246,0.12)_0%,transparent_60%)]" />
+      <section className="relative overflow-hidden pt-12 pb-12 sm:pt-20 sm:pb-16">
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_rgba(43,111,184,0.14)_0%,transparent_60%)]" />
 
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
           <div className="max-w-2xl">
@@ -181,7 +182,7 @@ export default async function BrandingPage() {
             </div>
           </AnimateOnScroll>
           <AnimateOnScroll animation="fade-up" delay={0.15}>
-            <VideoGallery videos={videosWithThumbs} columns={3} />
+            <VideoGallery videos={videosWithThumbs} />
           </AnimateOnScroll>
         </div>
       </section>
@@ -263,7 +264,7 @@ export default async function BrandingPage() {
       </section>
 
       {/* Pricing Tiers */}
-      <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20" id="pricing">
+      <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20 scroll-mt-20" id="pricing">
         <div className="mx-auto max-w-7xl px-5 sm:px-6">
           <AnimateOnScroll animation="fade-up">
             <div className="mx-auto max-w-2xl text-center">

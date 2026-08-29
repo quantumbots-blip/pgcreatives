@@ -39,6 +39,15 @@ function isAllowedOrigin(request: NextRequest): boolean {
     return true;
   }
 
+  // Local development runs on whatever port is free; don't 403 every page
+  // view in the console because it isn't 3000.
+  if (
+    process.env.NODE_ENV !== "production" &&
+    /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/.test(check)
+  ) {
+    return true;
+  }
+
   // Allow Vercel preview deployments
   try {
     const hostname = new URL(check).hostname;

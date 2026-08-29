@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -12,15 +12,11 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover" as const,
+  themeColor: "#000000",
 };
 
 export const metadata: Metadata = {
@@ -75,7 +71,44 @@ export const metadata: Metadata = {
     images: ["/og-home.jpg"],
   },
   robots: { index: true, follow: true },
-  alternates: { canonical: "https://pgcreativeswi.com" },
+  // Canonical is set per page. A canonical here would be inherited by every
+  // route that doesn't override it — which told search engines that /services,
+  // /team, etc. were all duplicates of the home page.
+  alternates: { canonical: "/" },
+};
+
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${BUSINESS.url}/#business`,
+  name: BUSINESS.name,
+  legalName: BUSINESS.legalName,
+  description: BUSINESS.description,
+  url: BUSINESS.url,
+  email: BUSINESS.email,
+  telephone: Object.values(BUSINESS.phones).map((p) => p.number),
+  image: `${BUSINESS.url}/og-home.jpg`,
+  logo: `${BUSINESS.url}/images/pg-logo.png`,
+  priceRange: "$$",
+  address: {
+    "@type": "PostalAddress",
+    addressRegion: "WI",
+    addressCountry: "US",
+  },
+  areaServed: [
+    { "@type": "City", name: "Green Bay, WI" },
+    { "@type": "City", name: "Madison, WI" },
+    { "@type": "Place", name: "Fox Valley, WI" },
+  ],
+  serviceType: [
+    "Real Estate Photography",
+    "Videography",
+    "Drone Photography",
+    "3D Virtual Tours",
+    "Commercial Branding",
+    "Social Media Content Creation",
+  ],
+  sameAs: Object.values(BUSINESS.socials),
 };
 
 export default function RootLayout({
@@ -87,7 +120,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} h-full antialiased`}
     >
       {/* overflow-x-clip, not -hidden: `hidden` makes the body a scroll
           container, and on iOS Safari a scroll container on the body can
@@ -99,30 +132,7 @@ export default function RootLayout({
         </a>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              name: BUSINESS.name,
-              description: BUSINESS.description,
-              url: BUSINESS.url,
-              telephone: Object.values(BUSINESS.phones).map((p) => p.number),
-              image: `${BUSINESS.url}/og-home.jpg`,
-              priceRange: "$$",
-              areaServed: [
-                { "@type": "City", name: "Green Bay, WI" },
-                { "@type": "City", name: "Madison, WI" },
-              ],
-              serviceType: [
-                "Real Estate Photography",
-                "Videography",
-                "Drone Photography",
-                "3D Virtual Tours",
-                "Commercial Branding",
-              ],
-              sameAs: Object.values(BUSINESS.socials),
-            }),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
         <PageViewTracker />
         <Header />

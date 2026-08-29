@@ -19,6 +19,19 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // www serves the full site as a second host. Canonical tags point at the
+      // apex, but a real redirect is what stops the duplicate from being
+      // crawled and linked to at all.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.pgcreativeswi.com" }],
+        destination: "https://pgcreativeswi.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

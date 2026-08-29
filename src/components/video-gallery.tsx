@@ -1,87 +1,81 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Play, X } from "lucide-react";
+import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { VideoModal } from "@/components/video-modal";
 
 interface VideoItem {
   vimeoId: string;
   title: string;
   thumbnail?: string;
+  portrait?: boolean;
 }
 
-export function VideoGallery({
-  videos,
-  columns = 3,
-}: {
-  videos: VideoItem[];
-  columns?: 2 | 3 | 4;
-}) {
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const closeModal = useCallback(() => setActiveVideo(null), []);
+export function VideoGallery({ videos }: { videos: VideoItem[] }) {
+  const [active, setActive] = useState<VideoItem | null>(null);
+  const closeModal = useCallback(() => setActive(null), []);
 
-  const gridCols = {
-    2: "sm:grid-cols-2",
-    3: "sm:grid-cols-2 lg:grid-cols-3",
-    4: "sm:grid-cols-2 lg:grid-cols-4",
-  }[columns];
+  // Vertical reels get a taller card and one more column, so a phone shows
+  // two per row instead of one 16:9 crop that cut off faces and captions.
+  // Decided by majority and applied to every card, so one failed oEmbed
+  // lookup can't flip the whole grid or leave a single odd-shaped tile.
+  const portrait = videos.filter((v) => v.portrait).length > videos.length / 2;
 
   return (
     <>
-      <div className={cn("grid gap-3 sm:gap-4", gridCols)}>
+      <div
+        className={cn(
+          "grid gap-3 sm:gap-4",
+          portrait
+            ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
+            : "sm:grid-cols-2 lg:grid-cols-3"
+        )}
+      >
         {videos.map((video) => (
           <button
             key={video.vimeoId}
-            onClick={() => setActiveVideo(video.vimeoId)}
-            className="group relative aspect-video overflow-hidden rounded-xl bg-[#0a0a0a] transition-all duration-500 hover:shadow-[0_0_30px_rgba(43,111,184,0.15)]"
+            type="button"
+            onClick={() => setActive(video)}
+            aria-label={`Play video: ${video.title}`}
+            className={cn(
+              "group relative overflow-hidden rounded-xl bg-[#0a0a0a] text-left transition-all duration-500 hover:shadow-[0_0_30px_rgba(43,111,184,0.15)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-light",
+              portrait ?"aspect-[4/5]" : "aspect-video"
+            )}
           >
             {video.thumbnail && (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 src={video.thumbnail}
-                alt={video.title}
-                className="absolute inset-0 h-full w-full object-cover object-[center_35%] transition-transform duration-500 group-hover:scale-105"
+                alt=""
+                className={cn(
+                  "absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105",
+                  portrait ?"object-[center_30%]" : "object-[center_35%]"
+                )}
                 loading="lazy"
+                decoding="async"
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full backdrop-blur-sm border border-purple/35 bg-[#000000]/50 text-purple-light transition-all group-hover:scale-110 group-hover:bg-purple/20">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-purple/35 bg-[#000000]/50 text-purple-light backdrop-blur-sm transition-all group-hover:scale-110 group-hover:bg-purple/20">
                 <Play className="ml-0.5 h-4 w-4" />
               </div>
             </div>
-            <div className="absolute bottom-0 left-0 right-0 p-4">
+            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
               <h3 className="text-sm font-medium text-white">{video.title}</h3>
             </div>
           </button>
         ))}
       </div>
 
-      {activeVideo && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm p-2 sm:p-8"
-          onClick={closeModal}
-        >
-          <button
-            onClick={closeModal}
-            className="absolute right-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-            aria-label="Close video"
-          >
-            <X className="h-5 w-5" />
-          </button>
-          <div
-            className="relative w-full h-full max-w-6xl max-h-[90vh] sm:max-h-[85vh] flex items-center justify-center rounded-none sm:rounded-xl overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <iframe
-              src={`https://player.vimeo.com/video/${activeVideo}?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&title=0&byline=0&portrait=0&responsive=1`}
-              className="w-full h-full"
-              style={{ maxHeight: "90vh" }}
-              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-              allowFullScreen
-            />
-          </div>
-        </div>
+      {active && (
+        <VideoModal
+          vimeoId={active.vimeoId}
+          title={active.title}
+          portrait={active.portrait ?? portrait}
+          onClose={closeModal}
+        />
       )}
     </>
   );
