@@ -36,7 +36,7 @@ export function Footer() {
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-white/60">
               Professional-grade videography, photography, drone aerial, and 3D
-              tours. Serving Green Bay, Madison, and the Fox Valley.
+              tours. Serving Green Bay, Madison, Milwaukee, and the Fox Valley.
             </p>
             {/* Social icons */}
             <div className="flex gap-2.5">
@@ -143,8 +143,20 @@ export function Footer() {
         {/* ── Bottom Bar ── */}
         <div className="mt-12 sm:mt-16 border-t border-white/[0.06] pt-6 sm:pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <p className="text-xs text-white/40">
+            <p className="text-center text-xs text-white/40 sm:text-left">
               &copy; {new Date().getFullYear()} {BUSINESS.legalName}. All rights reserved.
+              <span className="mx-2 text-white/15" aria-hidden="true">|</span>
+              <span className="whitespace-nowrap">
+                Made by{" "}
+                <a
+                  href={BUSINESS.madeBy.href}
+                  target="_blank"
+                  rel="noopener"
+                  className="inline-block py-2 text-white/60 underline-offset-4 transition-colors hover:text-purple-light hover:underline"
+                >
+                  {BUSINESS.madeBy.name}
+                </a>
+              </span>
             </p>
             <div className="flex items-center gap-6">
               <Link href="/privacy" className="py-2 text-xs text-white/40 tracking-wide hover:text-white/60 transition-colors">

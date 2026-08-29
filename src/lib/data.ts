@@ -5,12 +5,14 @@ export const BUSINESS = {
   description:
     "Professional grade media — real estate photography, videography, drone shots, 3D tours, and commercial branding.",
   email: "pgcreativeswisconsin@gmail.com",
-  locations: ["Green Bay", "Madison", "Fox Valley"],
-  locationText: "Green Bay, Madison & Fox Valley, WI",
+  locations: ["Green Bay", "Madison", "Milwaukee", "Fox Valley"],
+  locationText: "Green Bay, Madison, Milwaukee & Fox Valley, WI",
   phones: {
     greenBay: { label: "Green Bay", number: "(920) 777-0127", href: "tel:+19207770127" },
     madison: { label: "Madison", number: "(608) 420-6199", href: "tel:+16084206199" },
+    milwaukee: { label: "Milwaukee", number: "(414) 255-9271", href: "tel:+14142559271" },
   },
+  madeBy: { name: "Adara", href: "https://adaramarketing.com" },
   socials: {
     facebook: "https://www.facebook.com/p/PG-Creatives-Wisconsin-61556298299463/",
     instagram: "https://www.instagram.com/pg.creatives/",

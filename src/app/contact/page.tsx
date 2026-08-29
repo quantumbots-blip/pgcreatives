@@ -11,19 +11,20 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Contact | Get a Free Quote",
   description:
-    `Contact PG Creatives for a free consultation and custom quote. Professional media services in Green Bay ${BUSINESS.phones.greenBay.number} and Madison ${BUSINESS.phones.madison.number}, Wisconsin.`,
+    `Contact PG Creatives for a free consultation and custom quote. Professional media services in ${Object.values(BUSINESS.phones).map((p) => `${p.label} ${p.number}`).join(", ")}, Wisconsin.`,
   keywords: [
     "contact PG Creatives",
     "free quote",
     "Green Bay photographer",
     "Madison videographer",
+    "Milwaukee real estate photographer",
     "Wisconsin media booking",
   ],
   alternates: { canonical: "/contact" },
   openGraph: {
     title: "Contact | PG Creatives",
     description:
-      "Get in touch for a free consultation. Serving Green Bay & Madison, WI.",
+      "Get in touch for a free consultation. Serving Green Bay, Madison & Milwaukee, WI.",
     url: "/contact",
     images: [{ url: "/og-contact.jpg", width: 1200, height: 630, alt: "Contact PG Creatives - Get a Free Quote" }],
   },

@@ -28,7 +28,7 @@ export const faqs: FAQItem[] = [
     category: "General",
     question: "What areas do you serve?",
     answer:
-      "We serve Green Bay, Madison, the Fox Valley, and surrounding areas throughout Wisconsin. For larger projects we're happy to travel further — just reach out and we'll make it work.",
+      "We serve Green Bay, Madison, Milwaukee, the Fox Valley, and surrounding areas throughout Wisconsin. For larger projects we're happy to travel further — just reach out and we'll make it work.",
   },
   {
     category: "General",

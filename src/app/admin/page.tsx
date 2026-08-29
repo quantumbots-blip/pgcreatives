@@ -35,6 +35,7 @@ import {
 } from "@/lib/db";
 import type { SubmissionStatus } from "@/lib/db";
 import { logoutAction } from "@/app/actions/auth";
+import { BUSINESS } from "@/lib/data";
 import { SubmissionsTable } from "./submissions-table";
 import { ServiceChart } from "./service-chart";
 
@@ -511,30 +512,20 @@ export default async function AdminDashboard() {
             Contact Numbers
           </h2>
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-6">
-            <div className="flex items-center gap-3">
-              <Phone className="h-4 w-4 text-purple/60" />
-              <div>
-                <p className="text-xs text-white/60">Green Bay</p>
-                <a
-                  href="tel:+19207770127"
-                  className="text-sm text-white hover:text-purple-light transition-colors"
-                >
-                  (920) 777-0127
-                </a>
+            {Object.values(BUSINESS.phones).map((phone) => (
+              <div key={phone.label} className="flex items-center gap-3">
+                <Phone className="h-4 w-4 text-purple/60" />
+                <div>
+                  <p className="text-xs text-white/60">{phone.label}</p>
+                  <a
+                    href={phone.href}
+                    className="text-sm text-white hover:text-purple-light transition-colors"
+                  >
+                    {phone.number}
+                  </a>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Phone className="h-4 w-4 text-purple/60" />
-              <div>
-                <p className="text-xs text-white/60">Madison</p>
-                <a
-                  href="tel:+16084206199"
-                  className="text-sm text-white hover:text-purple-light transition-colors"
-                >
-                  (608) 420-6199
-                </a>
-              </div>
-            </div>
+            ))}
             <div className="flex items-center gap-3">
               <Mail className="h-4 w-4 text-purple/60" />
               <div>

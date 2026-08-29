@@ -334,10 +334,11 @@ export function VideoHero() {
       <div ref={contentRef} className="hero-parallax-content relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-6 pt-24 sm:pt-20">
         <div className="max-w-3xl">
           <div
-            className="animate-hero-fade-up mb-4 sm:mb-6 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 h-7 sm:px-4 sm:h-8 backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_20px_rgba(55,140,210,0.25)]"
+            className="animate-hero-fade-up mb-4 sm:mb-6 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 py-2 sm:px-4 sm:py-2.5 backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_20px_rgba(55,140,210,0.25)]"
           >
             <span className="text-[11px] sm:text-xs font-medium tracking-[0.15em] sm:tracking-[0.2em] uppercase text-purple-light leading-none">
-              Madison, Green Bay, and the Fox Valley
+              <span className="sm:hidden">Green Bay · Madison · Milwaukee</span>
+              <span className="hidden sm:inline">Madison, Green Bay, Milwaukee &amp; the Fox Valley</span>
             </span>
           </div>
 

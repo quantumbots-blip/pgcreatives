@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | PG Creatives",
   },
   description:
-    "Professional grade media for tailored experiences. Real estate photography, videography, drone shots, 3D tours, and commercial branding in Green Bay & Madison, Wisconsin.",
+    "Professional grade media for tailored experiences. Real estate photography, videography, drone shots, 3D tours, and commercial branding in Green Bay, Madison & Milwaukee, Wisconsin.",
   keywords: [
     "PG Creatives",
     "real estate photography",
@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     "commercial branding",
     "Green Bay",
     "Madison",
+    "Milwaukee",
     "Wisconsin",
     "Fox Valley",
     "professional photography",
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "PG Creatives | Professional Grade Media",
     description:
-      "Professional grade media for tailored experiences in Green Bay & Madison, WI.",
+      "Professional grade media for tailored experiences in Green Bay, Madison & Milwaukee, WI.",
     url: "https://pgcreativeswi.com",
     siteName: "PG Creatives",
     locale: "en_US",
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "PG Creatives | Professional Grade Media",
     description:
-      "Professional grade media for tailored experiences in Green Bay & Madison, WI.",
+      "Professional grade media for tailored experiences in Green Bay, Madison & Milwaukee, WI.",
     images: ["/og-home.jpg"],
   },
   robots: { index: true, follow: true },
@@ -99,6 +100,7 @@ const localBusinessJsonLd = {
   areaServed: [
     { "@type": "City", name: "Green Bay, WI" },
     { "@type": "City", name: "Madison, WI" },
+    { "@type": "City", name: "Milwaukee, WI" },
     { "@type": "Place", name: "Fox Valley, WI" },
   ],
   serviceType: [

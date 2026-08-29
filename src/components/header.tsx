@@ -465,7 +465,7 @@ export function Header() {
               Book a Shoot
             </Link>
             <p className="mt-3 text-center text-xs text-white/40">
-              Green Bay · Madison · Fox Valley
+              Green Bay · Madison · Milwaukee · Fox Valley
             </p>
           </div>
         </div>
