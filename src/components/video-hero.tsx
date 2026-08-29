@@ -385,9 +385,10 @@ export function VideoHero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — hidden on phones, where a short viewport (iPhone SE)
+          puts it on top of the CTA buttons. */}
       <div
-        className="animate-hero-fade-up absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
+        className="animate-hero-fade-up absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 sm:block"
         style={{ animationDelay: "0.8s" }}
       >
         <div className="flex flex-col items-center gap-2">
