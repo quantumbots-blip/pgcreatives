@@ -271,7 +271,11 @@ export function Header() {
           "fixed top-0 z-50 w-full transition-all duration-500",
           transparent
             ? "bg-transparent"
-            : "bg-[#000000]/90 backdrop-blur-xl sm:bg-[#000000]/80"
+            : "bg-[#000000]/90 backdrop-blur-xl sm:bg-[#000000]/80",
+          // The mobile menu is opaque, so the bar above it must be too —
+          // a translucent header would let the page show through the top strip.
+          mobileOpen &&
+            "bg-[#000000] backdrop-blur-none sm:bg-[#000000] md:bg-[#000000]/90 md:backdrop-blur-xl"
         )}
       >
         <ScrollProgress />
@@ -369,7 +373,7 @@ export function Header() {
       >
         {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-[#000000]/95 backdrop-blur-2xl"
+          className="absolute inset-0 bg-[#000000]"
           onClick={() => setMobileOpen(false)}
         />
 
