@@ -130,7 +130,7 @@ export default async function ContentCreatorProgramPage() {
 
   return (
     <>
-      <section className="section-tight pt-14 sm:pt-20">
+      <section className="section-tight">
         <div className="shell">
           <RuleHead label="Content Creator Program" link={{ href: "#pricing", label: "See pricing" }} />
           <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">

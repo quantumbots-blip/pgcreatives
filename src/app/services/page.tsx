@@ -93,7 +93,7 @@ const services = [
 export default function ServicesPage() {
   return (
     <>
-      <section className="section-tight pt-14 sm:pt-20">
+      <section className="section-tight">
         <div className="shell">
           <RuleHead label="Services" link={{ href: "/#book", label: "Book a shoot" }} />
           <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">

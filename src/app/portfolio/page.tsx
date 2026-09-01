@@ -329,7 +329,7 @@ export default async function PortfolioPage() {
 
   return (
     <>
-      <section className="section-tight pt-14 sm:pt-20">
+      <section className="section-tight">
         <div className="shell">
           <AnimateOnScroll animation="fade-up">
             <RuleHead label="Portfolio" link={{ href: "/#book", label: "Book a shoot" }} />

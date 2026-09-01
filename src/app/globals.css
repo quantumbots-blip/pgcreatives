@@ -812,7 +812,7 @@ a.surface:hover,
   width: 100%;
   border-radius: 0.625rem;
   border: 1px solid var(--line);
-  background: #0a0d12;
+  background-color: #0a0d12;
   color: var(--ink);
   font-size: 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
@@ -827,7 +827,7 @@ a.surface:hover,
   outline: none;
   border-color: var(--signal);
   box-shadow: 0 0 0 3px rgba(78, 168, 255, 0.16);
-  background: #0c1017;
+  background-color: #0c1017;
 }
 
 .field-input { height: 3rem; padding-inline: 0.875rem 0.875rem; }

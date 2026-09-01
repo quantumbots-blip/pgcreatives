@@ -115,7 +115,7 @@ export default function TeamPage() {
           No section background of its own. The old hero painted two radial
           gradients that stopped dead at the section boundary, leaving a
           visible horizontal seam across the page. */}
-      <section className="section-tight pt-14 sm:pt-20">
+      <section className="section-tight">
         <div className="shell">
           <RuleHead label="About" link={{ href: "/contact", label: "Work with us" }} />
           <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">

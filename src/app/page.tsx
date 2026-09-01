@@ -56,7 +56,7 @@ const photos = [
     alt: "Lakefront estate photographed from the air at sunset",
     caption: "Waterfront estate at sunset",
     meta: "Drone / twilight",
-    className: "sm:col-span-2 sm:row-span-2",
+    className: "col-span-2 sm:row-span-2",
   },
   {
     image: "/images/fireplace-living.jpg",
@@ -214,7 +214,7 @@ export default function HomePage() {
                 delay={i * 0.07}
                 className={`viewfinder group relative overflow-hidden rounded-xl bg-surface ${
                   photo.className ?? ""
-                } ${photo.className ? "aspect-square sm:aspect-auto" : "aspect-[4/3]"}`}
+                } ${photo.className ? "aspect-[16/10] sm:aspect-auto" : "aspect-[4/3]"}`}
               >
                 <span className="vf-b" aria-hidden="true" />
                 <Image

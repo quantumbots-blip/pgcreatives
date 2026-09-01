@@ -21,7 +21,11 @@ export function Footer() {
     <footer className="relative overflow-x-clip">
 
       {/* ── Main Footer Content ── */}
-      <div className="shell border-t border-line pt-14 pb-6 sm:pt-20 sm:pb-8">
+      <div className="shell pb-6 sm:pb-8">
+        {/* The rule lives inside the shell so it lands on the content box.
+            On the shell itself it painted across the gutters too, making it
+            the only edge-to-edge hairline on the site. */}
+        <div className="border-t border-line pt-14 sm:pt-20">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_1fr_1fr] lg:gap-12">
           {/* Brand column */}
           <div className="sm:col-span-2 lg:col-span-1 space-y-3">
@@ -180,6 +184,7 @@ export function Footer() {
               </span>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </footer>

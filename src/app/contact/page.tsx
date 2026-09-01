@@ -71,7 +71,7 @@ const contactInfo = [
 export default function ContactPage() {
   return (
     <>
-      <section className="section-tight pt-14 sm:pt-20">
+      <section className="section-tight">
         <div className="shell">
           <AnimateOnScroll animation="fade-up">
             <RuleHead label="Contact" link={{ href: "/#book", label: "Or book directly" }} />

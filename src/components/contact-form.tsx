@@ -5,7 +5,7 @@ import { submitContactForm, type ContactState } from "@/app/actions/contact";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, CheckCircle2, Loader2, Mail, Phone, User } from "lucide-react";
+import { ArrowRight, CheckCircle2, Layers, Loader2, Mail, Phone, User } from "lucide-react";
 
 const initialState: ContactState = { success: false, error: null };
 
@@ -137,11 +137,13 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         <Label htmlFor="service" className="field-label">
           Service you need
         </Label>
+        <div className="relative">
+        <Layers className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
         <select
           id="service"
           name="service"
           defaultValue={prior?.service ?? ""}
-          className="field field-input appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(255%2C255%2C255%2C0.45)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_14px_center] bg-no-repeat"
+          className="field field-input has-icon appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(255%2C255%2C255%2C0.45)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_14px_center] bg-no-repeat"
         >
           <option value="" disabled className="bg-[#0f1319] text-white/60">
             Select a service...
@@ -150,6 +152,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           <option value="Personal Brand" className="bg-[#0f1319]">Personal brand / Content Creator Program</option>
           <option value="Commercial" className="bg-[#0f1319]">Commercial</option>
         </select>
+        </div>
       </div>
 
       {/* Message */}
