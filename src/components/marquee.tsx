@@ -10,7 +10,7 @@ export function Marquee({ items }: { items: string[] }) {
   const run = [...items, ...items];
   return (
     <div
-      className="marquee border-y border-line py-4"
+      className="marquee py-3 opacity-70"
       aria-hidden="true"
     >
       <div className="marquee-track">

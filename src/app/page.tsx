@@ -125,15 +125,15 @@ export default function HomePage() {
       {/* ── Track record ──────────────────────────────────────────────────
           A hairline-bounded strip rather than three floating numbers. It
           reads as one row of evidence and takes a fraction of the height. */}
-      <section className="pt-[calc(var(--section-y)/4)]">
+      <section className="pb-[calc(var(--section-y)/3)] pt-[calc(var(--section-y)/4)]">
         <div className="shell">
-          <dl className="grid grid-cols-1 divide-y divide-line border-t border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          <dl className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-12">
             {stats.map((stat, i) => (
               <AnimateOnScroll
                 key={stat.label}
                 animation="depth"
                 delay={i * 0.1}
-                className="flex flex-col-reverse px-0 py-7 sm:px-8 sm:py-9"
+                className="flex flex-col-reverse"
               >
                 <dt className="meta mt-3">{stat.label}</dt>
                 <dd className="stat-figure display-2 !text-[clamp(2.25rem,4vw,3.25rem)]">

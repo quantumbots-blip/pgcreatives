@@ -132,11 +132,11 @@ export default function ServicesPage() {
                   />
                   <p className="lede mt-6 max-w-md">{service.lede}</p>
 
-                  <ul className="mt-9 grid gap-x-8 sm:grid-cols-2">
+                  <ul className="mt-9 grid gap-x-8 gap-y-1 sm:grid-cols-2">
                     {service.includes.map((item) => (
                       <li
                         key={item}
-                        className="flex items-start gap-3 border-b border-line py-3.5 text-sm text-ink-2"
+                        className="flex items-start gap-3 py-2 text-sm text-ink-2"
                       >
                         <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal" />
                         {item}

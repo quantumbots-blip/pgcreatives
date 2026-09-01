@@ -185,14 +185,14 @@ export default async function ContentCreatorProgramPage() {
             </div>
           </AnimateOnScroll>
 
-          <ol className="mt-12 border-t border-line sm:mt-16">
+          <ol className="mt-12 sm:mt-16">
             {whatWeDoItems.map((item, i) => (
               <AnimateOnScroll
                 key={item}
                 as="li"
                 animation="fade-up"
                 delay={i * 0.06}
-                className="flex items-baseline gap-6 border-b border-line py-5 sm:gap-10 sm:py-6"
+                className="flex items-baseline gap-6 py-4 sm:gap-10 sm:py-5"
               >
                 <span className="meta meta-signal shrink-0">
                   {String(i + 1).padStart(2, "0")}
@@ -237,7 +237,7 @@ export default async function ContentCreatorProgramPage() {
                   {winItems.map((item) => (
                     <li
                       key={item}
-                      className="flex items-start gap-3.5 border-b border-line py-4 text-[0.9375rem] text-ink-2 last:border-b-0"
+                      className="flex items-start gap-3.5 py-2.5 text-[0.9375rem] text-ink-2"
                     >
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal" />
                       {item}

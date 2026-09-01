@@ -109,7 +109,7 @@ export default function ContactPage() {
             <AnimateOnScroll animation="depth-right" delay={0.12} className="lg:col-span-2">
               <div className="surface h-full p-6 sm:p-8">
                 <p className="meta">Reach us directly</p>
-                <ul className="mt-6">
+                <ul className="mt-6 space-y-1">
                   {contactInfo.map((item) => {
                     const content = (
                       <div className="flex items-start gap-3.5">
@@ -123,7 +123,7 @@ export default function ContactPage() {
                       </div>
                     );
                     return (
-                      <li key={item.label} className="border-b border-line py-4 last:border-b-0">
+                      <li key={item.label} className="py-3.5">
                         {item.href ? (
                           <a
                             href={item.href}
