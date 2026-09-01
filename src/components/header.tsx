@@ -132,7 +132,7 @@ function DesktopDropdown({
         aria-haspopup="true"
         className={cn(
           "flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
-          isActive ? "bg-white/[0.08] text-white" : "text-white/60 hover:text-white hover:bg-white/[0.05]"
+          isActive ? "bg-white/[0.08] text-white" : "text-white/78 hover:text-white hover:bg-white/[0.05]"
         )}
       >
         {item.name}
@@ -147,7 +147,7 @@ function DesktopDropdown({
           open ? "visible opacity-100 translate-y-0" : "invisible opacity-0 -translate-y-1"
         )}
       >
-        <div className="overflow-hidden rounded-2xl border border-line bg-[#0f1319] p-1.5 shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+        <div className="glass glass-panel overflow-hidden rounded-2xl p-1.5 backdrop-blur-2xl backdrop-saturate-150">
           {item.children.map((child) => {
             const Icon = child.icon;
             return child.external ? (
@@ -280,10 +280,8 @@ export function Header() {
     <>
       <header
         className={cn(
-          "fixed top-0 z-50 w-full transition-colors duration-500",
-          transparent
-            ? "bg-transparent"
-            : "border-b border-line bg-[#07090c]/85 backdrop-blur-xl"
+          "header-shell fixed top-0 z-50 w-full",
+          transparent ? "header-clear" : "header-scrolled"
         )}
       >
         <ScrollProgress />
@@ -311,7 +309,7 @@ export function Header() {
               browsing and acting, and the CTA is a filled pill inset at its
               end — one shape, one edge, one idea. */}
           <nav className="hidden items-center md:flex">
-            <div className="flex items-center gap-0.5 rounded-full border border-line bg-white/[0.04] p-1 pl-2 backdrop-blur-xl">
+            <div className="glass flex items-center gap-0.5 rounded-full p-1 pl-2 backdrop-blur-xl backdrop-saturate-150 md:backdrop-blur-2xl">
               {navigation.map((item) =>
                 item.children ? (
                   <DesktopDropdown
@@ -334,7 +332,7 @@ export function Header() {
                       "nav-link rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
                       isSectionActive(item.href, pathname)
                         ? "nav-link-active text-white"
-                        : "text-white/65 hover:text-white"
+                        : "text-white/78 hover:text-white"
                     )}
                   >
                     {item.name}
@@ -361,7 +359,7 @@ export function Header() {
           <button
             ref={hamburgerRef}
             onClick={() => setMobileOpen((v) => !v)}
-            className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:bg-white/[0.06] md:hidden"
+            className="glass relative z-50 flex h-11 w-11 items-center justify-center rounded-full backdrop-blur-xl backdrop-saturate-150 md:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
@@ -510,7 +508,7 @@ function ClientLoginMenu({
         onClick={() => onOpenChange(!open)}
         aria-expanded={open}
         aria-haspopup="true"
-        className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-white/60 transition-colors hover:text-white"
+        className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-white/78 transition-colors hover:text-white"
       >
         Client login
         <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-200", open && "rotate-180")} />
@@ -521,7 +519,7 @@ function ClientLoginMenu({
           open ? "visible opacity-100 translate-y-0" : "invisible opacity-0 -translate-y-1"
         )}
       >
-        <div className="overflow-hidden rounded-2xl border border-line bg-[#0f1319] p-1.5 shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+        <div className="glass glass-panel overflow-hidden rounded-2xl p-1.5 backdrop-blur-2xl backdrop-saturate-150">
           {clientLogins.map((portal) => (
             <a
               key={portal.href}
