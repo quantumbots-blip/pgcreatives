@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { CalendarDays, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
@@ -8,9 +9,14 @@ import { BUSINESS } from "@/lib/data";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Contact | Get a Free Quote",
-  description:
-    `Contact PG Creatives for a free consultation and custom quote. Professional media services in ${Object.values(BUSINESS.phones).map((p) => `${p.label} ${p.number}`).join(", ")}, Wisconsin.`,
+  ...pageMetadata({
+    title: "Contact | Get a Free Quote",
+    description:
+      "Contact PG Creatives for a free consultation and custom quote. Professional media services across Green Bay, Madison, Milwaukee and the Fox Valley, Wisconsin.",
+    path: "/contact",
+    image: "/og-contact.jpg",
+    imageAlt: "Contact PG Creatives for a free quote",
+  }),
   keywords: [
     "contact PG Creatives",
     "free quote",
@@ -19,14 +25,6 @@ export const metadata: Metadata = {
     "Milwaukee real estate photographer",
     "Wisconsin media booking",
   ],
-  alternates: { canonical: "/contact" },
-  openGraph: {
-    title: "Contact | PG Creatives",
-    description:
-      "Get in touch for a free consultation. Serving Green Bay, Madison & Milwaukee, WI.",
-    url: "/contact",
-    images: [{ url: "/og-contact.jpg", width: 1200, height: 630, alt: "Contact PG Creatives - Get a Free Quote" }],
-  },
 };
 
 /* Ordered so the column leads with what the footer does NOT already say.
@@ -126,7 +124,7 @@ export default function ContactPage() {
                         {item.href ? (
                           <a
                             href={item.href}
-                            className="block rounded-md transition-colors [&_p:last-child]:hover:text-white"
+                            className="block rounded-md transition-colors hover:[&_p:last-child]:text-white"
                           >
                             {content}
                           </a>

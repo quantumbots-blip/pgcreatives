@@ -17,6 +17,19 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      // Vimeo poster frames. Without these the portfolio and the program page
+      // rendered raw <img src="https://vumbnail.com/…"> — no srcset, no AVIF,
+      // no sizes — because next/image refuses hosts that are not listed.
+      // Measured at 1205 KB of untouched JPEG on /portfolio alone, every one
+      // pinned to a _640 rendition for tiles that render 272-289px wide.
+      {
+        protocol: "https",
+        hostname: "i.vimeocdn.com",
+      },
+      {
+        protocol: "https",
+        hostname: "vumbnail.com",
+      },
     ],
   },
   async redirects() {
@@ -52,15 +65,17 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      {
-        source: "/(portfolio|services|team|contact|privacy)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, s-maxage=60, stale-while-revalidate=300",
-          },
-        ],
-      },
+      // Deliberately no Cache-Control rule for the content routes.
+      //
+      // There used to be one matching /(portfolio|services|team|contact|privacy)
+      // with s-maxage=60. It did two unhelpful things: it overrode each route's
+      // own `revalidate` (3600s) with a far shorter edge TTL, and its pattern
+      // did not match nested routes — so /services got 60s while its own child
+      // /services/content-creator-program got the 3600s it asked for. Two
+      // siblings with identical ISR settings cached an hour apart.
+      //
+      // Letting Next emit the headers from each route's `revalidate` keeps the
+      // two in step and honours what the pages actually declare.
       {
         source: "/:path*",
         headers: [

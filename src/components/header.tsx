@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollProgress } from "@/components/scroll-progress";
+import { setBackgroundInert } from "@/lib/inert-background";
 
 type NavLink = { name: string; href: string; children?: never };
 type NavDropdown = {
@@ -217,12 +218,32 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const menuRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  /* Escape and a link click both close the menu, and focus has to land
+     somewhere sensible either way. Without this, closing threw focus away:
+     the menu's contents become `visibility: hidden`, so `document.activeElement`
+     fell back to <body> and Tab restarted from the top of the document. */
+  const restoreFocus = useRef(false);
+
   useEffect(() => {
     if (!mobileOpen) {
       document.body.style.overflow = "";
+      setBackgroundInert(false);
+      if (restoreFocus.current) {
+        restoreFocus.current = false;
+        hamburgerRef.current?.focus();
+      }
       return;
     }
+
     document.body.style.overflow = "hidden";
+    setBackgroundInert(true);
+    restoreFocus.current = true;
+
+    // Move focus into the menu so the first Tab continues inside it.
+    menuRef.current?.querySelector<HTMLElement>("a, button")?.focus();
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setMobileOpen(false);
     };
@@ -230,6 +251,7 @@ export function Header() {
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      setBackgroundInert(false);
     };
   }, [mobileOpen]);
 
@@ -316,6 +338,7 @@ export function Header() {
 
           {/* Mobile hamburger */}
           <button
+            ref={hamburgerRef}
             onClick={() => setMobileOpen((v) => !v)}
             className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:bg-white/[0.06] md:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -330,22 +353,29 @@ export function Header() {
       {/* ========== MOBILE MENU ========== */}
       <div
         id="mobile-menu"
+        ref={menuRef}
         aria-hidden={!mobileOpen}
         className={cn(
-          "fixed inset-0 z-40 transition-all duration-400 md:hidden",
+          "fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-[#07090c]/97 backdrop-blur-2xl transition-all duration-400 md:hidden",
           mobileOpen
             ? "visible opacity-100 pointer-events-auto"
             : "invisible opacity-0 pointer-events-none"
         )}
       >
+        {/* Tapping anywhere dismisses the menu. The handler lives here, not on
+            the backdrop: the backdrop is a sibling covered by this full-height
+            wrapper, so a pointer event never reached it and the dismiss was
+            dead code. No stopPropagation on the children — every link and
+            button in here already closes the menu itself, so letting the click
+            bubble costs nothing and means the empty space works too. */}
         <div
-          className="absolute inset-0 bg-[#07090c]/97 backdrop-blur-2xl"
           onClick={() => setMobileOpen(false)}
-        />
-
-        <div
           className={cn(
-            "relative flex h-full flex-col px-[var(--gutter)] pb-8 pt-24 transition-transform duration-400",
+            // min-h-full, not h-full: on a 568px-tall iPhone SE this column is
+            // ~700px of content, and h-full clamped it to the viewport with
+            // overflow visible — so "Book a shoot" sat 94px below the fold with
+            // body scroll locked and no way to reach it.
+            "relative flex min-h-full flex-col px-[var(--gutter)] pb-8 pt-20 transition-transform duration-400 sm:pt-24",
             mobileOpen ? "translate-y-0" : "-translate-y-6"
           )}
         >

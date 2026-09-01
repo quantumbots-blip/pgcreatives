@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
 
 // Two renditions of the same 25-second loop. The desktop file is 16:9 at 720p;
-// the phone file is the 9:16 centre crop that `object-cover` actually displays
+// the phone file is the 9:16 center crop that `object-cover` actually displays
 // on a portrait screen, so none of its bytes are spent on pixels that get
 // cropped away. Together with the shorter loop that took the original 75-second
 // 8.61 MB file to 2.71 MB on desktop and 1.06 MB on phones. The loop ends on a
@@ -25,7 +25,7 @@ function heroVideoSrc() {
 }
 
 type NavigatorWithConnection = Navigator & {
-  connection?: { saveData?: boolean; effectiveType?: string };
+  connection?: { saveData?: boolean; effectiveType?: string; downlink?: number };
 };
 
 // How many times we may call play() on our own before waiting for a real user
@@ -92,16 +92,25 @@ export function VideoHero() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
     const conn = (navigator as NavigatorWithConnection).connection;
+    /* The gate used to catch only 2g and Data Saver, so a real 3G or slow-4G
+       phone downloaded the whole 1.09 MB file — measured at ~5.4s on a
+       1.6 Mbps pipe, which makes the video supersede the poster as the LCP
+       element and takes mobile LCP from 1.34s to 4.94s, past Google's 4s
+       "poor" threshold. Slow connections now keep the poster, which is the
+       LCP element the hero was designed around anyway. */
+    const effectiveType = conn?.effectiveType ?? "";
     const frugal =
-      conn?.saveData === true || /(^|-)2g$/.test(conn?.effectiveType ?? "");
+      conn?.saveData === true ||
+      /(^|-)[23]g$/.test(effectiveType) ||
+      (typeof conn?.downlink === "number" && conn.downlink < 2);
 
     if (reduceMotion || frugal) return;
 
     // Wait for an idle moment. Hydration is the busiest point in the page's
     // life and this video is decorative — it must never compete with it.
-    let cancelled = false;
+    let canceled = false;
     const start = () => {
-      if (!cancelled) setVideoEnabled(true);
+      if (!canceled) setVideoEnabled(true);
     };
 
     // requestIdleCallback is unsupported on Safari before 17, which is exactly
@@ -112,7 +121,7 @@ export function VideoHero() {
       : window.setTimeout(start, 1200);
 
     return () => {
-      cancelled = true;
+      canceled = true;
       if (useIdle) window.cancelIdleCallback(handle);
       else clearTimeout(handle);
     };
@@ -282,7 +291,7 @@ export function VideoHero() {
     <section className="viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[92svh] items-end overflow-clip lg:-mt-20 lg:min-h-screen">
       {/* The bottom half of the viewfinder ticks. The top two are drawn by
           `.viewfinder` itself; this empty element carries the other two. */}
-      <span className="vf-b relative z-20" aria-hidden="true" />
+      <span className="vf-b" aria-hidden="true" />
 
       {/* Backdrop layer — moved as one unit by the parallax effect. */}
       <div ref={bgRef} className="hero-parallax-bg absolute inset-0">

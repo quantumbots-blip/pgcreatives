@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { PricingCard } from "@/components/pricing-card";
 import { RuleHead } from "@/components/rule-head";
 import { VideoGallery } from "@/components/video-gallery";
 import { getVimeoMetas } from "@/lib/vimeo";
@@ -9,9 +11,14 @@ import { getVimeoMetas } from "@/lib/vimeo";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Content Creator Program",
-  description:
-    "A monthly content creator program for real estate agents. Strategy, filming, editing, and coaching — we handle everything so you can focus on your business.",
+  ...pageMetadata({
+    title: "Content Creator Program",
+    description:
+      "A monthly content creator program for real estate agents. Strategy, filming, editing, and coaching — we handle everything so you can focus on your business.",
+    path: "/services/content-creator-program",
+    image: "/og-services.jpg",
+    imageAlt: "PG Creatives Content Creator Program",
+  }),
   keywords: [
     "content creator program",
     "real estate social media",
@@ -20,21 +27,6 @@ export const metadata: Metadata = {
     "Wisconsin real estate marketing",
     "PG Creatives branding",
   ],
-  alternates: { canonical: "/services/content-creator-program" },
-  openGraph: {
-    title: "Content Creator Program | PG Creatives",
-    description:
-      "Monthly video content built to grow your brand and win more deals.",
-    url: "/services/content-creator-program",
-    images: [
-      {
-        url: "/og-services.jpg",
-        width: 1200,
-        height: 630,
-        alt: "PG Creatives Content Creator Program",
-      },
-    ],
-  },
 };
 
 const showcaseVideos = [
@@ -50,24 +42,12 @@ const showcaseVideos = [
 ];
 
 const whatWeDoItems = [
-  {
-    text: "Strategy and planning based on your goals and market",
-  },
-  {
-    text: "Proven content ideas that are designed to perform",
-  },
-  {
-    text: "Script writing tailored to your personality and style",
-  },
-  {
-    text: "On-camera coaching so you feel confident and natural",
-  },
-  {
-    text: "Professional filming with our team",
-  },
-  {
-    text: "Editing that matches modern, high-performing creator-style content",
-  },
+  "Strategy and planning based on your goals and market",
+  "Proven content ideas that are designed to perform",
+  "Script writing tailored to your personality and style",
+  "On-camera coaching so you feel confident and natural",
+  "Professional filming with our team",
+  "Editing that matches modern, high-performing creator-style content",
 ];
 
 const winItems = [
@@ -179,7 +159,7 @@ export default async function ContentCreatorProgramPage() {
       </section>
 
       {/* ── What we handle ───────────────────────────────────────────────
-          A ruled list, not six centred icon cards. These are the steps of one
+          A ruled list, not six centered icon cards. These are the steps of one
           process, so they read as one list — and the numbering is real here:
           strategy genuinely comes before filming, which comes before the edit. */}
       <section className="section">
@@ -191,8 +171,8 @@ export default async function ContentCreatorProgramPage() {
                 We run the whole creative process.
               </h2>
               <p className="lede lg:pt-2">
-                You show up and be yourself. Everything either side of that is
-                ours.
+                You show up and be yourself. Everything on either side of that
+                is ours.
               </p>
             </div>
           </AnimateOnScroll>
@@ -200,7 +180,7 @@ export default async function ContentCreatorProgramPage() {
           <ol className="mt-12 border-t border-line sm:mt-16">
             {whatWeDoItems.map((item, i) => (
               <AnimateOnScroll
-                key={item.text}
+                key={item}
                 as="li"
                 animation="fade-up"
                 delay={i * 0.06}
@@ -209,7 +189,7 @@ export default async function ContentCreatorProgramPage() {
                 <span className="meta meta-signal shrink-0">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="text-base text-ink-2 sm:text-lg">{item.text}</span>
+                <span className="text-base text-ink-2 sm:text-lg">{item}</span>
               </AnimateOnScroll>
             ))}
           </ol>
@@ -278,50 +258,16 @@ export default async function ContentCreatorProgramPage() {
           <div className="mt-12 grid gap-4 sm:mt-16 lg:grid-cols-3">
             {tiers.map((tier, i) => (
               <AnimateOnScroll key={tier.name} animation="fade-up" delay={i * 0.1} className="h-full">
-                <div
-                  className={`surface flex h-full flex-col p-7 sm:p-8 ${
-                    tier.popular
-                      ? "!border-signal/40 !bg-[#111823] shadow-[0_0_60px_-20px_rgba(78,168,255,0.45)]"
-                      : ""
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="display-3 text-white">{tier.name}</h3>
-                    {tier.popular && (
-                      <span className="meta meta-signal shrink-0 rounded-full border border-signal/35 px-2.5 py-1.5">
-                        Most booked
-                      </span>
-                    )}
-                  </div>
-
-                  <p className="mt-5 flex items-baseline gap-2">
-                    <span className="display-2 !text-[clamp(1.75rem,2.6vw,2.25rem)] text-white">
-                      {tier.price}
-                    </span>
-                    <span className="meta">/ month</span>
-                  </p>
-
-                  <p className="mt-4 border-t border-line pt-5 text-sm leading-relaxed text-ink-2">
-                    {tier.description}
-                  </p>
-
-                  <ul className="mt-6 flex-1 space-y-3.5">
-                    {tier.features.map((f) => (
-                      <li key={f} className="flex items-start gap-3 text-sm text-ink-2">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Link
-                    href="/contact"
-                    className={`btn mt-8 w-full ${tier.popular ? "btn-primary" : "btn-ghost"}`}
-                  >
-                    Start with {tier.name.toLowerCase()}
-                    <ArrowRight className="arrow h-4 w-4" />
-                  </Link>
-                </div>
+                <PricingCard
+                  name={tier.name}
+                  price={tier.price}
+                  priceSuffix="/ month"
+                  description={tier.description}
+                  features={tier.features}
+                  popular={tier.popular}
+                  href="/contact"
+                  cta={`Start with ${tier.name.toLowerCase()}`}
+                />
               </AnimateOnScroll>
             ))}
           </div>

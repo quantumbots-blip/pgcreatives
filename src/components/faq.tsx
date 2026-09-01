@@ -42,7 +42,7 @@ export const faqs: FAQItem[] = [
     category: "Pricing & Booking",
     question: "How much does a real estate shoot cost?",
     answer:
-      "Real estate packages start at $250 and include HDR photography, drone imagery, and virtual staging options. Pricing varies by property size and services needed — check our Services page or request a custom quote.",
+      "Photography on its own starts at $225. Full listing packages start at $550 — PG Core covers daytime photography, a premium listing video, drone photography, and three virtual twilights; PG Growth ($725) adds a Matterport or Zillow 3D tour and a 2D floor plan; PG Platinum ($1,000) adds twilight photography and a day-to-night listing video. Pricing scales with square footage and varies slightly by market, so send us the address and we'll give you an exact number.",
   },
   {
     category: "Pricing & Booking",
@@ -54,7 +54,7 @@ export const faqs: FAQItem[] = [
     category: "Pricing & Booking",
     question: "How do I book a shoot?",
     answer:
-      "You can book directly through our client portal for Green Bay or Madison, or fill out our contact form for a custom quote. We typically respond within a few hours during business days.",
+      "You can book directly through our client portal for Green Bay or Madison, or fill out our contact form for a custom quote. We usually reply the same day.",
   },
   {
     category: "Pricing & Booking",
@@ -137,7 +137,7 @@ function slug(category: Category) {
  * This was a client component holding two pieces of state: which category is
  * selected and which answer is open. That meant all eighteen questions and
  * answers were shipped to every visitor as JavaScript and hydrated, to power
- * behaviour the browser already provides for free.
+ * behavior the browser already provides for free.
  *
  * The accordion is now a native <details>, and the category tabs are radio
  * inputs styled by their labels, switched in CSS (see `.faq-*` in globals.css).

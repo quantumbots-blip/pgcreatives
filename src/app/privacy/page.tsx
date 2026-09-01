@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description:
-    "Privacy Policy for PG Creatives — how we collect, use, and protect your information.",
-  alternates: { canonical: "/privacy" },
-  openGraph: { title: "Privacy Policy | PG Creatives", url: "/privacy" },
+  ...pageMetadata({
+    title: "Privacy Policy",
+    description:
+      "How PG Creatives collects, uses, and protects the information you share with us.",
+    path: "/privacy",
+    image: "/og-home.jpg",
+    imageAlt: "PG Creatives",
+  }),
+  robots: { index: true, follow: false },
 };
 
 export default function PrivacyPolicyPage() {

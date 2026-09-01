@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Image from "next/image";
 
 import { images } from "@/lib/images";
@@ -8,9 +9,14 @@ import { RuleHead } from "@/components/rule-head";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "About | Meet The Team",
-  description:
-    "Meet the talented photographers, videographers, and creatives behind PG Creatives. Based in Green Bay and Madison, Wisconsin, our team delivers professional-grade media.",
+  ...pageMetadata({
+    title: "About | Meet The Team",
+    description:
+      "Meet the photographers, videographers, and creatives behind PG Creatives. Based in Green Bay and Madison, Wisconsin, delivering professional-grade media.",
+    path: "/team",
+    image: "/og-team.jpg",
+    imageAlt: "The PG Creatives team",
+  }),
   keywords: [
     "PG Creatives team",
     "Wisconsin photographers",
@@ -18,14 +24,6 @@ export const metadata: Metadata = {
     "Madison media company",
     "professional creatives",
   ],
-  alternates: { canonical: "/team" },
-  openGraph: {
-    title: "About | PG Creatives Team",
-    description:
-      "Meet the talented team behind PG Creatives in Wisconsin.",
-    url: "/team",
-    images: [{ url: "/og-team.jpg", width: 1200, height: 630, alt: "PG Creatives Team - The Creatives Behind the Lens" }],
-  },
 };
 
 const team = [
@@ -165,7 +163,7 @@ export default function TeamPage() {
       </section>
 
       {/* ── Founder's letter ─────────────────────────────────────────────
-          Left-aligned. Four centred paragraphs of body copy is the hardest
+          Left-aligned. Four centered paragraphs of body copy is the hardest
           shape to read on a page — every line starts in a different place. */}
       <section className="section">
         <div className="shell">

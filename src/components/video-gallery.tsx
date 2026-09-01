@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Image from "next/image";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { VideoModal } from "@/components/video-modal";
@@ -27,7 +28,7 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
     <>
       <div
         className={cn(
-          "grid gap-3 sm:gap-4",
+          "mt-12 grid gap-3 sm:mt-16 sm:gap-4",
           portrait
             ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
             : "sm:grid-cols-2 lg:grid-cols-3"
@@ -44,30 +45,33 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
             onClick={() => setActive(video)}
             aria-label={`Play video: ${video.title}`}
             className={cn(
-              "group relative block w-full overflow-hidden rounded-xl bg-[#0a0a0a] text-left transition-all duration-500 hover:shadow-[0_0_30px_rgba(43,111,184,0.15)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-light",
+              "viewfinder group relative block w-full overflow-hidden rounded-xl border border-line bg-surface text-left",
               portrait ? "aspect-[4/5]" : "aspect-video"
             )}
           >
+            <span className="vf-b" aria-hidden="true" />
             {video.thumbnail && (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
+              <Image
                 src={video.thumbnail}
                 alt=""
+                fill
                 className={cn(
-                  "absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105",
+                  "object-cover transition-transform duration-700 group-hover:scale-[1.04]",
                   portrait ? "object-[center_30%]" : "object-[center_35%]"
                 )}
-                loading="lazy"
-                decoding="async"
+                sizes={
+                  portrait
+                    ? "(min-width: 1360px) 300px, (min-width: 1024px) 23vw, (max-width: 640px) 50vw, 33vw"
+                    : "(min-width: 1360px) 400px, (min-width: 1024px) 31vw, (max-width: 640px) 100vw, 50vw"
+                }
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-purple/35 bg-[#000000]/50 text-purple-light backdrop-blur-sm transition-all group-hover:scale-110 group-hover:bg-purple/20">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-[#07090c]/55 text-white backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:border-signal group-hover:text-signal">
                 <Play className="ml-0.5 h-4 w-4" />
               </div>
             </div>
-            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#07090c] via-[#07090c]/70 to-transparent p-4 pt-12">
               <h3 className="text-sm font-medium text-white">{video.title}</h3>
             </div>
           </button>

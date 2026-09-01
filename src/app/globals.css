@@ -180,11 +180,6 @@ html {
   50% { filter: brightness(1.15) drop-shadow(0 0 30px rgba(52, 97, 209, 0.4)); transform: scale(1.02); }
 }
 
-@keyframes logo-shimmer {
-  0% { mask-position: -200% center; -webkit-mask-position: -200% center; }
-  100% { mask-position: 200% center; -webkit-mask-position: 200% center; }
-}
-
 .animate-logo-loading {
   position: relative;
   animation: logo-enter 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards,
@@ -250,10 +245,6 @@ html {
     radial-gradient(ellipse 120% 55% at 50% 0%, rgba(78, 168, 255, 0.07), transparent 70%),
     radial-gradient(ellipse 90% 40% at 15% 52%, rgba(43, 111, 184, 0.05), transparent 70%),
     radial-gradient(ellipse 90% 45% at 85% 88%, rgba(78, 168, 255, 0.04), transparent 70%);
-}
-
-@media (min-width: 1024px) {
-  .section-sep { opacity: 0; }
 }
 
 /* ── Scroll reveals ──
@@ -405,11 +396,15 @@ html[data-reveal-ready] .reveal.is-visible {
 
 /* Keyboard focus has to be visible on the label, since the radio itself is
    hidden — without this the tab strip is unusable without a mouse. */
-.faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-general"],
-.faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-pricing-booking"],
-.faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-production"],
-.faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-delivery-licensing"],
-.faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-results"] {
+/* One pair per category, matching the `:checked` rules above. The previous
+   version keyed every selector off the generic `.faq-radio:focus-visible`,
+   which matches whichever radio has focus — so all five pills drew a focus
+   ring simultaneously and a keyboard user could not tell which was focused. */
+#faq-cat-general:focus-visible ~ * .faq-pill[for="faq-cat-general"],
+#faq-cat-pricing-booking:focus-visible ~ * .faq-pill[for="faq-cat-pricing-booking"],
+#faq-cat-production:focus-visible ~ * .faq-pill[for="faq-cat-production"],
+#faq-cat-delivery-licensing:focus-visible ~ * .faq-pill[for="faq-cat-delivery-licensing"],
+#faq-cat-results:focus-visible ~ * .faq-pill[for="faq-cat-results"] {
   outline: 2px solid var(--signal);
   outline-offset: 3px;
 }
@@ -438,71 +433,6 @@ html[data-reveal-ready] .reveal.is-visible {
 
 /* ── Reduced motion ── */
 
-@media (prefers-reduced-motion: reduce) {
-  .animate-float,
-  .animate-float-slow,
-  .animate-pulse-glow,
-  .animate-rotate-slow,
-  .morph-blob,
-  .glow-orb,
-  .spin-ring,
-  .animate-border-glow,
-  .shimmer-text,
-  .gradient-text-animated,
-  .rainbow-shimmer,
-  .animate-hero-fade-up,
-  .animate-hero-line,
-  .animate-logo-loading,
-  .animate-logo-loading img,
-  .animate-blur-in,
-  .animate-clip-up,
-  .animate-clip-left,
-  .glow-breathe,
-  .stagger-children > *,
-  .grain::before {
-    animation: none !important;
-  }
-
-  .stagger-children > * {
-    opacity: 1;
-  }
-
-  /* ScrollReveal never sets the ready flag for reduced-motion visitors, so
-     nothing is hidden; this is the CSS-side guarantee of the same thing. */
-  .reveal {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  .faq-item[open] > .faq-answer,
-  .animate-scroll-cue {
-    animation: none !important;
-  }
-
-  .hero-parallax-bg,
-  .hero-parallax-content {
-    transform: none !important;
-    opacity: 1 !important;
-  }
-
-  .card-3d:hover .card-3d-inner,
-  .card-3d-enhanced:hover > * {
-    transform: none !important;
-  }
-
-  .hover-lift:hover,
-  .glow-hover:hover {
-    transform: none !important;
-  }
-
-  /* Particles are pure decorative motion and their animation is set inline,
-     so the container is dropped outright rather than un-animated. */
-  .floating-particles {
-    display: none !important;
-  }
-}
-
 /* ── Mobile performance optimizations ── */
 
 @media (max-width: 768px) {
@@ -527,91 +457,12 @@ html[data-reveal-ready] .reveal.is-visible {
     --reveal-from: translate3d(0, 20px, 0);
   }
 
-  /* Kill expensive infinite animations on mobile */
-  .animate-float,
-  .animate-float-slow,
-  .animate-pulse-glow,
-  .animate-rotate-slow,
-  .morph-blob,
-  .glow-orb,
-  .spin-ring,
-  .animate-border-glow,
-  .grain::before,
-  .glow-breathe {
-    animation: none !important;
-  }
-
-  /* Disable text shimmer animations on mobile */
-  .shimmer-text,
-  .gradient-text-animated,
-  .rainbow-shimmer {
-    animation: none !important;
-    background-position: 50% center !important;
-  }
-
   /* Remove backdrop-blur on mobile (very expensive on Safari iOS) */
   .backdrop-blur-xl,
   .backdrop-blur-2xl,
   .backdrop-blur-sm {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-  }
-
-  /* Ambient glow orbs — 17 empty divs across the site, each an element behind
-     a 60-200px filter: blur(). Blur is the most expensive thing iOS is asked
-     to rasterise on this site, and it is charged per tile, every time a tile
-     is painted during a scroll.
-
-     This replaces a set of rules that enumerated blur-[100px], blur-[120px]
-     and blur-[80px] individually. That list silently missed the two largest
-     on the site — blur-[200px] on a 700x500 box and blur-[160px] on a 400x300
-     one, both in the Packages section — so they kept costing full price in
-     exactly the area where content stopped painting on a phone. A substring
-     match cannot be escaped by a new blur value the way those two were.
-
-     Dropping them beats capping them: at 3-20% opacity behind a heavy blur on
-     a black page the glow is barely perceptible, while its cost is not. Every
-     one is an empty, absolutely-positioned div, so nothing reflows and no
-     content is hidden. */
-  [class*="blur-["] {
-    display: none !important;
-  }
-
-  /* Disable 3D card transforms on mobile */
-  .card-3d-enhanced:hover > * {
-    transform: none !important;
-    box-shadow: none !important;
-  }
-
-  /* The hover tilt is off on phones, so flatten the 3D containers entirely —
-     perspective / preserve-3d only add compositing cost during scroll. */
-  .card-3d-enhanced,
-  .card-3d {
-    perspective: none !important;
-    transform-style: flat !important;
-  }
-
-  /* Simplify hover effects — no box-shadow transitions */
-  .glass-card:hover {
-    box-shadow: none;
-  }
-
-  .card-shine::before,
-  .card-shine:hover::before {
-    animation: none !important;
-    transform: none !important;
-  }
-
-  /* Remove border-trace animation on mobile */
-  .border-trace::after {
-    animation: none !important;
-    opacity: 0 !important;
-  }
-
-  /* Particles never show on phones anyway — drop them so their infinite
-     inline animations can't keep the compositor busy during scroll. */
-  .floating-particles {
-    display: none !important;
   }
 
   /* The unified mesh is 17 stacked radial gradients painted across the FULL
@@ -629,19 +480,7 @@ html[data-reveal-ready] .reveal.is-visible {
       transparent 65%,
       rgba(52, 97, 209, 0.06)
     ) !important;
-  }
-
-  /* Same problem, different mechanism: a mask forces an offscreen compositing
-     pass over the whole element, and these two are section-sized. The dotted
-     texture sits at 0.06-0.15 alpha on black, so dropping it on phones costs
-     nothing anyone can see. Set from inline styles, hence !important. */
-  .dot-grid,
-  .dot-grid-fine {
-    background-image: none !important;
-    -webkit-mask-image: none !important;
-    mask-image: none !important;
-  }
-}
+  }}
 
 /* ══════════════════════════════════════════════════════════════════════
    DESIGN SYSTEM PRIMITIVES
@@ -675,13 +514,6 @@ html[data-reveal-ready] .reveal.is-visible {
   margin-inline: auto;
   width: 100%;
   max-width: 80rem;
-  padding-inline: var(--gutter);
-}
-
-.shell-narrow {
-  margin-inline: auto;
-  width: 100%;
-  max-width: 52rem;
   padding-inline: var(--gutter);
 }
 
@@ -747,8 +579,9 @@ html[data-reveal-ready] .reveal.is-visible {
 
 .rule-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem 1rem;
   padding-bottom: 1.75rem;
   border-bottom: 1px solid var(--line);
 }
@@ -844,8 +677,7 @@ a.surface:hover,
 }
 
 @media (min-width: 1024px) {
-  .viewfinder-hero { --vf-inset-top: calc(5rem + clamp(16px, 3vw, 32px)); }
-}
+  .viewfinder-hero { --vf-inset-top: calc(5rem + clamp(16px, 3vw, 32px)); }}
 
 .viewfinder-hero:hover::before { inset: var(--vf-inset-top) auto auto var(--vf-inset); opacity: 0.55; }
 .viewfinder-hero:hover::after { inset: var(--vf-inset-top) var(--vf-inset) auto auto; opacity: 0.55; }
@@ -920,6 +752,13 @@ a.surface:hover,
    breathing logo is exactly what someone with vestibular sensitivity
    turned this setting on to avoid. */
 
+/* ── Reduced motion ────────────────────────────────────────────────────
+   One block for the whole site. The universal rule below already stops every
+   animation and transition, so nothing here needs to enumerate animation
+   names — the previous version listed twenty-two of them by hand and half had
+   already been deleted. What remains are the rules that do something MORE
+   than stop an animation: undoing a transform, or forcing content visible. */
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
@@ -930,6 +769,22 @@ a.surface:hover,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* ScrollReveal never sets the ready flag for reduced-motion visitors, so
+     nothing is hidden; this is the CSS-side guarantee of the same thing. */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* The parallax is set from JavaScript, so stopping the animation is not
+     enough — the inline transform has to be overridden. */
+  .hero-parallax-bg,
+  .hero-parallax-content {
+    transform: none !important;
+    opacity: 1 !important;
   }
 
   .viewfinder:hover::before,

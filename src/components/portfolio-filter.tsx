@@ -81,17 +81,25 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         )}
       >
         <span className="vf-b" aria-hidden="true" />
+        {/* Through next/image, not a raw <img>: these are the heaviest assets
+            on the page (15 thumbs at ~80 KB of unoptimized JPEG, all pinned to
+            a _640 rendition for a tile that renders under 290px) and one of
+            them is the mobile LCP element. AVIF plus a real `sizes` is worth
+            roughly half of that 1.2 MB. */}
         {(project.thumbnail || project.vimeoId) && (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
+          <Image
             src={project.thumbnail || `https://vumbnail.com/${project.vimeoId}.jpg`}
             alt=""
+            fill
             className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]",
+              "object-cover transition-transform duration-700 group-hover:scale-[1.04]",
               videosPortrait ? "object-[center_30%]" : "object-[center_35%]"
             )}
-            loading="lazy"
-            decoding="async"
+            sizes={
+              videosPortrait
+                ? "(min-width: 1360px) 300px, (min-width: 1024px) 23vw, (max-width: 640px) 50vw, 33vw"
+                : "(min-width: 1360px) 400px, (min-width: 1024px) 31vw, (max-width: 640px) 100vw, 50vw"
+            }
           />
         )}
         <div className="absolute inset-0 flex items-center justify-center">
@@ -106,16 +114,29 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
 
   /* Stills sit on a dense 4-column grid where the strongest frames take a
      2×2 cell. Thirty-four identical tiles read as a spreadsheet; a few
-     frames given room read as a portfolio. `grid-flow-dense` backfills the
-     gaps a spanning tile would otherwise leave. */
-  const renderPhoto = (project: Project, i: number) => (
+     frames given room read as a portfolio.
+
+     Two guards, because `feature` is a property of the photo but the layout
+     is a property of the SET it lands in:
+
+     - A spanning tile needs enough tiles after it for `grid-flow-dense` to
+       backfill around. Filter to Drone and you get three photos that are all
+       features; each takes two of three columns, so the third column stayed
+       empty down the whole height of the grid.
+     - Nothing after the last tile can backfill it, so a feature in final
+       position always leaves an L-shaped hole. The last item in the data
+       happens to be one, so every unfiltered view ended in a 594×428 gap. */
+  const canSpan = (project: Project, i: number, total: number) =>
+    Boolean(project.feature) && total > 4 && i !== total - 1;
+
+  const renderPhoto = (project: Project, i: number, all: Project[]) => (
     <AnimateOnScroll
       key={project.title}
       animation="fade-in-scale"
       delay={(i % 4) * 0.06}
       className={cn(
         "viewfinder group relative overflow-hidden rounded-xl border border-line bg-surface",
-        project.feature && "col-span-2 row-span-2"
+        canSpan(project, i, all.length) && "col-span-2 row-span-2"
       )}
     >
       <span className="vf-b" aria-hidden="true" />
@@ -125,10 +146,13 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
           alt={project.title}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          /* Pixel caps above the breakpoint, not `vw`. `.shell` plateaus at
+             1280px, so a `25vw` claim at 1440 asked for 360px for a box that
+             renders 272 — one whole rendition step too large, on every tile. */
           sizes={
-            project.feature
-              ? "(max-width: 640px) 100vw, 50vw"
-              : "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            canSpan(project, i, all.length)
+              ? "(min-width: 1360px) 580px, (min-width: 1024px) 40vw, (max-width: 640px) 100vw, 50vw"
+              : "(min-width: 1360px) 280px, (min-width: 1024px) 20vw, (max-width: 640px) 50vw, 33vw"
           }
         />
       )}

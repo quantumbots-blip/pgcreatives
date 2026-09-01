@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
@@ -8,9 +9,14 @@ import { RuleHead } from "@/components/rule-head";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Real estate listing media, commercial production, and a monthly personal-brand content program for agents across Green Bay, Madison, Milwaukee and the Fox Valley.",
+  ...pageMetadata({
+    title: "Services",
+    description:
+      "Real estate listing media, commercial production, and a monthly personal-brand content program for agents across Green Bay, Madison, Milwaukee and the Fox Valley.",
+    path: "/services",
+    image: "/og-services.jpg",
+    imageAlt: "PG Creatives services",
+  }),
   keywords: [
     "real estate photography Wisconsin",
     "listing video",
@@ -19,14 +25,6 @@ export const metadata: Metadata = {
     "commercial video production",
     "Green Bay real estate media",
   ],
-  alternates: { canonical: "/services" },
-  openGraph: {
-    title: "Services | PG Creatives",
-    description:
-      "Listing media, commercial production, and personal-brand content across Wisconsin.",
-    url: "/services",
-    images: [{ url: "/og-services.jpg", width: 1200, height: 630, alt: "PG Creatives services" }],
-  },
 };
 
 /* Three services, each with its own anchor. This page exists because the nav
@@ -100,7 +98,7 @@ export default function ServicesPage() {
           <RuleHead label="Services" link={{ href: "/#book", label: "Book a shoot" }} />
           <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
             <h1 className="display-1 text-white">
-              Three things, done properly.
+              Three things, done right.
             </h1>
             <p className="lede lg:pb-3">
               Listing media that sells the house, commercial work for everyone
@@ -157,7 +155,7 @@ export default function ServicesPage() {
                     alt={service.imageAlt}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    sizes="(min-width: 1360px) 580px, (min-width: 1024px) 40vw, 100vw"
                   />
                 </div>
               </AnimateOnScroll>

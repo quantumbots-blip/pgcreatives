@@ -1,7 +1,6 @@
-import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
 import { RuleHead } from "@/components/rule-head";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { PricingCard } from "@/components/pricing-card";
 
 // This section used to be a client component driving a scroll-linked 3D fan:
 // three cards rotated into place from a scroll listener on desktop. The effect
@@ -10,9 +9,9 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 // and had to be hydrated, because the markup was defined inside the client
 // component rather than passed into it.
 //
-// The section is now server-rendered: no JavaScript at all. The cards keep
-// their hover treatment, which is CSS.
-const services = [
+// The section is now server-rendered: no JavaScript at all. The file was still
+// named for the 3D fan long after the fan was gone.
+const packages = [
   {
     title: "PG Core",
     description:
@@ -39,7 +38,7 @@ const services = [
   },
 ];
 
-export function ScrollCards3D() {
+export function Packages() {
   return (
     <section className="section">
       <div className="shell">
@@ -57,59 +56,29 @@ export function ScrollCards3D() {
         </AnimateOnScroll>
 
         <div className="mt-12 grid gap-4 sm:mt-16 lg:grid-cols-3">
-          {services.map((service, i) => (
+          {packages.map((pkg, i) => (
             <AnimateOnScroll
-              key={service.title}
+              key={pkg.title}
               animation="fade-up"
               delay={i * 0.1}
               className="h-full"
             >
-              <div
-                className={`surface flex h-full flex-col p-7 sm:p-8 ${
-                  service.popular
-                    ? "!border-signal/40 !bg-[#111823] shadow-[0_0_60px_-20px_rgba(78,168,255,0.45)]"
-                    : ""
-                }`}
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="display-3 text-white">{service.title}</h3>
-                  {service.popular && (
-                    <span className="meta meta-signal shrink-0 rounded-full border border-signal/35 px-2.5 py-1.5">
-                      Most booked
-                    </span>
-                  )}
-                </div>
-
-                {/* The price. It was already in this file's data and simply
-                    never rendered — three tiers with feature lists and no
-                    number to anchor any of them against. */}
-                <p className="display-2 mt-5 !text-[clamp(1.75rem,2.6vw,2.25rem)] text-white">
-                  {service.price}
-                </p>
-
-                <p className="mt-4 border-t border-line pt-5 text-sm leading-relaxed text-ink-2">
-                  {service.description}
-                </p>
-
-                <ul className="mt-6 flex-1 space-y-3.5">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3 text-sm text-ink-2">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href="/#book"
-                  className={`btn mt-8 w-full ${service.popular ? "btn-primary" : "btn-ghost"}`}
-                >
-                  Book this package
-                  <ArrowRight className="arrow h-4 w-4" />
-                </Link>
-              </div>
+              <PricingCard
+                name={pkg.title}
+                price={pkg.price}
+                description={pkg.description}
+                features={pkg.features}
+                popular={pkg.popular}
+                href="/#book"
+                cta="Book this package"
+              />
             </AnimateOnScroll>
           ))}
+          <p className="mt-8 text-sm text-ink-3">
+            Package pricing scales with square footage and varies slightly
+            between our Green Bay and Madison markets. Send us the address and
+            we&apos;ll confirm the exact number.
+          </p>
         </div>
       </div>
     </section>

@@ -163,7 +163,11 @@ export function Footer() {
                 Privacy Policy
               </Link>
               <span className="h-3 w-px bg-white/10" />
-              <Link href="/admin" className="py-2 text-xs text-white/45 tracking-wide hover:text-white/60 transition-colors">
+              <Link
+                href="/admin"
+                rel="nofollow"
+                className="py-2 text-xs text-white/45 tracking-wide transition-colors hover:text-white/60"
+              >
                 Admin
               </Link>
               <span className="hidden h-3 w-px bg-white/10 sm:block" />

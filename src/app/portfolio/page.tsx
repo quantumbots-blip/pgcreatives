@@ -234,7 +234,7 @@ const projects = [
     image: "/images/game-room-fireplace.jpg",
   },
   {
-    title: "Marble Kitchen & Dining",
+    title: "Waterfront Estate at Sunset",
     category: "Drone",
     type: "photo" as const,
     image: "/images/marble-kitchen-dining.jpg",

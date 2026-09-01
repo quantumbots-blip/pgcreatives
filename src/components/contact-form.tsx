@@ -20,24 +20,24 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
     initialState,
   );
   const formRef = useRef<HTMLFormElement>(null);
+  const prior = state.values;
 
   if (state.success) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple/20 to-purple-dim/10 border border-purple/20">
-          <CheckCircle2 className="h-8 w-8 text-purple-light" />
+      <div className="flex flex-col items-center justify-center py-16 text-center sm:py-20">
+        <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-signal/35 bg-signal-dim">
+          <CheckCircle2 className="h-7 w-7 text-signal" />
         </div>
-        <h3 className="text-2xl font-bold text-white">Message Sent!</h3>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-white/50">
-          Thanks for reaching out. We&apos;ll get back to you within 24 hours
-          to discuss your project.
+        <h3 className="display-2 !text-[clamp(1.5rem,2.4vw,2rem)] text-white">
+          Message sent.
+        </h3>
+        {/* Same promise the rest of the site makes. This used to say "within
+            24 hours" while /contact and the home form both said same day. */}
+        <p className="lede mt-4 max-w-md">
+          Thanks for reaching out — we usually reply the same day.
         </p>
-        <button
-          type="button"
-          onClick={onReset}
-          className="mt-8 rounded-lg border border-purple/30 px-7 py-3 text-sm font-medium tracking-wide text-purple-light transition-all duration-300 hover:border-purple/50 hover:bg-purple/10"
-        >
-          Send Another Message
+        <button type="button" onClick={onReset} className="btn btn-ghost mt-8">
+          Send another message
         </button>
       </div>
     );
@@ -61,6 +61,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             <Input
               id="firstName"
               name="firstName"
+              defaultValue={prior?.firstName ?? ""}
               placeholder="John"
               required
               maxLength={50}
@@ -78,6 +79,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             <Input
               id="lastName"
               name="lastName"
+              defaultValue={prior?.lastName ?? ""}
               placeholder="Doe"
               required
               maxLength={50}
@@ -99,6 +101,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             <Input
               id="email"
               name="email"
+              defaultValue={prior?.email ?? ""}
               type="email"
               placeholder="john@example.com"
               required
@@ -117,6 +120,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             <Input
               id="phone"
               name="phone"
+              defaultValue={prior?.phone ?? ""}
               type="tel"
               placeholder="(555) 123-4567"
               maxLength={20}
@@ -136,7 +140,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         <select
           id="service"
           name="service"
-          defaultValue=""
+          defaultValue={prior?.service ?? ""}
           className="field field-input appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(255%2C255%2C255%2C0.45)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_14px_center] bg-no-repeat"
         >
           <option value="" disabled className="bg-[#0f1319] text-white/60">
@@ -156,6 +160,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         <Textarea
           id="message"
           name="message"
+          defaultValue={prior?.message ?? ""}
           placeholder="Any additional details..."
           rows={4}
           maxLength={5000}

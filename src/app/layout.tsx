@@ -92,36 +92,67 @@ export const metadata: Metadata = {
 
 const localBusinessJsonLd = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  // PhotographyBusiness is a real schema.org subtype of LocalBusiness and a
+  // better match than the generic base.
+  "@type": "PhotographyBusiness",
   "@id": `${BUSINESS.url}/#business`,
   name: BUSINESS.name,
   legalName: BUSINESS.legalName,
   description: BUSINESS.description,
   url: BUSINESS.url,
   email: BUSINESS.email,
-  telephone: Object.values(BUSINESS.phones).map((p) => p.number),
+  // schema.org expects a single Text value; an array meant Google read the
+  // first and silently dropped the rest. The others are contactPoints below.
+  telephone: Object.values(BUSINESS.phones)[0].number,
+  contactPoint: Object.values(BUSINESS.phones).map((p) => ({
+    "@type": "ContactPoint",
+    telephone: p.number,
+    contactType: "sales",
+    areaServed: p.label,
+    availableLanguage: "English",
+  })),
   image: `${BUSINESS.url}/og-home.jpg`,
   logo: `${BUSINESS.url}/images/pg-logo.png`,
   priceRange: "$$",
+  // TODO(owner): needs a real streetAddress and addressLocality. Google
+  // rejects a region-only address for a LocalBusiness, so until these are
+  // filled in this business will not earn a rich result.
   address: {
     "@type": "PostalAddress",
+    addressLocality: "Green Bay",
     addressRegion: "WI",
     addressCountry: "US",
   },
   areaServed: [
-    { "@type": "City", name: "Green Bay, WI" },
-    { "@type": "City", name: "Madison, WI" },
-    { "@type": "City", name: "Milwaukee, WI" },
-    { "@type": "Place", name: "Fox Valley, WI" },
+    { "@type": "City", name: "Green Bay", addressRegion: "WI" },
+    { "@type": "City", name: "Madison", addressRegion: "WI" },
+    { "@type": "City", name: "Milwaukee", addressRegion: "WI" },
+    { "@type": "Place", name: "Fox Valley", addressRegion: "WI" },
   ],
-  serviceType: [
-    "Real Estate Photography",
-    "Videography",
-    "Drone Photography",
-    "3D Virtual Tours",
-    "Commercial Branding",
-    "Social Media Content Creation",
-  ],
+  // `serviceType` is scoped to Service, not LocalBusiness — it was being
+  // ignored outright. An OfferCatalog is the property that actually carries
+  // "here is what this business sells".
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Media services",
+    itemListElement: [
+      "Real Estate Photography",
+      "Listing Videography",
+      "Drone Photography",
+      "3D Virtual Tours",
+      "Commercial Video Production",
+      "Social Media Content Creation",
+    ].map((name) => ({
+      "@type": "Offer",
+      itemOffered: { "@type": "Service", name },
+    })),
+  },
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    opens: "08:00",
+    closes: "18:00",
+  },
   sameAs: Object.values(BUSINESS.socials),
 };
 
@@ -152,7 +183,10 @@ export default function RootLayout({
         <ScrollReveal />
         <Header />
         <SplashScreen />
-        <div className="relative flex-1 flex flex-col">
+        {/* id is what `inert-background.ts` targets: a fullscreen overlay
+            (mobile menu, video dialog) marks this subtree inert so focus and
+            the accessibility tree cannot reach the page behind it. */}
+        <div id="page-content" className="relative flex-1 flex flex-col">
           <div className="pointer-events-none absolute inset-0 overflow-hidden gradient-mesh-unified" />
           <main id="main-content" className="flex-1 pt-16 lg:pt-20">{children}</main>
           <Footer />

@@ -7,7 +7,7 @@ import { ContactForm } from "@/components/contact-form";
 import { RuleHead } from "@/components/rule-head";
 import { Counter } from "@/components/counter";
 import { FAQ, faqs } from "@/components/faq";
-import { ScrollCards3D } from "@/components/scroll-cards-3d";
+import { Packages } from "@/components/packages";
 
 const stats = [
   { value: 3, prefix: "$", suffix: "B", label: "In real estate captured" },
@@ -117,12 +117,12 @@ export default function HomePage() {
                 key={stat.label}
                 animation="fade-up"
                 delay={i * 0.1}
-                className="px-0 py-7 sm:px-8 sm:py-9"
+                className="flex flex-col-reverse px-0 py-7 sm:px-8 sm:py-9"
               >
+                <dt className="meta mt-3">{stat.label}</dt>
                 <dd className="display-2 !text-[clamp(2.25rem,4vw,3.25rem)] text-white">
                   <Counter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} duration={2} />
                 </dd>
-                <dt className="meta mt-3">{stat.label}</dt>
               </AnimateOnScroll>
             ))}
           </dl>
@@ -151,10 +151,9 @@ export default function HomePage() {
                       src={service.image}
                       alt=""
                       fill
-                      loading="eager"
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                       style={service.objectPosition ? { objectPosition: service.objectPosition } : undefined}
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(min-width: 1360px) 400px, (min-width: 768px) 31vw, 100vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0f1319] via-[#0f1319]/25 to-transparent" />
                     <p className="meta absolute bottom-4 left-5">{service.meta}</p>
@@ -202,12 +201,11 @@ export default function HomePage() {
                   src={photo.image}
                   alt={photo.alt}
                   fill
-                  loading="eager"
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   sizes={
                     photo.className
-                      ? "(max-width: 640px) 100vw, 50vw"
-                      : "(max-width: 640px) 50vw, 25vw"
+                      ? "(min-width: 1360px) 600px, (min-width: 640px) 47vw, 100vw"
+                      : "(min-width: 1360px) 300px, (min-width: 640px) 23vw, 50vw"
                   }
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#07090c]/90 to-transparent p-4 pt-10 opacity-0 transition-opacity duration-400 group-hover:opacity-100">
@@ -221,7 +219,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Packages ─────────────────────────────────────────────────────── */}
-      <ScrollCards3D />
+      <Packages />
 
       {/* ── Content Creator Program ──────────────────────────────────────── */}
       <section className="section">
