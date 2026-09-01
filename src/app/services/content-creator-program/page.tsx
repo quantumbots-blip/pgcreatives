@@ -5,7 +5,6 @@ import { ArrowRight, Check } from "lucide-react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PricingCard } from "@/components/pricing-card";
 import { Tilt } from "@/components/tilt";
-import { RuleHead } from "@/components/rule-head";
 import { DisplayLines } from "@/components/display-lines";
 import { VideoGallery } from "@/components/video-gallery";
 import { getVimeoMetas } from "@/lib/vimeo";
@@ -134,7 +133,6 @@ export default async function ContentCreatorProgramPage() {
     <>
       <section className="section-tight">
         <div className="shell">
-          <RuleHead label="Content Creator Program" link={{ href: "#pricing", label: "See pricing" }} />
           <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
             <DisplayLines
               as="h1"
@@ -153,7 +151,6 @@ export default async function ContentCreatorProgramPage() {
       <section className="section">
         <div className="shell">
           <AnimateOnScroll animation="rise">
-            <RuleHead label="The work" link={{ href: "/portfolio", label: "Full portfolio" }} />
             <DisplayLines
               className="display-2 mt-8 max-w-2xl text-white"
               lines={["Real videos, from real", "agents in the program."]}
@@ -172,7 +169,6 @@ export default async function ContentCreatorProgramPage() {
       <section className="section">
         <div className="shell">
           <AnimateOnScroll animation="rise">
-            <RuleHead label="What we handle" />
             <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-16">
               <DisplayLines
                 className="display-2 text-white"
@@ -207,9 +203,6 @@ export default async function ContentCreatorProgramPage() {
       {/* ── Why it works ─────────────────────────────────────────────────── */}
       <section className="section">
         <div className="shell">
-          <AnimateOnScroll animation="rise">
-            <RuleHead label="Why it works" />
-          </AnimateOnScroll>
           <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
             <AnimateOnScroll animation="fade-up">
               <div>
@@ -254,7 +247,6 @@ export default async function ContentCreatorProgramPage() {
       <section id="pricing" className="section scroll-mt-20">
         <div className="shell">
           <AnimateOnScroll animation="rise">
-            <RuleHead label="Pricing" link={{ href: "/contact", label: "Ask a question" }} />
             <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <DisplayLines
                 className="display-2 max-w-xl text-white"
@@ -299,7 +291,6 @@ export default async function ContentCreatorProgramPage() {
       <section className="section">
         <div className="shell">
           <AnimateOnScroll animation="rise">
-            <RuleHead label="The difference" />
             <DisplayLines
               className="display-2 mt-8 max-w-xl text-white"
               lines={["Why this program", "is different."]}

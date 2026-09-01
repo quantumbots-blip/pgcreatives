@@ -1,5 +1,4 @@
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
-import { RuleHead } from "@/components/rule-head";
 import { DisplayLines } from "@/components/display-lines";
 import { PortfolioFilter } from "@/components/portfolio-filter";
 import { getVimeoMetas } from "@/lib/vimeo";
@@ -333,7 +332,6 @@ export default async function PortfolioPage() {
       <section className="section-tight">
         <div className="shell">
           <AnimateOnScroll animation="lines">
-            <RuleHead label="Portfolio" link={{ href: "/#book", label: "Book a shoot" }} />
             <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
               <DisplayLines
                 as="h1"

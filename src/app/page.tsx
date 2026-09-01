@@ -4,7 +4,6 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { VideoHero } from "@/components/video-hero";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { ContactForm } from "@/components/contact-form";
-import { RuleHead } from "@/components/rule-head";
 import { Tilt } from "@/components/tilt";
 import { Marquee } from "@/components/marquee";
 import { ProgramShowcaseDeck, ProgramShowcaseStages } from "@/components/program-showcase";
@@ -166,7 +165,6 @@ export default function HomePage() {
       <section className="section">
         <div className="shell">
           <AnimateOnScroll animation="rise">
-            <RuleHead label="What we do" link={{ href: "/services", label: "All services" }} />
             <DisplayLines
               className="display-2 mt-8 max-w-2xl text-white"
               lines={["Three ways we put your", "work in front of people."]}
@@ -213,11 +211,10 @@ export default function HomePage() {
       </section>
 
       {/* ── Selected work ────────────────────────────────────────────────── */}
-      <section className="section relative overflow-hidden">
+      <section className="section relative">
         <div className="grid-rules" aria-hidden="true" />
         <div className="shell relative">
           <AnimateOnScroll animation="rise">
-            <RuleHead label="Selected work" link={{ href: "/portfolio", label: "Full portfolio" }} />
             <DisplayLines
               className="display-2 mt-8 max-w-2xl text-white"
               lines={["Every listing,", "in its best light."]}
@@ -264,15 +261,9 @@ export default function HomePage() {
           it said "grow your brand" and showed five sentences. The five are a
           sequence, so they are drawn as one, and the reels the program
           actually delivers are shown instead of described. */}
-      <section className="section relative overflow-hidden">
+      <section className="section relative">
         <div className="grid-rules" aria-hidden="true" />
         <div className="shell relative">
-          <AnimateOnScroll animation="lines">
-            <RuleHead
-              label="Content Creator Program"
-              link={{ href: "/services/content-creator-program", label: "Program details" }}
-            />
-          </AnimateOnScroll>
 
           <div className="mt-12 grid gap-12 lg:mt-16 lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-20">
             <AnimateOnScroll animation="lines">
@@ -309,11 +300,10 @@ export default function HomePage() {
           Elevate Your Brand?", then the FAQ, three closes in a row, each
           asking for the same thing. Booking a session and asking a question
           are the two real paths, so they sit side by side under one head. */}
-      <section id="book" className="section relative overflow-hidden scroll-mt-20">
+      <section id="book" className="section relative scroll-mt-20">
         <div className="grid-rules" aria-hidden="true" />
         <div className="shell relative">
           <AnimateOnScroll animation="rise">
-            <RuleHead label="Start a project" />
             <DisplayLines
               className="display-2 mt-8 max-w-2xl text-white"
               lines={["Book a shoot, or tell", "us what you need."]}
@@ -332,12 +322,15 @@ export default function HomePage() {
                 >
                   {/* The state outline, moved out from behind the text. It used
                       to sit at 30% opacity directly over the portal name. */}
+                  {/* Centred in the card and bright enough to actually read
+                      as Wisconsin. It used to be pinned to the top-right at 6%
+                      opacity, running off the corner. */}
                   <Image
                     src="/images/wisconsin-outline.png"
                     alt=""
                     width={128}
                     height={137}
-                    className="pointer-events-none absolute -right-6 -top-4 h-36 w-auto opacity-[0.06] invert transition-opacity duration-500 group-hover:opacity-[0.11]"
+                    className="pointer-events-none absolute right-6 top-1/2 h-[78%] w-auto -translate-y-1/2 opacity-[0.20] invert transition-all duration-500 group-hover:scale-[1.04] group-hover:opacity-[0.32]"
                   />
                   <p className="meta relative">{portal.region}</p>
                   <p className="display-2 relative mt-4 !text-[clamp(1.75rem,3vw,2.5rem)] text-white">

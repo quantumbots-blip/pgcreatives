@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
-import { RuleHead } from "@/components/rule-head";
 import { DisplayLines } from "@/components/display-lines";
 
 const categories = [
@@ -150,9 +149,6 @@ export function FAQ() {
   return (
     <section className="section">
       <div className="shell">
-        <AnimateOnScroll animation="lines">
-          <RuleHead label="Questions" link={{ href: "/contact", label: "Ask us directly" }} />
-        </AnimateOnScroll>
 
         {/* `.faq` has to wrap BOTH columns: the `:has()` selectors scope
             selection to it, so the pills and the panels must share it as an

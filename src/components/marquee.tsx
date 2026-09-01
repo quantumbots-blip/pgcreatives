@@ -7,19 +7,22 @@
  * set in motion.
  */
 export function Marquee({ items }: { items: string[] }) {
-  const run = [...items, ...items];
+  const half = (
+    <div className="marquee-half">
+      {items.map((item) => (
+        <span key={item} className="marquee-item">
+          <span className="meta">{item}</span>
+          <span className="marquee-dot" />
+        </span>
+      ))}
+    </div>
+  );
+
   return (
-    <div
-      className="marquee py-3 opacity-70"
-      aria-hidden="true"
-    >
+    <div className="marquee py-3 opacity-70" aria-hidden="true">
       <div className="marquee-track">
-        {run.map((item, i) => (
-          <span key={i} className="marquee-item">
-            <span className="meta">{item}</span>
-            <span className="marquee-dot" />
-          </span>
-        ))}
+        {half}
+        {half}
       </div>
     </div>
   );

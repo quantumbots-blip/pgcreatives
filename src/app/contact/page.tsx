@@ -3,7 +3,6 @@ import { pageMetadata } from "@/lib/metadata";
 import { CalendarDays, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
-import { RuleHead } from "@/components/rule-head";
 import { DisplayLines } from "@/components/display-lines";
 import { BUSINESS } from "@/lib/data";
 
@@ -75,7 +74,6 @@ export default function ContactPage() {
       <section className="section-tight">
         <div className="shell">
           <AnimateOnScroll animation="lines">
-            <RuleHead label="Contact" link={{ href: "/#book", label: "Or book directly" }} />
             <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
               <DisplayLines
                 as="h1"

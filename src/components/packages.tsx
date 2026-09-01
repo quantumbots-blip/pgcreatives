@@ -1,4 +1,3 @@
-import { RuleHead } from "@/components/rule-head";
 import { DisplayLines } from "@/components/display-lines";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PricingCard } from "@/components/pricing-card";
@@ -45,7 +44,6 @@ export function Packages() {
     <section className="section">
       <div className="shell">
         <AnimateOnScroll animation="rise">
-          <RuleHead label="Packages" link={{ href: "/#book", label: "Book a shoot" }} />
           <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <DisplayLines
               className="display-2 max-w-xl text-white"

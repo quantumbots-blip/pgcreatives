@@ -323,7 +323,7 @@ export function VideoHero() {
   }, [videoEnabled]);
 
   return (
-    <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[92svh] items-end overflow-clip lg:-mt-20 lg:min-h-screen">
+    <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[92svh] items-center overflow-clip lg:-mt-20 lg:min-h-screen">
       {/* The bottom half of the viewfinder ticks. The top two are drawn by
           `.viewfinder` itself; this empty element carries the other two. */}
       <span className="vf-b" aria-hidden="true" />
@@ -362,19 +362,23 @@ export function VideoHero() {
             enough that the headline never has to compete with a lamp. The old
             pair of even gradients left the type sitting on a lit fireplace. */}
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(7,9,12,0.97)_0%,rgba(7,9,12,0.88)_30%,rgba(7,9,12,0.62)_65%,rgba(7,9,12,0.72)_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(7,9,12,0.85)_0%,rgba(7,9,12,0.55)_45%,rgba(7,9,12,0.3)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,rgba(7,9,12,0.35)_0%,rgba(7,9,12,0.72)_65%,rgba(7,9,12,0.9)_100%)]" />
       </div>
 
-      {/* Content */}
+      {/* Content.
+
+          Centred: the kicker, headline, lede and both actions sit on one
+          axis down the middle of the frame. A left-aligned hero puts the
+          copy against the edge of a photograph that is doing nothing on the
+          other side; centring makes the image the stage and the words the
+          subject standing on it. */}
       <div
         ref={contentRef}
-        className="hero-parallax-content relative z-10 w-full pb-16 pt-32 sm:pb-24 lg:pb-28"
+        className="hero-parallax-content relative z-10 w-full pb-20 pt-32 sm:pb-28 lg:pb-32"
       >
         <div className="shell">
-          <div className="max-w-4xl">
-            {/* Where they shoot, set as camera metadata rather than a pill —
-                the same information, carried by the type instead of a chip. */}
-            <p className="animate-hero-fade-up meta flex flex-wrap items-center gap-x-2 gap-y-1 text-white/70">
+          <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+            <p className="animate-hero-fade-up meta flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-white/70">
               <span className="text-signal">Green Bay</span>
               <span aria-hidden="true">/</span>
               <span>Madison</span>
@@ -384,10 +388,7 @@ export function VideoHero() {
               <span>Fox Valley</span>
             </p>
 
-            {/* Not `.reveal`: the hero is above the fold, so it animates on
-                load rather than on intersection. Same masks, driven by the
-                hero's own entrance timing. */}
-            <h1 className="display-1 mt-6 text-white">
+            <h1 className="display-1 mt-7 text-white">
               <span className="line-mask">
                 <span className="line-inner hero-line" style={{ animationDelay: "0.18s" }}>
                   Professional
@@ -402,7 +403,7 @@ export function VideoHero() {
 
             <p
               className="animate-hero-fade-up lede mt-7 max-w-xl"
-              style={{ animationDelay: "0.24s" }}
+              style={{ animationDelay: "0.44s" }}
             >
               Listing photography, video, drone and 3D tours for Wisconsin
               agents, plus the personal-brand content that keeps you in front
@@ -410,8 +411,8 @@ export function VideoHero() {
             </p>
 
             <div
-              className="animate-hero-fade-up mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
-              style={{ animationDelay: "0.36s" }}
+              className="animate-hero-fade-up mt-10 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4"
+              style={{ animationDelay: "0.56s" }}
             >
               <Link href="/#book" className="btn btn-primary">
                 Book a shoot
@@ -430,12 +431,12 @@ export function VideoHero() {
           middle of the viewport, and hidden on phones where a short screen
           (iPhone SE) puts it on top of the buttons. */}
       <div
-        className="animate-hero-fade-up absolute bottom-8 right-[var(--gutter)] z-10 hidden sm:block"
-        style={{ animationDelay: "0.6s" }}
+        className="animate-hero-fade-up absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 sm:block"
+        style={{ animationDelay: "0.8s" }}
       >
-        <div className="flex flex-col items-center gap-3">
-          <span className="meta [writing-mode:vertical-rl]">Scroll</span>
-          <div className="animate-hero-line h-12 w-px overflow-hidden">
+        <div className="flex flex-col items-center gap-2.5">
+          <span className="meta">Scroll</span>
+          <div className="animate-hero-line h-10 w-px overflow-hidden">
             <div className="animate-scroll-cue h-full w-px bg-gradient-to-b from-signal/70 to-transparent" />
           </div>
         </div>

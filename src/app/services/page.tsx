@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
-import { RuleHead } from "@/components/rule-head";
 import { DisplayLines } from "@/components/display-lines";
 import { Tilt } from "@/components/tilt";
 
@@ -97,7 +96,6 @@ export default function ServicesPage() {
     <>
       <section className="section-tight">
         <div className="shell">
-          <RuleHead label="Services" link={{ href: "/#book", label: "Book a shoot" }} />
           <AnimateOnScroll animation="lines" className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
             <DisplayLines
               as="h1"
@@ -115,9 +113,6 @@ export default function ServicesPage() {
       {services.map((service, i) => (
         <section key={service.id} id={service.id} className="section scroll-mt-20">
           <div className="shell">
-            <AnimateOnScroll animation="rise">
-              <RuleHead label={service.label} />
-            </AnimateOnScroll>
 
             <div
               className={`mt-10 grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16 ${

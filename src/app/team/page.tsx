@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import { images } from "@/lib/images";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
-import { RuleHead } from "@/components/rule-head";
 import { DisplayLines } from "@/components/display-lines";
 import { Tilt } from "@/components/tilt";
 
@@ -119,7 +118,6 @@ export default function TeamPage() {
           visible horizontal seam across the page. */}
       <section className="section-tight">
         <div className="shell">
-          <RuleHead label="About" link={{ href: "/contact", label: "Work with us" }} />
           <AnimateOnScroll animation="lines" className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
             <DisplayLines
               as="h1"
@@ -177,9 +175,6 @@ export default function TeamPage() {
           shape to read on a page, every line starts in a different place. */}
       <section className="section">
         <div className="shell">
-          <AnimateOnScroll animation="rise">
-            <RuleHead label="From the founder" />
-          </AnimateOnScroll>
           <div className="mt-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <AnimateOnScroll animation="fade-up">
               <div className="lg:sticky lg:top-28">
@@ -251,7 +246,6 @@ export default function TeamPage() {
       <section className="section">
         <div className="shell">
           <AnimateOnScroll animation="rise">
-            <RuleHead label="How we work" />
             <DisplayLines
               className="display-2 mt-8 max-w-xl text-white"
               lines={["What drives us."]}

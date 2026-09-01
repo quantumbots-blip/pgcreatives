@@ -1041,16 +1041,28 @@ a.surface:hover,
 
 .marquee-track {
   display: flex;
-  width: max-content;
-  animation: marquee-run 48s linear infinite;
+  width: 200%;
+  animation: marquee-run 52s linear infinite;
   will-change: transform;
+}
+
+/* Each half is forced to fill the container, so -50% always lands exactly on
+   the start of the second copy. Sizing the track to its content instead meant
+   that whenever the list was narrower than two viewports the track ran out,
+   left a gap, and the text snapped back in at the loop point. */
+.marquee-half {
+  display: flex;
+  flex: 0 0 50%;
+  min-width: 50%;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .marquee-item {
   display: inline-flex;
   align-items: center;
-  gap: 2.25rem;
-  padding-right: 2.25rem;
+  gap: 1.75rem;
+  padding-inline: 0.875rem;
   white-space: nowrap;
 }
 
