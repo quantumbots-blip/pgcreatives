@@ -160,7 +160,10 @@ function DesktopDropdown({
               >
                 {Icon && <Icon className="h-4 w-4 text-white/35" />}
                 <span className="flex-1">{child.name}</span>
-                <ExternalLink className="h-3.5 w-3.5 text-white/25" />
+                <>
+                <ExternalLink className="h-3.5 w-3.5 text-white/45" aria-hidden="true" />
+                <span className="sr-only"> (opens in a new tab)</span>
+              </>
               </a>
             ) : (
               <Link
@@ -421,7 +424,10 @@ export function Header() {
               >
                 <portal.icon className="h-4 w-4 text-white/30" />
                 <span className="flex-1 text-base">{portal.name}</span>
-                <ExternalLink className="h-3.5 w-3.5 text-white/25" />
+                <>
+                <ExternalLink className="h-3.5 w-3.5 text-white/45" aria-hidden="true" />
+                <span className="sr-only"> (opens in a new tab)</span>
+              </>
               </a>
             ))}
           </nav>
@@ -517,7 +523,10 @@ function ClientLoginMenu({
             >
               <portal.icon className="h-4 w-4 text-white/35" />
               <span className="flex-1">{portal.name}</span>
-              <ExternalLink className="h-3.5 w-3.5 text-white/25" />
+              <>
+                <ExternalLink className="h-3.5 w-3.5 text-white/45" aria-hidden="true" />
+                <span className="sr-only"> (opens in a new tab)</span>
+              </>
             </a>
           ))}
         </div>

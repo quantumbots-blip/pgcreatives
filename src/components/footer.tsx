@@ -137,7 +137,7 @@ export function Footer() {
                   className="surface surface-interactive flex items-center justify-between !rounded-xl px-4 py-3 text-sm text-ink-2 hover:text-white"
                 >
                   <span>{portal.label}</span>
-                  <ArrowRight className="h-3.5 w-3.5 text-white/30" />
+                  <ArrowRight className="h-3.5 w-3.5 text-white/45" />
                 </a>
               ))}
             </div>
@@ -147,7 +147,7 @@ export function Footer() {
         {/* ── Bottom Bar ── */}
         <div className="mt-12 sm:mt-16 border-t border-line pt-6 sm:pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <p className="text-center text-xs text-white/45 sm:text-left">
+            <p className="text-center text-xs text-ink-3 sm:text-left">
               &copy; {new Date().getFullYear()} {BUSINESS.legalName}. All rights reserved.
               <span className="mx-2 text-white/20" aria-hidden="true">|</span>
               <span className="whitespace-nowrap">
@@ -163,7 +163,7 @@ export function Footer() {
               </span>
             </p>
             <div className="flex items-center gap-6">
-              <Link href="/privacy" className="py-2 text-xs text-white/45 tracking-wide hover:text-white/60 transition-colors">
+              <Link href="/privacy" className="py-2 text-xs text-ink-3 tracking-wide hover:text-white/60 transition-colors">
                 Privacy Policy
               </Link>
               <span className="h-3 w-px bg-white/10" />
@@ -174,12 +174,12 @@ export function Footer() {
                 // prefetch aborts every time — one doomed RSC request per
                 // page load, on every public page, warming nothing.
                 prefetch={false}
-                className="py-2 text-xs text-white/45 tracking-wide transition-colors hover:text-white/60"
+                className="py-2 text-xs text-ink-3 tracking-wide transition-colors hover:text-white/60"
               >
                 Admin
               </Link>
               <span className="hidden h-3 w-px bg-white/10 sm:block" />
-              <span className="hidden text-xs text-white/45 sm:block">
+              <span className="hidden text-xs text-ink-3 sm:block">
                 Wisconsin
               </span>
             </div>

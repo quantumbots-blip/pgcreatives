@@ -172,7 +172,7 @@ export default function RootLayout({
           swallow the page's vertical scrolling outright. `clip` suppresses the
           same horizontal overflow without ever creating one. */}
       <body className="min-h-full flex flex-col overflow-x-clip pb-[env(safe-area-inset-bottom)] bg-background">
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:rounded-lg focus:bg-signal focus:text-[#07090c] focus:px-4 focus:py-2 focus:font-semibold">
+        <a id="skip-link" href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:rounded-lg focus:bg-signal focus:text-[#07090c] focus:px-4 focus:py-2 focus:font-semibold">
           Skip to main content
         </a>
         <script

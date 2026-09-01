@@ -11,8 +11,14 @@
  * tree in one attribute, and is supported everywhere this site runs.
  */
 export function setBackgroundInert(inert: boolean) {
-  const el = document.getElementById("page-content");
-  if (!el) return;
-  if (inert) el.setAttribute("inert", "");
-  else el.removeAttribute("inert");
+  // The skip link is outside #page-content so it can be the first focusable
+  // thing on the page — but it targets #main-content, which IS inside. Left
+  // active behind an overlay it stayed focusable and visible while doing
+  // nothing, so it gets inerted with the thing it points at.
+  for (const id of ["page-content", "skip-link"]) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (inert) el.setAttribute("inert", "");
+    else el.removeAttribute("inert");
+  }
 }

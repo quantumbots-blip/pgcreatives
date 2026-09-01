@@ -32,7 +32,7 @@ const services = [
     href: "/services#commercial",
     meta: "Business",
     description:
-      "Media for businesses of every kind. Brand films, interiors, product, and the stills that go with them.",
+      "Media for businesses outside real estate. Interiors, facilities, brand film, and the stills that go with them.",
     image: "/images/twilight-wooded-exterior.jpg",
     objectPosition: "center 40%",
   },

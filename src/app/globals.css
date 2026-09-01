@@ -818,7 +818,9 @@ a.surface:hover,
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.field::placeholder { color: rgba(255, 255, 255, 0.32); }
+/* --ink-3. Placeholder text is text: WCAG 1.4.3 applies to it, and
+   0.32 alpha measured 2.69:1 against the field well. */
+.field::placeholder { color: rgba(255, 255, 255, 0.52); }
 
 .field:hover { border-color: var(--line-strong); }
 

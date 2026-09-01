@@ -79,7 +79,12 @@ export function VideoModal({
         ref={closeRef}
         type="button"
         onClick={onClose}
-        className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface text-white transition-colors hover:bg-surface-hi focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal sm:right-4 sm:top-4"
+        /* Solid white, not a faint chip. Once focus is inside the player,
+           Escape is dead — Vimeo's document receives the keydown, not ours,
+           and there is no way to hear it without adopting their Player SDK.
+           Shift+Tab and a backdrop click both still work, but the visible
+           exit has to be obvious from that state rather than discovered. */
+        className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#07090c] shadow-[0_4px_24px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal sm:right-4 sm:top-4"
         aria-label="Close video"
       >
         <X className="h-5 w-5" />

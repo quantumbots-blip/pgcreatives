@@ -191,7 +191,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         {videos.length > 0 && (
           <div className="mt-12 sm:mt-16">
             <h2 className="meta border-b border-line pb-4">
-              Films <span className="text-white/30">({videos.length})</span>
+              Films <span className="text-ink-3">({videos.length})</span>
             </h2>
             <div
               className={cn(
@@ -209,7 +209,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         {photos.length > 0 && (
           <div className="mt-16 sm:mt-20">
             <h2 className="meta border-b border-line pb-4">
-              Stills <span className="text-white/30">({photos.length})</span>
+              Stills <span className="text-ink-3">({photos.length})</span>
             </h2>
             <div className="mt-6 grid auto-rows-[9rem] grid-flow-row-dense grid-cols-2 gap-3 sm:auto-rows-[11rem] sm:grid-cols-3 lg:auto-rows-[13rem] lg:grid-cols-4">
               {photos.map(renderPhoto)}

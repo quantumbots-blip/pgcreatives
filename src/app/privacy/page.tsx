@@ -15,16 +15,16 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <section className="pt-12 sm:pt-20 pb-20 sm:pb-28">
-      <div className="mx-auto max-w-3xl px-5 sm:px-6">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+    <section className="section">
+      <div className="shell max-w-3xl">
+        <h1 className="display-2 text-white">
           Privacy Policy
         </h1>
-        <p className="mt-2 text-sm text-white/40">
+        <p className="mt-2 text-sm text-ink-3">
           Effective July 22, 2024
         </p>
 
-        <div className="mt-10 space-y-8 text-sm leading-relaxed text-white/60">
+        <div className="mt-10 space-y-8 text-sm leading-relaxed text-ink-2">
           <p>
             As the owner of this website, referred to as the &quot;Site&quot;, PG
             Creatives Real Estate Photography understands that your privacy is of
@@ -34,13 +34,13 @@ export default function PrivacyPolicyPage() {
           </p>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               What Information Do We Collect and How Is It Used?
             </h2>
 
             <div className="mt-4 space-y-4">
               <div>
-                <h3 className="font-medium text-white/80">
+                <h3 className="font-medium text-white">
                   Information You Voluntarily Submit to the Site
                 </h3>
                 <p className="mt-1">
@@ -55,7 +55,7 @@ export default function PrivacyPolicyPage() {
               </div>
 
               <div>
-                <h3 className="font-medium text-white/80">
+                <h3 className="font-medium text-white">
                   Information We Collect from Others
                 </h3>
                 <p className="mt-1">
@@ -66,7 +66,7 @@ export default function PrivacyPolicyPage() {
               </div>
 
               <div>
-                <h3 className="font-medium text-white/80">
+                <h3 className="font-medium text-white">
                   Automatically-Collected Information
                 </h3>
                 <p className="mt-1">
@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
               </div>
 
               <div>
-                <h3 className="font-medium text-white/80">Cookies</h3>
+                <h3 className="font-medium text-white">Cookies</h3>
                 <p className="mt-1">
                   We may log information using cookies, which are small data files
                   stored on your browser by the Website. We may use both session
@@ -94,7 +94,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               Our Use of Cookies
             </h2>
             <p className="mt-2">
@@ -125,7 +125,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               Google Analytics
             </h2>
             <p className="mt-2">
@@ -146,7 +146,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               Third-Party Use of Personal Information
             </h2>
             <p className="mt-2">
@@ -166,7 +166,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               How Long We Retain Your Data
             </h2>
             <p className="mt-2">
@@ -178,7 +178,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               Embedded Content from Other Sites
             </h2>
             <p className="mt-2">
@@ -192,7 +192,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               Email Addresses
             </h2>
             <p className="mt-2">
@@ -207,7 +207,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               How Your Information May Be Used
             </h2>
             <ul className="mt-2 list-disc list-inside space-y-1">
@@ -224,7 +224,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               Retargeting Ads
             </h2>
             <p className="mt-2">
@@ -238,7 +238,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               Children&apos;s Information
             </h2>
             <p className="mt-2">
@@ -252,7 +252,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               Additional Rights of EEA Residents
             </h2>
             <p className="mt-2">
@@ -267,7 +267,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="display-3 text-white">
               Changes to the Privacy Policy
             </h2>
             <p className="mt-2">
@@ -280,7 +280,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-white">Contacting Us</h2>
+            <h2 className="display-3 text-white">Contacting Us</h2>
             <p className="mt-2">
               If you have any questions about this Privacy Policy, or the practices
               of this Site, please contact us at{" "}
