@@ -7,6 +7,7 @@ import { ContactForm } from "@/components/contact-form";
 import { RuleHead } from "@/components/rule-head";
 import { Tilt } from "@/components/tilt";
 import { Marquee } from "@/components/marquee";
+import { DisplayLines } from "@/components/display-lines";
 import { Counter } from "@/components/counter";
 import { FAQ, faqs } from "@/components/faq";
 import { Packages } from "@/components/packages";
@@ -142,7 +143,7 @@ export default function HomePage() {
                 className="flex flex-col-reverse px-0 py-7 sm:px-8 sm:py-9"
               >
                 <dt className="meta mt-3">{stat.label}</dt>
-                <dd className="display-2 !text-[clamp(2.25rem,4vw,3.25rem)] text-white">
+                <dd className="stat-figure display-2 !text-[clamp(2.25rem,4vw,3.25rem)]">
                   <Counter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} duration={2} />
                 </dd>
               </AnimateOnScroll>
@@ -171,9 +172,10 @@ export default function HomePage() {
         <div className="shell">
           <AnimateOnScroll animation="rise">
             <RuleHead label="What we do" link={{ href: "/services", label: "All services" }} />
-            <h2 className="display-2 mt-8 max-w-2xl text-white">
-              Three ways we put your work in front of people.
-            </h2>
+            <DisplayLines
+              className="display-2 mt-8 max-w-2xl text-white"
+              lines={["Three ways we put your", "work in front of people."]}
+            />
           </AnimateOnScroll>
 
           <div className="mt-12 grid grid-cols-1 gap-4 sm:mt-16 md:grid-cols-3">
@@ -221,9 +223,10 @@ export default function HomePage() {
         <div className="shell relative">
           <AnimateOnScroll animation="rise">
             <RuleHead label="Selected work" link={{ href: "/portfolio", label: "Full portfolio" }} />
-            <h2 className="display-2 mt-8 max-w-2xl text-white">
-              Every listing, in its best light.
-            </h2>
+            <DisplayLines
+              className="display-2 mt-8 max-w-2xl text-white"
+              lines={["Every listing,", "in its best light."]}
+            />
           </AnimateOnScroll>
 
           <div className="scene mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:grid-rows-2">
@@ -274,9 +277,10 @@ export default function HomePage() {
           <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-2 lg:items-start lg:gap-16">
             <AnimateOnScroll animation="fade-up">
               <div>
-                <h2 className="display-2 text-white">
-                  Grow the brand, not just the listing.
-                </h2>
+                <DisplayLines
+                  className="display-2 text-white"
+                  lines={["Grow the brand,", "not just the listing."]}
+                />
                 <p className="lede mt-6 max-w-lg">
                   A monthly program built around consistency, strategy, and
                   results. We handle strategy, filming, editing, and coaching —
@@ -328,9 +332,10 @@ export default function HomePage() {
         <div className="shell relative">
           <AnimateOnScroll animation="rise">
             <RuleHead label="Start a project" />
-            <h2 className="display-2 mt-8 max-w-2xl text-white">
-              Book a shoot, or tell us what you need.
-            </h2>
+            <DisplayLines
+              className="display-2 mt-8 max-w-2xl text-white"
+              lines={["Book a shoot, or tell", "us what you need."]}
+            />
           </AnimateOnScroll>
 
           <div className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2">
@@ -367,8 +372,8 @@ export default function HomePage() {
             ))}
           </div>
 
-          <AnimateOnScroll animation="fade-up" delay={0.15}>
-            <div className="surface mt-4 p-6 sm:p-9 lg:p-12">
+          <AnimateOnScroll animation="depth" delay={0.15}>
+            <div className="surface surface-raised mt-4 p-6 sm:p-9 lg:p-12">
               <div className="max-w-lg">
                 <p className="meta">Not sure which package?</p>
                 <p className="mt-3 text-lg text-ink-2">

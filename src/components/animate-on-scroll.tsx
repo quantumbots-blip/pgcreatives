@@ -9,7 +9,12 @@ export type RevealAnimation =
   /* Arrive through Z rather than sliding up the page. */
   | "depth"
   | "depth-left"
-  | "depth-right";
+  | "depth-right"
+  /* The container itself does not move — it exists only so its `.line-mask`
+     children get `.is-visible` and can rise on their own. Wrapping a masked
+     heading in a variant that also translates the block animates the same
+     thing twice. */
+  | "lines";
 
 /**
  * Scroll-triggered entrance. Server component — ships no JavaScript of its

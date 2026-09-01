@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { RuleHead } from "@/components/rule-head";
+import { DisplayLines } from "@/components/display-lines";
 import { Tilt } from "@/components/tilt";
 
 export const revalidate = 3600;
@@ -97,15 +98,17 @@ export default function ServicesPage() {
       <section className="section-tight">
         <div className="shell">
           <RuleHead label="Services" link={{ href: "/#book", label: "Book a shoot" }} />
-          <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
-            <h1 className="display-1 text-white">
-              Three things, done right.
-            </h1>
+          <AnimateOnScroll animation="lines" className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
+            <DisplayLines
+              as="h1"
+              className="display-1 text-white"
+              lines={["Three things,", "done right."]}
+            />
             <p className="lede lg:pb-3">
               Listing media that sells the house, commercial work for everyone
               else, and a monthly program for the agents who want to be known.
             </p>
-          </div>
+          </AnimateOnScroll>
         </div>
       </section>
 
@@ -123,7 +126,10 @@ export default function ServicesPage() {
             >
               <AnimateOnScroll animation={i % 2 === 1 ? "depth-right" : "depth-left"}>
                 <div>
-                  <h2 className="display-2 text-white">{service.title}</h2>
+                  <DisplayLines
+                    className="display-2 text-white"
+                    lines={[service.title]}
+                  />
                   <p className="lede mt-6 max-w-md">{service.lede}</p>
 
                   <ul className="mt-9 grid gap-x-8 sm:grid-cols-2">
@@ -172,9 +178,10 @@ export default function ServicesPage() {
           <AnimateOnScroll animation="rise">
             <div className="surface flex flex-col items-start gap-8 p-8 sm:p-12 lg:flex-row lg:items-center lg:justify-between lg:p-16">
               <div>
-                <h2 className="display-2 max-w-lg text-white">
-                  Not sure which one you need?
-                </h2>
+                <DisplayLines
+                  className="display-2 max-w-lg text-white"
+                  lines={["Not sure which", "one you need?"]}
+                />
                 <p className="lede mt-5 max-w-md">
                   Send us the property or the brief. We&apos;ll tell you what we
                   would shoot and what it costs — usually the same day.

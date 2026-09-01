@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { RuleHead } from "@/components/rule-head";
+import { DisplayLines } from "@/components/display-lines";
 
 const categories = [
   "General",
@@ -149,77 +150,84 @@ export function FAQ() {
   return (
     <section className="section">
       <div className="shell">
-        <AnimateOnScroll animation="fade-up">
+        <AnimateOnScroll animation="lines">
           <RuleHead label="Questions" link={{ href: "/contact", label: "Ask us directly" }} />
-          <h2 className="display-2 mt-8 max-w-2xl text-white">
-            Everything you need to know before booking.
-          </h2>
         </AnimateOnScroll>
 
-        <div className="faq">
-          {/* The radios now live inside the group they belong to, each
-              immediately before its own label. Previously they had to be
-              previous siblings of both the pill strip and the panel stack for
-              the CSS to reach them, which put them outside the `radiogroup` —
-              so the set had no accessible name and no "1 of 5". `:has()`
-              removed that constraint. */}
-          <AnimateOnScroll animation="fade-up" delay={0.1}>
-            <div
-              className="faq-pills mt-12 flex flex-wrap gap-2 sm:mt-14"
-              role="radiogroup"
-              aria-label="Question categories"
-            >
-              {categories.map((cat) => (
-                /* A Fragment, not a wrapper element. Even `display: contents`
-                   leaves a node between the radiogroup and its radios in
-                   Chromium's accessibility tree, which cost the set its
-                   posinset/setsize — the "3 of 5" a screen reader reads out. */
-                <Fragment key={cat}>
-                  <input
-                    type="radio"
-                    name="faq-category"
-                    id={`faq-cat-${slug(cat)}`}
-                    className="faq-radio"
-                    defaultChecked={cat === categories[0]}
-                    aria-controls={`faq-panel-${slug(cat)}`}
-                  />
-                  <label
-                    htmlFor={`faq-cat-${slug(cat)}`}
-                    className="faq-pill cursor-pointer rounded-full px-4 py-2.5 text-xs font-medium transition-colors duration-200 sm:px-5 sm:text-sm"
-                  >
-                    {cat}
-                  </label>
-                </Fragment>
-              ))}
+        {/* `.faq` has to wrap BOTH columns: the `:has()` selectors scope
+            selection to it, so the pills and the panels must share it as an
+            ancestor even though they sit in different grid cells. */}
+        <div className="faq mt-10 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+          {/* The radios live inside the group they belong to, each immediately
+              before its own label. */}
+          <AnimateOnScroll animation="lines">
+            <div className="lg:sticky lg:top-28">
+              <DisplayLines
+                className="display-2 text-white"
+                lines={["Everything you", "need to know."]}
+              />
+              <p className="lede mt-6 max-w-sm">
+                And if the answer is not here, ask us — we would rather tell you
+                straight than have you guess.
+              </p>
+
+              <div
+                className="faq-pills mt-9 flex flex-wrap gap-2"
+                role="radiogroup"
+                aria-label="Question categories"
+              >
+                {categories.map((cat) => (
+                  /* A Fragment, not a wrapper element. Even `display: contents`
+                     leaves a node between the radiogroup and its radios in
+                     Chromium's accessibility tree, which cost the set its
+                     posinset/setsize — the "3 of 5" a screen reader reads. */
+                  <Fragment key={cat}>
+                    <input
+                      type="radio"
+                      name="faq-category"
+                      id={`faq-cat-${slug(cat)}`}
+                      className="faq-radio"
+                      defaultChecked={cat === categories[0]}
+                      aria-controls={`faq-panel-${slug(cat)}`}
+                    />
+                    <label
+                      htmlFor={`faq-cat-${slug(cat)}`}
+                      className="faq-pill cursor-pointer rounded-full px-4 py-2.5 text-xs font-medium transition-colors duration-200 sm:px-5 sm:text-sm"
+                    >
+                      {cat}
+                    </label>
+                  </Fragment>
+                ))}
+              </div>
             </div>
           </AnimateOnScroll>
 
-          <div>
-            <div className="faq-panels mt-8 max-w-4xl border-t border-line sm:mt-10">
-              {categories.map((cat) => (
-                <div
-                  key={cat}
-                  className="faq-panel"
-                  data-category={slug(cat)}
-                  id={`faq-panel-${slug(cat)}`}
-                  role="region"
-                  aria-label={`${cat} questions`}
-                >
-                  {faqs
-                    .filter((f) => f.category === cat)
-                    .map((faq, i) => (
-                      <details
-                        key={faq.question}
-                        className="faq-item reveal"
-                        data-reveal="fade-up"
-                        style={{ "--reveal-delay": `${i * 0.07}s` } as React.CSSProperties}
-                      >
-                        <summary className="flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left sm:py-6">
-                          <span className="text-base font-medium text-white sm:text-lg">
-                            {faq.question}
-                          </span>
+          <div className="faq-panels border-t border-line lg:pt-2">
+            {categories.map((cat) => (
+              <div
+                key={cat}
+                className="faq-panel"
+                data-category={slug(cat)}
+                id={`faq-panel-${slug(cat)}`}
+                role="region"
+                aria-label={`${cat} questions`}
+              >
+                {faqs
+                  .filter((f) => f.category === cat)
+                  .map((faq, i) => (
+                    <details
+                      key={faq.question}
+                      className="faq-item reveal"
+                      data-reveal="fade-up"
+                      style={{ "--reveal-delay": `${i * 0.06}s` } as React.CSSProperties}
+                    >
+                      <summary className="flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left sm:py-6">
+                        <span className="text-base font-medium text-white sm:text-lg">
+                          {faq.question}
+                        </span>
+                        <span className="faq-chevron-well">
                           <svg
-                            className="faq-chevron h-5 w-5 shrink-0 text-white/30 transition-transform duration-200"
+                            className="faq-chevron h-4 w-4 transition-transform duration-300"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -230,15 +238,15 @@ export function FAQ() {
                           >
                             <path d="m6 9 6 6 6-6" />
                           </svg>
-                        </summary>
-                        <p className="faq-answer max-w-2xl pb-6 text-sm leading-relaxed text-ink-2 sm:text-base">
-                          {faq.answer}
-                        </p>
-                      </details>
-                    ))}
-                </div>
-              ))}
-            </div>
+                        </span>
+                      </summary>
+                      <p className="faq-answer max-w-2xl pb-6 text-sm leading-relaxed text-ink-2 sm:text-base">
+                        {faq.answer}
+                      </p>
+                    </details>
+                  ))}
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { CalendarDays, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { RuleHead } from "@/components/rule-head";
+import { DisplayLines } from "@/components/display-lines";
 import { BUSINESS } from "@/lib/data";
 
 export const revalidate = 86400;
@@ -73,12 +74,14 @@ export default function ContactPage() {
     <>
       <section className="section-tight">
         <div className="shell">
-          <AnimateOnScroll animation="fade-up">
+          <AnimateOnScroll animation="lines">
             <RuleHead label="Contact" link={{ href: "/#book", label: "Or book directly" }} />
             <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
-              <h1 className="display-1 text-white">
-                Let&apos;s make something together.
-              </h1>
+              <DisplayLines
+                as="h1"
+                className="display-1 text-white"
+                lines={["Let\u2019s make", "something together."]}
+              />
               <p className="lede lg:pb-3">
                 Tell us about the project and we&apos;ll come back with a quote and
                 a recommendation — usually the same day.
@@ -91,8 +94,8 @@ export default function ContactPage() {
       <section className="section">
         <div className="shell">
           <div className="grid gap-4 lg:grid-cols-5">
-            <AnimateOnScroll animation="fade-up" className="lg:col-span-3">
-              <div className="surface h-full p-6 sm:p-8 lg:p-10">
+            <AnimateOnScroll animation="depth-left" className="lg:col-span-3">
+              <div className="surface surface-raised h-full p-6 sm:p-8 lg:p-10">
                 <ContactForm />
               </div>
             </AnimateOnScroll>
@@ -103,7 +106,7 @@ export default function ContactPage() {
                 200px further down the same screen. Availability and the
                 response promise are the only things here the footer does not
                 already say, so they are what this column leads with. */}
-            <AnimateOnScroll animation="fade-up" delay={0.12} className="lg:col-span-2">
+            <AnimateOnScroll animation="depth-right" delay={0.12} className="lg:col-span-2">
               <div className="surface h-full p-6 sm:p-8">
                 <p className="meta">Reach us directly</p>
                 <ul className="mt-6">

@@ -261,6 +261,17 @@ html {
   --reveal-from: translate3d(0, 28px, 0);
 }
 
+.reveal[data-reveal="lines"] {
+  --reveal-from: none;
+  --reveal-duration: 0.01s;
+}
+
+/* The container stays put and stays opaque; only its masked lines move. */
+html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
+  opacity: 1;
+  transform: none;
+}
+
 .reveal[data-reveal="rise"] {
   --reveal-from: translate3d(0, 44px, 0);
   --reveal-duration: 0.9s;
@@ -460,7 +471,18 @@ html[data-reveal-ready] .reveal.is-visible {
   .reveal:not([data-reveal]) {
     --reveal-from: translate3d(0, 20px, 0);
   }
-  .reveal[data-reveal="rise"] {
+  .reveal[data-reveal="lines"] {
+  --reveal-from: none;
+  --reveal-duration: 0.01s;
+}
+
+/* The container stays put and stays opaque; only its masked lines move. */
+html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal[data-reveal="rise"] {
     --reveal-from: translate3d(0, 28px, 0);
     --reveal-duration: 0.65s;
   }
@@ -1078,4 +1100,137 @@ a.surface:hover,
 
 @media (max-width: 768px) {
   .grid-rules { background-size: calc(100% / 3) 100%; }
+}
+
+/* ── Line masks ────────────────────────────────────────────────────────
+   Display headings arrive line by line out of a clipped block.
+
+   Same contract as `.reveal`: everything renders visible, and lines are only
+   parked below their mask once `data-reveal-ready` says the observer is
+   watching. A heading can therefore never be left invisible by slow or
+   absent JavaScript — the failure mode that makes this effect dangerous.
+
+   `overflow: hidden` on the block, never padding plus a negative margin:
+   adjacent margins collapse, which produces drift that only shows up when
+   something above the heading changes height. */
+
+.line-mask {
+  display: block;
+  overflow: hidden;
+  /* Descenders would otherwise be clipped by the mask. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.line-inner {
+  display: block;
+  transform-origin: 50% 0%;
+  will-change: transform, opacity;
+}
+
+html[data-reveal-ready] .reveal .line-inner,
+html[data-reveal-ready] .line-mask-root:not(.is-visible) .line-inner {
+  transition:
+    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1) var(--line-delay, 0s),
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--line-delay, 0s);
+}
+
+html[data-reveal-ready] .reveal:not(.is-visible) .line-inner {
+  opacity: 0;
+  transform: translate3d(0, 108%, 0) rotateX(-32deg);
+}
+
+html[data-reveal-ready] .reveal.is-visible .line-inner {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 640px) {
+  /* Shorter travel and no rotation on a small viewport, where the full move
+     reads as a lurch and the perspective distortion is wasted. */
+  html[data-reveal-ready] .reveal:not(.is-visible) .line-inner {
+    transform: translate3d(0, 104%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-reveal-ready] .reveal:not(.is-visible) .line-inner,
+  html[data-reveal-ready] .reveal.is-visible .line-inner {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .line-mask { overflow: visible; }
+}
+
+/* The hero headline animates on load, not on intersection — it is already on
+   screen when the page arrives, so waiting for an observer would mean the
+   visitor watches nothing happen. */
+
+@keyframes hero-line-rise {
+  from { opacity: 0; transform: translate3d(0, 108%, 0) rotateX(-32deg); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero-line {
+  animation: hero-line-rise 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (max-width: 640px) {
+  @keyframes hero-line-rise {
+    from { opacity: 0; transform: translate3d(0, 104%, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+/* The chevron sits in a well that fills as the row opens, so an open question
+   is legible at a glance rather than only by its revealed answer. */
+.faq-chevron-well {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--ink-3);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.faq-item:hover .faq-chevron-well {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.faq-item[open] .faq-chevron-well {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: #07090c;
+}
+
+/* An open row gets an accent edge — the only place the accent marks state. */
+.faq-item[open] {
+  box-shadow: inset 2px 0 0 var(--signal);
+  padding-left: 1.125rem;
+  transition: padding-left 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* A surface that sits above the page rather than flush with it. Used where a
+   card is the focus of its section — the contact form, the closing CTA — and
+   a pointer tilt would be wrong because you are typing into it. */
+.surface-raised {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 24px 70px -30px rgba(0, 0, 0, 0.9),
+    0 0 90px -50px rgba(78, 168, 255, 0.5);
+}
+
+/* The stats numbers get a faint vertical sheen, so a figure reads as a
+   surface catching light rather than as flat white text. */
+.stat-figure {
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 55%, #b9cfe6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

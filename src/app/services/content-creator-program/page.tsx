@@ -6,6 +6,7 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PricingCard } from "@/components/pricing-card";
 import { Tilt } from "@/components/tilt";
 import { RuleHead } from "@/components/rule-head";
+import { DisplayLines } from "@/components/display-lines";
 import { VideoGallery } from "@/components/video-gallery";
 import { getVimeoMetas } from "@/lib/vimeo";
 
@@ -135,7 +136,11 @@ export default async function ContentCreatorProgramPage() {
         <div className="shell">
           <RuleHead label="Content Creator Program" link={{ href: "#pricing", label: "See pricing" }} />
           <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
-            <h1 className="display-1 text-white">Content that performs.</h1>
+            <DisplayLines
+              as="h1"
+              className="display-1 text-white"
+              lines={["Content that", "performs."]}
+            />
             <p className="lede lg:pb-3">
               A monthly program built around consistency, strategy, and results
               — so you grow your brand and win more deals. From $1,500 a month.
@@ -149,9 +154,10 @@ export default async function ContentCreatorProgramPage() {
         <div className="shell">
           <AnimateOnScroll animation="rise">
             <RuleHead label="The work" link={{ href: "/portfolio", label: "Full portfolio" }} />
-            <h2 className="display-2 mt-8 max-w-2xl text-white">
-              Real videos, from real agents in the program.
-            </h2>
+            <DisplayLines
+              className="display-2 mt-8 max-w-2xl text-white"
+              lines={["Real videos, from real", "agents in the program."]}
+            />
           </AnimateOnScroll>
           <AnimateOnScroll animation="fade-up" delay={0.12}>
             <VideoGallery videos={videosWithThumbs} />
@@ -168,9 +174,10 @@ export default async function ContentCreatorProgramPage() {
           <AnimateOnScroll animation="rise">
             <RuleHead label="What we handle" />
             <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-16">
-              <h2 className="display-2 text-white">
-                We run the whole creative process.
-              </h2>
+              <DisplayLines
+                className="display-2 text-white"
+                lines={["We run the whole", "creative process."]}
+              />
               <p className="lede lg:pt-2">
                 You show up and be yourself. Everything on either side of that
                 is ours.
@@ -206,7 +213,10 @@ export default async function ContentCreatorProgramPage() {
           <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
             <AnimateOnScroll animation="fade-up">
               <div>
-                <h2 className="display-2 text-white">How this helps you win.</h2>
+                <DisplayLines
+                  className="display-2 text-white"
+                  lines={["How this", "helps you win."]}
+                />
                 <p className="lede mt-6 max-w-md">
                   Most agents struggle with consistency and standing out online.
                   That is where we come in. With consistent, strategic content
@@ -246,9 +256,10 @@ export default async function ContentCreatorProgramPage() {
           <AnimateOnScroll animation="rise">
             <RuleHead label="Pricing" link={{ href: "/contact", label: "Ask a question" }} />
             <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <h2 className="display-2 max-w-xl text-white">
-                Three tiers. Every one includes the whole process.
-              </h2>
+              <DisplayLines
+                className="display-2 max-w-xl text-white"
+                lines={["Three tiers. Every one", "includes the whole process."]}
+              />
               <p className="lede max-w-sm">
                 Strategy, filming, editing, and coaching are in all three. The
                 tier sets how much you get each month.
@@ -289,9 +300,10 @@ export default async function ContentCreatorProgramPage() {
         <div className="shell">
           <AnimateOnScroll animation="rise">
             <RuleHead label="The difference" />
-            <h2 className="display-2 mt-8 max-w-xl text-white">
-              Why this program is different.
-            </h2>
+            <DisplayLines
+              className="display-2 mt-8 max-w-xl text-white"
+              lines={["Why this program", "is different."]}
+            />
           </AnimateOnScroll>
 
           <dl className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 lg:grid-cols-3">
@@ -319,9 +331,10 @@ export default async function ContentCreatorProgramPage() {
           <AnimateOnScroll animation="rise">
             <div className="surface flex flex-col items-start gap-8 p-8 sm:p-12 lg:flex-row lg:items-center lg:justify-between lg:p-16">
               <div>
-                <h2 className="display-2 max-w-lg text-white">
-                  Ready to grow your brand?
-                </h2>
+                <DisplayLines
+                  className="display-2 max-w-lg text-white"
+                  lines={["Ready to grow", "your brand?"]}
+                />
                 <p className="lede mt-5 max-w-md">
                   Get in touch for a free consultation and we&apos;ll tell you
                   honestly whether the program is right for you.

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { images } from "@/lib/images";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { RuleHead } from "@/components/rule-head";
+import { DisplayLines } from "@/components/display-lines";
 import { Tilt } from "@/components/tilt";
 
 export const revalidate = 3600;
@@ -119,15 +120,17 @@ export default function TeamPage() {
       <section className="section-tight">
         <div className="shell">
           <RuleHead label="About" link={{ href: "/contact", label: "Work with us" }} />
-          <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
-            <h1 className="display-1 text-white">
-              The creatives behind the scenes.
-            </h1>
+          <AnimateOnScroll animation="lines" className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
+            <DisplayLines
+              as="h1"
+              className="display-1 text-white"
+              lines={["The creatives", "behind the scenes."]}
+            />
             <p className="lede lg:pb-3">
               A growing group of photographers, editors, and content strategists
               working across Green Bay, Madison, Appleton, and the Fox Valley.
             </p>
-          </div>
+          </AnimateOnScroll>
         </div>
       </section>
 
@@ -180,8 +183,31 @@ export default function TeamPage() {
           <div className="mt-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <AnimateOnScroll animation="fade-up">
               <div className="lg:sticky lg:top-28">
-                <h2 className="display-2 text-white">When you win, we win.</h2>
-                <p className="meta mt-6">Michael McIntee / Founder</p>
+                <DisplayLines
+                  className="display-2 text-white"
+                  lines={["When you win,", "we win."]}
+                />
+                {/* The letter is signed by a person, so show the person. It
+                    was four paragraphs attributed to a name set in mono, in a
+                    column that was otherwise empty below the heading. */}
+                <div className="scene mt-9">
+                  <Tilt max={6} lift={16}>
+                    <figure className="viewfinder relative aspect-[4/5] max-w-[15rem] overflow-hidden rounded-2xl border border-line bg-surface">
+                      <span className="vf-b" aria-hidden="true" />
+                      <Image
+                        src={images.michaelMcintee}
+                        alt="Michael McIntee, founder of PG Creatives"
+                        fill
+                        className="object-cover"
+                        sizes="240px"
+                      />
+                      <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#07090c] via-[#07090c]/75 to-transparent p-4 pt-12">
+                        <p className="text-sm font-semibold text-white">Michael McIntee</p>
+                        <p className="meta mt-1.5">Founder</p>
+                      </figcaption>
+                    </figure>
+                  </Tilt>
+                </div>
               </div>
             </AnimateOnScroll>
             <AnimateOnScroll animation="fade-up" delay={0.1}>
@@ -208,11 +234,13 @@ export default function TeamPage() {
                   content that represents who you are and moves your business
                   forward.
                 </p>
-                <p className="text-white">
-                  When you work with PG Creatives, you are not just hiring a
-                  media company. You are working with a team that is invested in
-                  your success.
-                </p>
+                <blockquote className="relative mt-10 border-l-2 border-signal/50 pl-6 sm:pl-8">
+                  <p className="display-3 !text-[clamp(1.125rem,1.9vw,1.5rem)] text-white">
+                    When you work with PG Creatives, you are not just hiring a
+                    media company. You are working with a team that is invested
+                    in your success.
+                  </p>
+                </blockquote>
               </div>
             </AnimateOnScroll>
           </div>
@@ -224,7 +252,10 @@ export default function TeamPage() {
         <div className="shell">
           <AnimateOnScroll animation="rise">
             <RuleHead label="How we work" />
-            <h2 className="display-2 mt-8 max-w-xl text-white">What drives us.</h2>
+            <DisplayLines
+              className="display-2 mt-8 max-w-xl text-white"
+              lines={["What drives us."]}
+            />
           </AnimateOnScroll>
 
           <dl className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">

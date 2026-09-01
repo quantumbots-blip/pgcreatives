@@ -384,13 +384,20 @@ export function VideoHero() {
               <span>Fox Valley</span>
             </p>
 
-            <h1
-              className="animate-hero-fade-up display-1 mt-6 text-white"
-              style={{ animationDelay: "0.12s" }}
-            >
-              Professional
-              <br />
-              grade media.
+            {/* Not `.reveal`: the hero is above the fold, so it animates on
+                load rather than on intersection. Same masks, driven by the
+                hero's own entrance timing. */}
+            <h1 className="display-1 mt-6 text-white">
+              <span className="line-mask">
+                <span className="line-inner hero-line" style={{ animationDelay: "0.18s" }}>
+                  Professional
+                </span>
+              </span>
+              <span className="line-mask">
+                <span className="line-inner hero-line" style={{ animationDelay: "0.30s" }}>
+                  grade media.
+                </span>
+              </span>
             </h1>
 
             <p

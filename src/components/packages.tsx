@@ -1,4 +1,5 @@
 import { RuleHead } from "@/components/rule-head";
+import { DisplayLines } from "@/components/display-lines";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PricingCard } from "@/components/pricing-card";
 import { Tilt } from "@/components/tilt";
@@ -46,9 +47,10 @@ export function Packages() {
         <AnimateOnScroll animation="rise">
           <RuleHead label="Packages" link={{ href: "/#book", label: "Book a shoot" }} />
           <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <h2 className="display-2 max-w-xl text-white">
-              Three packages. One number each.
-            </h2>
+            <DisplayLines
+              className="display-2 max-w-xl text-white"
+              lines={["Three packages.", "One number each."]}
+            />
             <p className="lede max-w-sm">
               Everything a listing needs is already in the package —
               photography, video, drone, and the extras that usually get billed
