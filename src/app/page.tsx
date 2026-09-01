@@ -55,10 +55,10 @@ const services = [
    one undifferentiated wall of house. */
 const photos = [
   {
-    image: "/images/marble-kitchen-dining.jpg",
-    alt: "Lakefront estate photographed from the air at sunset",
-    caption: "Waterfront estate at sunset",
-    meta: "Drone / twilight",
+    image: "/images/lakefront-sunset-living.jpg",
+    alt: "Living room with a lit fireplace and floor-to-ceiling windows over the water at sunset",
+    caption: "Lakefront great room",
+    meta: "Interior / twilight",
     className: "col-span-2 sm:row-span-2",
   },
   {
@@ -87,20 +87,29 @@ const photos = [
   },
 ];
 
+/* The two booking portals.
+
+   `pin` is the city's position over the state outline, as a percentage of the
+   artwork's box — Green Bay up in the northeast, Madison down in the
+   south-central. These are the cards that actually take a booking, so each one
+   shows where it covers rather than only naming it. */
 const portals = [
   {
     region: "Northeast Wisconsin",
     name: "Green Bay",
     areas: "Green Bay, Fox Valley and surrounding areas",
     href: "https://portal.spiro.media/order/pg/northeast-wisconsin",
+    pin: { x: "72%", y: "39%" },
   },
   {
     region: "South-central Wisconsin",
     name: "Madison",
     areas: "Madison, Dane County and surrounding areas",
     href: "https://portal.spiro.media/order/pg/madison",
+    pin: { x: "57%", y: "73%" },
   },
 ];
+
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -124,7 +133,7 @@ export default function HomePage() {
       {/* ── Track record ──────────────────────────────────────────────────
           A hairline-bounded strip rather than three floating numbers. It
           reads as one row of evidence and takes a fraction of the height. */}
-      <section className="pb-[calc(var(--section-y)/3)] pt-[calc(var(--section-y)/4)]">
+      <section className="pb-[calc(var(--section-y)/1.6)] pt-[calc(var(--section-y)/4)]">
         <div className="shell">
           <dl className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-12">
             {stats.map((stat, i) => (
@@ -313,27 +322,34 @@ export default function HomePage() {
           <div className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2">
             {portals.map((portal, i) => (
               <AnimateOnScroll key={portal.name} animation="depth" delay={i * 0.1} className="scene h-full">
-                <Tilt className="h-full">
+                <Tilt className="h-full" max={6} lift={20}>
                 <a
                   href={portal.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="surface surface-interactive group relative flex h-full flex-col overflow-hidden p-7 sm:p-9"
+                  className="portal-card group relative flex h-full flex-col overflow-hidden rounded-2xl p-7 sm:p-9"
                 >
-                  {/* The state outline, moved out from behind the text. It used
-                      to sit at 30% opacity directly over the portal name. */}
-                  {/* Centred in the card and bright enough to actually read
-                      as Wisconsin. It used to be pinned to the top-right at 6%
-                      opacity, running off the corner. */}
-                  <Image
-                    src="/images/wisconsin-outline.png"
-                    alt=""
-                    width={128}
-                    height={137}
-                    className="pointer-events-none absolute right-6 top-1/2 h-[78%] w-auto -translate-y-1/2 opacity-[0.20] invert transition-all duration-500 group-hover:scale-[1.04] group-hover:opacity-[0.32]"
-                  />
-                  <p className="meta relative">{portal.region}</p>
-                  <p className="display-2 relative mt-4 !text-[clamp(1.75rem,3vw,2.5rem)] text-white">
+                  {/* The state, with the city lit on it. The outline used to
+                      sit at 6% opacity in a corner; a map nobody can read is
+                      just noise on a card whose whole job is to say "we cover
+                      where you are". */}
+                  <span className="portal-glow" aria-hidden="true" />
+                  <span className="portal-map" aria-hidden="true">
+                    <Image
+                      src="/images/wisconsin-outline.png"
+                      alt=""
+                      width={128}
+                      height={137}
+                      className="h-full w-auto invert"
+                    />
+                    <span
+                      className="portal-pin"
+                      style={{ left: portal.pin.x, top: portal.pin.y }}
+                    />
+                  </span>
+
+                  <p className="meta meta-signal relative">{portal.region}</p>
+                  <p className="display-2 relative mt-4 !text-[clamp(2rem,3.4vw,2.9rem)] text-white">
                     {portal.name}
                   </p>
                   <p className="relative mt-3 flex-1 text-sm text-ink-2">{portal.areas}</p>

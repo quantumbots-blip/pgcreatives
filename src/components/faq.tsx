@@ -188,7 +188,7 @@ export function FAQ() {
                     />
                     <label
                       htmlFor={`faq-cat-${slug(cat)}`}
-                      className="faq-pill cursor-pointer rounded-full px-4 py-2.5 text-xs font-medium transition-colors duration-200 sm:px-5 sm:text-sm"
+                      className="faq-pill inline-flex min-h-11 cursor-pointer items-center rounded-full px-4 text-xs font-medium transition-colors duration-200 sm:min-h-0 sm:px-5 sm:py-2.5 sm:text-sm"
                     >
                       {cat}
                     </label>

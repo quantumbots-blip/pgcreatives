@@ -125,7 +125,7 @@ export default function ContactPage() {
                         {item.href ? (
                           <a
                             href={item.href}
-                            className="block rounded-md transition-colors hover:[&_p:last-child]:text-white"
+                            className="flex min-h-11 items-center rounded-md transition-colors hover:[&_p:last-child]:text-white"
                           >
                             {content}
                           </a>

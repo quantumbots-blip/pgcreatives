@@ -179,7 +179,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
                 onClick={() => setActiveCategory(cat)}
                 aria-pressed={activeCategory === cat}
                 className={cn(
-                  "rounded-full border px-4 py-2.5 text-xs font-medium transition-colors duration-200 sm:px-5 sm:text-sm",
+                  "inline-flex min-h-11 items-center rounded-full border px-4 text-xs font-medium transition-colors duration-200 sm:min-h-0 sm:px-5 sm:py-2.5 sm:text-sm",
                   activeCategory === cat
                     ? "border-white bg-white text-[#07090c]"
                     : "border-line text-ink-3 hover:border-line-strong hover:bg-surface hover:text-white"

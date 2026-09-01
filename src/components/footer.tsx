@@ -69,7 +69,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="inline-block py-1 text-sm text-ink-2 transition-colors duration-200 hover:text-white"
+                    className="inline-flex min-h-11 items-center py-1 text-sm text-ink-2 transition-colors duration-200 hover:text-white"
                   >
                     {link.name}
                   </Link>
@@ -88,7 +88,7 @@ export function Footer() {
                 <li key={phone.label}>
                   <a
                     href={phone.href}
-                    className="group flex items-center gap-3 text-sm text-ink-2 transition-colors duration-200 hover:text-white"
+                    className="group flex min-h-11 items-center gap-3 text-sm text-ink-2 transition-colors duration-200 hover:text-white"
                   >
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface transition-colors group-hover:bg-white/[0.08]">
                       <Phone className="h-3.5 w-3.5 text-white/45 transition-colors group-hover:text-signal" />
@@ -103,7 +103,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${BUSINESS.email}`}
-                  className="group flex items-center gap-3 text-sm text-ink-2 transition-colors duration-200 hover:text-white"
+                  className="group flex min-h-11 items-center gap-3 text-sm text-ink-2 transition-colors duration-200 hover:text-white"
                 >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface transition-colors group-hover:bg-white/[0.08]">
                     <Mail className="h-3.5 w-3.5 text-white/45 transition-colors group-hover:text-signal" />
@@ -163,7 +163,7 @@ export function Footer() {
               </span>
             </p>
             <div className="flex items-center gap-6">
-              <Link href="/privacy" className="py-2 text-xs text-ink-3 tracking-wide hover:text-white/60 transition-colors">
+              <Link href="/privacy" className="inline-flex min-h-11 items-center py-2 text-xs tracking-wide text-ink-3 transition-colors hover:text-white/60">
                 Privacy Policy
               </Link>
               <span className="h-3 w-px bg-white/10" />
@@ -174,7 +174,7 @@ export function Footer() {
                 // prefetch aborts every time — one doomed RSC request per
                 // page load, on every public page, warming nothing.
                 prefetch={false}
-                className="py-2 text-xs text-ink-3 tracking-wide transition-colors hover:text-white/60"
+                className="inline-flex min-h-11 items-center py-2 text-xs tracking-wide text-ink-3 transition-colors hover:text-white/60"
               >
                 Admin
               </Link>

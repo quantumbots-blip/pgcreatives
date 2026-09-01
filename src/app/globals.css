@@ -1041,7 +1041,10 @@ a.surface:hover,
 
 .marquee-track {
   display: flex;
-  width: 200%;
+  /* Sized to its content and holding exactly two identical halves, so
+     translating -50% is exactly one half and the loop is seamless whatever
+     the content measures. */
+  width: max-content;
   animation: marquee-run 52s linear infinite;
   will-change: transform;
 }
@@ -1050,10 +1053,13 @@ a.surface:hover,
    the start of the second copy. Sizing the track to its content instead meant
    that whenever the list was narrower than two viewports the track ran out,
    left a gap, and the text snapped back in at the loop point. */
+/* At least a viewport wide so a short list can never leave a gap, but free to
+   grow past it — pinning the half to 50% of the track squeezed a list wider
+   than the viewport and the two halves overlapped at the seam. */
 .marquee-half {
   display: flex;
-  flex: 0 0 50%;
-  min-width: 50%;
+  flex: 0 0 auto;
+  min-width: 100vw;
   align-items: center;
   justify-content: space-around;
 }
@@ -1387,4 +1393,93 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   font-size: 0.875rem;
   line-height: 1.55;
   color: var(--ink-2);
+}
+
+/* ── Portal cards ──────────────────────────────────────────────────────
+   These are the two cards that actually take a booking, so they get more
+   than a border. Each carries the state with its own city lit on it, over a
+   warm accent wash that brightens as you approach — the card should look
+   like somewhere you are about to go. */
+
+.portal-card {
+  background:
+    radial-gradient(120% 100% at 82% 18%, rgba(78, 168, 255, 0.16), transparent 62%),
+    linear-gradient(155deg, #141c28 0%, #0f1319 55%, #0c1017 100%);
+  border: 1px solid var(--line-strong);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 20px 60px -34px rgba(0, 0, 0, 0.9);
+}
+
+.portal-card:hover {
+  border-color: rgba(78, 168, 255, 0.45);
+  box-shadow:
+    0 26px 70px -30px rgba(0, 0, 0, 0.95),
+    0 0 70px -30px rgba(78, 168, 255, 0.6);
+}
+
+/* The wash behind the map, so the state reads as lit rather than drawn. */
+.portal-glow {
+  position: absolute;
+  right: -12%;
+  top: 50%;
+  width: 62%;
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(78, 168, 255, 0.28), transparent 66%);
+  opacity: 0.75;
+  transition: opacity 0.45s ease, scale 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.portal-card:hover .portal-glow { opacity: 1; scale: 1.08; }
+
+.portal-map {
+  position: absolute;
+  right: 1.75rem;
+  top: 50%;
+  height: 78%;
+  translate: 0 -50%;
+  opacity: 0.5;
+  transition: opacity 0.45s ease, scale 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.portal-card:hover .portal-map { opacity: 0.7; scale: 1.04; }
+
+/* The city. A lit dot with a ring that breathes out of it, positioned over
+   the outline by the coordinates in the data. */
+.portal-pin {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 999px;
+  background: var(--signal);
+  box-shadow: 0 0 14px 3px rgba(78, 168, 255, 0.9);
+}
+
+.portal-pin::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 999px;
+  border: 1px solid var(--signal);
+  animation: portal-ping 2.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes portal-ping {
+  0% { transform: scale(0.7); opacity: 0.9; }
+  70% { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-pin::after { animation: none; opacity: 0.5; }
+}
+
+@media (max-width: 640px) {
+  /* The map moves behind the copy on a narrow card rather than beside it. */
+  .portal-map { right: 0.5rem; height: 62%; opacity: 0.24; }
+  .portal-glow { right: -22%; width: 78%; }
 }
