@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { RuleHead } from "@/components/rule-head";
 
@@ -156,33 +157,39 @@ export function FAQ() {
         </AnimateOnScroll>
 
         <div className="faq">
-          {/* The radios carry the selected-tab state. They sit ahead of both the
-              pills and the panels so CSS sibling selectors can reach each. */}
-          {categories.map((cat, i) => (
-            <input
-              key={cat}
-              type="radio"
-              name="faq-category"
-              id={`faq-cat-${slug(cat)}`}
-              className="faq-radio"
-              defaultChecked={i === 0}
-            />
-          ))}
-
+          {/* The radios now live inside the group they belong to, each
+              immediately before its own label. Previously they had to be
+              previous siblings of both the pill strip and the panel stack for
+              the CSS to reach them, which put them outside the `radiogroup` —
+              so the set had no accessible name and no "1 of 5". `:has()`
+              removed that constraint. */}
           <AnimateOnScroll animation="fade-up" delay={0.1}>
             <div
               className="faq-pills mt-12 flex flex-wrap gap-2 sm:mt-14"
-              role="group"
+              role="radiogroup"
               aria-label="Question categories"
             >
               {categories.map((cat) => (
-                <label
-                  key={cat}
-                  htmlFor={`faq-cat-${slug(cat)}`}
-                  className="faq-pill cursor-pointer rounded-full px-4 py-2.5 text-xs font-medium transition-colors duration-200 sm:px-5 sm:text-sm"
-                >
-                  {cat}
-                </label>
+                /* A Fragment, not a wrapper element. Even `display: contents`
+                   leaves a node between the radiogroup and its radios in
+                   Chromium's accessibility tree, which cost the set its
+                   posinset/setsize — the "3 of 5" a screen reader reads out. */
+                <Fragment key={cat}>
+                  <input
+                    type="radio"
+                    name="faq-category"
+                    id={`faq-cat-${slug(cat)}`}
+                    className="faq-radio"
+                    defaultChecked={cat === categories[0]}
+                    aria-controls={`faq-panel-${slug(cat)}`}
+                  />
+                  <label
+                    htmlFor={`faq-cat-${slug(cat)}`}
+                    className="faq-pill cursor-pointer rounded-full px-4 py-2.5 text-xs font-medium transition-colors duration-200 sm:px-5 sm:text-sm"
+                  >
+                    {cat}
+                  </label>
+                </Fragment>
               ))}
             </div>
           </AnimateOnScroll>
@@ -194,6 +201,9 @@ export function FAQ() {
                   key={cat}
                   className="faq-panel"
                   data-category={slug(cat)}
+                  id={`faq-panel-${slug(cat)}`}
+                  role="region"
+                  aria-label={`${cat} questions`}
                 >
                   {faqs
                     .filter((f) => f.category === cat)

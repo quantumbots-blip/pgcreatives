@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -28,16 +28,6 @@ export function VideoModal({
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
-  /* Rendered into <body>, not in place.
-
-     The dialog is opened from inside the page content, and marking that
-     subtree `inert` to keep focus out of the background would otherwise make
-     the dialog inert too — it is a descendant of the thing being disabled.
-     A portal moves it out from under `#page-content` so `inert` applies to
-     the background only. It also frees the overlay from any stacking context
-     its ancestors happen to create. */
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const opener = document.activeElement as HTMLElement | null;
@@ -121,6 +111,18 @@ export function VideoModal({
     </div>
   );
 
-  if (!mounted) return null;
+  /* Rendered into <body>, not in place.
+
+     The dialog is opened from inside the page content, and marking that
+     subtree `inert` to keep focus out of the background would otherwise make
+     the dialog inert too — it is a descendant of the thing being disabled. A
+     portal moves it out from under `#page-content` so `inert` applies to the
+     background only, and frees the overlay from any stacking context its
+     ancestors create.
+
+     No mounted flag needed: this component only ever renders in response to a
+     click, which is necessarily after hydration. The guard is for safety, not
+     for a server pass. */
+  if (typeof document === "undefined") return null;
   return createPortal(dialog, document.body);
 }

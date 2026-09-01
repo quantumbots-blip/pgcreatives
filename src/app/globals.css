@@ -345,10 +345,20 @@ html[data-reveal-ready] .reveal.is-visible {
 }
 
 /* ── FAQ: tabs and accordion with no JavaScript ──
-   The radios hold the selected category and are visually hidden but still
-   focusable, so the tab strip is keyboard-operable. Each `:checked` radio
-   reveals the matching panel and lights its own label. The accordion itself is
-   a native <details>, which needs no help at all. */
+   The radios hold the selected category. They are visually hidden but still
+   focusable, so the strip is keyboard-operable, and they carry the real
+   `radio` semantics — an accessibility-tree dump confirms each pill is
+   announced as a radio with the right name and checked state.
+
+   Selection is matched with `:has()` rather than the old `~ *` sibling
+   walk. That mattered for more than tidiness: the sibling version forced the
+   radios to be previous siblings of both the pill strip and the panel stack,
+   which put them OUTSIDE the element carrying `role="radiogroup"` — so a
+   screen reader announced "General, radio button, selected" with no group
+   name and no "1 of 5". It also made a per-pill focus ring impossible: every
+   focus selector keyed off the generic `.faq-radio:focus-visible`, so all
+   five pills drew a ring at once. Scoping by `:has()` frees the markup, and
+   the radios now sit inside the group they belong to. */
 
 .faq-radio {
   position: absolute;
@@ -374,43 +384,34 @@ html[data-reveal-ready] .reveal.is-visible {
   border-color: var(--line-strong);
 }
 
-/* One pair of rules per category. `~` reaches forward from the checked radio to
-   the pill strip and the panel stack, both of which follow it in the markup. */
-#faq-cat-general:checked ~ * .faq-panel[data-category="general"],
-#faq-cat-pricing-booking:checked ~ * .faq-panel[data-category="pricing-booking"],
-#faq-cat-production:checked ~ * .faq-panel[data-category="production"],
-#faq-cat-delivery-licensing:checked ~ * .faq-panel[data-category="delivery-licensing"],
-#faq-cat-results:checked ~ * .faq-panel[data-category="results"] {
+.faq:has(#faq-cat-general:checked) .faq-panel[data-category="general"],
+.faq:has(#faq-cat-pricing-booking:checked) .faq-panel[data-category="pricing-booking"],
+.faq:has(#faq-cat-production:checked) .faq-panel[data-category="production"],
+.faq:has(#faq-cat-delivery-licensing:checked) .faq-panel[data-category="delivery-licensing"],
+.faq:has(#faq-cat-results:checked) .faq-panel[data-category="results"] {
   display: block;
 }
 
-#faq-cat-general:checked ~ * .faq-pill[for="faq-cat-general"],
-#faq-cat-pricing-booking:checked ~ * .faq-pill[for="faq-cat-pricing-booking"],
-#faq-cat-production:checked ~ * .faq-pill[for="faq-cat-production"],
-#faq-cat-delivery-licensing:checked ~ * .faq-pill[for="faq-cat-delivery-licensing"],
-#faq-cat-results:checked ~ * .faq-pill[for="faq-cat-results"] {
+.faq:has(#faq-cat-general:checked) .faq-pill[for="faq-cat-general"],
+.faq:has(#faq-cat-pricing-booking:checked) .faq-pill[for="faq-cat-pricing-booking"],
+.faq:has(#faq-cat-production:checked) .faq-pill[for="faq-cat-production"],
+.faq:has(#faq-cat-delivery-licensing:checked) .faq-pill[for="faq-cat-delivery-licensing"],
+.faq:has(#faq-cat-results:checked) .faq-pill[for="faq-cat-results"] {
   background: var(--ink);
   color: #07090c;
   border-color: var(--ink);
 }
 
-/* Keyboard focus has to be visible on the label, since the radio itself is
-   hidden — without this the tab strip is unusable without a mouse. */
-/* One pair per category, matching the `:checked` rules above. The previous
-   version keyed every selector off the generic `.faq-radio:focus-visible`,
-   which matches whichever radio has focus — so all five pills drew a focus
-   ring simultaneously and a keyboard user could not tell which was focused. */
-#faq-cat-general:focus-visible ~ * .faq-pill[for="faq-cat-general"],
-#faq-cat-pricing-booking:focus-visible ~ * .faq-pill[for="faq-cat-pricing-booking"],
-#faq-cat-production:focus-visible ~ * .faq-pill[for="faq-cat-production"],
-#faq-cat-delivery-licensing:focus-visible ~ * .faq-pill[for="faq-cat-delivery-licensing"],
-#faq-cat-results:focus-visible ~ * .faq-pill[for="faq-cat-results"] {
+/* One ring, on the focused pill only. */
+.faq:has(#faq-cat-general:focus-visible) .faq-pill[for="faq-cat-general"],
+.faq:has(#faq-cat-pricing-booking:focus-visible) .faq-pill[for="faq-cat-pricing-booking"],
+.faq:has(#faq-cat-production:focus-visible) .faq-pill[for="faq-cat-production"],
+.faq:has(#faq-cat-delivery-licensing:focus-visible) .faq-pill[for="faq-cat-delivery-licensing"],
+.faq:has(#faq-cat-results:focus-visible) .faq-pill[for="faq-cat-results"] {
   outline: 2px solid var(--signal);
   outline-offset: 3px;
 }
 
-/* Questions are hairline rows, not floating cards. Eighteen bordered boxes
-   stacked on a dark ground read as noise; a ruled list reads as a list. */
 .faq-item {
   border: 0;
   border-bottom: 1px solid var(--line);

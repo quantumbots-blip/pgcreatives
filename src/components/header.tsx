@@ -86,6 +86,7 @@ function DesktopDropdown({
 }) {
   const timeout = useRef<ReturnType<typeof setTimeout>>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   const enter = () => {
     if (timeout.current) clearTimeout(timeout.current);
@@ -98,7 +99,14 @@ function DesktopDropdown({
   useEffect(() => {
     if (!open) return;
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onOpenChange(false);
+      if (e.key !== "Escape") return;
+      // Send focus back to the trigger. The panel hides with
+      // `visibility: hidden`, so focus sitting on a link inside it is
+      // destroyed and Tab restarts from the top of the document.
+      if (containerRef.current?.contains(document.activeElement)) {
+        triggerRef.current?.focus();
+      }
+      onOpenChange(false);
     };
     const handleClick = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -118,6 +126,7 @@ function DesktopDropdown({
   return (
     <div ref={containerRef} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
+        ref={triggerRef}
         onClick={() => onOpenChange(!open)}
         aria-expanded={open}
         aria-haspopup="true"
@@ -445,11 +454,16 @@ function ClientLoginMenu({
 }) {
   const timeout = useRef<ReturnType<typeof setTimeout>>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onOpenChange(false);
+      if (e.key !== "Escape") return;
+      if (containerRef.current?.contains(document.activeElement)) {
+        triggerRef.current?.focus();
+      }
+      onOpenChange(false);
     };
     const handleClick = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -477,6 +491,7 @@ function ClientLoginMenu({
       }}
     >
       <button
+        ref={triggerRef}
         onClick={() => onOpenChange(!open)}
         aria-expanded={open}
         aria-haspopup="true"

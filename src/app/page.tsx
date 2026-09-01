@@ -52,16 +52,36 @@ const services = [
    one undifferentiated wall of house. */
 const photos = [
   {
-    image: "/images/luxury-estate-night.jpg",
-    alt: "Modern estate photographed from the air after dark",
-    caption: "Modern estate, after dark",
+    image: "/images/marble-kitchen-dining.jpg",
+    alt: "Lakefront estate photographed from the air at sunset",
+    caption: "Waterfront estate at sunset",
     meta: "Drone / twilight",
     className: "sm:col-span-2 sm:row-span-2",
   },
-  { image: "/images/fireplace-living.jpg", alt: "Living room with a linear fireplace", caption: "Linear fireplace", meta: "Interior" },
-  { image: "/images/aerial-lakefront.jpg", alt: "Lakefront homes photographed from the air", caption: "Lakefront estate", meta: "Drone" },
-  { image: "/images/lakefront-screened-porch.jpg", alt: "Screened porch with a vaulted wood ceiling over the water", caption: "Screened porch", meta: "Interior" },
-  { image: "/images/golf-simulator-room.jpg", alt: "Indoor golf simulator room", caption: "Golf simulator", meta: "Amenity" },
+  {
+    image: "/images/fireplace-living.jpg",
+    alt: "Dining area beside a linear fireplace",
+    caption: "Linear fireplace",
+    meta: "Interior",
+  },
+  {
+    image: "/images/stone-ranch-exterior.jpg",
+    alt: "Stone ranch home behind a long front lawn",
+    caption: "Stone ranch",
+    meta: "Exterior",
+  },
+  {
+    image: "/images/lakefront-screened-porch.jpg",
+    alt: "Screened porch with a vaulted wood ceiling over the water",
+    caption: "Screened porch",
+    meta: "Interior",
+  },
+  {
+    image: "/images/sunset-dining-room.jpg",
+    alt: "Dining room looking out over the water at sunset",
+    caption: "Dining at sunset",
+    meta: "Interior",
+  },
 ];
 
 const brandingBenefits = [

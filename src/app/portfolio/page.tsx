@@ -105,7 +105,7 @@ const projects = [
     image: "/images/luxury-living-room.jpg",
   },
   {
-    title: "Downtown Penthouse",
+    title: "Downtown Condo",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/modern-condo.jpg",
@@ -124,7 +124,7 @@ const projects = [
     image: "/images/lakehouse-kitchen.jpg",
   },
   {
-    title: "Lakefront Cottage Exterior",
+    title: "Cottage Exterior",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/cottage-exterior.jpg",
@@ -142,11 +142,10 @@ const projects = [
     image: "/images/modern-entryway.jpg",
   },
   {
-    title: "Luxury Estate at Twilight",
+    title: "Modern Estate After Dark",
     category: "Drone",
     type: "photo" as const,
     image: "/images/luxury-estate-night.jpg",
-    feature: true,
   },
   {
     title: "Classic Lakehouse Living Room",
@@ -198,7 +197,7 @@ const projects = [
     image: "/images/stone-ranch-exterior.jpg",
   },
   {
-    title: "Staged Master Suite",
+    title: "Staged Primary Suite",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/staged-master-bedroom.jpg",
@@ -290,13 +289,13 @@ const projects = [
     image: "/images/cottage-bedroom-fireplace.jpg",
   },
   {
-    title: "Modern Master Bathroom",
+    title: "Modern Primary Bathroom",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/modern-master-bath.jpg",
   },
   {
-    title: "Lakefront Sunset Living",
+    title: "Coffered-Ceiling Living Room",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/lakefront-sunset-living.jpg",

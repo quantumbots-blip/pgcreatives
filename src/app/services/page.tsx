@@ -37,8 +37,8 @@ const services = [
     title: "Real estate",
     lede:
       "Everything a listing needs to go live looking its best — shot, edited, and delivered fast enough to matter.",
-    image: "/images/marble-kitchen-dining.jpg",
-    imageAlt: "Lakefront estate photographed from the air at twilight",
+    image: "/images/aerial-lakefront.jpg",
+    imageAlt: "Lakefront homes and piers photographed from the air",
     includes: [
       "Daytime and twilight photography",
       "Premium listing video",
@@ -57,7 +57,7 @@ const services = [
     lede:
       "Media for businesses of every kind — clinics, restaurants, studios, contractors, and the brands behind them.",
     image: "/images/twilight-wooded-exterior.jpg",
-    imageAlt: "Medical imaging suite photographed for a Wisconsin clinic",
+    imageAlt: "Robotic surgical suite photographed for a Wisconsin clinic",
     includes: [
       "Brand and campaign films",
       "Interior and architectural stills",
@@ -76,7 +76,7 @@ const services = [
     lede:
       "A monthly program that keeps you visible in your market between listings. Strategy, filming, editing, coaching.",
     image: "/images/dark-home-office.jpg",
-    imageAlt: "Real estate agent filming a personal-brand video on location",
+    imageAlt: "Real estate agent being filmed for a personal-brand video on location",
     includes: [
       "Four to six short-form videos a month",
       "Strategy and planning around your market",

@@ -166,6 +166,10 @@ export function Footer() {
               <Link
                 href="/admin"
                 rel="nofollow"
+                // /admin redirects to /admin/login, so Next's viewport
+                // prefetch aborts every time — one doomed RSC request per
+                // page load, on every public page, warming nothing.
+                prefetch={false}
                 className="py-2 text-xs text-white/45 tracking-wide transition-colors hover:text-white/60"
               >
                 Admin

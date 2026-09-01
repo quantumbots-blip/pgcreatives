@@ -46,11 +46,12 @@ export function Packages() {
           <RuleHead label="Packages" link={{ href: "/#book", label: "Book a shoot" }} />
           <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <h2 className="display-2 max-w-xl text-white">
-              Pick the package, not the à la carte menu.
+              Three packages. One number each.
             </h2>
             <p className="lede max-w-sm">
-              Every stage of a project, from a single-property shoot to full
-              production. Custom quotes for anything outside them.
+              Everything a listing needs is already in the package —
+              photography, video, drone, and the extras that usually get billed
+              separately. Anything bigger gets a custom quote.
             </p>
           </div>
         </AnimateOnScroll>
