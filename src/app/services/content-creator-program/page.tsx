@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PricingCard } from "@/components/pricing-card";
+import { Tilt } from "@/components/tilt";
 import { RuleHead } from "@/components/rule-head";
 import { VideoGallery } from "@/components/video-gallery";
 import { getVimeoMetas } from "@/lib/vimeo";
@@ -255,9 +256,17 @@ export default async function ContentCreatorProgramPage() {
             </div>
           </AnimateOnScroll>
 
-          <div className="mt-12 grid gap-4 sm:mt-16 lg:grid-cols-3">
+          <div className="scene mt-12 grid gap-4 sm:mt-16 lg:grid-cols-3">
             {tiers.map((tier, i) => (
-              <AnimateOnScroll key={tier.name} animation="fade-up" delay={i * 0.1} className="h-full">
+              <AnimateOnScroll
+                key={tier.name}
+                animation={i === 0 ? "depth-left" : i === 2 ? "depth-right" : "depth"}
+                delay={i * 0.1}
+                className={`pkg-fan h-full ${
+                  i === 1 ? "pkg-fan-center" : i === 0 ? "pkg-fan-left" : "pkg-fan-right"
+                }`}
+              >
+                <Tilt className="h-full" max={5} lift={i === 1 ? 34 : 14}>
                 <PricingCard
                   name={tier.name}
                   price={tier.price}
@@ -268,6 +277,7 @@ export default async function ContentCreatorProgramPage() {
                   href="/contact"
                   cta={`Start with ${tier.name.toLowerCase()}`}
                 />
+                </Tilt>
               </AnimateOnScroll>
             ))}
           </div>

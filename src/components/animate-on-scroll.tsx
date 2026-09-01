@@ -5,7 +5,11 @@ export type RevealAnimation =
   | "rise"
   | "fade-in-scale"
   | "slide-in-left"
-  | "slide-in-right";
+  | "slide-in-right"
+  /* Arrive through Z rather than sliding up the page. */
+  | "depth"
+  | "depth-left"
+  | "depth-right";
 
 /**
  * Scroll-triggered entrance. Server component — ships no JavaScript of its

@@ -297,9 +297,20 @@ html[data-reveal-ready] .reveal.is-visible {
 
 /* ── Hero parallax layers (transform set from JS on pointer devices) ── */
 
+/* The scroll parallax writes `transform` directly from JS; the pointer
+   parallax writes --px/--py, and translate() composes with that transform
+   through the same property here. Keeping them on separate properties is
+   what lets both run without one clobbering the other. */
 .hero-parallax-bg,
 .hero-parallax-content {
   will-change: transform;
+  translate: var(--px, 0px) var(--py, 0px);
+  transition: translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-parallax-bg,
+  .hero-parallax-content { translate: none !important; }
 }
 
 /* ── FAQ answer entrance ── */
@@ -847,3 +858,224 @@ a.surface:hover,
 }
 
 .field-required { color: var(--signal); }
+/* ══════════════════════════════════════════════════════════════════════
+   DEPTH LAYER
+
+   The page sits on four planes, back to front:
+     -20  .aurora        slow colour wash, CSS only
+     -10  <BokehField>   drifting lens highlights, canvas
+       0  gradient-mesh  the fixed ground wash
+       1+ content
+   Everything here is transform/opacity or a cheap paint, and all of it
+   stops under prefers-reduced-motion via the global block above.
+   ══════════════════════════════════════════════════════════════════════ */
+
+@keyframes aurora-drift {
+  0%   { transform: translate3d(-6%, -4%, 0) scale(1.08); }
+  33%  { transform: translate3d(4%, 3%, 0) scale(1.16); }
+  66%  { transform: translate3d(-3%, 5%, 0) scale(1.10); }
+  100% { transform: translate3d(-6%, -4%, 0) scale(1.08); }
+}
+
+/* One large, very low-contrast wash that never resolves into a shape you can
+   name — it reads as depth rather than as a gradient someone applied. */
+.aurora {
+  background:
+    radial-gradient(38% 30% at 22% 18%, rgba(78, 168, 255, 0.16), transparent 68%),
+    radial-gradient(32% 28% at 78% 32%, rgba(43, 111, 184, 0.14), transparent 66%),
+    radial-gradient(40% 34% at 62% 76%, rgba(96, 140, 255, 0.11), transparent 70%),
+    radial-gradient(30% 26% at 14% 82%, rgba(78, 168, 255, 0.10), transparent 68%);
+  animation: aurora-drift 44s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ── 3D ────────────────────────────────────────────────────────────────
+   `perspective` on the parent, transforms on the child. A pointer tilt is
+   meaningless on a touchscreen — there is no hover to drive it — so every
+   tilt is gated to a fine pointer and simply never runs on a phone. */
+
+.scene {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+
+.tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* Set from JS as the pointer moves; the fallback keeps the card flat. */
+@media (pointer: fine) {
+  .tilt {
+    transform:
+      perspective(1200px)
+      rotateX(var(--tilt-x, 0deg))
+      rotateY(var(--tilt-y, 0deg))
+      translate3d(0, 0, var(--tilt-z, 0px));
+  }
+
+  .tilt-active {
+    transition: transform 0.09s linear;
+  }
+
+  /* A specular sheen that tracks the pointer, so the tilt reads as a lit
+     surface rather than as a rectangle being rotated. */
+  .tilt-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      42% 42% at var(--sheen-x, 50%) var(--sheen-y, 50%),
+      rgba(255, 255, 255, 0.13),
+      transparent 70%
+    );
+  }
+
+  .tilt-sheen:hover::after { opacity: 1; }
+}
+
+/* ── Depth entrance ────────────────────────────────────────────────────
+   Reveal variants that arrive through Z rather than sliding up the page.
+   Composited like every other reveal — transform and opacity only. */
+
+.reveal[data-reveal="depth"] {
+  --reveal-from: perspective(1400px) translate3d(0, 40px, -180px) rotateX(9deg);
+  --reveal-duration: 1s;
+}
+
+.reveal[data-reveal="depth-left"] {
+  --reveal-from: perspective(1400px) translate3d(-40px, 24px, -220px) rotateY(14deg);
+  --reveal-duration: 1.05s;
+}
+
+.reveal[data-reveal="depth-right"] {
+  --reveal-from: perspective(1400px) translate3d(40px, 24px, -220px) rotateY(-14deg);
+  --reveal-duration: 1.05s;
+}
+
+@media (max-width: 768px) {
+  /* Shorter Z travel on phones: the same distance reads as a lurch on a
+     small viewport, and costs more to composite. */
+  .reveal[data-reveal="depth"] {
+    --reveal-from: perspective(1000px) translate3d(0, 26px, -90px) rotateX(6deg);
+  }
+  .reveal[data-reveal="depth-left"],
+  .reveal[data-reveal="depth-right"] {
+    --reveal-from: perspective(1000px) translate3d(0, 26px, -90px) rotateX(6deg);
+  }
+}
+
+/* ── Pricing fan ───────────────────────────────────────────────────────
+   The three tiers sit on an arc: the centre card comes forward and its
+   neighbours rake away from the reader. It restores the depth the old
+   scroll-linked 3D fan had, without shipping the JavaScript that drove it —
+   this is three static transforms inside one `.scene`.
+
+   Desktop only. On a phone the cards stack vertically, where a rake reads
+   as three misaligned rectangles rather than as an arc. */
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .pkg-fan {
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html[data-reveal-ready] .pkg-fan.is-visible.pkg-fan-left {
+    transform: rotateY(6deg) translate3d(0, 6px, -46px);
+  }
+  html[data-reveal-ready] .pkg-fan.is-visible.pkg-fan-center {
+    transform: translate3d(0, -14px, 30px);
+  }
+  html[data-reveal-ready] .pkg-fan.is-visible.pkg-fan-right {
+    transform: rotateY(-6deg) translate3d(0, 6px, -46px);
+  }
+
+  /* Hovering any card flattens the arc, so the one being read is square to
+     the reader and the others get out of its way. */
+  .scene:hover .pkg-fan.is-visible.pkg-fan-left,
+  .scene:hover .pkg-fan.is-visible.pkg-fan-right {
+    transform: rotateY(0deg) translate3d(0, 0, -70px);
+    opacity: 0.82;
+  }
+  .scene:hover .pkg-fan.is-visible.pkg-fan-center {
+    transform: translate3d(0, -14px, 30px);
+  }
+}
+
+/* ── Marquee ───────────────────────────────────────────────────────────
+   The track holds the list twice and travels exactly -50%, so the seam
+   lands where the second copy starts and the loop is invisible. Pure CSS:
+   nothing measures anything at runtime. */
+
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-run 48s linear infinite;
+  will-change: transform;
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.25rem;
+  padding-right: 2.25rem;
+  white-space: nowrap;
+}
+
+.marquee-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--signal);
+  opacity: 0.55;
+  flex: none;
+}
+
+@keyframes marquee-run {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Stop it rather than speed it up: a horizontally scrolling band is exactly
+     what this setting exists to switch off. */
+  .marquee-track { animation: none; }
+  .marquee {
+    -webkit-mask-image: linear-gradient(to right, black 92%, transparent);
+    mask-image: linear-gradient(to right, black 92%, transparent);
+  }
+}
+
+/* ── Structural grid ───────────────────────────────────────────────────
+   Faint vertical rules on the container's own columns. It reads as the
+   drafting grid the layout was built on, which is the point — it makes the
+   page look composed rather than merely filled. */
+
+.grid-rules {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.045) 1px,
+    transparent 1px
+  );
+  background-size: calc(100% / 6) 100%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+}
+
+@media (max-width: 768px) {
+  .grid-rules { background-size: calc(100% / 3) 100%; }
+}

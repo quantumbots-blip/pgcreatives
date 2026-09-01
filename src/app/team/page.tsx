@@ -5,6 +5,7 @@ import Image from "next/image";
 import { images } from "@/lib/images";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { RuleHead } from "@/components/rule-head";
+import { Tilt } from "@/components/tilt";
 
 export const revalidate = 3600;
 
@@ -134,9 +135,14 @@ export default function TeamPage() {
       <section className="section">
         <div className="shell">
           <h2 className="sr-only">Meet the team</h2>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          <div className="scene grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {team.map((member, index) => (
-              <AnimateOnScroll key={member.name} animation="fade-up" delay={index * 0.06}>
+              <AnimateOnScroll
+                key={member.name}
+                animation={index % 2 ? "depth-right" : "depth-left"}
+                delay={index * 0.06}
+              >
+                <Tilt max={6} lift={16}>
                 <div className="group relative overflow-hidden rounded-2xl border border-line bg-surface">
                   <div className="relative aspect-[3/4] overflow-hidden">
                     <Image
@@ -156,6 +162,7 @@ export default function TeamPage() {
                     </div>
                   </div>
                 </div>
+                </Tilt>
               </AnimateOnScroll>
             ))}
           </div>
@@ -224,7 +231,7 @@ export default function TeamPage() {
             {values.map((value, i) => (
               <AnimateOnScroll
                 key={value.title}
-                animation="fade-up"
+                animation="depth"
                 delay={i * 0.08}
                 className="flex h-full flex-col bg-surface p-7"
               >

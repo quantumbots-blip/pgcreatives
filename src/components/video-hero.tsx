@@ -36,6 +36,12 @@ const MAX_AUTO_ATTEMPTS = 3;
 // storm can never occupy consecutive frames.
 const RETRY_DELAY_MS = 400;
 
+/* The two hero planes. The backdrop sits behind the picture plane and is
+   scaled to cover the extra apparent distance ((1200+140)/1200 = 1.117), so
+   pushing it back reads as depth rather than as the video shrinking. */
+const BASE_BG = "translateZ(-140px) scale(1.125)";
+const BASE_CONTENT = "translateZ(60px)";
+
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
@@ -52,6 +58,8 @@ export function VideoHero() {
     const bg = bgRef.current;
     const content = contentRef.current;
     if (!bg || !content) return;
+    bg.style.transform = BASE_BG;
+    content.style.transform = BASE_CONTENT;
     const mq = window.matchMedia(
       "(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)"
     );
@@ -64,8 +72,10 @@ export function VideoHero() {
       const vh = window.innerHeight || 1;
       if (y > vh) return; // hero is off-screen; leave it where it was
       const t = Math.min(1, y / vh);
-      bg.style.transform = `translate3d(0, ${Math.round(y * 0.25)}px, 0)`;
-      content.style.transform = `translate3d(0, ${Math.round(y * 0.12)}px, 0)`;
+      // BASE_* keep the two planes separated in Z; the scroll offset composes
+      // with them rather than replacing them.
+      bg.style.transform = `${BASE_BG} translate3d(0, ${Math.round(y * 0.25)}px, 0)`;
+      content.style.transform = `${BASE_CONTENT} translate3d(0, ${Math.round(y * 0.12)}px, 0)`;
       content.style.opacity = String(1 - t * 1.1);
     };
     const onScroll = () => {
@@ -73,11 +83,36 @@ export function VideoHero() {
     };
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
+
+    /* Pointer parallax. The backdrop leans away from the cursor and the copy
+       leans toward it, which is what separates them into two planes rather
+       than one flat picture. Written inside a rAF and only for a mouse — a
+       finger has no hover position to read. */
+    let pFrame = 0;
+    let px = 0;
+    let py = 0;
+    const applyPointer = () => {
+      pFrame = 0;
+      bg.style.setProperty("--px", `${px * -14}px`);
+      bg.style.setProperty("--py", `${py * -10}px`);
+      content.style.setProperty("--px", `${px * 12}px`);
+      content.style.setProperty("--py", `${py * 8}px`);
+    };
+    const onPointer = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      px = e.clientX / (window.innerWidth || 1) - 0.5;
+      py = e.clientY / (window.innerHeight || 1) - 0.5;
+      if (!pFrame) pFrame = requestAnimationFrame(applyPointer);
+    };
+    window.addEventListener("pointermove", onPointer, { passive: true });
+
     return () => {
       if (frame) cancelAnimationFrame(frame);
+      if (pFrame) cancelAnimationFrame(pFrame);
       window.removeEventListener("scroll", onScroll);
-      bg.style.transform = "";
-      content.style.transform = "";
+      window.removeEventListener("pointermove", onPointer);
+      bg.style.transform = BASE_BG;
+      content.style.transform = BASE_CONTENT;
       content.style.opacity = "";
     };
   }, []);
@@ -288,7 +323,7 @@ export function VideoHero() {
   }, [videoEnabled]);
 
   return (
-    <section className="viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[92svh] items-end overflow-clip lg:-mt-20 lg:min-h-screen">
+    <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[92svh] items-end overflow-clip lg:-mt-20 lg:min-h-screen">
       {/* The bottom half of the viewfinder ticks. The top two are drawn by
           `.viewfinder` itself; this empty element carries the other two. */}
       <span className="vf-b" aria-hidden="true" />

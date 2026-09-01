@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { RuleHead } from "@/components/rule-head";
+import { Tilt } from "@/components/tilt";
 
 export const revalidate = 3600;
 
@@ -120,7 +121,7 @@ export default function ServicesPage() {
                 i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
               }`}
             >
-              <AnimateOnScroll animation="fade-up">
+              <AnimateOnScroll animation={i % 2 === 1 ? "depth-right" : "depth-left"}>
                 <div>
                   <h2 className="display-2 text-white">{service.title}</h2>
                   <p className="lede mt-6 max-w-md">{service.lede}</p>
@@ -147,7 +148,8 @@ export default function ServicesPage() {
                 </div>
               </AnimateOnScroll>
 
-              <AnimateOnScroll animation="fade-in-scale" delay={0.1}>
+              <AnimateOnScroll animation="depth" delay={0.1} className="scene">
+                <Tilt max={6} lift={20}>
                 <div className="viewfinder relative aspect-[4/3] overflow-hidden rounded-2xl border border-line bg-surface">
                   <span className="vf-b" aria-hidden="true" />
                   <Image
@@ -158,6 +160,7 @@ export default function ServicesPage() {
                     sizes="(min-width: 1360px) 580px, (min-width: 1024px) 40vw, 100vw"
                   />
                 </div>
+                </Tilt>
               </AnimateOnScroll>
             </div>
           </div>

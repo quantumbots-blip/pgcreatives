@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { PageViewTracker } from "@/components/page-view-tracker";
 import { SplashScreen } from "@/components/splash-screen";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { BokehField } from "@/components/bokeh-field";
 import { BUSINESS } from "@/lib/data";
 
 const geistSans = Geist({
@@ -188,6 +189,8 @@ export default function RootLayout({
             the accessibility tree cannot reach the page behind it. */}
         <div id="page-content" className="relative flex-1 flex flex-col">
           <div className="pointer-events-none absolute inset-0 overflow-hidden gradient-mesh-unified" />
+          <div className="aurora pointer-events-none fixed inset-0 -z-20" aria-hidden="true" />
+          <BokehField />
           <main id="main-content" className="flex-1 pt-16 lg:pt-20">{children}</main>
           <Footer />
         </div>

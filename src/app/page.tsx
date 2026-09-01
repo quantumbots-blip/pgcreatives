@@ -5,6 +5,8 @@ import { VideoHero } from "@/components/video-hero";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { ContactForm } from "@/components/contact-form";
 import { RuleHead } from "@/components/rule-head";
+import { Tilt } from "@/components/tilt";
+import { Marquee } from "@/components/marquee";
 import { Counter } from "@/components/counter";
 import { FAQ, faqs } from "@/components/faq";
 import { Packages } from "@/components/packages";
@@ -135,7 +137,7 @@ export default function HomePage() {
             {stats.map((stat, i) => (
               <AnimateOnScroll
                 key={stat.label}
-                animation="fade-up"
+                animation="depth"
                 delay={i * 0.1}
                 className="flex flex-col-reverse px-0 py-7 sm:px-8 sm:py-9"
               >
@@ -149,6 +151,21 @@ export default function HomePage() {
         </div>
       </section>
 
+      <Marquee
+        items={[
+          "Green Bay",
+          "Listing photography",
+          "Madison",
+          "Drone and aerial",
+          "Milwaukee",
+          "3D virtual tours",
+          "Fox Valley",
+          "Listing video",
+          "Appleton",
+          "Personal brand content",
+        ]}
+      />
+
       {/* ── Services ─────────────────────────────────────────────────────── */}
       <section className="section">
         <div className="shell">
@@ -161,7 +178,8 @@ export default function HomePage() {
 
           <div className="mt-12 grid grid-cols-1 gap-4 sm:mt-16 md:grid-cols-3">
             {services.map((service, i) => (
-              <AnimateOnScroll key={service.title} animation="fade-up" delay={i * 0.1} className="h-full">
+              <AnimateOnScroll key={service.title} animation="depth" delay={i * 0.1} className="scene h-full">
+                <Tilt className="h-full">
                 <Link
                   href={service.href}
                   className="surface surface-interactive group flex h-full flex-col overflow-hidden"
@@ -190,6 +208,7 @@ export default function HomePage() {
                     </span>
                   </div>
                 </Link>
+                </Tilt>
               </AnimateOnScroll>
             ))}
           </div>
@@ -197,8 +216,9 @@ export default function HomePage() {
       </section>
 
       {/* ── Selected work ────────────────────────────────────────────────── */}
-      <section className="section">
-        <div className="shell">
+      <section className="section relative overflow-hidden">
+        <div className="grid-rules" aria-hidden="true" />
+        <div className="shell relative">
           <AnimateOnScroll animation="rise">
             <RuleHead label="Selected work" link={{ href: "/portfolio", label: "Full portfolio" }} />
             <h2 className="display-2 mt-8 max-w-2xl text-white">
@@ -206,11 +226,11 @@ export default function HomePage() {
             </h2>
           </AnimateOnScroll>
 
-          <div className="mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:grid-rows-2">
+          <div className="scene mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:grid-rows-2">
             {photos.map((photo, i) => (
               <AnimateOnScroll
                 key={photo.alt}
-                animation="fade-in-scale"
+                animation={i === 0 ? "depth" : i % 2 ? "depth-right" : "depth-left"}
                 delay={i * 0.07}
                 className={`viewfinder group relative overflow-hidden rounded-xl bg-surface ${
                   photo.className ?? ""
@@ -272,7 +292,8 @@ export default function HomePage() {
               </div>
             </AnimateOnScroll>
 
-            <AnimateOnScroll animation="fade-up" delay={0.12}>
+            <AnimateOnScroll animation="depth-right" delay={0.12} className="scene">
+              <Tilt max={4} lift={12}>
               <div className="surface p-7 sm:p-9">
                 <p className="meta">What you get</p>
                 <ul className="mt-6">
@@ -290,6 +311,7 @@ export default function HomePage() {
                   When you win, we win.
                 </p>
               </div>
+              </Tilt>
             </AnimateOnScroll>
           </div>
         </div>
@@ -301,8 +323,9 @@ export default function HomePage() {
           Elevate Your Brand?", then the FAQ — three closes in a row, each
           asking for the same thing. Booking a session and asking a question
           are the two real paths, so they sit side by side under one head. */}
-      <section id="book" className="section scroll-mt-20">
-        <div className="shell">
+      <section id="book" className="section relative overflow-hidden scroll-mt-20">
+        <div className="grid-rules" aria-hidden="true" />
+        <div className="shell relative">
           <AnimateOnScroll animation="rise">
             <RuleHead label="Start a project" />
             <h2 className="display-2 mt-8 max-w-2xl text-white">
@@ -312,7 +335,8 @@ export default function HomePage() {
 
           <div className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2">
             {portals.map((portal, i) => (
-              <AnimateOnScroll key={portal.name} animation="fade-up" delay={i * 0.1} className="h-full">
+              <AnimateOnScroll key={portal.name} animation="depth" delay={i * 0.1} className="scene h-full">
+                <Tilt className="h-full">
                 <a
                   href={portal.href}
                   target="_blank"
@@ -338,6 +362,7 @@ export default function HomePage() {
                     <ArrowUpRight className="arrow h-4 w-4" />
                   </span>
                 </a>
+                </Tilt>
               </AnimateOnScroll>
             ))}
           </div>

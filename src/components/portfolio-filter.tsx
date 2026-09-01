@@ -6,6 +6,7 @@ import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { VideoModal } from "@/components/video-modal";
+import { Tilt } from "@/components/tilt";
 
 /* Filtering by subject, not by file type.
 
@@ -68,9 +69,10 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
   const renderVideo = (project: Project, i: number) => (
     <AnimateOnScroll
       key={project.title}
-      animation="fade-up"
+      animation={i % 2 ? "depth-right" : "depth-left"}
       delay={(i % (videosPortrait ? 4 : 3)) * 0.07}
     >
+      <Tilt max={5} lift={14}>
       <button
         type="button"
         onClick={() => setActiveVideo(project)}
@@ -109,6 +111,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         </div>
         {caption(project)}
       </button>
+      </Tilt>
     </AnimateOnScroll>
   );
 
@@ -132,7 +135,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
   const renderPhoto = (project: Project, i: number, all: Project[]) => (
     <AnimateOnScroll
       key={project.title}
-      animation="fade-in-scale"
+      animation={i % 2 ? "depth-right" : "depth-left"}
       delay={(i % 4) * 0.06}
       className={cn(
         "viewfinder group relative overflow-hidden rounded-xl border border-line bg-surface",
@@ -198,7 +201,8 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
                 "mt-6 grid gap-3",
                 videosPortrait
                   ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
-                  : "sm:grid-cols-2 lg:grid-cols-3"
+                  : "sm:grid-cols-2 lg:grid-cols-3",
+                "scene"
               )}
             >
               {videos.map(renderVideo)}
@@ -211,7 +215,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
             <h2 className="meta border-b border-line pb-4">
               Stills <span className="text-ink-3">({photos.length})</span>
             </h2>
-            <div className="mt-6 grid auto-rows-[9rem] grid-flow-row-dense grid-cols-2 gap-3 sm:auto-rows-[11rem] sm:grid-cols-3 lg:auto-rows-[13rem] lg:grid-cols-4">
+            <div className="scene mt-6 grid auto-rows-[9rem] grid-flow-row-dense grid-cols-2 gap-3 sm:auto-rows-[11rem] sm:grid-cols-3 lg:auto-rows-[13rem] lg:grid-cols-4">
               {photos.map(renderPhoto)}
             </div>
           </div>

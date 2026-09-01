@@ -1,6 +1,7 @@
 import { RuleHead } from "@/components/rule-head";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PricingCard } from "@/components/pricing-card";
+import { Tilt } from "@/components/tilt";
 
 // This section used to be a client component driving a scroll-linked 3D fan:
 // three cards rotated into place from a scroll listener on desktop. The effect
@@ -56,14 +57,17 @@ export function Packages() {
           </div>
         </AnimateOnScroll>
 
-        <div className="mt-12 grid gap-4 sm:mt-16 lg:grid-cols-3">
+        <div className="scene mt-12 grid gap-4 sm:mt-16 lg:grid-cols-3">
           {packages.map((pkg, i) => (
             <AnimateOnScroll
               key={pkg.title}
-              animation="fade-up"
+              animation={i === 0 ? "depth-left" : i === 2 ? "depth-right" : "depth"}
               delay={i * 0.1}
-              className="h-full"
+              className={`pkg-fan h-full ${
+                i === 1 ? "pkg-fan-center" : i === 0 ? "pkg-fan-left" : "pkg-fan-right"
+              }`}
             >
+              <Tilt className="h-full" max={5} lift={i === 1 ? 34 : 14}>
               <PricingCard
                 name={pkg.title}
                 price={pkg.price}
@@ -73,6 +77,7 @@ export function Packages() {
                 href="/#book"
                 cta="Book this package"
               />
+              </Tilt>
             </AnimateOnScroll>
           ))}
           <p className="mt-8 text-sm text-ink-3">
