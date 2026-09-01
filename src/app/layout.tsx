@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Archivo, Geist } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -13,11 +13,22 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+// The display face. Archivo is an American grotesque with the flat, wide
+// terminals of signage lettering — it holds up set very large and tight,
+// which is what the new headline scale asks of it. Only the weights the
+// design actually uses are requested; body copy stays on Geist.
+const archivo = Archivo({
+  variable: "--font-archivo",
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  display: "swap",
+});
+
 export const viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover" as const,
-  themeColor: "#000000",
+  themeColor: "#07090c",
 };
 
 export const metadata: Metadata = {
@@ -123,14 +134,14 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${archivo.variable} h-full antialiased`}
     >
       {/* overflow-x-clip, not -hidden: `hidden` makes the body a scroll
           container, and on iOS Safari a scroll container on the body can
           swallow the page's vertical scrolling outright. `clip` suppresses the
           same horizontal overflow without ever creating one. */}
       <body className="min-h-full flex flex-col overflow-x-clip pb-[env(safe-area-inset-bottom)] bg-background">
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:rounded-lg focus:bg-purple focus:px-4 focus:py-2 focus:text-white">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:rounded-lg focus:bg-signal focus:text-[#07090c] focus:px-4 focus:py-2 focus:font-semibold">
           Skip to main content
         </a>
         <script

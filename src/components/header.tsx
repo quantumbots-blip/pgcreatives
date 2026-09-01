@@ -6,14 +6,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   ChevronDown,
-  Users,
   Camera,
   Mail,
   MapPin,
   ExternalLink,
-  Sparkles,
   Home,
-  Shield,
+  Layers,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollProgress } from "@/components/scroll-progress";
@@ -21,42 +20,58 @@ import { ScrollProgress } from "@/components/scroll-progress";
 type NavLink = { name: string; href: string; children?: never };
 type NavDropdown = {
   name: string;
-  href?: never;
+  href: string;
   children: { name: string; href: string; external?: boolean; icon?: React.ElementType }[];
 };
 type NavItem = NavLink | NavDropdown;
 
+/* The public navigation.
+
+   Rebuilt from what a visitor is actually trying to do. The old version had
+   "Branding" pointing at /services (a page about the Content Creator Program),
+   no way to reach Contact except through an "About" dropdown, and the staff
+   Admin login sitting in a public menu. Now every label names the thing it
+   leads to, Services is a real section with children, and Admin lives only in
+   the footer where staff already look for it. */
 const navigation: NavItem[] = [
+  { name: "Work", href: "/portfolio" },
   {
-    name: "About",
+    name: "Services",
+    href: "/services",
     children: [
-      { name: "Meet The Team", href: "/team", icon: Users },
-      { name: "Contact", href: "/contact", icon: Mail },
+      { name: "Real Estate", href: "/services#real-estate", icon: Home },
+      { name: "Commercial", href: "/services#commercial", icon: Camera },
+      { name: "Content Creator Program", href: "/services/content-creator-program", icon: Layers },
     ],
   },
-  { name: "Portfolio", href: "/portfolio" },
-  { name: "Branding", href: "/services" },
+  { name: "About", href: "/team" },
+  { name: "Contact", href: "/contact" },
+];
+
+const clientLogins = [
   {
-    name: "Login",
-    children: [
-      {
-        name: "Green Bay",
-        href: "https://portal.spiro.media/order/pg/northeast-wisconsin",
-        external: true,
-        icon: MapPin,
-      },
-      {
-        name: "Madison",
-        href: "https://portal.spiro.media/order/pg/madison",
-        external: true,
-        icon: MapPin,
-      },
-      { name: "Admin", href: "/admin", icon: Shield },
-    ],
+    name: "Green Bay",
+    href: "https://portal.spiro.media/order/pg/northeast-wisconsin",
+    icon: MapPin,
+  },
+  {
+    name: "Madison",
+    href: "https://portal.spiro.media/order/pg/madison",
+    icon: MapPin,
   },
 ];
 
-/* ---------- Desktop Dropdown ---------- */
+/* A top-level item is active for its own route and anything beneath it, so
+   /services/content-creator-program lights "Services" rather than nothing, and
+   /contact no longer lights "About" — which is what the old
+   `children.some(c => pathname === c.href)` check did, because Contact used to
+   be a child of About. */
+function isSectionActive(href: string, pathname: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/* ---------- Desktop dropdown ---------- */
 function DesktopDropdown({
   item,
   pathname,
@@ -85,10 +100,7 @@ function DesktopDropdown({
       if (e.key === "Escape") onOpenChange(false);
     };
     const handleClick = (e: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         onOpenChange(false);
       }
     };
@@ -100,82 +112,54 @@ function DesktopDropdown({
     };
   }, [open, onOpenChange]);
 
-  const isActive = item.children.some((c) => pathname === c.href);
+  const isActive = isSectionActive(item.href, pathname);
 
   return (
-    <div
-      ref={containerRef}
-      className="relative"
-      onMouseEnter={enter}
-      onMouseLeave={leave}
-    >
+    <div ref={containerRef} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
         onClick={() => onOpenChange(!open)}
         aria-expanded={open}
         aria-haspopup="true"
         className={cn(
-          "flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium tracking-wide transition-all duration-200",
-          isActive
-            ? "text-white bg-purple/15"
-            : "text-white/60 hover:text-white hover:bg-white/[0.05]"
+          "flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
+          isActive ? "bg-white/[0.08] text-white" : "text-white/60 hover:text-white hover:bg-white/[0.05]"
         )}
       >
         {item.name}
         <ChevronDown
-          className={cn(
-            "h-3 w-3 transition-transform duration-200",
-            open && "rotate-180"
-          )}
+          className={cn("h-3.5 w-3.5 transition-transform duration-200", open && "rotate-180")}
         />
       </button>
 
-      {/* Dropdown panel */}
       <div
         className={cn(
-          "absolute left-1/2 top-full z-50 mt-3 -translate-x-1/2 transition-all duration-200 origin-top",
-          open
-            ? "opacity-100 scale-100 pointer-events-auto"
-            : "opacity-0 scale-95 pointer-events-none"
+          "absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 pt-3 transition-all duration-200",
+          open ? "visible opacity-100 translate-y-0" : "invisible opacity-0 -translate-y-1"
         )}
       >
-        {/* Arrow */}
-        <div className="mx-auto mb-[-6px] h-3 w-3 rotate-45 rounded-sm border-l border-t border-purple/20 bg-black" />
-        <div
-          role="menu"
-          className="rounded-xl border border-purple/15 bg-black backdrop-blur-xl p-1.5 shadow-2xl shadow-purple/5 min-w-[180px]"
-        >
+        <div className="overflow-hidden rounded-2xl border border-line bg-[#0f1319] p-1.5 shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
           {item.children.map((child) => {
             const Icon = child.icon;
-            const isExternal = child.external;
-            const linkClass = cn(
-              "flex items-center gap-3 px-3.5 py-2.5 text-sm rounded-lg transition-all duration-150",
-              pathname === child.href
-                ? "text-white bg-purple/15"
-                : "text-white/55 hover:text-white hover:bg-purple/10"
-            );
-
-            return isExternal ? (
+            return child.external ? (
               <a
                 key={child.href}
                 href={child.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                role="menuitem"
-                className={linkClass}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-white/70 transition-colors hover:bg-white/[0.06] hover:text-white"
               >
-                {Icon && <Icon className="h-3.5 w-3.5 text-purple-light/60" />}
+                {Icon && <Icon className="h-4 w-4 text-white/35" />}
                 <span className="flex-1">{child.name}</span>
-                <ExternalLink className="h-3 w-3 text-white/25" />
+                <ExternalLink className="h-3.5 w-3.5 text-white/25" />
               </a>
             ) : (
               <Link
                 key={child.href}
                 href={child.href}
-                role="menuitem"
                 onClick={() => onOpenChange(false)}
-                className={linkClass}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-white/70 transition-colors hover:bg-white/[0.06] hover:text-white"
               >
-                {Icon && <Icon className="h-3.5 w-3.5 text-purple-light/60" />}
+                {Icon && <Icon className="h-4 w-4 text-white/35" />}
                 <span>{child.name}</span>
               </Link>
             );
@@ -186,7 +170,7 @@ function DesktopDropdown({
   );
 }
 
-/* ---------- Hamburger icon with animation ---------- */
+/* ---------- Hamburger ---------- */
 function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
   return (
     <div className="relative h-5 w-5">
@@ -212,16 +196,15 @@ function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
   );
 }
 
-/* ---------- Mobile nav item icons ---------- */
 const mobileNavItems = [
   { name: "Home", href: "/", icon: Home },
-  { name: "Branding", href: "/services", icon: Sparkles },
-  { name: "Portfolio", href: "/portfolio", icon: Camera },
-  { name: "Team", href: "/team", icon: Users },
+  { name: "Work", href: "/portfolio", icon: Camera },
+  { name: "Services", href: "/services", icon: Layers },
+  { name: "About", href: "/team", icon: Users },
   { name: "Contact", href: "/contact", icon: Mail },
 ];
 
-/* ---------- Main Header ---------- */
+/* ---------- Header ---------- */
 export function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -234,7 +217,6 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while the mobile menu is open, and let Escape close it.
   useEffect(() => {
     if (!mobileOpen) {
       document.body.style.overflow = "";
@@ -251,10 +233,6 @@ export function Header() {
     };
   }, [mobileOpen]);
 
-  // Close the mobile menu on route change. Adjusted during render rather than
-  // in an effect: every nav link already closes the menu on click, so this only
-  // catches back/forward navigation, and doing it in an effect costs an extra
-  // render pass on every route change.
   const [lastPath, setLastPath] = useState(pathname);
   if (lastPath !== pathname) {
     setLastPath(pathname);
@@ -268,37 +246,31 @@ export function Header() {
     <>
       <header
         className={cn(
-          "fixed top-0 z-50 w-full transition-all duration-500",
+          "fixed top-0 z-50 w-full transition-colors duration-500",
           transparent
             ? "bg-transparent"
-            : "bg-[#000000]/90 backdrop-blur-xl sm:bg-[#000000]/80"
+            : "border-b border-line bg-[#07090c]/85 backdrop-blur-xl"
         )}
       >
         <ScrollProgress />
-        {/* Bottom fade — softens the hard edge */}
-        {!transparent && (
-          <div className="pointer-events-none absolute inset-x-0 -bottom-6 h-6 bg-gradient-to-b from-[#000000]/60 to-transparent" />
-        )}
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:h-18">
-          {/* Logo */}
-          <Link href="/" className="relative z-50 -ml-[18px] flex items-center">
+        <div className="mx-auto flex h-16 max-w-[80rem] items-center justify-between px-[var(--gutter)] lg:h-20">
+          {/* Logo. Sized to what it actually renders at — the mark is 96px of
+              artwork, and asking for a 105px box around a 64px slot is what
+              left a hard-edged dark plate beside it on phones. */}
+          <Link href="/" className="relative z-50 flex items-center" aria-label="PG Creatives — home">
             <Image
               src="/logo.png"
               alt="PG Creatives"
-              // Declared at its rendered size, not the file's. next/image
-              // builds the srcset from `width`, and 956 made every page
-              // preload a 1080px and a 1920px rendition of a 104px logo.
-              width={96}
-              height={105}
-              className="h-22 w-auto sm:h-24 lg:h-26 object-contain"
+              width={128}
+              height={70}
+              className="h-16 w-auto object-contain lg:h-[4.5rem]"
               loading="eager"
             />
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-1 md:flex">
-            {/* Nav links in a pill container */}
-            <div className="flex items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5">
+          <nav className="hidden items-center gap-2 md:flex">
+            <div className="flex items-center gap-0.5 rounded-full border border-line bg-white/[0.03] p-1">
               {navigation.map((item) =>
                 item.children ? (
                   <DesktopDropdown
@@ -318,9 +290,9 @@ export function Header() {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "rounded-full px-5 py-2 text-sm font-medium tracking-wide transition-all duration-200",
-                      pathname === item.href
-                        ? "bg-purple/15 text-white"
+                      "rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
+                      isSectionActive(item.href, pathname)
+                        ? "bg-white/[0.08] text-white"
                         : "text-white/60 hover:text-white hover:bg-white/[0.05]"
                     )}
                   >
@@ -328,19 +300,24 @@ export function Header() {
                   </Link>
                 )
               )}
-              <Link
-                href="/#portals"
-                className="rounded-full bg-white px-5 py-2 text-sm font-medium tracking-wide text-black transition-all duration-200 hover:bg-white/80"
-              >
-                Book Now
-              </Link>
             </div>
+
+            <ClientLoginMenu
+              open={openMenu === "login"}
+              onOpenChange={(next) =>
+                setOpenMenu((prev) => (next ? "login" : prev === "login" ? null : prev))
+              }
+            />
+
+            <Link href="/#book" className="btn btn-primary !px-5 !py-2.5 !text-sm">
+              Book a shoot
+            </Link>
           </nav>
 
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full transition-colors md:hidden hover:bg-white/[0.06]"
+            className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:bg-white/[0.06] md:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
@@ -350,126 +327,156 @@ export function Header() {
         </div>
       </header>
 
-      {/* ========== MOBILE FULLSCREEN MENU ========== */}
-      {/* Kept mounted so it can transition, but toggled with `visibility` as
-          well as opacity. A fullscreen fixed layer that is merely opacity-0
-          still gets composited on every frame — including its blurred backdrop
-          — which costs real GPU work during scroll on phones. `visibility`
-          transitions discretely, so it stays visible for the length of the
-          fade-out and flips off only once the animation is done. */}
+      {/* ========== MOBILE MENU ========== */}
       <div
         id="mobile-menu"
         aria-hidden={!mobileOpen}
         className={cn(
-          "fixed inset-0 z-40 md:hidden transition-all duration-500",
+          "fixed inset-0 z-40 transition-all duration-400 md:hidden",
           mobileOpen
             ? "visible opacity-100 pointer-events-auto"
             : "invisible opacity-0 pointer-events-none"
         )}
       >
-        {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-[#000000]/95 backdrop-blur-2xl"
+          className="absolute inset-0 bg-[#07090c]/97 backdrop-blur-2xl"
           onClick={() => setMobileOpen(false)}
         />
 
-        {/* Content */}
         <div
           className={cn(
-            "relative flex h-full flex-col pt-24 pb-8 px-5 sm:px-6 transition-transform duration-500",
-            mobileOpen ? "translate-y-0" : "-translate-y-8"
+            "relative flex h-full flex-col px-[var(--gutter)] pb-8 pt-24 transition-transform duration-400",
+            mobileOpen ? "translate-y-0" : "-translate-y-6"
           )}
         >
-          {/* Main nav links */}
-          <nav className="flex-1 space-y-1">
+          <nav className="flex-1">
             {mobileNavItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href;
+              const active = isSectionActive(item.href, pathname);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    "flex items-center gap-4 rounded-2xl px-5 py-4 transition-all duration-200",
-                    isActive
-                      ? "bg-purple/15 text-white"
-                      : "text-white/50 active:bg-white/[0.05]"
+                    "flex items-center gap-4 border-b border-line py-4 transition-colors",
+                    active ? "text-white" : "text-white/55 active:text-white"
                   )}
                 >
-                  <div
-                    className={cn(
-                      "flex h-10 w-10 items-center justify-center rounded-xl transition-colors",
-                      isActive
-                        ? "bg-purple/25 text-purple-light"
-                        : "bg-white/[0.04] text-white/30"
-                    )}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <span className="text-lg font-medium tracking-wide">
-                    {item.name}
-                  </span>
-                  {isActive && (
-                    <div className="ml-auto h-2 w-2 rounded-full bg-purple-light" />
-                  )}
+                  <Icon className={cn("h-5 w-5", active ? "text-signal" : "text-white/30")} />
+                  <span className="display-3 !text-2xl">{item.name}</span>
+                  {active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-signal" />}
                 </Link>
               );
             })}
 
-            {/* Divider */}
-            <div className="!my-4 h-px bg-gradient-to-r from-transparent via-purple/20 to-transparent" />
-
-            {/* Portal login links */}
-            <p className="px-5 pb-2 pt-2 text-[11px] font-medium uppercase tracking-[0.2em] text-white/50">
-              Client Portal
-            </p>
-            {[
-              {
-                name: "Green Bay Portal",
-                href: "https://portal.spiro.media/order/pg/northeast-wisconsin",
-                icon: MapPin,
-              },
-              {
-                name: "Madison Portal",
-                href: "https://portal.spiro.media/order/pg/madison",
-                icon: MapPin,
-              },
-            ].map((portal) => (
+            <p className="meta pb-3 pt-8">Client login</p>
+            {clientLogins.map((portal) => (
               <a
                 key={portal.href}
                 href={portal.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-4 rounded-2xl px-5 py-3.5 text-white/60 transition-all active:bg-white/[0.05]"
+                className="flex items-center gap-4 border-b border-line py-3.5 text-white/60 transition-colors active:text-white"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.04]">
-                  <portal.icon className="h-4.5 w-4.5 text-white/30" />
-                </div>
-                <span className="flex-1 text-base tracking-wide">
-                  {portal.name}
-                </span>
-                <ExternalLink className="h-3.5 w-3.5 text-white/20" />
+                <portal.icon className="h-4 w-4 text-white/30" />
+                <span className="flex-1 text-base">{portal.name}</span>
+                <ExternalLink className="h-3.5 w-3.5 text-white/25" />
               </a>
             ))}
           </nav>
 
-          {/* Bottom CTA */}
-          <div className="pt-4">
+          <div className="pt-6">
             <Link
-              href="/#portals"
+              href="/#book"
               onClick={() => setMobileOpen(false)}
-              className="flex w-full items-center justify-center rounded-full bg-gradient-to-r from-purple-dim to-purple py-4 text-base font-semibold text-white tracking-wide ring-1 ring-purple/40 shadow-[0_0_15px_rgba(55,140,210,0.25),0_0_40px_rgba(55,140,210,0.1)] transition-all active:scale-[0.98]"
+              className="btn btn-primary w-full !py-4 !text-base"
             >
-              Book a Shoot
+              Book a shoot
             </Link>
-            <p className="mt-3 text-center text-xs text-white/40">
+            <p className="meta mt-4 text-center">
               Green Bay · Madison · Milwaukee · Fox Valley
             </p>
           </div>
         </div>
       </div>
     </>
+  );
+}
+
+/* ---------- Client login ---------- */
+function ClientLoginMenu({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const timeout = useRef<ReturnType<typeof setTimeout>>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onOpenChange(false);
+    };
+    const handleClick = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        onOpenChange(false);
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [open, onOpenChange]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative"
+      onMouseEnter={() => {
+        if (timeout.current) clearTimeout(timeout.current);
+        onOpenChange(true);
+      }}
+      onMouseLeave={() => {
+        timeout.current = setTimeout(() => onOpenChange(false), 150);
+      }}
+    >
+      <button
+        onClick={() => onOpenChange(!open)}
+        aria-expanded={open}
+        aria-haspopup="true"
+        className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-white/60 transition-colors hover:text-white"
+      >
+        Client login
+        <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-200", open && "rotate-180")} />
+      </button>
+      <div
+        className={cn(
+          "absolute right-0 top-full z-50 w-56 pt-3 transition-all duration-200",
+          open ? "visible opacity-100 translate-y-0" : "invisible opacity-0 -translate-y-1"
+        )}
+      >
+        <div className="overflow-hidden rounded-2xl border border-line bg-[#0f1319] p-1.5 shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+          {clientLogins.map((portal) => (
+            <a
+              key={portal.href}
+              href={portal.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-white/70 transition-colors hover:bg-white/[0.06] hover:text-white"
+            >
+              <portal.icon className="h-4 w-4 text-white/35" />
+              <span className="flex-1">{portal.name}</span>
+              <ExternalLink className="h-3.5 w-3.5 text-white/25" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }

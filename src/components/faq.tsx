@@ -1,4 +1,5 @@
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { RuleHead } from "@/components/rule-head";
 
 const categories = [
   "General",
@@ -145,20 +146,13 @@ function slug(category: Category) {
  */
 export function FAQ() {
   return (
-    <section className="relative overflow-x-clip py-16 sm:py-28">
-      <div className="pointer-events-none absolute -right-40 top-40 h-80 w-80 rounded-full bg-purple/[0.08] blur-[120px]" />
-      <div className="pointer-events-none absolute left-[10%] bottom-[20%] h-60 w-60 rounded-full bg-sky-500/[0.06] blur-[100px]" />
-
-      <div className="mx-auto max-w-4xl px-5 sm:px-6">
+    <section className="section">
+      <div className="shell">
         <AnimateOnScroll animation="fade-up">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-              Frequently Asked Questions
-            </h2>
-            <p className="mt-4 text-base text-white/60">
-              Everything you need to know about working with us.
-            </p>
-          </div>
+          <RuleHead label="Questions" link={{ href: "/contact", label: "Ask us directly" }} />
+          <h2 className="display-2 mt-8 max-w-2xl text-white">
+            Everything you need to know before booking.
+          </h2>
         </AnimateOnScroll>
 
         <div className="faq">
@@ -177,15 +171,15 @@ export function FAQ() {
 
           <AnimateOnScroll animation="fade-up" delay={0.1}>
             <div
-              className="faq-pills mt-8 sm:mt-10 flex flex-wrap justify-center gap-2"
-              role="tablist"
+              className="faq-pills mt-12 flex flex-wrap gap-2 sm:mt-14"
+              role="group"
               aria-label="Question categories"
             >
               {categories.map((cat) => (
                 <label
                   key={cat}
                   htmlFor={`faq-cat-${slug(cat)}`}
-                  className="faq-pill cursor-pointer rounded-full px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all duration-200"
+                  className="faq-pill cursor-pointer rounded-full px-4 py-2.5 text-xs font-medium transition-colors duration-200 sm:px-5 sm:text-sm"
                 >
                   {cat}
                 </label>
@@ -194,11 +188,11 @@ export function FAQ() {
           </AnimateOnScroll>
 
           <div>
-            <div className="faq-panels mt-8 sm:mt-10">
+            <div className="faq-panels mt-8 max-w-4xl border-t border-line sm:mt-10">
               {categories.map((cat) => (
                 <div
                   key={cat}
-                  className="faq-panel space-y-2.5 sm:space-y-3"
+                  className="faq-panel"
                   data-category={slug(cat)}
                 >
                   {faqs
@@ -206,12 +200,12 @@ export function FAQ() {
                     .map((faq, i) => (
                       <details
                         key={faq.question}
-                        className="faq-item reveal rounded-xl border"
+                        className="faq-item reveal"
                         data-reveal="fade-up"
                         style={{ "--reveal-delay": `${i * 0.07}s` } as React.CSSProperties}
                       >
-                        <summary className="flex w-full cursor-pointer items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 text-left">
-                          <span className="text-sm font-semibold text-white sm:text-lg">
+                        <summary className="flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left sm:py-6">
+                          <span className="text-base font-medium text-white sm:text-lg">
                             {faq.question}
                           </span>
                           <svg
@@ -227,7 +221,7 @@ export function FAQ() {
                             <path d="m6 9 6 6 6-6" />
                           </svg>
                         </summary>
-                        <p className="faq-answer px-4 sm:px-6 pb-4 sm:pb-5 text-sm leading-relaxed text-white/60 sm:text-base">
+                        <p className="faq-answer max-w-2xl pb-6 text-sm leading-relaxed text-ink-2 sm:text-base">
                           {faq.answer}
                         </p>
                       </details>

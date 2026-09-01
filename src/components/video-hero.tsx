@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Play } from "lucide-react";
-import { FloatingParticles } from "@/components/floating-particles";
+import { ArrowRight, Play } from "lucide-react";
 
 // Two renditions of the same 25-second loop. The desktop file is 16:9 at 720p;
 // the phone file is the 9:16 centre crop that `object-cover` actually displays
@@ -280,123 +279,113 @@ export function VideoHero() {
   }, [videoEnabled]);
 
   return (
-    <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-clip">
+    <section className="viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[92svh] items-end overflow-clip lg:-mt-20 lg:min-h-screen">
+      {/* The bottom half of the viewfinder ticks. The top two are drawn by
+          `.viewfinder` itself; this empty element carries the other two. */}
+      <span className="vf-b relative z-20" aria-hidden="true" />
+
       {/* Backdrop layer — moved as one unit by the parallax effect. */}
       <div ref={bgRef} className="hero-parallax-bg absolute inset-0">
-      {/* Poster — shows while video loads or if video fails. Loaded eagerly
-          rather than preloaded: the splash logo owns the preload slot, and
-          competing <link rel="preload"> tags just delay each other. */}
-      <Image
-        src="/images/hero-poster.jpg"
-        alt="Property showcase"
-        fill
-        className="object-cover"
-        loading="eager"
-        fetchPriority="high"
-        sizes="100vw"
-      />
+        {/* Poster — shows while video loads or if video fails. Loaded eagerly
+            rather than preloaded: the splash logo owns the preload slot, and
+            competing <link rel="preload"> tags just delay each other. */}
+        <Image
+          src="/images/hero-poster.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          loading="eager"
+          fetchPriority="high"
+          sizes="100vw"
+        />
 
-      {/* Video — hidden until ready to prevent flash. The src is attached from
-          an effect rather than rendered up front, so reduced-motion and
-          Data Saver visitors never pay for the download at all.
-          preload="metadata" avoids eagerly buffering the whole file. */}
-      {/* No `autoPlay` attribute on purpose: it overrides preload="none" and
-          makes the browser start pulling the file the moment a src appears,
-          which defeats the whole point of asking permission first. Playback is
-          driven explicitly from the effect instead. */}
-      <video
-        ref={videoRef}
-        muted
-        loop
-        playsInline
-        preload="none"
-        aria-hidden="true"
-        className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
-          videoReady ? "opacity-100" : "opacity-0"
-        }`}
-      />
+        {/* Video — hidden until ready to prevent flash. The src is attached from
+            an effect rather than rendered up front, so reduced-motion and
+            Data Saver visitors never pay for the download at all. */}
+        <video
+          ref={videoRef}
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+            videoReady ? "opacity-100" : "opacity-0"
+          }`}
+        />
 
-      {/* Overlay gradients — purple-tinted */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/68 via-[#000000]/47 to-[#000000]/81" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/72 via-transparent to-transparent" />
-      </div>
-      {/* Bottom fade to blend into next section — outside the parallax layer
-          so the seam with the next section never moves. */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 sm:h-72 bg-gradient-to-t from-[#000000]/85 via-[#000000]/60 to-transparent" />
-
-      {/* Single subtle ambient glow */}
-      <div className="absolute bottom-0 left-1/3 h-[200px] w-[500px] bg-purple/[0.06] blur-[120px]" />
-      <div className="hidden sm:block">
-        <FloatingParticles count={12} />
+        {/* Scrim. Weighted to the bottom-left, where the copy sits, and heavy
+            enough that the headline never has to compete with a lamp. The old
+            pair of even gradients left the type sitting on a lit fireplace. */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(7,9,12,0.97)_0%,rgba(7,9,12,0.88)_30%,rgba(7,9,12,0.62)_65%,rgba(7,9,12,0.72)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(7,9,12,0.85)_0%,rgba(7,9,12,0.55)_45%,rgba(7,9,12,0.3)_100%)]" />
       </div>
 
       {/* Content */}
-      <div ref={contentRef} className="hero-parallax-content relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-6 pt-24 sm:pt-20">
-        <div className="max-w-3xl">
-          <div
-            className="animate-hero-fade-up mb-4 sm:mb-6 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 py-2 sm:px-4 sm:py-2.5 backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_20px_rgba(55,140,210,0.25)]"
-          >
-            <span className="text-[11px] sm:text-xs font-medium tracking-[0.15em] sm:tracking-[0.2em] uppercase text-purple-light leading-none">
-              <span className="sm:hidden">Green Bay · Madison · Milwaukee</span>
-              <span className="hidden sm:inline">Madison, Green Bay, Milwaukee &amp; the Fox Valley</span>
-            </span>
-          </div>
+      <div
+        ref={contentRef}
+        className="hero-parallax-content relative z-10 w-full pb-16 pt-32 sm:pb-24 lg:pb-28"
+      >
+        <div className="shell">
+          <div className="max-w-4xl">
+            {/* Where they shoot, set as camera metadata rather than a pill —
+                the same information, carried by the type instead of a chip. */}
+            <p className="animate-hero-fade-up meta flex flex-wrap items-center gap-x-2 gap-y-1 text-white/70">
+              <span className="text-signal">Green Bay</span>
+              <span aria-hidden="true">/</span>
+              <span>Madison</span>
+              <span aria-hidden="true">/</span>
+              <span>Milwaukee</span>
+              <span aria-hidden="true">/</span>
+              <span>Fox Valley</span>
+            </p>
 
-          <h1
-            className="animate-hero-fade-up text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-7xl"
-            style={{ animationDelay: "0.15s" }}
-          >
-            <span className="text-white">Professional</span>{" "}
-            <br />
-            <span className="text-white">Grade Media</span>
-          </h1>
+            <h1
+              className="animate-hero-fade-up display-1 mt-6 text-white"
+              style={{ animationDelay: "0.12s" }}
+            >
+              Professional
+              <br />
+              grade media.
+            </h1>
 
-          <p
-            className="animate-hero-fade-up mt-6 max-w-lg text-base sm:text-lg font-light leading-relaxed text-white/70"
-            style={{ animationDelay: "0.3s" }}
-          >
-            We help you present your listings better and build a brand people
-            recognize. From video and photography to social media content,
-            everything is made with intention. We bring your vision to life.
-          </p>
+            <p
+              className="animate-hero-fade-up lede mt-7 max-w-xl"
+              style={{ animationDelay: "0.24s" }}
+            >
+              Listing photography, video, drone and 3D tours for Wisconsin
+              agents — plus the personal-brand content that keeps you in front
+              of your market between listings.
+            </p>
 
-          <div
-            className="animate-hero-fade-up mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-4"
-            style={{ animationDelay: "0.45s" }}
-          >
-            <span className="hover-magnetic inline-block">
-              <Link
-                href="/#portals"
-                className="rounded-full bg-gradient-to-r from-purple-dim to-purple px-7 sm:px-8 py-3.5 sm:py-4 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-none sm:shadow-[0_0_15px_rgba(55,140,210,0.25),0_0_40px_rgba(55,140,210,0.1)] transition-all duration-300 hover:scale-[1.03] sm:hover:shadow-[0_0_20px_rgba(55,140,210,0.4),0_0_50px_rgba(55,140,210,0.15)]"
-              >
-                Book a Shoot
+            <div
+              className="animate-hero-fade-up mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
+              style={{ animationDelay: "0.36s" }}
+            >
+              <Link href="/#book" className="btn btn-primary">
+                Book a shoot
+                <ArrowRight className="arrow h-4 w-4" />
               </Link>
-            </span>
-            <span className="hover-magnetic inline-block">
-              <Link
-                href="/portfolio"
-                className="flex items-center gap-2.5 rounded-full border border-white/20 px-7 sm:px-8 py-3.5 sm:py-4 text-sm font-medium tracking-wide text-white/80 transition-all duration-300 hover:border-white/40 hover:bg-white/5 hover:text-white"
-              >
+              <Link href="/portfolio" className="btn btn-ghost">
                 <Play className="h-3.5 w-3.5" />
-                View Our Work
+                See the work
               </Link>
-            </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator — hidden on phones, where a short viewport (iPhone SE)
-          puts it on top of the CTA buttons. */}
+      {/* Scroll cue — aligned to the content column rather than floated in the
+          middle of the viewport, and hidden on phones where a short screen
+          (iPhone SE) puts it on top of the buttons. */}
       <div
-        className="animate-hero-fade-up absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 sm:block"
-        style={{ animationDelay: "0.8s" }}
+        className="animate-hero-fade-up absolute bottom-8 right-[var(--gutter)] z-10 hidden sm:block"
+        style={{ animationDelay: "0.6s" }}
       >
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-[11px] font-medium uppercase tracking-[0.3em] text-purple-light/50">
-            Scroll
-          </span>
-          <div className="animate-hero-line h-10 w-px overflow-hidden">
-            <div className="animate-scroll-cue h-full w-px bg-gradient-to-b from-purple/60 to-transparent" />
+        <div className="flex flex-col items-center gap-3">
+          <span className="meta [writing-mode:vertical-rl]">Scroll</span>
+          <div className="animate-hero-line h-12 w-px overflow-hidden">
+            <div className="animate-scroll-cue h-full w-px bg-gradient-to-b from-signal/70 to-transparent" />
           </div>
         </div>
       </div>

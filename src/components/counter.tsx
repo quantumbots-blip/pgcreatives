@@ -11,10 +11,11 @@ interface CounterProps {
   className?: string;
 }
 
-// Small figures like "$3B" would otherwise tick 0, 1, 2, 3 — four frames of
-// "animation". Below this threshold the count shows one decimal while it
-// runs ("$2.7B") and snaps to the real integer at the end.
-const DECIMAL_BELOW = 20;
+// Small figures like "$3B" have nothing to count: 0, 1, 2, 3 is four frames,
+// and rendering it with a decimal so it has more to show ("$2.7B") puts a
+// number in front of the visitor that was never true. Anything below this
+// simply renders its final value and never animates.
+const ANIMATE_ABOVE = 20;
 
 export function Counter({
   value,
@@ -29,7 +30,7 @@ export function Counter({
   // Estate Captured" — a wrong number is far worse than a missing animation.
   // The count-up is re-armed below, but only while the element is off-screen,
   // so nobody ever watches a correct number reset itself to zero.
-  const [display, setDisplay] = useState(() => format(value, value, 1));
+  const [display, setDisplay] = useState(() => format(value, value));
   const started = useRef(false);
 
   useEffect(() => {
@@ -46,9 +47,9 @@ export function Counter({
       return r.bottom > 0 && r.top < vh;
     };
 
-    // Already in front of the visitor, or motion is unwelcome: keep the figure
-    // exactly as rendered.
-    if (reduceMotion || onScreen()) {
+    // Too small to be worth counting, motion is unwelcome, or it is already in
+    // front of the visitor: keep the figure exactly as rendered.
+    if (value <= ANIMATE_ABOVE || reduceMotion || onScreen()) {
       started.current = true;
       return;
     }
@@ -58,7 +59,7 @@ export function Counter({
     // the time anyone looks. (Deliberate: this is the one-time re-arm, not a
     // render-loop hazard — it runs once per mount, off-screen only.)
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setDisplay(format(0, value, 0));
+    setDisplay(format(0, value));
 
     let frame = 0;
     let observer: IntersectionObserver | undefined;
@@ -79,7 +80,7 @@ export function Counter({
       const tick = (now: number) => {
         const p = Math.min((now - t0) / ms, 1);
         const eased = 1 - Math.pow(1 - p, 3);
-        setDisplay(format(eased * value, value, p));
+        setDisplay(format(eased * value, value));
         if (p < 1) frame = requestAnimationFrame(tick);
       };
       frame = requestAnimationFrame(tick);
@@ -122,10 +123,9 @@ export function Counter({
   );
 }
 
-/** Format an in-progress figure; `progress` 1 means the final, settled value. */
-function format(n: number, target: number, progress: number): string {
+/** Format a figure for display, matching the target's own precision. */
+function format(n: number, target: number): string {
   const decimals = (target.toString().split(".")[1] || "").length;
   if (decimals > 0) return n.toFixed(decimals);
-  if (progress < 1 && target < DECIMAL_BELOW) return n.toFixed(1);
   return Math.round(n).toLocaleString();
 }

@@ -6,9 +6,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --font-heading: var(--font-sans);
+  --font-display: var(--font-archivo), "Archivo Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -50,47 +51,98 @@
   --color-purple: var(--purple);
   --color-purple-light: var(--purple-light);
   --color-purple-dim: var(--purple-dim);
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-surface-hi: var(--surface-hi);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-signal: var(--signal);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
 }
 
-/* C2 palette — Navy Indigo + Black + White */
+/* ══════════════════════════════════════════════════════════════════════
+   PG Creatives — dark editorial system
+
+   Built on the vocabulary of the work itself: a camera back, a contact
+   sheet, viewfinder crop marks. Three rules hold the whole thing together.
+
+   1. ONE GROUND, THREE SURFACES. The page sits on --ground and never
+      repaints it. Anything that needs to read as a distinct object uses
+      --surface (or --surface-hi when raised). The old palette put pure
+      black cards on a pure black page behind a 12%-opacity border, so
+      nothing had an edge — everything floated.
+   2. ONE ACCENT, SPENT SPARINGLY. --signal appears on the primary CTA,
+      the active nav item, viewfinder ticks, and link arrows. Nowhere else.
+      #2b6fb8 was previously on borders, glows, kickers, icons and CTAs at
+      once, which is the same as accenting nothing. --brand stays for the
+      deep wells the old blue was actually good at.
+   3. ONE RHYTHM. --section-y is the only vertical section spacing on the
+      site. Sections that need more room get more content, not more padding.
+   ══════════════════════════════════════════════════════════════════════ */
 :root {
-  --background: #000000;
+  /* Ground and surfaces — a measured step each time, so an edge is an edge
+     without needing a border to announce it. */
+  --ground: #07090c;
+  --surface: #0f1319;
+  --surface-hi: #171c24;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  /* Ink. Three levels, and nothing below --ink-3 — the old site ran body
+     copy at white/60 and labels at white/40, which failed contrast. */
+  --ink: #ffffff;
+  --ink-2: rgba(255, 255, 255, 0.72);
+  --ink-3: rgba(255, 255, 255, 0.52);
+
+  /* The accent. Bright enough to read at a glance on --ground; the old
+     #2b6fb8 sat at 3.4:1 against black and disappeared. */
+  --signal: #4ea8ff;
+  --signal-dim: rgba(78, 168, 255, 0.14);
+  --brand-deep: #0b2c56;
+
+  /* One vertical rhythm for the whole site. */
+  --section-y: clamp(5.5rem, 9vw, 10rem);
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+  --background: #07090c;
   --foreground: oklch(0.98 0 0);
   --purple: #2b6fb8;
   --purple-light: #6ab0d4;
   --purple-dim: #091e48;
-  --card: #0a0a0a;
+  --card: #0f1319;
   --card-foreground: oklch(0.98 0 0);
-  --popover: #0a0a0a;
+  --popover: #0f1319;
   --popover-foreground: oklch(0.98 0 0);
   --primary: oklch(0.98 0 0);
-  --primary-foreground: #000000;
-  --secondary: #111111;
+  --primary-foreground: #07090c;
+  --secondary: #151a21;
   --secondary-foreground: oklch(0.90 0 0);
-  --muted: #141414;
-  --muted-foreground: oklch(0.55 0 0);
-  --accent: rgba(43, 111, 184, 0.12);
-  --accent-foreground: #6ab0d4;
+  --muted: #151a21;
+  --muted-foreground: rgba(255, 255, 255, 0.52);
+  --accent: rgba(78, 168, 255, 0.12);
+  --accent-foreground: #4ea8ff;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: rgba(43, 111, 184, 0.12);
-  --input: rgba(43, 111, 184, 0.15);
-  --ring: #2b6fb8;
-  --navy: #111111;
-  --navy-light: #1a1a1a;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #4ea8ff;
+  --navy: #0f1319;
+  --navy-light: #171c24;
   --chart-1: #2b6fb8;
   --chart-2: #6ab0d4;
   --chart-3: #091e48;
   --chart-4: #091e48;
   --chart-5: #020d16;
-  --radius: 0.625rem;
-  --sidebar: #0a0a0a;
+  --radius: 0.875rem;
+  --sidebar: #0f1319;
   --sidebar-foreground: oklch(0.98 0 0);
   --sidebar-primary: oklch(0.98 0 0);
-  --sidebar-primary-foreground: #000000;
-  --sidebar-accent: rgba(43, 111, 184, 0.12);
-  --sidebar-accent-foreground: #6ab0d4;
-  --sidebar-border: rgba(43, 111, 184, 0.1);
-  --sidebar-ring: #2b6fb8;
+  --sidebar-primary-foreground: #07090c;
+  --sidebar-accent: rgba(78, 168, 255, 0.12);
+  --sidebar-accent-foreground: #4ea8ff;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #4ea8ff;
 }
 
 @layer base {
@@ -114,71 +166,6 @@ html {
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fade-in-scale {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes slide-in-left {
-  from { opacity: 0; transform: translateX(-40px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(40px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.7; }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes morph {
-  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-  25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-  50% { border-radius: 50% 60% 30% 60% / 30% 50% 70% 40%; }
-  75% { border-radius: 40% 60% 70% 30% / 60% 40% 30% 70%; }
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes border-glow {
-  0%, 100% { box-shadow: 0 0 0 rgba(10, 26, 92, 0), inset 0 0 0 rgba(10, 26, 92, 0); }
-  50% { box-shadow: 0 0 20px rgba(10, 26, 92, 0.1), inset 0 0 8px rgba(10, 26, 92, 0.05); }
-}
-
-@keyframes reveal-right {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
-}
-
-@keyframes particle-float {
-  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
-  10% { opacity: 0.6; }
-  90% { opacity: 0.6; }
-  100% { transform: translateY(-100vh) translateX(50px) scale(0); opacity: 0; }
 }
 
 /* Logo loading animation — fade in, scale up, shimmer sweep, then breathe */
@@ -251,327 +238,18 @@ html {
   transform-origin: top;
 }
 
-/* ── Gradient text utilities ── */
-
-.gradient-text {
-  background: linear-gradient(135deg, #091e48, #2b6fb8, #6ab0d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.gradient-text-bold {
-  background: linear-gradient(135deg, #091e48, #091e48, #2b6fb8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ── Animation utility classes ── */
-
-.animate-float {
-  animation: float 12s ease-in-out infinite;
-}
-
-.animate-float-slow {
-  animation: float 18s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 6s ease-in-out infinite;
-}
-
-.animate-rotate-slow {
-  animation: spin-slow 40s linear infinite;
-}
-
-.animate-border-glow {
-  animation: border-glow 6s ease-in-out infinite;
-}
-
-.animate-counter-up {
-  animation: fade-up 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
-}
-
-.animate-reveal-right {
-  animation: reveal-right 1s cubic-bezier(0.23, 1, 0.32, 1) both;
-}
-
-/* ── 3D card transforms (GPU-accelerated) ── */
-
-.card-3d {
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
-
-.card-3d-inner {
-  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease;
-  transform-style: preserve-3d;
-}
-
-.card-3d:hover .card-3d-inner {
-  transform: rotateY(-3deg) rotateX(3deg) translateZ(10px);
-  box-shadow:
-    20px 20px 60px rgba(0, 0, 0, 0.3),
-    -5px -5px 20px rgba(10, 26, 92, 0.08);
-}
-
-.card-3d-enhanced {
-  perspective: 1200px;
-  transform-style: preserve-3d;
-  contain: layout style;
-}
-
-.card-3d-enhanced:active > * {
-  transform: scale(0.98);
-}
-
-.card-3d-enhanced > * {
-  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s ease;
-  transform-style: preserve-3d;
-}
-
-.card-3d-enhanced:hover > * {
-  transform: rotateY(-4deg) rotateX(4deg) translateZ(20px);
-  box-shadow:
-    25px 25px 80px rgba(0, 0, 0, 0.35),
-    -8px -8px 30px rgba(10, 26, 92, 0.12),
-    0 0 40px rgba(10, 26, 92, 0.08);
-}
-
-/* ── Button & hover effects ── */
-
-.glow-hover {
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.glow-hover:hover {
-  box-shadow: 0 0 20px rgba(10, 26, 92, 0.3), 0 0 60px rgba(10, 26, 92, 0.1);
-  transform: translateY(-2px);
-}
-
-.hover-lift {
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.hover-lift:active {
-  transform: scale(0.98);
-}
-
-.hover-lift:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(10, 26, 92, 0.12);
-}
-
-/* ── Decorative elements ── */
-
-.morph-blob {
-  animation: morph 25s ease-in-out infinite, gradient-shift 20s ease infinite;
-  background-size: 200% 200%;
-  contain: layout style paint;
-}
-
-.glow-orb {
-  animation: pulse-glow 8s ease-in-out infinite;
-}
-
-.gradient-border {
-  position: relative;
-  border: 1px solid transparent;
-  background-clip: padding-box;
-}
-
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, #091e48, #091e48, #091e48, #2b6fb8);
-  background-size: 300% 300%;
-  animation: gradient-shift 12s ease infinite;
-  z-index: -1;
-  pointer-events: none;
-  contain: layout style paint;
-}
-
-.spin-ring {
-  animation: spin-slow 60s linear infinite;
-}
-
-.glass-card {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, rgba(52, 97, 209, 0.1), rgba(0, 0, 0, 0.9), rgba(126, 154, 230, 0.06));
-  border: 1px solid rgba(52, 97, 209, 0.15);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Shine sweep built into glass-card */
-.glass-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.03) 45%,
-    rgba(255, 255, 255, 0.06) 50%,
-    rgba(255, 255, 255, 0.03) 55%,
-    transparent 60%
-  );
-  transform: translateX(-100%);
-}
-
-.glass-card:hover::before {
-  animation: shine-sweep 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-.glass-card:active {
-  transform: scale(0.98);
-}
-
-.glass-card:hover {
-  border-color: rgba(52, 97, 209, 0.3);
-  box-shadow: 0 0 40px rgba(52, 97, 209, 0.15);
-}
-
-/* ── Gradient text animations ── */
-
-.gradient-underline {
-  position: relative;
-  display: inline-block;
-}
-
-.gradient-underline::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, #091e48, #2b6fb8, transparent);
-  border-radius: 2px;
-  animation: reveal-right 1.2s cubic-bezier(0.23, 1, 0.32, 1) both;
-}
-
-.gradient-text-animated {
-  background: linear-gradient(135deg, #091e48, #091e48, #2b6fb8, #6ab0d4, #2b6fb8, #091e48);
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 12s linear infinite;
-}
-
-.rainbow-shimmer {
-  background: linear-gradient(
-    90deg,
-    #091e48 0%,
-    #091e48 15%,
-    #2b6fb8 30%,
-    #ffffff 50%,
-    #2b6fb8 70%,
-    #091e48 85%,
-    #091e48 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 16s linear infinite;
-}
-
-.shimmer-text {
-  background: linear-gradient(
-    90deg,
-    #091e48 0%,
-    #2b6fb8 25%,
-    #6ab0d4 50%,
-    #2b6fb8 75%,
-    #091e48 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 10s linear infinite;
-}
-
-/* ── Particles container ── */
-
-.particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(10, 26, 92, 0.4);
-  animation: particle-float 8s linear infinite;
-}
-
-/* ── Decorative background patterns ── */
-
-.dot-grid {
-  background-image: radial-gradient(circle, rgba(52, 97, 209, 0.15) 1.5px, transparent 1.5px);
-  background-size: 28px 28px;
-}
-
-.dot-grid-fine {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-}
-
-.gradient-mesh {
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 20%, rgba(52, 97, 209, 0.14), transparent),
-    radial-gradient(ellipse 60% 70% at 80% 80%, rgba(126, 154, 230, 0.1), transparent),
-    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(20, 100, 180, 0.07), transparent);
-}
-
-.gradient-mesh-warm {
-  background:
-    radial-gradient(ellipse 70% 60% at 75% 25%, rgba(52, 97, 209, 0.12), transparent),
-    radial-gradient(ellipse 70% 50% at 25% 75%, rgba(56, 189, 248, 0.08), transparent);
-}
-
-.gradient-mesh-rich {
-  background:
-    radial-gradient(ellipse 70% 60% at 10% 20%, rgba(52, 97, 209, 0.16), transparent),
-    radial-gradient(ellipse 50% 60% at 90% 60%, rgba(126, 154, 230, 0.12), transparent),
-    radial-gradient(ellipse 70% 40% at 50% 90%, rgba(56, 189, 248, 0.08), transparent);
-}
-
-/* Full-page unified gradient mesh — no seams between sections */
+/* Full-page ground. ONE fixed wash for the entire document — sections are
+   transparent and never paint their own background, so there is no seam to
+   hide. The old version stacked seventeen radial gradients (eight of them
+   pure-black "depth" patches) which made the page look unevenly lit and
+   blotchy at every scroll position. Three gradients do the same job:
+   a cool lift at the top where the hero sits, a faint signal glow at the
+   midpoint, and a settle back to ground at the bottom. */
 .gradient-mesh-unified {
   background:
-    /* Dark patches for depth and contrast */
-    radial-gradient(ellipse 50% 20% at 65% 12%, rgba(0, 0, 0, 0.6), transparent),
-    radial-gradient(ellipse 40% 18% at 10% 45%, rgba(0, 0, 0, 0.55), transparent),
-    radial-gradient(ellipse 55% 20% at 85% 65%, rgba(0, 0, 0, 0.6), transparent),
-    radial-gradient(ellipse 45% 18% at 35% 85%, rgba(0, 0, 0, 0.55), transparent),
-    radial-gradient(ellipse 35% 12% at 50% 30%, rgba(0, 0, 0, 0.5), transparent),
-    radial-gradient(ellipse 40% 15% at 75% 50%, rgba(0, 0, 0, 0.5), transparent),
-    radial-gradient(ellipse 60% 25% at 20% 60%, rgba(0, 0, 0, 0.45), transparent),
-    radial-gradient(ellipse 50% 20% at 90% 25%, rgba(0, 0, 0, 0.5), transparent),
-    /* Color accents — reduced for darker feel */
-    radial-gradient(ellipse 80% 15% at 20% 8%, rgba(52, 97, 209, 0.10), transparent),
-    radial-gradient(ellipse 60% 12% at 75% 18%, rgba(126, 154, 230, 0.07), transparent),
-    radial-gradient(ellipse 70% 18% at 40% 28%, rgba(20, 100, 180, 0.06), transparent),
-    radial-gradient(ellipse 60% 15% at 80% 40%, rgba(52, 97, 209, 0.08), transparent),
-    radial-gradient(ellipse 80% 20% at 15% 52%, rgba(56, 189, 248, 0.05), transparent),
-    radial-gradient(ellipse 70% 15% at 60% 62%, rgba(52, 97, 209, 0.09), transparent),
-    radial-gradient(ellipse 60% 18% at 30% 74%, rgba(126, 154, 230, 0.07), transparent),
-    radial-gradient(ellipse 80% 15% at 85% 82%, rgba(56, 189, 248, 0.05), transparent),
-    radial-gradient(ellipse 70% 20% at 50% 93%, rgba(52, 97, 209, 0.08), transparent);
-}
-
-/* Mobile section separator — visible gradient line between sections */
-.section-sep {
-  height: 1px;
-  margin: 0 auto;
-  max-width: 80%;
-  background: linear-gradient(90deg, transparent, rgba(52, 97, 209, 0.25), rgba(126, 154, 230, 0.15), rgba(52, 97, 209, 0.25), transparent);
+    radial-gradient(ellipse 120% 55% at 50% 0%, rgba(78, 168, 255, 0.07), transparent 70%),
+    radial-gradient(ellipse 90% 40% at 15% 52%, rgba(43, 111, 184, 0.05), transparent 70%),
+    radial-gradient(ellipse 90% 45% at 85% 88%, rgba(78, 168, 255, 0.04), transparent 70%);
 }
 
 @media (min-width: 1024px) {
@@ -656,54 +334,6 @@ html[data-reveal-ready] .reveal.is-visible {
   animation: scroll-cue 2.2s ease-in-out 1.4s infinite;
 }
 
-/* ── Scroll-driven 3D card fan ── */
-
-.perspective-container {
-  perspective: 1200px;
-  transform-style: preserve-3d;
-}
-
-/* ── Misc utilities ── */
-
-.section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #091e48, #2b6fb8, #091e48, transparent);
-  opacity: 0.3;
-}
-
-/* Smooth section blending — gradient fades at edges */
-.section-blend {
-  position: relative;
-}
-
-.section-blend::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 100px;
-  background: linear-gradient(to bottom, #000000, transparent);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.section-blend::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 100px;
-  background: linear-gradient(to top, #000000, transparent);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.icon-3d {
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.icon-3d:hover {
-  transform: translateY(-4px) rotateY(-10deg) scale(1.1);
-}
-
 /* ── Scrollbar ── */
 
 ::-webkit-scrollbar {
@@ -711,229 +341,16 @@ html[data-reveal-ready] .reveal.is-visible {
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: var(--ground);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #222222;
+  background: #232a34;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2b6fb8;
-}
-
-/* ── Premium card shine sweep on hover ── */
-
-.card-shine {
-  position: relative;
-  overflow: hidden;
-}
-
-.card-shine::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.03) 45%,
-    rgba(255, 255, 255, 0.06) 50%,
-    rgba(255, 255, 255, 0.03) 55%,
-    transparent 60%
-  );
-  transform: translateX(-100%);
-  transition: none;
-}
-
-.card-shine:hover::before {
-  animation: shine-sweep 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-@keyframes shine-sweep {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(100%); }
-}
-
-/* ── Blur-in reveal animation ── */
-
-@keyframes blur-in {
-  from { opacity: 0; filter: blur(12px); transform: translateY(8px); }
-  to { opacity: 1; filter: blur(0); transform: translateY(0); }
-}
-
-.animate-blur-in {
-  animation: blur-in 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
-}
-
-/* ── Border trace — rotating glow around cards ── */
-
-.border-trace {
-  position: relative;
-}
-
-.border-trace::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: conic-gradient(
-    from var(--trace-angle, 0deg),
-    transparent 0%,
-    transparent 70%,
-    rgba(52, 97, 209, 0.5) 85%,
-    rgba(126, 154, 230, 0.3) 95%,
-    transparent 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  animation: trace-rotate 4s linear infinite;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.border-trace:hover::after {
-  opacity: 1;
-}
-
-@keyframes trace-rotate {
-  to { --trace-angle: 360deg; }
-}
-
-@property --trace-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-/* ── Film grain overlay ── */
-
-.grain::before {
-  content: '';
-  position: absolute;
-  inset: -50%;
-  width: 200%;
-  height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.5;
-  animation: grain-drift 8s steps(10) infinite;
-}
-
-@keyframes grain-drift {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-2%, -3%); }
-  20% { transform: translate(3%, 1%); }
-  30% { transform: translate(-1%, 2%); }
-  40% { transform: translate(2%, -2%); }
-  50% { transform: translate(-3%, 3%); }
-  60% { transform: translate(1%, -1%); }
-  70% { transform: translate(-2%, 2%); }
-  80% { transform: translate(3%, -3%); }
-  90% { transform: translate(-1%, 1%); }
-}
-
-/* ── Image reveal with clip-path ── */
-
-@keyframes clip-reveal-up {
-  from { clip-path: inset(100% 0 0 0); }
-  to { clip-path: inset(0 0 0 0); }
-}
-
-@keyframes clip-reveal-left {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
-}
-
-.animate-clip-up {
-  animation: clip-reveal-up 0.9s cubic-bezier(0.23, 1, 0.32, 1) both;
-}
-
-.animate-clip-left {
-  animation: clip-reveal-left 0.9s cubic-bezier(0.23, 1, 0.32, 1) both;
-}
-
-/* ── Glow breathe for badges/buttons ── */
-
-@keyframes glow-breathe {
-  0%, 100% { box-shadow: 0 0 8px rgba(52, 97, 209, 0.15), 0 0 24px rgba(52, 97, 209, 0.05); }
-  50% { box-shadow: 0 0 16px rgba(52, 97, 209, 0.3), 0 0 48px rgba(52, 97, 209, 0.1); }
-}
-
-.glow-breathe {
-  animation: glow-breathe 3s ease-in-out infinite;
-}
-
-/* ── Stagger children entrance ── */
-
-.stagger-children > * {
-  opacity: 0;
-  animation: fade-up 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-.stagger-children > *:nth-child(1) { animation-delay: 0s; }
-.stagger-children > *:nth-child(2) { animation-delay: 0.08s; }
-.stagger-children > *:nth-child(3) { animation-delay: 0.16s; }
-.stagger-children > *:nth-child(4) { animation-delay: 0.24s; }
-.stagger-children > *:nth-child(5) { animation-delay: 0.32s; }
-.stagger-children > *:nth-child(6) { animation-delay: 0.40s; }
-.stagger-children > *:nth-child(7) { animation-delay: 0.48s; }
-.stagger-children > *:nth-child(8) { animation-delay: 0.56s; }
-.stagger-children > *:nth-child(9) { animation-delay: 0.64s; }
-.stagger-children > *:nth-child(10) { animation-delay: 0.72s; }
-
-/* ── Text reveal per-line ── */
-
-@keyframes text-slide-up {
-  from { opacity: 0; transform: translateY(100%); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.text-reveal-line {
-  overflow: hidden;
-}
-
-.text-reveal-line > * {
-  display: block;
-  animation: text-slide-up 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
-}
-
-/* ── Magnetic hover scale ── */
-
-.hover-magnetic {
-  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.hover-magnetic:hover {
-  transform: scale(1.02);
-}
-
-/* ── Underline draw on hover ── */
-
-.underline-draw {
-  position: relative;
-}
-
-.underline-draw::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: linear-gradient(90deg, #2b6fb8, #6ab0d4);
-  transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.underline-draw:hover::after {
-  width: 100%;
+  background: var(--signal);
 }
 
 /* ── FAQ: tabs and accordion with no JavaScript ──
@@ -955,14 +372,15 @@ html[data-reveal-ready] .reveal.is-visible {
 }
 
 .faq-pill {
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: transparent;
+  color: var(--ink-3);
+  border: 1px solid var(--line);
 }
 
 .faq-pill:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.7);
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--line-strong);
 }
 
 /* One pair of rules per category. `~` reaches forward from the checked radio to
@@ -980,10 +398,9 @@ html[data-reveal-ready] .reveal.is-visible {
 #faq-cat-production:checked ~ * .faq-pill[for="faq-cat-production"],
 #faq-cat-delivery-licensing:checked ~ * .faq-pill[for="faq-cat-delivery-licensing"],
 #faq-cat-results:checked ~ * .faq-pill[for="faq-cat-results"] {
-  background: linear-gradient(to right, rgba(43, 111, 184, 0.25), rgba(14, 165, 233, 0.15));
-  color: #6ab0d4;
-  border-color: rgba(43, 111, 184, 0.35);
-  box-shadow: 0 0 16px rgba(43, 111, 184, 0.15);
+  background: var(--ink);
+  color: #07090c;
+  border-color: var(--ink);
 }
 
 /* Keyboard focus has to be visible on the label, since the radio itself is
@@ -993,29 +410,25 @@ html[data-reveal-ready] .reveal.is-visible {
 .faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-production"],
 .faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-delivery-licensing"],
 .faq-radio:focus-visible ~ * .faq-pill[for="faq-cat-results"] {
-  outline: 2px solid #2b6fb8;
-  outline-offset: 2px;
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
 }
 
+/* Questions are hairline rows, not floating cards. Eighteen bordered boxes
+   stacked on a dark ground read as noise; a ruled list reads as a list. */
 .faq-item {
-  border-color: rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.02);
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  transition: background-color 0.2s ease;
 }
 
-.faq-item:hover {
-  border-color: rgba(43, 111, 184, 0.15);
-  background: rgba(43, 111, 184, 0.02);
-}
-
-.faq-item[open] {
-  border-color: rgba(43, 111, 184, 0.25);
-  background: linear-gradient(to right, rgba(43, 111, 184, 0.06), rgba(14, 165, 233, 0.03));
-  box-shadow: 0 0 24px rgba(43, 111, 184, 0.08);
-}
+.faq-item:hover { background: rgba(255, 255, 255, 0.02); }
 
 .faq-item[open] .faq-chevron {
   transform: rotate(180deg);
-  color: #6ab0d4;
+  color: var(--signal);
 }
 
 /* Safari still paints its own disclosure triangle without both of these. */
@@ -1229,3 +642,350 @@ html[data-reveal-ready] .reveal.is-visible {
     mask-image: none !important;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   DESIGN SYSTEM PRIMITIVES
+
+   Everything below is the shared vocabulary. If a page needs a look that
+   is not here, add it here rather than inlining a one-off — the previous
+   version of this site had six visually distinct card treatments that
+   were all trying to be the same card.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Rhythm ────────────────────────────────────────────────────────────
+   One section spacing token, one container. Sections used to carry their
+   own py-12/16/20/28 in whatever combination, so the gaps between them
+   ranged from 150px to 260px with no relationship to each other. */
+
+/* --section-y is the gap BETWEEN sections, so each section contributes half
+   of it. Defining it as the full padding is what produced 250–320px voids:
+   every boundary paid for it twice. */
+.section {
+  position: relative;
+  padding-block: calc(var(--section-y) / 2);
+}
+
+/* Half-step, for a section that continues the thought above it rather
+   than starting a new one. */
+.section-tight {
+  padding-block: calc(var(--section-y) / 4);
+}
+
+.shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: var(--gutter);
+}
+
+.shell-narrow {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 52rem;
+  padding-inline: var(--gutter);
+}
+
+/* ── Type ──────────────────────────────────────────────────────────────
+   Display type is Archivo, set tight and large. The old scale topped out
+   at 48px on a 1440 viewport, which is smaller than the hero video behind
+   it — the headline lost every fight it was in. */
+
+.display-1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.75rem, 7.2vw, 6.5rem);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.display-2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.125rem, 4.6vw, 4rem);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.display-3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.375rem, 2vw, 1.875rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+/* The utility face. Camera metadata, not decoration: these labels carry
+   location, sequence, and category — information the reader can use. */
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.meta-signal { color: var(--signal); }
+
+.lede {
+  font-size: clamp(1rem, 1.15vw, 1.1875rem);
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* ── Rule head ─────────────────────────────────────────────────────────
+   The section-opening device: a mono label, a hairline that runs the full
+   width of the container, and — optionally — the section's utility link
+   parked at the far end. That link used to float unanchored beside the
+   heading with nothing tying it to the section; now the rule is what ties
+   it, and the rule is also what announces a new section, so sections no
+   longer need to fight for separation with padding alone. */
+
+.rule-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.rule-head > .meta { flex: none; }
+
+.rule-head > .rule-fill {
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--line);
+  min-width: 1.5rem;
+}
+
+.rule-link {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+  transition: color 0.2s ease, gap 0.2s ease;
+}
+
+.rule-link:hover { color: var(--signal); gap: 0.75rem; }
+
+/* ── Surfaces ──────────────────────────────────────────────────────────
+   A card is a real object: a lighter ground and a hairline, so its edge
+   exists whether or not you hover it. */
+
+.surface {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+a.surface:hover,
+.surface-interactive:hover {
+  background: var(--surface-hi);
+  border-color: var(--line-strong);
+}
+
+/* ── Viewfinder ticks ──────────────────────────────────────────────────
+   The signature. Four corner marks, the crop guides you see through a
+   camera's viewfinder, drawn as hairline L's just inside a frame's edge.
+   They open outward a couple of pixels on hover — the way a frame settles
+   when you compose a shot. Used on the hero and on portfolio frames only;
+   the moment it appears on every card it stops meaning anything. */
+
+.viewfinder {
+  position: relative;
+  --vf-inset: 14px;
+  --vf-inset-hover: 10px;
+  --vf-inset-top: var(--vf-inset);
+}
+
+.viewfinder::before,
+.viewfinder::after,
+.viewfinder > .vf-b::before,
+.viewfinder > .vf-b::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--signal);
+  border-style: solid;
+  border-width: 0;
+  opacity: 0.55;
+  pointer-events: none;
+  transition: inset 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+}
+
+.viewfinder::before { inset: var(--vf-inset-top) auto auto var(--vf-inset); border-top-width: 1px; border-left-width: 1px; }
+.viewfinder::after { inset: var(--vf-inset-top) var(--vf-inset) auto auto; border-top-width: 1px; border-right-width: 1px; }
+.viewfinder > .vf-b::before { inset: auto auto var(--vf-inset) var(--vf-inset); border-bottom-width: 1px; border-left-width: 1px; }
+.viewfinder > .vf-b::after { inset: auto var(--vf-inset) var(--vf-inset) auto; border-bottom-width: 1px; border-right-width: 1px; }
+
+.viewfinder:hover::before { inset: var(--vf-inset-hover) auto auto var(--vf-inset-hover); opacity: 0.9; }
+.viewfinder:hover::after { inset: var(--vf-inset-hover) var(--vf-inset-hover) auto auto; opacity: 0.9; }
+.viewfinder:hover > .vf-b::before { inset: auto auto var(--vf-inset-hover) var(--vf-inset-hover); opacity: 0.9; }
+.viewfinder:hover > .vf-b::after { inset: auto var(--vf-inset-hover) var(--vf-inset-hover) auto; opacity: 0.9; }
+
+/* The hero frame starts behind the fixed header, so its top marks have to
+   clear the header row — at the default 14px they sat either side of the
+   logo and read as a rendering glitch rather than as a frame. The hero's
+   marks are also fixed: they are the page's frame, not a hover affordance. */
+.viewfinder-hero {
+  --vf-inset: clamp(16px, 3vw, 32px);
+  --vf-inset-top: calc(4rem + clamp(16px, 3vw, 32px));
+  --vf-inset-hover: var(--vf-inset);
+}
+
+@media (min-width: 1024px) {
+  .viewfinder-hero { --vf-inset-top: calc(5rem + clamp(16px, 3vw, 32px)); }
+}
+
+.viewfinder-hero:hover::before { inset: var(--vf-inset-top) auto auto var(--vf-inset); opacity: 0.55; }
+.viewfinder-hero:hover::after { inset: var(--vf-inset-top) var(--vf-inset) auto auto; opacity: 0.55; }
+.viewfinder-hero:hover > .vf-b::before { inset: auto auto var(--vf-inset) var(--vf-inset); opacity: 0.55; }
+.viewfinder-hero:hover > .vf-b::after { inset: auto var(--vf-inset) var(--vf-inset) auto; opacity: 0.55; }
+
+/* ── Actions ───────────────────────────────────────────────────────────
+   Two buttons, and the primary one is genuinely the loudest thing on the
+   page. The old primary was a navy-to-blue gradient on black that read
+   quieter than the ghost button sitting next to it. */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  border-radius: 999px;
+  padding: 0.9375rem 1.75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--signal);
+  color: #04070c;
+  box-shadow: 0 0 0 1px rgba(78, 168, 255, 0.4), 0 8px 30px rgba(78, 168, 255, 0.22);
+}
+
+.btn-primary:hover {
+  background: #6fbaff;
+  box-shadow: 0 0 0 1px rgba(78, 168, 255, 0.55), 0 10px 38px rgba(78, 168, 255, 0.34);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+}
+
+.btn-ghost:hover { background: var(--surface-hi); border-color: rgba(255, 255, 255, 0.28); }
+
+.btn-solid {
+  background: var(--ink);
+  color: #07090c;
+}
+
+.btn-solid:hover { background: #e6e6e6; }
+
+/* Arrow nudge, shared by every action that carries one. */
+.btn .arrow,
+.rule-link .arrow { transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
+.btn:hover .arrow { transform: translateX(3px); }
+
+/* ── Focus ─────────────────────────────────────────────────────────────
+   One visible ring for the whole site, on the accent so it is unmissable
+   against the dark ground. */
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Reduced motion ────────────────────────────────────────────────────
+   Kills the ambient loops outright rather than shortening them: a 25s
+   breathing logo is exactly what someone with vestibular sensitivity
+   turned this setting on to avoid. */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .viewfinder:hover::before,
+  .viewfinder:hover::after,
+  .viewfinder:hover > .vf-b::before,
+  .viewfinder:hover > .vf-b::after { inset: revert-layer; }
+}
+
+/* The hero's backdrop layer paints after the ticks in DOM order, so the ticks
+   need to be lifted above it explicitly. */
+.viewfinder-front::before,
+.viewfinder-front::after,
+.viewfinder-front > .vf-b::before,
+.viewfinder-front > .vf-b::after { z-index: 20; }
+
+/* ── Form fields ───────────────────────────────────────────────────────
+   One field style, defined once. The contact form used to repeat a
+   40-class string on every input, and set the field ground to black on a
+   near-black card so the inputs had no visible edge — you could not tell
+   where a field started. Fields now sit a step BELOW the surface they are
+   on, which is how a well reads as something you type into. */
+
+.field {
+  width: 100%;
+  border-radius: 0.625rem;
+  border: 1px solid var(--line);
+  background: #0a0d12;
+  color: var(--ink);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.field::placeholder { color: rgba(255, 255, 255, 0.32); }
+
+.field:hover { border-color: var(--line-strong); }
+
+.field:focus,
+.field:focus-visible {
+  outline: none;
+  border-color: var(--signal);
+  box-shadow: 0 0 0 3px rgba(78, 168, 255, 0.16);
+  background: #0c1017;
+}
+
+.field-input { height: 3rem; padding-inline: 0.875rem 0.875rem; }
+.field-input.has-icon { padding-left: 2.75rem; }
+.field-area { min-height: 7rem; padding: 0.875rem; resize: none; }
+
+.field-label {
+  display: block;
+  margin-bottom: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.field-required { color: var(--signal); }

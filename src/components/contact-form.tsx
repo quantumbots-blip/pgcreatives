@@ -53,11 +53,11 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
       {/* Name row */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="space-y-2.5">
-          <Label htmlFor="firstName" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
-            First Name <span className="text-purple-light/50">*</span>
+          <Label htmlFor="firstName" className="field-label">
+            First name <span className="field-required">*</span>
           </Label>
           <div className="relative">
-            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
             <Input
               id="firstName"
               name="firstName"
@@ -65,16 +65,16 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               required
               maxLength={50}
               autoComplete="given-name"
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-base text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="field field-input has-icon"
             />
           </div>
         </div>
         <div className="space-y-2.5">
-          <Label htmlFor="lastName" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
-            Last Name <span className="text-purple-light/50">*</span>
+          <Label htmlFor="lastName" className="field-label">
+            Last name <span className="field-required">*</span>
           </Label>
           <div className="relative">
-            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
             <Input
               id="lastName"
               name="lastName"
@@ -82,7 +82,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               required
               maxLength={50}
               autoComplete="family-name"
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-base text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="field field-input has-icon"
             />
           </div>
         </div>
@@ -91,11 +91,11 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
       {/* Email + Phone row */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="space-y-2.5">
-          <Label htmlFor="email" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
-            Email <span className="text-purple-light/50">*</span>
+          <Label htmlFor="email" className="field-label">
+            Email <span className="field-required">*</span>
           </Label>
           <div className="relative">
-            <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
             <Input
               id="email"
               name="email"
@@ -104,16 +104,16 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               required
               maxLength={254}
               autoComplete="email"
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-base text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="field field-input has-icon"
             />
           </div>
         </div>
         <div className="space-y-2.5">
-          <Label htmlFor="phone" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
+          <Label htmlFor="phone" className="field-label">
             Phone
           </Label>
           <div className="relative">
-            <Phone className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <Phone className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
             <Input
               id="phone"
               name="phone"
@@ -122,7 +122,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
               maxLength={20}
               autoComplete="tel"
               inputMode="tel"
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-base text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="field field-input has-icon"
             />
           </div>
         </div>
@@ -130,27 +130,27 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
 
       {/* Service */}
       <div className="space-y-2.5">
-        <Label htmlFor="service" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
-          Service Interested In
+        <Label htmlFor="service" className="field-label">
+          Service you need
         </Label>
         <select
           id="service"
           name="service"
           defaultValue=""
-          className="h-12 w-full rounded-lg border border-purple/12 bg-[#000000]/60 px-3.5 text-base text-white focus:border-purple/40 focus:ring-1 focus:ring-purple/20 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(43%2C111%2C184%2C0.4)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat"
+          className="field field-input appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(255%2C255%2C255%2C0.45)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_14px_center] bg-no-repeat"
         >
-          <option value="" disabled className="bg-[#000000] text-white/60">
+          <option value="" disabled className="bg-[#0f1319] text-white/60">
             Select a service...
           </option>
-          <option value="Real Estate" className="bg-[#000000]">Real Estate</option>
-          <option value="Social Media" className="bg-[#000000]">Social Media</option>
-          <option value="Commercial" className="bg-[#000000]">Commercial</option>
+          <option value="Real Estate" className="bg-[#0f1319]">Real estate</option>
+          <option value="Personal Brand" className="bg-[#0f1319]">Personal brand / Content Creator Program</option>
+          <option value="Commercial" className="bg-[#0f1319]">Commercial</option>
         </select>
       </div>
 
       {/* Message */}
       <div className="space-y-2.5">
-        <Label htmlFor="message" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
+        <Label htmlFor="message" className="field-label">
           Message
         </Label>
         <Textarea
@@ -159,7 +159,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           placeholder="Any additional details..."
           rows={4}
           maxLength={5000}
-          className="rounded-lg border-purple/12 bg-[#000000]/60 text-base text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all resize-none"
+          className="field field-area"
         />
       </div>
 
@@ -176,7 +176,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         <button
           type="submit"
           disabled={pending}
-          className="group flex w-full sm:w-auto items-center justify-center gap-3 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:bg-white/90 disabled:opacity-60"
+          className="btn btn-primary w-full sm:w-auto disabled:opacity-60"
         >
           {pending ? (
             <>
@@ -185,8 +185,8 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             </>
           ) : (
             <>
-              Send Message
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              Send message
+              <ArrowRight className="arrow h-4 w-4" />
             </>
           )}
         </button>
