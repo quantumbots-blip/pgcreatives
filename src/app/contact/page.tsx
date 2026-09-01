@@ -84,7 +84,7 @@ export default function ContactPage() {
               />
               <p className="lede lg:pb-3">
                 Tell us about the project and we&apos;ll come back with a quote and
-                a recommendation — usually the same day.
+                a recommendation, usually the same day.
               </p>
             </div>
           </AnimateOnScroll>

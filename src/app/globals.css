@@ -616,8 +616,7 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem 1rem;
-  padding-bottom: 1.75rem;
-  border-bottom: 1px solid var(--line);
+  padding-bottom: 0;
 }
 
 .rule-head > .meta { flex: none; }
@@ -1233,4 +1232,147 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* ── Nav ───────────────────────────────────────────────────────────────
+   The active item is marked by a filled well plus a short accent underline,
+   so which section you are in survives a glance. A background tint alone at
+   8% white was doing almost nothing on this ground. */
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link-active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-link-active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0.25rem;
+  width: 14px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--signal);
+  transform: translateX(-50%);
+}
+
+/* The bar tightens as the page scrolls: a header that behaves is a small
+   signal that the rest of the site was built with the same care. */
+.header-shell {
+  transition: padding 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.35s ease, border-color 0.35s ease;
+}
+
+/* ── Program showcase ──────────────────────────────────────────────────
+   A fanned deck of three reels, and the five outcomes drawn as the sequence
+   they describe. The old panel was a bordered box containing a bulleted
+   list: it said "grow your brand" and showed a list of sentences. */
+
+.reel-deck {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  max-width: 30rem;
+  margin-inline: auto;
+  perspective: 1400px;
+}
+
+.reel-card { transform-style: preserve-3d; }
+
+/* The outer two rake back and drop, so the middle reel reads as the one being
+   held up. Desktop only: on a phone three side-by-side cards are already
+   narrow, and raking them makes the outer two unreadable. */
+@media (min-width: 640px) {
+  .reel-deck { gap: 1rem; max-width: 34rem; }
+  .reel-card-0 { transform: rotateY(15deg) translate3d(14px, 22px, -70px); }
+  .reel-card-1 { transform: translate3d(0, -10px, 30px); z-index: 2; }
+  .reel-card-2 { transform: rotateY(-15deg) translate3d(-14px, 22px, -70px); }
+}
+
+.stage-track {
+  display: grid;
+  gap: 2.25rem 1.5rem;
+  grid-template-columns: 1fr;
+  counter-reset: stage;
+}
+
+@media (min-width: 768px) {
+  .stage-track { grid-template-columns: repeat(5, 1fr); gap: 1.25rem; }
+}
+
+.stage {
+  position: relative;
+  padding-top: 2.75rem;
+}
+
+/* The connector. Drawn on the node row and stopped before the last item, so
+   the sequence reads left to right and does not trail off the end. */
+.stage::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  left: 2rem;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, var(--line-strong), var(--line));
+}
+
+.stage:last-child::before { display: none; }
+
+@media (max-width: 767px) {
+  /* Vertical on phones: the connector runs down the left instead. */
+  .stage { padding-top: 0; padding-left: 3.25rem; }
+  .stage::before {
+    top: 2.25rem;
+    bottom: -2.25rem;
+    left: 1rem;
+    right: auto;
+    width: 1px;
+    height: auto;
+    background: linear-gradient(to bottom, var(--line-strong), var(--line));
+  }
+}
+
+.stage-node {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  color: var(--signal);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.stage:hover .stage-node {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: #07090c;
+}
+
+.stage-step {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.stage-detail {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ink-2);
 }

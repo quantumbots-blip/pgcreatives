@@ -3,7 +3,7 @@ export const BUSINESS = {
   legalName: "MCINTEE LLC",
   tagline: "Professional Grade Media",
   description:
-    "Professional grade media — real estate photography, videography, drone shots, 3D tours, and commercial branding.",
+    "Professional grade media, real estate photography, videography, drone shots, 3D tours, and commercial branding.",
   email: "pgcreativeswisconsin@gmail.com",
   locations: ["Green Bay", "Madison", "Milwaukee", "Fox Valley"],
   locationText: "Green Bay, Madison, Milwaukee & Fox Valley, WI",

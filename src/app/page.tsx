@@ -7,6 +7,7 @@ import { ContactForm } from "@/components/contact-form";
 import { RuleHead } from "@/components/rule-head";
 import { Tilt } from "@/components/tilt";
 import { Marquee } from "@/components/marquee";
+import { ProgramShowcaseDeck, ProgramShowcaseStages } from "@/components/program-showcase";
 import { DisplayLines } from "@/components/display-lines";
 import { Counter } from "@/components/counter";
 import { FAQ, faqs } from "@/components/faq";
@@ -19,7 +20,7 @@ const stats = [
 ];
 
 /* Each card now links to the thing it names. All three used to point at
-   /services, which was the Content Creator Program page — so an agent who
+   /services, which was the Content Creator Program page, so an agent who
    clicked "Real Estate" landed on a page about personal branding. */
 const services = [
   {
@@ -27,7 +28,7 @@ const services = [
     href: "/services#real-estate",
     meta: "Listings",
     description:
-      "Photography, listing video, drone, and 3D tours — everything a listing needs to go live looking its best.",
+      "Photography, listing video, drone, and 3D tours. Everything a listing needs to go live looking its best.",
     image: "/images/marble-kitchen-dining.jpg",
   },
   {
@@ -51,7 +52,7 @@ const services = [
 ];
 
 /* The bento. Captions carry what the shot actually is, set as camera
-   metadata — the old grid had no captions at all, so five interiors read as
+   metadata, the old grid had no captions at all, so five interiors read as
    one undifferentiated wall of house. */
 const photos = [
   {
@@ -85,14 +86,6 @@ const photos = [
     caption: "Dining at sunset",
     meta: "Interior",
   },
-];
-
-const brandingBenefits = [
-  "Stay top of mind in your market",
-  "Build a personal brand people trust",
-  "Get inbound leads instead of chasing them",
-  "Build authority so clients pick you first",
-  "Turn views into conversations, and conversations into deals",
 ];
 
 const portals = [
@@ -132,9 +125,9 @@ export default function HomePage() {
       {/* ── Track record ──────────────────────────────────────────────────
           A hairline-bounded strip rather than three floating numbers. It
           reads as one row of evidence and takes a fraction of the height. */}
-      <section className="section-tight">
+      <section className="pt-[calc(var(--section-y)/4)]">
         <div className="shell">
-          <dl className="grid grid-cols-1 divide-y divide-line border-y border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          <dl className="grid grid-cols-1 divide-y divide-line border-t border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((stat, i) => (
               <AnimateOnScroll
                 key={stat.label}
@@ -152,6 +145,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Sits directly under the stats so the two share one rule instead of
+          closing one band and opening another. */}
       <Marquee
         items={[
           "Green Bay",
@@ -264,18 +259,23 @@ export default function HomePage() {
       {/* ── Packages ─────────────────────────────────────────────────────── */}
       <Packages />
 
-      {/* ── Content Creator Program ──────────────────────────────────────── */}
-      <section className="section">
-        <div className="shell">
-          <AnimateOnScroll animation="rise">
+      {/* ── Content Creator Program ──────────────────────────────────────
+          The old right-hand panel was a bordered box holding a bulleted list:
+          it said "grow your brand" and showed five sentences. The five are a
+          sequence, so they are drawn as one, and the reels the program
+          actually delivers are shown instead of described. */}
+      <section className="section relative overflow-hidden">
+        <div className="grid-rules" aria-hidden="true" />
+        <div className="shell relative">
+          <AnimateOnScroll animation="lines">
             <RuleHead
               label="Content Creator Program"
               link={{ href: "/services/content-creator-program", label: "Program details" }}
             />
           </AnimateOnScroll>
 
-          <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-2 lg:items-start lg:gap-16">
-            <AnimateOnScroll animation="fade-up">
+          <div className="mt-12 grid gap-12 lg:mt-16 lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-20">
+            <AnimateOnScroll animation="lines">
               <div>
                 <DisplayLines
                   className="display-2 text-white"
@@ -283,8 +283,8 @@ export default function HomePage() {
                 />
                 <p className="lede mt-6 max-w-lg">
                   A monthly program built around consistency, strategy, and
-                  results. We handle strategy, filming, editing, and coaching —
-                  you show up and be yourself.
+                  results. We handle strategy, filming, editing, and coaching.
+                  You show up and be yourself.
                 </p>
                 <div className="mt-9 flex flex-wrap items-center gap-5">
                   <Link href="/services/content-creator-program" className="btn btn-primary">
@@ -296,35 +296,17 @@ export default function HomePage() {
               </div>
             </AnimateOnScroll>
 
-            <AnimateOnScroll animation="depth-right" delay={0.12} className="scene">
-              <Tilt max={4} lift={12}>
-              <div className="surface p-7 sm:p-9">
-                <p className="meta">What you get</p>
-                <ul className="mt-6">
-                  {brandingBenefits.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-baseline gap-4 border-b border-line py-4 text-[0.9375rem] text-ink-2 last:border-b-0"
-                    >
-                      <span className="text-signal" aria-hidden="true">—</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-7 text-sm font-semibold text-white">
-                  When you win, we win.
-                </p>
-              </div>
-              </Tilt>
-            </AnimateOnScroll>
+            <ProgramShowcaseDeck />
           </div>
+
+          <ProgramShowcaseStages />
         </div>
       </section>
 
       {/* ── Start a project ──────────────────────────────────────────────────
           One closing section, not three. The old page ended with a portals
           block headed "Ready to Get Started?", then a form headed "Ready to
-          Elevate Your Brand?", then the FAQ — three closes in a row, each
+          Elevate Your Brand?", then the FAQ, three closes in a row, each
           asking for the same thing. Booking a session and asking a question
           are the two real paths, so they sit side by side under one head. */}
       <section id="book" className="section relative overflow-hidden scroll-mt-20">
@@ -378,7 +360,7 @@ export default function HomePage() {
                 <p className="meta">Not sure which package?</p>
                 <p className="mt-3 text-lg text-ink-2">
                   Send us the details and we&apos;ll come back with a quote and a
-                  recommendation — usually the same day.
+                  recommendation, usually the same day.
                 </p>
               </div>
               <div className="mt-9">

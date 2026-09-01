@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   ...pageMetadata({
     title: "Content Creator Program",
     description:
-      "A monthly content creator program for real estate agents. Strategy, filming, editing, and coaching — we handle everything so you can focus on your business.",
+      "A monthly content creator program for real estate agents. Strategy, filming, editing, and coaching. We handle everything so you can focus on your business.",
     path: "/services/content-creator-program",
     image: "/og-services.jpg",
     imageAlt: "PG Creatives Content Creator Program",
@@ -118,7 +118,7 @@ const differences = [
   {
     title: "Built to win",
     body:
-      "This program is about one thing — helping you grow your brand, attract more opportunities, and win more deals. When you win, we win.",
+      "This program is about one thing: helping you grow your brand, attract more opportunities, and win more deals. When you win, we win.",
   },
 ];
 
@@ -142,8 +142,8 @@ export default async function ContentCreatorProgramPage() {
               lines={["Content that", "performs."]}
             />
             <p className="lede lg:pb-3">
-              A monthly program built around consistency, strategy, and results
-              — so you grow your brand and win more deals. From $1,500 a month.
+              A monthly program built around consistency, strategy, and results,
+              so you grow your brand and win more deals. From $1,500 a month.
             </p>
           </div>
         </div>
@@ -167,7 +167,7 @@ export default async function ContentCreatorProgramPage() {
 
       {/* ── What we handle ───────────────────────────────────────────────
           A ruled list, not six centered icon cards. These are the steps of one
-          process, so they read as one list — and the numbering is real here:
+          process, so they read as one list, and the numbering is real here:
           strategy genuinely comes before filming, which comes before the edit. */}
       <section className="section">
         <div className="shell">

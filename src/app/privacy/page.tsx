@@ -109,11 +109,11 @@ export default function PrivacyPolicyPage() {
               end of the user session, when the web browser is closed.
             </p>
             <p className="mt-3">
-              We use cookies for the following purposes: (a) Authentication — to
-              identify you when you visit our website; (b) Status — to determine if
-              you are logged in; (c) Personalization — to store information about
-              your preferences; (d) Security — to protect user accounts and our
-              website; (e) Analysis — to analyze the use and performance of our
+              We use cookies for the following purposes: (a) Authentication, to
+              identify you when you visit our website; (b) Status, to determine if
+              you are logged in; (c) Personalization, to store information about
+              your preferences; (d) Security, to protect user accounts and our
+              website; (e) Analysis, to analyze the use and performance of our
               website and services.
             </p>
             <p className="mt-3">

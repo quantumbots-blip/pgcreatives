@@ -405,7 +405,7 @@ export function VideoHero() {
               style={{ animationDelay: "0.24s" }}
             >
               Listing photography, video, drone and 3D tours for Wisconsin
-              agents — plus the personal-brand content that keeps you in front
+              agents, plus the personal-brand content that keeps you in front
               of your market between listings.
             </p>
 

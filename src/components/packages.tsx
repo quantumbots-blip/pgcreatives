@@ -25,7 +25,7 @@ const packages = [
   {
     title: "PG Growth",
     description:
-      "Our most popular package — photography, video, 3D tour, 2D floor plan, drone, and virtual twilights.",
+      "Our most popular package, photography, video, 3D tour, 2D floor plan, drone, and virtual twilights.",
     features: ["Daytime Photography", "Premium Listing Video", "Matterport or Zillow 3D Tour", "2D Floor Plan", "Drone Photography", "3 Virtual Twilights"],
     price: "From $725",
     popular: true,
@@ -33,7 +33,7 @@ const packages = [
   {
     title: "PG Platinum",
     description:
-      "The full premium experience — daytime & twilight photography, day to night video, coming soon video, and drone.",
+      "The full premium experience, daytime & twilight photography, day to night video, coming soon video, and drone.",
     features: ["Daytime & Twilight Photography", "Platinum Day to Night Listing Video", "Coming Soon Video", "Drone Photography"],
     price: "From $1,000",
     popular: false,

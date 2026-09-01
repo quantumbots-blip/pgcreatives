@@ -82,7 +82,7 @@ const team = [
 ];
 
 /* The four values used to carry four different accent colors — blue, purple,
-   amber, teal — with matching gradient icon tiles. None of them appears
+   amber, teal, with matching gradient icon tiles. None of them appears
    anywhere else on the site, so the section read as a component borrowed from
    a different product. They are the same kind of thing, so they now look like
    the same kind of thing, and the numbering carries what the color was
@@ -174,7 +174,7 @@ export default function TeamPage() {
 
       {/* ── Founder's letter ─────────────────────────────────────────────
           Left-aligned. Four centered paragraphs of body copy is the hardest
-          shape to read on a page — every line starts in a different place. */}
+          shape to read on a page, every line starts in a different place. */}
       <section className="section">
         <div className="shell">
           <AnimateOnScroll animation="rise">
@@ -213,9 +213,9 @@ export default function TeamPage() {
             <AnimateOnScroll animation="fade-up" delay={0.1}>
               <div className="space-y-6 text-base leading-relaxed text-ink-2 sm:text-lg">
                 <p>
-                  I started PG Creatives at 19 years old with a simple goal —
-                  create better media for real estate and help agents stand out
-                  in a crowded market. What began as just me with a camera has
+                  I started PG Creatives at 19 years old with a simple goal: create
+                  better media for real estate and help agents stand out in a
+                  crowded market. What began as just me with a camera has
                   grown into a full team working with hundreds of agents, and
                   continuing to raise the standard of what real estate content
                   should look like.

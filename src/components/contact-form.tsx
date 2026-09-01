@@ -34,7 +34,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         {/* Same promise the rest of the site makes. This used to say "within
             24 hours" while /contact and the home form both said same day. */}
         <p className="lede mt-4 max-w-md">
-          Thanks for reaching out — we usually reply the same day.
+          Thanks for reaching out, we usually reply the same day.
         </p>
         <button type="button" onClick={onReset} className="btn btn-ghost mt-8">
           Send another message
@@ -45,7 +45,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
 
   return (
     <form ref={formRef} action={formAction} className="space-y-6 sm:space-y-8">
-      {/* Honeypot — hidden from humans, filled by bots */}
+      {/* Honeypot, hidden from humans, filled by bots */}
       <div className="absolute -left-[9999px]" aria-hidden="true">
         <input type="text" name="website" tabIndex={-1} autoComplete="off" />
       </div>

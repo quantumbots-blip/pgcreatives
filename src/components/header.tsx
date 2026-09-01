@@ -302,9 +302,16 @@ export function Header() {
             />
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden items-center gap-2 md:flex">
-            <div className="flex items-center gap-0.5 rounded-full border border-line bg-white/[0.03] p-1">
+          {/* Desktop nav.
+
+              One container, not three. The links used to sit in their own
+              pill while "Client login" and the CTA floated loose beside it,
+              so the right-hand side read as three unrelated objects. Now the
+              whole control set shares a single bar with a divider between
+              browsing and acting, and the CTA is a filled pill inset at its
+              end — one shape, one edge, one idea. */}
+          <nav className="hidden items-center md:flex">
+            <div className="flex items-center gap-0.5 rounded-full border border-line bg-white/[0.04] p-1 pl-2 backdrop-blur-xl">
               {navigation.map((item) =>
                 item.children ? (
                   <DesktopDropdown
@@ -324,28 +331,30 @@ export function Header() {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
+                      "nav-link rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
                       isSectionActive(item.href, pathname)
-                        ? "bg-white/[0.08] text-white"
-                        : "text-white/60 hover:text-white hover:bg-white/[0.05]"
+                        ? "nav-link-active text-white"
+                        : "text-white/65 hover:text-white"
                     )}
                   >
                     {item.name}
                   </Link>
                 )
               )}
+
+              <span className="mx-1.5 h-5 w-px bg-line" aria-hidden="true" />
+
+              <ClientLoginMenu
+                open={openMenu === "login"}
+                onOpenChange={(next) =>
+                  setOpenMenu((prev) => (next ? "login" : prev === "login" ? null : prev))
+                }
+              />
+
+              <Link href="/#book" className="btn btn-primary ml-1 !px-5 !py-2 !text-sm">
+                Book a shoot
+              </Link>
             </div>
-
-            <ClientLoginMenu
-              open={openMenu === "login"}
-              onOpenChange={(next) =>
-                setOpenMenu((prev) => (next ? "login" : prev === "login" ? null : prev))
-              }
-            />
-
-            <Link href="/#book" className="btn btn-primary !px-5 !py-2.5 !text-sm">
-              Book a shoot
-            </Link>
           </nav>
 
           {/* Mobile hamburger */}

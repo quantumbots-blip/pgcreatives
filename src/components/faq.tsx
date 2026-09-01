@@ -31,7 +31,7 @@ export const faqs: FAQItem[] = [
     category: "General",
     question: "What areas do you serve?",
     answer:
-      "We serve Green Bay, Madison, Milwaukee, the Fox Valley, and surrounding areas throughout Wisconsin. For larger projects we're happy to travel further — just reach out and we'll make it work.",
+      "We serve Green Bay, Madison, Milwaukee, the Fox Valley, and surrounding areas throughout Wisconsin. For larger projects we're happy to travel further, just reach out and we'll make it work.",
   },
   {
     category: "General",
@@ -44,7 +44,7 @@ export const faqs: FAQItem[] = [
     category: "Pricing & Booking",
     question: "How much does a real estate shoot cost?",
     answer:
-      "Photography on its own starts at $225. Full listing packages start at $550 — PG Core covers daytime photography, a premium listing video, drone photography, and three virtual twilights; PG Growth ($725) adds a Matterport or Zillow 3D tour and a 2D floor plan; PG Platinum ($1,000) adds twilight photography and a day-to-night listing video. Pricing scales with square footage and varies slightly by market, so send us the address and we'll give you an exact number.",
+      "Photography on its own starts at $225. Full listing packages start at $550, PG Core covers daytime photography, a premium listing video, drone photography, and three virtual twilights; PG Growth ($725) adds a Matterport or Zillow 3D tour and a 2D floor plan; PG Platinum ($1,000) adds twilight photography and a day-to-night listing video. Pricing scales with square footage and varies slightly by market, so send us the address and we'll give you an exact number.",
   },
   {
     category: "Pricing & Booking",
@@ -75,7 +75,7 @@ export const faqs: FAQItem[] = [
     category: "Production",
     question: "Do you handle editing and post-production?",
     answer:
-      "Yes, all editing, color grading, music licensing, and post-production is included. We deliver polished, ready-to-publish content — no extra work on your end.",
+      "Yes, all editing, color grading, music licensing, and post-production is included. We deliver polished, ready-to-publish content, no extra work on your end.",
   },
   {
     category: "Production",
@@ -167,7 +167,7 @@ export function FAQ() {
                 lines={["Everything you", "need to know."]}
               />
               <p className="lede mt-6 max-w-sm">
-                And if the answer is not here, ask us — we would rather tell you
+                And if the answer is not here, ask us, we would rather tell you
                 straight than have you guess.
               </p>
 
@@ -180,7 +180,7 @@ export function FAQ() {
                   /* A Fragment, not a wrapper element. Even `display: contents`
                      leaves a node between the radiogroup and its radios in
                      Chromium's accessibility tree, which cost the set its
-                     posinset/setsize — the "3 of 5" a screen reader reads. */
+                     posinset/setsize, the "3 of 5" a screen reader reads. */
                   <Fragment key={cat}>
                     <input
                       type="radio"

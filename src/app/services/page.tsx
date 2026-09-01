@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 /* Three services, each with its own anchor. This page exists because the nav
-   said "Services" and led to a page about one monthly program — the two other
+   said "Services" and led to a page about one monthly program, the two other
    things this company actually sells had no page at all. */
 const services = [
   {
@@ -38,7 +38,7 @@ const services = [
     label: "Service 01",
     title: "Real estate",
     lede:
-      "Everything a listing needs to go live looking its best — shot, edited, and delivered fast enough to matter.",
+      "Everything a listing needs to go live looking its best. Shot, edited, and delivered fast enough to matter.",
     image: "/images/aerial-lakefront.jpg",
     imageAlt: "Lakefront homes and piers photographed from the air",
     includes: [
@@ -57,7 +57,7 @@ const services = [
     label: "Service 02",
     title: "Commercial",
     lede:
-      "Media for businesses outside real estate — interiors, facilities, brand film, and the stills that go with them.",
+      "Media for businesses outside real estate. Interiors, facilities, brand film, and the stills that go with them.",
     image: "/images/twilight-wooded-exterior.jpg",
     imageAlt: "Robotic surgical suite photographed for a Wisconsin clinic",
     includes: [
@@ -184,7 +184,7 @@ export default function ServicesPage() {
                 />
                 <p className="lede mt-5 max-w-md">
                   Send us the property or the brief. We&apos;ll tell you what we
-                  would shoot and what it costs — usually the same day.
+                  would shoot and what it costs, usually the same day.
                 </p>
               </div>
               <Link href="/contact" className="btn btn-primary shrink-0">
