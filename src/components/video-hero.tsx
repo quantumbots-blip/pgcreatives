@@ -5,14 +5,19 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
 
-// Two renditions of the same 25-second loop. The desktop file is 16:9 at 720p;
-// the phone file is the 9:16 center crop that `object-cover` actually displays
+// Two renditions of the same 75-second loop. The desktop file is 16:9 at 720p;
+// the phone file is the 9:16 centre crop that `object-cover` actually displays
 // on a portrait screen, so none of its bytes are spent on pixels that get
-// cropped away. Together with the shorter loop that took the original 75-second
-// 8.61 MB file to 2.71 MB on desktop and 1.06 MB on phones. The loop ends on a
-// real scene cut at 24.43s, so it repeats on an edit rather than mid-shot.
-const VIDEO_SRC_DESKTOP = "/hero-video-v5.mp4";
-const VIDEO_SRC_MOBILE = "/hero-video-mobile.mp4";
+// cropped away.
+//
+// This is the FULL take, restored from the 1920x1080 master in git history
+// (26e9519). It had been cut to 24.5s to save weight, which made the loop
+// obvious. Re-encoded two-pass at 24fps instead — 380k desktop, 190k mobile —
+// which buys back all three minutes of footage for +28% and +64% bytes
+// respectively. The file is behind a heavy scrim and only ever downloads on a
+// fast connection, so the lower bitrate costs nothing anyone can see.
+const VIDEO_SRC_DESKTOP = "/hero-video-v6.mp4";
+const VIDEO_SRC_MOBILE = "/hero-video-mobile-v2.mp4";
 
 // Matches the site's mobile breakpoint. A phone in landscape is wider than this
 // and correctly gets the 16:9 file, which is the one that fits that shape.
@@ -323,7 +328,7 @@ export function VideoHero() {
   }, [videoEnabled]);
 
   return (
-    <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[78svh] items-center overflow-clip sm:min-h-[92svh] lg:-mt-20 lg:min-h-screen">
+    <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[86svh] items-center overflow-clip sm:min-h-[92svh] lg:-mt-20 lg:min-h-screen">
       {/* The bottom half of the viewfinder ticks. The top two are drawn by
           `.viewfinder` itself; this empty element carries the other two. */}
       <span className="vf-b" aria-hidden="true" />
@@ -396,7 +401,7 @@ export function VideoHero() {
                 inline flow so the browser can break the headline itself, and
                 without it the two lines run together as "Professionalgrade".
                 `DisplayLines` does the same thing for every other heading. */}
-            <h1 className="display-1 mt-7 text-white">
+            <h1 className="display-1 mt-[clamp(2rem,6svh,3.75rem)] text-white">
               <span className="line-mask">
                 <span className="line-inner hero-line" style={{ animationDelay: "0.18s" }}>
                   Professional{" "}
@@ -410,7 +415,7 @@ export function VideoHero() {
             </h1>
 
             <p
-              className="animate-hero-fade-up lede mt-7 max-w-xl"
+              className="animate-hero-fade-up lede mt-[clamp(1.75rem,5svh,2.75rem)] max-w-xl"
               style={{ animationDelay: "0.44s" }}
             >
               Listing photography, video, drone and 3D tours for Wisconsin
@@ -419,7 +424,7 @@ export function VideoHero() {
             </p>
 
             <div
-              className="animate-hero-fade-up mt-10 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4"
+              className="animate-hero-fade-up mx-auto mt-[clamp(2.5rem,7svh,4.25rem)] flex w-full max-w-[17.5rem] flex-col items-stretch gap-3 sm:max-w-none sm:w-auto sm:flex-row sm:items-center sm:gap-4"
               style={{ animationDelay: "0.56s" }}
             >
               <Link href="/#book" className="btn btn-primary">

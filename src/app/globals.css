@@ -459,7 +459,9 @@ html[data-reveal-ready] .reveal.is-visible {
   transition: background-color 0.3s ease;
 }
 
-.faq-item:hover { background: rgba(255, 255, 255, 0.045); }
+@media (hover: hover) {
+  .faq-item:hover { background: rgba(255, 255, 255, 0.045); }
+}
 
 .faq-item[open] .faq-chevron {
   transform: rotate(180deg);
@@ -668,10 +670,12 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
     transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-a.surface:hover,
-.surface-interactive:hover {
-  background: var(--surface-hi);
-  border-color: var(--line-strong);
+@media (hover: hover) {
+  a.surface:hover,
+  .surface-interactive:hover {
+    background: var(--surface-hi);
+    border-color: var(--line-strong);
+  }
 }
 
 /* ── Viewfinder ticks ──────────────────────────────────────────────────
@@ -741,10 +745,12 @@ a.surface:hover,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.625rem;
+  gap: 0.5rem;
   border-radius: 999px;
-  padding: 0.9375rem 1.75rem;
-  font-size: 0.9375rem;
+  /* Smaller on a phone. The desktop padding on a full-width button reads as a
+     slab; this still clears the 44px touch target with room to spare. */
+  padding: 0.8125rem 1.5rem;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -753,6 +759,14 @@ a.surface:hover,
 }
 
 .btn:active { transform: scale(0.97); }
+
+@media (min-width: 640px) {
+  .btn {
+    gap: 0.625rem;
+    padding: 0.9375rem 1.75rem;
+    font-size: 0.9375rem;
+  }
+}
 
 /* White on the brand blue measures 5.16:1; the near-black label the bright
    accent used would be 3.86:1 on this one. */
@@ -1227,9 +1241,11 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-.faq-item:hover .faq-chevron-well {
-  border-color: var(--line-strong);
-  color: var(--ink);
+@media (hover: hover) {
+  .faq-item:hover .faq-chevron-well {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
 }
 
 .faq-item[open] .faq-chevron-well {
@@ -1396,10 +1412,12 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-.stage:hover .stage-node {
-  background: var(--signal);
-  border-color: var(--signal);
-  color: #07090c;
+@media (hover: hover) {
+  .stage:hover .stage-node {
+    background: var(--signal);
+    border-color: var(--signal);
+    color: #07090c;
+  }
 }
 
 .stage-step {
@@ -1432,11 +1450,19 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   box-shadow: 0 20px 60px -34px rgba(0, 0, 0, 0.9);
 }
 
-.portal-card:hover {
-  border-color: rgba(43, 111, 184, 0.45);
-  box-shadow:
-    0 26px 70px -30px rgba(0, 0, 0, 0.95),
-    0 0 70px -30px rgba(43, 111, 184, 0.6);
+/* Gated to a real pointer. iOS Safari keeps a :hover state after a tap, so a
+   card the visitor had scrolled past stayed lit while its neighbour did not —
+   one state outline reading brighter than the other for no reason. */
+@media (hover: hover) {
+  .portal-card:hover {
+    border-color: rgba(43, 111, 184, 0.45);
+    box-shadow:
+      0 26px 70px -30px rgba(0, 0, 0, 0.95),
+      0 0 70px -30px rgba(43, 111, 184, 0.6);
+  }
+
+  .portal-card:hover .portal-glow { opacity: 1; scale: 1.08; }
+  .portal-card:hover .portal-map { opacity: 0.7; scale: 1.04; }
 }
 
 /* The wash behind the map, so the state reads as lit rather than drawn. */
@@ -1454,8 +1480,6 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   pointer-events: none;
 }
 
-.portal-card:hover .portal-glow { opacity: 1; scale: 1.08; }
-
 .portal-map {
   position: absolute;
   right: 1.75rem;
@@ -1466,8 +1490,6 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   transition: opacity 0.45s ease, scale 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
-
-.portal-card:hover .portal-map { opacity: 0.7; scale: 1.04; }
 
 /* The city. A lit dot with a ring that breathes out of it, positioned over
    the outline by the coordinates in the data. */
