@@ -1,4 +1,5 @@
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { DisplayLines } from "@/components/display-lines";
 import { PortfolioFilter } from "@/components/portfolio-filter";
 import { getVimeoMetas } from "@/lib/vimeo";
 
@@ -104,7 +105,7 @@ const projects = [
     image: "/images/luxury-living-room.jpg",
   },
   {
-    title: "Downtown Penthouse",
+    title: "Downtown Condo",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/modern-condo.jpg",
@@ -114,6 +115,7 @@ const projects = [
     category: "Drone",
     type: "photo" as const,
     image: "/images/aerial-lakefront.jpg",
+    feature: true,
   },
   {
     title: "Lakehouse Kitchen & Fireplace",
@@ -122,7 +124,7 @@ const projects = [
     image: "/images/lakehouse-kitchen.jpg",
   },
   {
-    title: "Lakefront Cottage Exterior",
+    title: "Cottage Exterior",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/cottage-exterior.jpg",
@@ -140,7 +142,7 @@ const projects = [
     image: "/images/modern-entryway.jpg",
   },
   {
-    title: "Luxury Estate at Twilight",
+    title: "Modern Estate After Dark",
     category: "Drone",
     type: "photo" as const,
     image: "/images/luxury-estate-night.jpg",
@@ -195,7 +197,7 @@ const projects = [
     image: "/images/stone-ranch-exterior.jpg",
   },
   {
-    title: "Staged Master Suite",
+    title: "Staged Primary Suite",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/staged-master-bedroom.jpg",
@@ -231,10 +233,11 @@ const projects = [
     image: "/images/game-room-fireplace.jpg",
   },
   {
-    title: "Marble Kitchen & Dining",
-    category: "Real Estate",
+    title: "Waterfront Estate at Sunset",
+    category: "Drone",
     type: "photo" as const,
     image: "/images/marble-kitchen-dining.jpg",
+    feature: true,
   },
   {
     title: "Modern Dining & Kitchen",
@@ -253,6 +256,7 @@ const projects = [
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/lakefront-screened-porch.jpg",
+    feature: true,
   },
   {
     title: "Marble Chef Kitchen",
@@ -285,13 +289,13 @@ const projects = [
     image: "/images/cottage-bedroom-fireplace.jpg",
   },
   {
-    title: "Modern Master Bathroom",
+    title: "Modern Primary Bathroom",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/modern-master-bath.jpg",
   },
   {
-    title: "Lakefront Sunset Living",
+    title: "Coffered-Ceiling Living Room",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/lakefront-sunset-living.jpg",
@@ -301,6 +305,7 @@ const projects = [
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/golf-simulator-room.jpg",
+    feature: true,
   },
 ];
 
@@ -319,35 +324,37 @@ export default async function PortfolioPage() {
       : p
   );
 
+  const filmCount = projects.filter((p) => p.type === "video").length;
+  const stillCount = projects.filter((p) => p.type === "photo").length;
+
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-12 pb-4 sm:pt-20 sm:pb-6">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,#111111_0%,transparent_55%)]" />
-        <div className="absolute left-10 top-40 h-48 w-48 rounded-full bg-purple/[0.03] blur-[60px] animate-float" />
-
-        <div className="relative mx-auto max-w-7xl px-5 sm:px-6">
-          <AnimateOnScroll animation="fade-up">
-            <div className="max-w-2xl">
-              <div className="mb-5 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 h-7 sm:px-4 sm:h-8">
-                <span className="text-[11px] sm:text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.25em] text-purple-light leading-none">
-                  Portfolio
-                </span>
+      <section className="section-tight">
+        <div className="shell">
+          <AnimateOnScroll animation="lines">
+            <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
+              <DisplayLines
+                as="h1"
+                className="display-1 text-white"
+                lines={["Every listing,", "in its best light."]}
+              />
+              <div className="lg:pb-3">
+                <p className="lede">
+                  Work made for agents, brokers, and businesses across Green Bay,
+                  Madison, Milwaukee, and the Fox Valley.
+                </p>
+                <p className="meta mt-6">
+                  <span className="text-signal-ink">{filmCount} films</span>
+                  <span className="mx-2" aria-hidden="true">/</span>
+                  <span>{stillCount} stills</span>
+                </p>
               </div>
-              <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white md:text-5xl">
-                Our Best Work
-              </h1>
-              <p className="mt-4 text-base sm:text-lg text-purple-light/55">
-                Browse our collection of professional media created for clients
-                across Wisconsin.
-              </p>
             </div>
           </AnimateOnScroll>
         </div>
       </section>
 
-      {/* Filter + Grid */}
-      <section className="pt-4 pb-10 sm:pt-6 sm:pb-16">
+      <section className="section pt-0">
         <PortfolioFilter projects={projectsWithThumbs} />
       </section>
     </>

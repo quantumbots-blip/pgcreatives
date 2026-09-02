@@ -8,7 +8,7 @@ import Image from "next/image";
 // It fades itself out and stops accepting input on a fixed schedule measured
 // from first paint, with no JavaScript involved.
 //
-// That division of labour is deliberate. This overlay is server-rendered and
+// That division of labor is deliberate. This overlay is server-rendered and
 // covers the whole viewport at z-index 9999, so for as long as it is up the
 // site is unusable. Driving it from React meant its removal was gated on
 // hydration, and on a phone that needs several seconds to hydrate the visitor

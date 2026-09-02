@@ -5,7 +5,7 @@ import { submitContactForm, type ContactState } from "@/app/actions/contact";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, CheckCircle2, Loader2, Mail, Phone, User } from "lucide-react";
+import { ArrowRight, CheckCircle2, Layers, Loader2, Mail, Phone, User } from "lucide-react";
 
 const initialState: ContactState = { success: false, error: null };
 
@@ -20,24 +20,24 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
     initialState,
   );
   const formRef = useRef<HTMLFormElement>(null);
+  const prior = state.values;
 
   if (state.success) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple/20 to-purple-dim/10 border border-purple/20">
-          <CheckCircle2 className="h-8 w-8 text-purple-light" />
+      <div className="flex flex-col items-center justify-center py-16 text-center sm:py-20">
+        <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-signal/35 bg-signal-dim">
+          <CheckCircle2 className="h-7 w-7 text-signal-ink" />
         </div>
-        <h3 className="text-2xl font-bold text-white">Message Sent!</h3>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-white/50">
-          Thanks for reaching out. We&apos;ll get back to you within 24 hours
-          to discuss your project.
+        <h3 className="display-2 !text-[clamp(1.5rem,2.4vw,2rem)] text-white">
+          Message sent.
+        </h3>
+        {/* Same promise the rest of the site makes. This used to say "within
+            24 hours" while /contact and the home form both said same day. */}
+        <p className="lede mt-4 max-w-md">
+          Thanks for reaching out, we usually reply the same day.
         </p>
-        <button
-          type="button"
-          onClick={onReset}
-          className="mt-8 rounded-lg border border-purple/30 px-7 py-3 text-sm font-medium tracking-wide text-purple-light transition-all duration-300 hover:border-purple/50 hover:bg-purple/10"
-        >
-          Send Another Message
+        <button type="button" onClick={onReset} className="btn btn-ghost mt-8">
+          Send another message
         </button>
       </div>
     );
@@ -45,7 +45,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
 
   return (
     <form ref={formRef} action={formAction} className="space-y-6 sm:space-y-8">
-      {/* Honeypot — hidden from humans, filled by bots */}
+      {/* Honeypot, hidden from humans, filled by bots */}
       <div className="absolute -left-[9999px]" aria-hidden="true">
         <input type="text" name="website" tabIndex={-1} autoComplete="off" />
       </div>
@@ -53,36 +53,38 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
       {/* Name row */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="space-y-2.5">
-          <Label htmlFor="firstName" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
-            First Name <span className="text-purple-light/50">*</span>
+          <Label htmlFor="firstName" className="field-label">
+            First name <span className="field-required">*</span>
           </Label>
           <div className="relative">
-            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
             <Input
               id="firstName"
               name="firstName"
+              defaultValue={prior?.firstName ?? ""}
               placeholder="John"
               required
               maxLength={50}
               autoComplete="given-name"
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-base text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="field field-input has-icon"
             />
           </div>
         </div>
         <div className="space-y-2.5">
-          <Label htmlFor="lastName" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
-            Last Name <span className="text-purple-light/50">*</span>
+          <Label htmlFor="lastName" className="field-label">
+            Last name <span className="field-required">*</span>
           </Label>
           <div className="relative">
-            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
             <Input
               id="lastName"
               name="lastName"
+              defaultValue={prior?.lastName ?? ""}
               placeholder="Doe"
               required
               maxLength={50}
               autoComplete="family-name"
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-base text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="field field-input has-icon"
             />
           </div>
         </div>
@@ -91,38 +93,40 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
       {/* Email + Phone row */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="space-y-2.5">
-          <Label htmlFor="email" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
-            Email <span className="text-purple-light/50">*</span>
+          <Label htmlFor="email" className="field-label">
+            Email <span className="field-required">*</span>
           </Label>
           <div className="relative">
-            <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
             <Input
               id="email"
               name="email"
+              defaultValue={prior?.email ?? ""}
               type="email"
               placeholder="john@example.com"
               required
               maxLength={254}
               autoComplete="email"
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-base text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="field field-input has-icon"
             />
           </div>
         </div>
         <div className="space-y-2.5">
-          <Label htmlFor="phone" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
+          <Label htmlFor="phone" className="field-label">
             Phone
           </Label>
           <div className="relative">
-            <Phone className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-purple/40" />
+            <Phone className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
             <Input
               id="phone"
               name="phone"
+              defaultValue={prior?.phone ?? ""}
               type="tel"
               placeholder="(555) 123-4567"
               maxLength={20}
               autoComplete="tel"
               inputMode="tel"
-              className="h-12 rounded-lg border-purple/12 bg-[#000000]/60 pl-11 text-base text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all"
+              className="field field-input has-icon"
             />
           </div>
         </div>
@@ -130,36 +134,40 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
 
       {/* Service */}
       <div className="space-y-2.5">
-        <Label htmlFor="service" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
-          Service Interested In
+        <Label htmlFor="service" className="field-label">
+          Service you need
         </Label>
+        <div className="relative">
+        <Layers className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
         <select
           id="service"
           name="service"
-          defaultValue=""
-          className="h-12 w-full rounded-lg border border-purple/12 bg-[#000000]/60 px-3.5 text-base text-white focus:border-purple/40 focus:ring-1 focus:ring-purple/20 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(43%2C111%2C184%2C0.4)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat"
+          defaultValue={prior?.service ?? ""}
+          className="field field-input has-icon appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(255%2C255%2C255%2C0.45)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_14px_center] bg-no-repeat"
         >
-          <option value="" disabled className="bg-[#000000] text-white/60">
+          <option value="" disabled className="bg-[#0f1319] text-white/60">
             Select a service...
           </option>
-          <option value="Real Estate" className="bg-[#000000]">Real Estate</option>
-          <option value="Social Media" className="bg-[#000000]">Social Media</option>
-          <option value="Commercial" className="bg-[#000000]">Commercial</option>
+          <option value="Real Estate" className="bg-[#0f1319]">Real estate</option>
+          <option value="Personal Brand" className="bg-[#0f1319]">Personal brand / Content Creator Program</option>
+          <option value="Commercial" className="bg-[#0f1319]">Commercial</option>
         </select>
+        </div>
       </div>
 
       {/* Message */}
       <div className="space-y-2.5">
-        <Label htmlFor="message" className="text-xs font-medium uppercase tracking-[0.15em] text-white/60">
+        <Label htmlFor="message" className="field-label">
           Message
         </Label>
         <Textarea
           id="message"
           name="message"
+          defaultValue={prior?.message ?? ""}
           placeholder="Any additional details..."
           rows={4}
           maxLength={5000}
-          className="rounded-lg border-purple/12 bg-[#000000]/60 text-base text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20 transition-all resize-none"
+          className="field field-area"
         />
       </div>
 
@@ -176,7 +184,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         <button
           type="submit"
           disabled={pending}
-          className="group flex w-full sm:w-auto items-center justify-center gap-3 rounded-full bg-white px-8 py-3.5 text-sm font-semibold tracking-wide text-black transition-all duration-200 hover:bg-white/90 disabled:opacity-60"
+          className="btn btn-primary w-full sm:w-auto disabled:opacity-60"
         >
           {pending ? (
             <>
@@ -185,8 +193,8 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             </>
           ) : (
             <>
-              Send Message
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              Send message
+              <ArrowRight className="arrow h-4 w-4" />
             </>
           )}
         </button>

@@ -7,6 +7,18 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 export type ContactState = {
   success: boolean;
   error: string | null;
+  /* What the visitor typed, echoed back so a failed submission does not wipe
+     the form. React 19 resets an uncontrolled form once the action settles —
+     including when it settles with an error — so without this someone who
+     writes a paragraph and trips a validation rule loses the paragraph. */
+  values?: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    service: string;
+    message: string;
+  };
 };
 
 const sanitizeHeader = (s: string) => s.replace(/[\r\n\0]/g, "");
@@ -56,12 +68,26 @@ export async function submitContactForm(
   const service = truncate(String(formData.get("service") ?? "").trim(), MAX_LENGTHS.service);
   const message = truncate(String(formData.get("message") ?? "").trim(), MAX_LENGTHS.message);
 
-  if (!firstName || !lastName || !email || !message) {
-    return { success: false, error: "Please fill in all required fields." };
+  const values = { firstName, lastName, email, phone, service, message };
+
+  // Message is deliberately NOT required. Its label reads "Any additional
+  // details…" and carries no asterisk, so requiring it server-side rejected
+  // submissions for a field the form never said was needed — and the error
+  // named no field, so there was nothing to act on.
+  if (!firstName || !lastName || !email) {
+    return {
+      success: false,
+      error: "Please fill in your first name, last name, and email.",
+      values,
+    };
   }
 
   if (!EMAIL_REGEX.test(email)) {
-    return { success: false, error: "Please enter a valid email address." };
+    return {
+      success: false,
+      error: "Please enter a valid email address.",
+      values,
+    };
   }
 
   // Save to database
@@ -107,6 +133,7 @@ export async function submitContactForm(
     return {
       success: false,
       error: "Something went wrong. Please try again or call us directly.",
+      values,
     };
   }
 }

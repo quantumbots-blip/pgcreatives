@@ -1,4 +1,6 @@
+import { Fragment } from "react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { DisplayLines } from "@/components/display-lines";
 
 const categories = [
   "General",
@@ -28,7 +30,7 @@ export const faqs: FAQItem[] = [
     category: "General",
     question: "What areas do you serve?",
     answer:
-      "We serve Green Bay, Madison, Milwaukee, the Fox Valley, and surrounding areas throughout Wisconsin. For larger projects we're happy to travel further — just reach out and we'll make it work.",
+      "We serve Green Bay, Madison, Milwaukee, the Fox Valley, and surrounding areas throughout Wisconsin. For larger projects we're happy to travel further, just reach out and we'll make it work.",
   },
   {
     category: "General",
@@ -41,7 +43,7 @@ export const faqs: FAQItem[] = [
     category: "Pricing & Booking",
     question: "How much does a real estate shoot cost?",
     answer:
-      "Real estate packages start at $250 and include HDR photography, drone imagery, and virtual staging options. Pricing varies by property size and services needed — check our Services page or request a custom quote.",
+      "Photography on its own starts at $225. Full listing packages start at $550, PG Core covers daytime photography, a premium listing video, drone photography, and three virtual twilights; PG Growth ($725) adds a Matterport or Zillow 3D tour and a 2D floor plan; PG Platinum ($1,000) adds twilight photography and a day-to-night listing video. Pricing scales with square footage and varies slightly by market, so send us the address and we'll give you an exact number.",
   },
   {
     category: "Pricing & Booking",
@@ -53,7 +55,7 @@ export const faqs: FAQItem[] = [
     category: "Pricing & Booking",
     question: "How do I book a shoot?",
     answer:
-      "You can book directly through our client portal for Green Bay or Madison, or fill out our contact form for a custom quote. We typically respond within a few hours during business days.",
+      "You can book directly through our client portal for Green Bay or Madison, or fill out our contact form for a custom quote. We usually reply the same day.",
   },
   {
     category: "Pricing & Booking",
@@ -72,7 +74,7 @@ export const faqs: FAQItem[] = [
     category: "Production",
     question: "Do you handle editing and post-production?",
     answer:
-      "Yes, all editing, color grading, music licensing, and post-production is included. We deliver polished, ready-to-publish content — no extra work on your end.",
+      "Yes, all editing, color grading, music licensing, and post-production is included. We deliver polished, ready-to-publish content, no extra work on your end.",
   },
   {
     category: "Production",
@@ -84,7 +86,7 @@ export const faqs: FAQItem[] = [
     category: "Production",
     question: "How long does a typical shoot take?",
     answer:
-      "A standard real estate shoot takes 1–2 hours depending on property size. Commercial and social media shoots vary from 2–6 hours based on scope. We'll give you a time estimate upfront.",
+      "A standard real estate shoot takes 1 to 2 hours depending on property size. Commercial and social media shoots vary from 2 to 6 hours based on scope. We'll give you a time estimate upfront.",
   },
   // Delivery & Licensing
   {
@@ -122,7 +124,7 @@ export const faqs: FAQItem[] = [
     category: "Results",
     question: "Can you help grow my social media presence?",
     answer:
-      "Yes. Beyond creating content, we advise on posting strategy, content calendars, and what types of video perform best for your industry. Many of our clients see 2–5x engagement increases within the first month.",
+      "Yes. Beyond creating content, we advise on posting strategy, content calendars, and what types of video perform best for your industry. Many of our clients see 2 to 5x engagement increases within the first month.",
   },
 ];
 
@@ -136,7 +138,7 @@ function slug(category: Category) {
  * This was a client component holding two pieces of state: which category is
  * selected and which answer is open. That meant all eighteen questions and
  * answers were shipped to every visitor as JavaScript and hydrated, to power
- * behaviour the browser already provides for free.
+ * behavior the browser already provides for free.
  *
  * The accordion is now a native <details>, and the category tabs are radio
  * inputs styled by their labels, switched in CSS (see `.faq-*` in globals.css).
@@ -145,77 +147,83 @@ function slug(category: Category) {
  */
 export function FAQ() {
   return (
-    <section className="relative overflow-x-clip py-16 sm:py-28">
-      <div className="pointer-events-none absolute -right-40 top-40 h-80 w-80 rounded-full bg-purple/[0.08] blur-[120px]" />
-      <div className="pointer-events-none absolute left-[10%] bottom-[20%] h-60 w-60 rounded-full bg-sky-500/[0.06] blur-[100px]" />
+    <section className="section">
+      <div className="shell">
 
-      <div className="mx-auto max-w-4xl px-5 sm:px-6">
-        <AnimateOnScroll animation="fade-up">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-              Frequently Asked Questions
-            </h2>
-            <p className="mt-4 text-base text-white/60">
-              Everything you need to know about working with us.
-            </p>
-          </div>
-        </AnimateOnScroll>
+        {/* `.faq` has to wrap BOTH columns: the `:has()` selectors scope
+            selection to it, so the pills and the panels must share it as an
+            ancestor even though they sit in different grid cells. */}
+        <div className="faq mt-10 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+          {/* The radios live inside the group they belong to, each immediately
+              before its own label. */}
+          <AnimateOnScroll animation="lines">
+            <div className="lg:sticky lg:top-28">
+              <DisplayLines
+                className="display-2 text-white"
+                lines={["Everything you", "need to know."]}
+              />
+              <p className="lede mt-6 max-w-sm">
+                And if the answer is not here, ask us, we would rather tell you
+                straight than have you guess.
+              </p>
 
-        <div className="faq">
-          {/* The radios carry the selected-tab state. They sit ahead of both the
-              pills and the panels so CSS sibling selectors can reach each. */}
-          {categories.map((cat, i) => (
-            <input
-              key={cat}
-              type="radio"
-              name="faq-category"
-              id={`faq-cat-${slug(cat)}`}
-              className="faq-radio"
-              defaultChecked={i === 0}
-            />
-          ))}
-
-          <AnimateOnScroll animation="fade-up" delay={0.1}>
-            <div
-              className="faq-pills mt-8 sm:mt-10 flex flex-wrap justify-center gap-2"
-              role="tablist"
-              aria-label="Question categories"
-            >
-              {categories.map((cat) => (
-                <label
-                  key={cat}
-                  htmlFor={`faq-cat-${slug(cat)}`}
-                  className="faq-pill cursor-pointer rounded-full px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-medium tracking-wide transition-all duration-200"
-                >
-                  {cat}
-                </label>
-              ))}
+              <div
+                className="faq-pills mt-9 flex flex-wrap gap-2"
+                role="radiogroup"
+                aria-label="Question categories"
+              >
+                {categories.map((cat) => (
+                  /* A Fragment, not a wrapper element. Even `display: contents`
+                     leaves a node between the radiogroup and its radios in
+                     Chromium's accessibility tree, which cost the set its
+                     posinset/setsize, the "3 of 5" a screen reader reads. */
+                  <Fragment key={cat}>
+                    <input
+                      type="radio"
+                      name="faq-category"
+                      id={`faq-cat-${slug(cat)}`}
+                      className="faq-radio"
+                      defaultChecked={cat === categories[0]}
+                      aria-controls={`faq-panel-${slug(cat)}`}
+                    />
+                    <label
+                      htmlFor={`faq-cat-${slug(cat)}`}
+                      className="faq-pill inline-flex min-h-11 cursor-pointer items-center rounded-full px-4 text-xs font-medium transition-colors duration-200 sm:min-h-0 sm:px-5 sm:py-2.5 sm:text-sm"
+                    >
+                      {cat}
+                    </label>
+                  </Fragment>
+                ))}
+              </div>
             </div>
           </AnimateOnScroll>
 
-          <div>
-            <div className="faq-panels mt-8 sm:mt-10">
-              {categories.map((cat) => (
-                <div
-                  key={cat}
-                  className="faq-panel space-y-2.5 sm:space-y-3"
-                  data-category={slug(cat)}
-                >
-                  {faqs
-                    .filter((f) => f.category === cat)
-                    .map((faq, i) => (
-                      <details
-                        key={faq.question}
-                        className="faq-item reveal rounded-xl border"
-                        data-reveal="fade-up"
-                        style={{ "--reveal-delay": `${i * 0.07}s` } as React.CSSProperties}
-                      >
-                        <summary className="flex w-full cursor-pointer items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 text-left">
-                          <span className="text-sm font-semibold text-white sm:text-lg">
-                            {faq.question}
-                          </span>
+          <div className="faq-panels lg:pt-2">
+            {categories.map((cat) => (
+              <div
+                key={cat}
+                className="faq-panel"
+                data-category={slug(cat)}
+                id={`faq-panel-${slug(cat)}`}
+                role="region"
+                aria-label={`${cat} questions`}
+              >
+                {faqs
+                  .filter((f) => f.category === cat)
+                  .map((faq, i) => (
+                    <details
+                      key={faq.question}
+                      className="faq-item reveal"
+                      data-reveal="fade-up"
+                      style={{ "--reveal-delay": `${i * 0.06}s` } as React.CSSProperties}
+                    >
+                      <summary className="flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left">
+                        <span className="text-base font-medium text-white sm:text-lg">
+                          {faq.question}
+                        </span>
+                        <span className="faq-chevron-well">
                           <svg
-                            className="faq-chevron h-5 w-5 shrink-0 text-white/30 transition-transform duration-200"
+                            className="faq-chevron h-4 w-4 transition-transform duration-300"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -226,15 +234,15 @@ export function FAQ() {
                           >
                             <path d="m6 9 6 6 6-6" />
                           </svg>
-                        </summary>
-                        <p className="faq-answer px-4 sm:px-6 pb-4 sm:pb-5 text-sm leading-relaxed text-white/60 sm:text-base">
-                          {faq.answer}
-                        </p>
-                      </details>
-                    ))}
-                </div>
-              ))}
-            </div>
+                        </span>
+                      </summary>
+                      <p className="faq-answer max-w-2xl pb-6 text-sm leading-relaxed text-ink-2 sm:text-base">
+                        {faq.answer}
+                      </p>
+                    </details>
+                  ))}
+              </div>
+            ))}
           </div>
         </div>
       </div>

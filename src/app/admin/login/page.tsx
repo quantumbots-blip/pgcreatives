@@ -24,18 +24,20 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-6">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-purple/20 bg-purple/10">
-            <Lock className="h-6 w-6 text-purple-light" />
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-line bg-surface">
+            <Lock className="h-6 w-6 text-signal-ink" />
           </div>
-          <h1 className="text-2xl font-bold text-white">Admin Access</h1>
-          <p className="mt-2 text-sm text-white/40">
+          <h1 className="display-2 !text-[clamp(1.5rem,3vw,2rem)] text-white">
+            Admin access
+          </h1>
+          <p className="mt-2 text-sm text-ink-3">
             Enter your password to access the dashboard.
           </p>
         </div>
 
         <form action={formAction} className="space-y-6">
           <div className="space-y-2.5">
-            <Label htmlFor="password" className="text-xs font-medium uppercase tracking-[0.15em] text-white/50">
+            <Label htmlFor="password" className="field-label">
               Password
             </Label>
             <Input
@@ -45,20 +47,20 @@ export default function AdminLoginPage() {
               placeholder="Enter admin password"
               required
               autoFocus
-              className="h-12 rounded-lg border-purple/12 bg-purple/[0.03] text-white placeholder:text-white/20 focus:border-purple/40 focus:ring-1 focus:ring-purple/20"
+              className="field field-input"
             />
           </div>
 
           {state.error && (
-            <div className="rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-3">
-              <p className="text-sm text-red-400">{state.error}</p>
+            <div className="rounded-lg border border-red-500/25 bg-red-500/[0.07] px-4 py-3">
+              <p className="text-sm text-red-400" aria-live="polite">{state.error}</p>
             </div>
           )}
 
           <button
             type="submit"
             disabled={pending}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-purple-dim via-purple to-purple-light px-8 py-3.5 text-sm font-semibold tracking-wide text-white transition-all hover:brightness-110 disabled:opacity-60"
+            className="btn btn-primary w-full disabled:opacity-60"
           >
             {pending ? (
               <>
@@ -66,7 +68,7 @@ export default function AdminLoginPage() {
                 Signing in...
               </>
             ) : (
-              "Sign In"
+              "Sign in"
             )}
           </button>
         </form>

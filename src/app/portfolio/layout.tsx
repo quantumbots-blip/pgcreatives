@@ -1,23 +1,21 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  title: "Portfolio | Our Best Work",
-  description:
-    "Browse PG Creatives' portfolio of professional real estate photography, cinematic videography, drone aerial footage, and 3D virtual tours across Wisconsin.",
+  ...pageMetadata({
+    title: "Portfolio",
+    description:
+      "Browse real estate photography, listing video, drone work and 3D tours produced for agents and businesses across Wisconsin.",
+    path: "/portfolio",
+    image: "/og-portfolio.jpg",
+    imageAlt: "PG Creatives portfolio",
+  }),
   keywords: [
-    "portfolio",
-    "real estate photos",
-    "property videos",
-    "drone shots",
-    "Wisconsin photographer portfolio",
+    "real estate portfolio",
+    "listing video examples",
+    "drone photography Wisconsin",
+    "property photography gallery",
   ],
-  alternates: { canonical: "/portfolio" },
-  openGraph: {
-    title: "Portfolio | PG Creatives",
-    description: "Our best professional media work across Wisconsin.",
-    url: "/portfolio",
-    images: [{ url: "/og-portfolio.jpg", width: 1200, height: 630, alt: "PG Creatives Portfolio - Our Best Work" }],
-  },
 };
 
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {

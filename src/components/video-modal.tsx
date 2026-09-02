@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { setBackgroundInert } from "@/lib/inert-background";
 
 /**
  * Fullscreen Vimeo player dialog shared by the portfolio and services pages.
@@ -25,38 +27,64 @@ export function VideoModal({
   onClose: () => void;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const frameRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     const opener = document.activeElement as HTMLElement | null;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    setBackgroundInert(true);
     closeRef.current?.focus();
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+
     };
     document.addEventListener("keydown", onKey);
 
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = previousOverflow;
+      setBackgroundInert(false);
       opener?.focus?.();
     };
   }, [onClose]);
 
-  return (
+  const dialog = (
     <div
       role="dialog"
       aria-modal="true"
       aria-label={title}
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 p-3 sm:p-8"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-[#07090c]/96 p-3 sm:p-8"
       onClick={onClose}
     >
+      {/* Focus sentinels.
+
+          `aria-modal` is a promise to assistive technology, not an enforcement
+          mechanism, and a Tab-key handler cannot do the job here: the Vimeo
+          iframe is cross-origin, so once focus is inside the player its key
+          events never reach this document and we never see the Tab that takes
+          focus back out. These two live in OUR document, so whichever end
+          focus leaves by, one of them catches it and sends it to the other. */}
+      <span
+        tabIndex={0}
+        aria-hidden="true"
+        onFocus={() => frameRef.current?.focus()}
+      />
+
       <button
         ref={closeRef}
         type="button"
         onClick={onClose}
-        className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-light sm:right-4 sm:top-4"
+        /* Solid white, not a faint chip. Once focus is inside the player,
+           Escape is dead — Vimeo's document receives the keydown, not ours,
+           and there is no way to hear it without adopting their Player SDK.
+           Shift+Tab and a backdrop click both still work, but the visible
+           exit has to be obvious from that state rather than discovered. */
+        className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#07090c] shadow-[0_4px_24px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal sm:right-4 sm:top-4"
         aria-label="Close video"
       >
         <X className="h-5 w-5" />
@@ -71,6 +99,7 @@ export function VideoModal({
         onClick={(e) => e.stopPropagation()}
       >
         <iframe
+          ref={frameRef}
           src={`https://player.vimeo.com/video/${vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&title=0&byline=0&portrait=0&dnt=1`}
           title={title}
           className="absolute inset-0 h-full w-full"
@@ -78,6 +107,27 @@ export function VideoModal({
           allowFullScreen
         />
       </div>
+
+      <span
+        tabIndex={0}
+        aria-hidden="true"
+        onFocus={() => closeRef.current?.focus()}
+      />
     </div>
   );
+
+  /* Rendered into <body>, not in place.
+
+     The dialog is opened from inside the page content, and marking that
+     subtree `inert` to keep focus out of the background would otherwise make
+     the dialog inert too — it is a descendant of the thing being disabled. A
+     portal moves it out from under `#page-content` so `inert` applies to the
+     background only, and frees the overlay from any stacking context its
+     ancestors create.
+
+     No mounted flag needed: this component only ever renders in response to a
+     click, which is necessarily after hydration. The guard is for safety, not
+     for a server pass. */
+  if (typeof document === "undefined") return null;
+  return createPortal(dialog, document.body);
 }

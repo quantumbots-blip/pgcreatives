@@ -3,11 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Play } from "lucide-react";
-import { FloatingParticles } from "@/components/floating-particles";
+import { ArrowRight, Play } from "lucide-react";
 
 // Two renditions of the same 25-second loop. The desktop file is 16:9 at 720p;
-// the phone file is the 9:16 centre crop that `object-cover` actually displays
+// the phone file is the 9:16 center crop that `object-cover` actually displays
 // on a portrait screen, so none of its bytes are spent on pixels that get
 // cropped away. Together with the shorter loop that took the original 75-second
 // 8.61 MB file to 2.71 MB on desktop and 1.06 MB on phones. The loop ends on a
@@ -26,7 +25,7 @@ function heroVideoSrc() {
 }
 
 type NavigatorWithConnection = Navigator & {
-  connection?: { saveData?: boolean; effectiveType?: string };
+  connection?: { saveData?: boolean; effectiveType?: string; downlink?: number };
 };
 
 // How many times we may call play() on our own before waiting for a real user
@@ -36,6 +35,12 @@ const MAX_AUTO_ATTEMPTS = 3;
 // Delay before retrying after an unexpected pause. Long enough that a retry
 // storm can never occupy consecutive frames.
 const RETRY_DELAY_MS = 400;
+
+/* The two hero planes. The backdrop sits behind the picture plane and is
+   scaled to cover the extra apparent distance ((1200+140)/1200 = 1.117), so
+   pushing it back reads as depth rather than as the video shrinking. */
+const BASE_BG = "translateZ(-140px) scale(1.125)";
+const BASE_CONTENT = "translateZ(60px)";
 
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -53,6 +58,8 @@ export function VideoHero() {
     const bg = bgRef.current;
     const content = contentRef.current;
     if (!bg || !content) return;
+    bg.style.transform = BASE_BG;
+    content.style.transform = BASE_CONTENT;
     const mq = window.matchMedia(
       "(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)"
     );
@@ -65,8 +72,10 @@ export function VideoHero() {
       const vh = window.innerHeight || 1;
       if (y > vh) return; // hero is off-screen; leave it where it was
       const t = Math.min(1, y / vh);
-      bg.style.transform = `translate3d(0, ${Math.round(y * 0.25)}px, 0)`;
-      content.style.transform = `translate3d(0, ${Math.round(y * 0.12)}px, 0)`;
+      // BASE_* keep the two planes separated in Z; the scroll offset composes
+      // with them rather than replacing them.
+      bg.style.transform = `${BASE_BG} translate3d(0, ${Math.round(y * 0.25)}px, 0)`;
+      content.style.transform = `${BASE_CONTENT} translate3d(0, ${Math.round(y * 0.12)}px, 0)`;
       content.style.opacity = String(1 - t * 1.1);
     };
     const onScroll = () => {
@@ -74,11 +83,36 @@ export function VideoHero() {
     };
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
+
+    /* Pointer parallax. The backdrop leans away from the cursor and the copy
+       leans toward it, which is what separates them into two planes rather
+       than one flat picture. Written inside a rAF and only for a mouse — a
+       finger has no hover position to read. */
+    let pFrame = 0;
+    let px = 0;
+    let py = 0;
+    const applyPointer = () => {
+      pFrame = 0;
+      bg.style.setProperty("--px", `${px * -14}px`);
+      bg.style.setProperty("--py", `${py * -10}px`);
+      content.style.setProperty("--px", `${px * 12}px`);
+      content.style.setProperty("--py", `${py * 8}px`);
+    };
+    const onPointer = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      px = e.clientX / (window.innerWidth || 1) - 0.5;
+      py = e.clientY / (window.innerHeight || 1) - 0.5;
+      if (!pFrame) pFrame = requestAnimationFrame(applyPointer);
+    };
+    window.addEventListener("pointermove", onPointer, { passive: true });
+
     return () => {
       if (frame) cancelAnimationFrame(frame);
+      if (pFrame) cancelAnimationFrame(pFrame);
       window.removeEventListener("scroll", onScroll);
-      bg.style.transform = "";
-      content.style.transform = "";
+      window.removeEventListener("pointermove", onPointer);
+      bg.style.transform = BASE_BG;
+      content.style.transform = BASE_CONTENT;
       content.style.opacity = "";
     };
   }, []);
@@ -93,16 +127,25 @@ export function VideoHero() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
     const conn = (navigator as NavigatorWithConnection).connection;
+    /* The gate used to catch only 2g and Data Saver, so a real 3G or slow-4G
+       phone downloaded the whole 1.09 MB file — measured at ~5.4s on a
+       1.6 Mbps pipe, which makes the video supersede the poster as the LCP
+       element and takes mobile LCP from 1.34s to 4.94s, past Google's 4s
+       "poor" threshold. Slow connections now keep the poster, which is the
+       LCP element the hero was designed around anyway. */
+    const effectiveType = conn?.effectiveType ?? "";
     const frugal =
-      conn?.saveData === true || /(^|-)2g$/.test(conn?.effectiveType ?? "");
+      conn?.saveData === true ||
+      /(^|-)[23]g$/.test(effectiveType) ||
+      (typeof conn?.downlink === "number" && conn.downlink < 2);
 
     if (reduceMotion || frugal) return;
 
     // Wait for an idle moment. Hydration is the busiest point in the page's
     // life and this video is decorative — it must never compete with it.
-    let cancelled = false;
+    let canceled = false;
     const start = () => {
-      if (!cancelled) setVideoEnabled(true);
+      if (!canceled) setVideoEnabled(true);
     };
 
     // requestIdleCallback is unsupported on Safari before 17, which is exactly
@@ -113,7 +156,7 @@ export function VideoHero() {
       : window.setTimeout(start, 1200);
 
     return () => {
-      cancelled = true;
+      canceled = true;
       if (useIdle) window.cancelIdleCallback(handle);
       else clearTimeout(handle);
     };
@@ -280,123 +323,121 @@ export function VideoHero() {
   }, [videoEnabled]);
 
   return (
-    <section className="relative -mt-22 lg:-mt-26 flex min-h-screen items-center overflow-clip">
+    <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[92svh] items-center overflow-clip lg:-mt-20 lg:min-h-screen">
+      {/* The bottom half of the viewfinder ticks. The top two are drawn by
+          `.viewfinder` itself; this empty element carries the other two. */}
+      <span className="vf-b" aria-hidden="true" />
+
       {/* Backdrop layer — moved as one unit by the parallax effect. */}
       <div ref={bgRef} className="hero-parallax-bg absolute inset-0">
-      {/* Poster — shows while video loads or if video fails. Loaded eagerly
-          rather than preloaded: the splash logo owns the preload slot, and
-          competing <link rel="preload"> tags just delay each other. */}
-      <Image
-        src="/images/hero-poster.jpg"
-        alt="Property showcase"
-        fill
-        className="object-cover"
-        loading="eager"
-        fetchPriority="high"
-        sizes="100vw"
-      />
+        {/* Poster — shows while video loads or if video fails. Loaded eagerly
+            rather than preloaded: the splash logo owns the preload slot, and
+            competing <link rel="preload"> tags just delay each other. */}
+        <Image
+          src="/images/hero-poster.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          loading="eager"
+          fetchPriority="high"
+          sizes="100vw"
+        />
 
-      {/* Video — hidden until ready to prevent flash. The src is attached from
-          an effect rather than rendered up front, so reduced-motion and
-          Data Saver visitors never pay for the download at all.
-          preload="metadata" avoids eagerly buffering the whole file. */}
-      {/* No `autoPlay` attribute on purpose: it overrides preload="none" and
-          makes the browser start pulling the file the moment a src appears,
-          which defeats the whole point of asking permission first. Playback is
-          driven explicitly from the effect instead. */}
-      <video
-        ref={videoRef}
-        muted
-        loop
-        playsInline
-        preload="none"
-        aria-hidden="true"
-        className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
-          videoReady ? "opacity-100" : "opacity-0"
-        }`}
-      />
+        {/* Video — hidden until ready to prevent flash. The src is attached from
+            an effect rather than rendered up front, so reduced-motion and
+            Data Saver visitors never pay for the download at all. */}
+        <video
+          ref={videoRef}
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+            videoReady ? "opacity-100" : "opacity-0"
+          }`}
+        />
 
-      {/* Overlay gradients — purple-tinted */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/68 via-[#000000]/47 to-[#000000]/81" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/72 via-transparent to-transparent" />
-      </div>
-      {/* Bottom fade to blend into next section — outside the parallax layer
-          so the seam with the next section never moves. */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 sm:h-72 bg-gradient-to-t from-[#000000]/85 via-[#000000]/60 to-transparent" />
-
-      {/* Single subtle ambient glow */}
-      <div className="absolute bottom-0 left-1/3 h-[200px] w-[500px] bg-purple/[0.06] blur-[120px]" />
-      <div className="hidden sm:block">
-        <FloatingParticles count={12} />
+        {/* Scrim. Weighted to the bottom-left, where the copy sits, and heavy
+            enough that the headline never has to compete with a lamp. The old
+            pair of even gradients left the type sitting on a lit fireplace. */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(7,9,12,0.97)_0%,rgba(7,9,12,0.88)_30%,rgba(7,9,12,0.62)_65%,rgba(7,9,12,0.72)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,rgba(7,9,12,0.35)_0%,rgba(7,9,12,0.72)_65%,rgba(7,9,12,0.9)_100%)]" />
       </div>
 
-      {/* Content */}
-      <div ref={contentRef} className="hero-parallax-content relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-6 pt-24 sm:pt-20">
-        <div className="max-w-3xl">
-          <div
-            className="animate-hero-fade-up mb-4 sm:mb-6 inline-flex items-center justify-center rounded-full border border-purple/25 bg-purple/10 px-3 py-2 sm:px-4 sm:py-2.5 backdrop-blur-sm transition-shadow duration-500 hover:shadow-[0_0_20px_rgba(55,140,210,0.25)]"
-          >
-            <span className="text-[11px] sm:text-xs font-medium tracking-[0.15em] sm:tracking-[0.2em] uppercase text-purple-light leading-none">
-              <span className="sm:hidden">Green Bay · Madison · Milwaukee</span>
-              <span className="hidden sm:inline">Madison, Green Bay, Milwaukee &amp; the Fox Valley</span>
-            </span>
-          </div>
+      {/* Content.
 
-          <h1
-            className="animate-hero-fade-up text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-7xl"
-            style={{ animationDelay: "0.15s" }}
-          >
-            <span className="text-white">Professional</span>{" "}
-            <br />
-            <span className="text-white">Grade Media</span>
-          </h1>
+          Centred: the kicker, headline, lede and both actions sit on one
+          axis down the middle of the frame. A left-aligned hero puts the
+          copy against the edge of a photograph that is doing nothing on the
+          other side; centring makes the image the stage and the words the
+          subject standing on it. */}
+      <div
+        ref={contentRef}
+        className="hero-parallax-content relative z-10 w-full pb-20 pt-32 sm:pb-28 lg:pb-32"
+      >
+        <div className="shell">
+          <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+            <p className="animate-hero-fade-up meta flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-white/70">
+              <span className="text-signal-ink">Green Bay</span>
+              <span aria-hidden="true">/</span>
+              <span>Madison</span>
+              <span aria-hidden="true">/</span>
+              <span>Milwaukee</span>
+              <span aria-hidden="true">/</span>
+              <span>Fox Valley</span>
+            </p>
 
-          <p
-            className="animate-hero-fade-up mt-6 max-w-lg text-base sm:text-lg font-light leading-relaxed text-white/70"
-            style={{ animationDelay: "0.3s" }}
-          >
-            We help you present your listings better and build a brand people
-            recognize. From video and photography to social media content,
-            everything is made with intention. We bring your vision to life.
-          </p>
+            <h1 className="display-1 mt-7 text-white">
+              <span className="line-mask">
+                <span className="line-inner hero-line" style={{ animationDelay: "0.18s" }}>
+                  Professional
+                </span>
+              </span>
+              <span className="line-mask">
+                <span className="line-inner hero-line" style={{ animationDelay: "0.30s" }}>
+                  grade media.
+                </span>
+              </span>
+            </h1>
 
-          <div
-            className="animate-hero-fade-up mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-4"
-            style={{ animationDelay: "0.45s" }}
-          >
-            <span className="hover-magnetic inline-block">
-              <Link
-                href="/#portals"
-                className="rounded-full bg-gradient-to-r from-purple-dim to-purple px-7 sm:px-8 py-3.5 sm:py-4 text-sm font-semibold tracking-wide text-white ring-1 ring-purple/40 shadow-none sm:shadow-[0_0_15px_rgba(55,140,210,0.25),0_0_40px_rgba(55,140,210,0.1)] transition-all duration-300 hover:scale-[1.03] sm:hover:shadow-[0_0_20px_rgba(55,140,210,0.4),0_0_50px_rgba(55,140,210,0.15)]"
-              >
-                Book a Shoot
+            <p
+              className="animate-hero-fade-up lede mt-7 max-w-xl"
+              style={{ animationDelay: "0.44s" }}
+            >
+              Listing photography, video, drone and 3D tours for Wisconsin
+              agents, plus the personal-brand content that keeps you in front
+              of your market between listings.
+            </p>
+
+            <div
+              className="animate-hero-fade-up mt-10 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4"
+              style={{ animationDelay: "0.56s" }}
+            >
+              <Link href="/#book" className="btn btn-primary">
+                Book a shoot
+                <ArrowRight className="arrow h-4 w-4" />
               </Link>
-            </span>
-            <span className="hover-magnetic inline-block">
-              <Link
-                href="/portfolio"
-                className="flex items-center gap-2.5 rounded-full border border-white/20 px-7 sm:px-8 py-3.5 sm:py-4 text-sm font-medium tracking-wide text-white/80 transition-all duration-300 hover:border-white/40 hover:bg-white/5 hover:text-white"
-              >
+              <Link href="/portfolio" className="btn btn-ghost">
                 <Play className="h-3.5 w-3.5" />
-                View Our Work
+                See the work
               </Link>
-            </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator — hidden on phones, where a short viewport (iPhone SE)
-          puts it on top of the CTA buttons. */}
+      {/* Scroll cue — aligned to the content column rather than floated in the
+          middle of the viewport, and hidden on phones where a short screen
+          (iPhone SE) puts it on top of the buttons. */}
       <div
-        className="animate-hero-fade-up absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 sm:block"
+        className="animate-hero-fade-up absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 sm:block"
         style={{ animationDelay: "0.8s" }}
       >
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-[11px] font-medium uppercase tracking-[0.3em] text-purple-light/50">
-            Scroll
-          </span>
+        <div className="flex flex-col items-center gap-2.5">
+          <span className="meta">Scroll</span>
           <div className="animate-hero-line h-10 w-px overflow-hidden">
-            <div className="animate-scroll-cue h-full w-px bg-gradient-to-b from-purple/60 to-transparent" />
+            <div className="animate-scroll-cue h-full w-px bg-gradient-to-b from-signal-ink/70 to-transparent" />
           </div>
         </div>
       </div>
