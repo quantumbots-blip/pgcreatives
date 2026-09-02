@@ -1606,15 +1606,22 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
      The base keeps a floor under the text; the blur and the saturation are
      what still make it read as glass rather than as a grey box. */
   position: relative;
+  /* The sheen is deliberately faint. Apple's dark material does not paint
+     white onto the glass; it darkens what is behind, blurs it hard, and lets
+     the light that survives come THROUGH. Painting a 0.10 gradient on top of
+     a half-transparent base is what read as shiny — two light sources, one of
+     them fake. This is a third of what it was, over a base that is darker and
+     more opaque, so the pill sits down into the page instead of floating on
+     it lit from nowhere. */
   background:
     linear-gradient(
       165deg,
-      rgba(255, 255, 255, 0.10) 0%,
-      rgba(255, 255, 255, 0.045) 38%,
-      rgba(255, 255, 255, 0.02) 62%,
-      rgba(255, 255, 255, 0.05) 100%
+      rgba(255, 255, 255, 0.035) 0%,
+      rgba(255, 255, 255, 0.018) 38%,
+      rgba(255, 255, 255, 0.008) 62%,
+      rgba(255, 255, 255, 0.022) 100%
     ),
-    rgba(7, 9, 12, 0.52);
+    rgba(6, 8, 11, 0.72);
   /* Transparent, so the rim below draws the edge instead. Kept at 1px rather
      than removed so the box does not resize. */
   border: 1px solid transparent;
@@ -1624,9 +1631,9 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
      belonging to it. What is left is a soft interior bloom, which is what
      thickness actually looks like, and the drop shadow. */
   box-shadow:
-    inset 0 14px 28px -18px rgba(255, 255, 255, 0.4),
-    inset 0 -10px 22px -18px rgba(255, 255, 255, 0.18),
-    0 10px 34px -12px rgba(0, 0, 0, 0.7);
+    inset 0 14px 28px -18px rgba(255, 255, 255, 0.14),
+    inset 0 -10px 22px -18px rgba(255, 255, 255, 0.06),
+    0 10px 34px -12px rgba(0, 0, 0, 0.75);
   transition: background-color 0.4s ease, box-shadow 0.4s ease;
 }
 
@@ -1647,11 +1654,11 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   pointer-events: none;
   background: linear-gradient(
     150deg,
-    rgba(255, 255, 255, 0.34) 0%,
-    rgba(255, 255, 255, 0.14) 22%,
-    rgba(255, 255, 255, 0.04) 45%,
-    rgba(255, 255, 255, 0.03) 62%,
-    rgba(255, 255, 255, 0.16) 100%
+    rgba(255, 255, 255, 0.17) 0%,
+    rgba(255, 255, 255, 0.075) 22%,
+    rgba(255, 255, 255, 0.025) 45%,
+    rgba(255, 255, 255, 0.02) 62%,
+    rgba(255, 255, 255, 0.085) 100%
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -1667,8 +1674,8 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
    material over a darker base. */
 .glass-panel {
   background:
-    linear-gradient(165deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)),
-    rgba(15, 19, 25, 0.84);
+    linear-gradient(165deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.012)),
+    rgba(9, 12, 16, 0.9);
   box-shadow:
     inset 0 14px 30px -20px rgba(255, 255, 255, 0.32),
     0 24px 60px rgba(0, 0, 0, 0.6);
@@ -1707,12 +1714,12 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   background:
     linear-gradient(
       165deg,
-      rgba(255, 255, 255, 0.12) 0%,
-      rgba(255, 255, 255, 0.05) 38%,
-      rgba(255, 255, 255, 0.025) 62%,
-      rgba(255, 255, 255, 0.055) 100%
+      rgba(255, 255, 255, 0.042) 0%,
+      rgba(255, 255, 255, 0.021) 38%,
+      rgba(255, 255, 255, 0.010) 62%,
+      rgba(255, 255, 255, 0.026) 100%
     ),
-    rgba(7, 9, 12, 0.62);
+    rgba(6, 8, 11, 0.8);
 }
 
 @media (max-width: 768px) {
@@ -1735,12 +1742,12 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
     background:
       linear-gradient(
         165deg,
-        rgba(255, 255, 255, 0.10) 0%,
-        rgba(255, 255, 255, 0.045) 38%,
-        rgba(255, 255, 255, 0.02) 62%,
-        rgba(255, 255, 255, 0.05) 100%
+        rgba(255, 255, 255, 0.035) 0%,
+        rgba(255, 255, 255, 0.018) 38%,
+        rgba(255, 255, 255, 0.008) 62%,
+        rgba(255, 255, 255, 0.022) 100%
       ),
-      rgba(7, 9, 12, 0.6);
+      rgba(6, 8, 11, 0.78);
   }
 
   /* `.header-scrolled .glass` outranks the rule above, so the scrolled state
@@ -1750,12 +1757,12 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
     background:
       linear-gradient(
         165deg,
-        rgba(255, 255, 255, 0.11) 0%,
-        rgba(255, 255, 255, 0.05) 38%,
-        rgba(255, 255, 255, 0.025) 62%,
-        rgba(255, 255, 255, 0.055) 100%
+        rgba(255, 255, 255, 0.042) 0%,
+        rgba(255, 255, 255, 0.021) 38%,
+        rgba(255, 255, 255, 0.010) 62%,
+        rgba(255, 255, 255, 0.026) 100%
       ),
-      rgba(7, 9, 12, 0.68);
+      rgba(6, 8, 11, 0.84);
   }
 }
 
