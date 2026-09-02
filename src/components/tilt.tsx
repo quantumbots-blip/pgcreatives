@@ -5,9 +5,10 @@ import { useRef, type ReactNode } from "react";
 /**
  * Pointer-driven 3D tilt.
  *
- * The card rotates toward the pointer and lifts along Z, with a specular
- * sheen tracking the cursor so the surface reads as lit rather than merely
- * rotated.
+ * The card rotates toward the pointer and lifts along Z. Nothing follows the
+ * cursor across the surface: this used to paint a specular highlight that
+ * tracked the pointer, which read as a glow chasing the mouse rather than as
+ * a lit surface, so it is gone.
  *
  * Two deliberate constraints:
  * - Everything is written to CSS custom properties and applied by a
@@ -25,13 +26,11 @@ export function Tilt({
   max = 7,
   /** How far the card lifts toward the viewer, in px. */
   lift = 18,
-  sheen = true,
 }: {
   children: ReactNode;
   className?: string;
   max?: number;
   lift?: number;
-  sheen?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const frame = useRef(0);
@@ -50,10 +49,6 @@ export function Tilt({
     el.style.setProperty("--tilt-y", `${px * max * 2}deg`);
     el.style.setProperty("--tilt-x", `${-py * max * 2}deg`);
     el.style.setProperty("--tilt-z", `${lift}px`);
-    if (sheen) {
-      el.style.setProperty("--sheen-x", `${(px + 0.5) * 100}%`);
-      el.style.setProperty("--sheen-y", `${(py + 0.5) * 100}%`);
-    }
   };
 
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -86,7 +81,7 @@ export function Tilt({
       onPointerMove={onMove}
       onPointerEnter={onEnter}
       onPointerLeave={onLeave}
-      className={`tilt ${sheen ? "tilt-sheen" : ""} ${className}`}
+      className={`tilt ${className}`}
     >
       {children}
     </div>

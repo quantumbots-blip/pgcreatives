@@ -957,24 +957,6 @@ a.surface:hover,
     transition: transform 0.09s linear;
   }
 
-  /* A specular sheen that tracks the pointer, so the tilt reads as a lit
-     surface rather than as a rectangle being rotated. */
-  .tilt-sheen::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    background: radial-gradient(
-      42% 42% at var(--sheen-x, 50%) var(--sheen-y, 50%),
-      rgba(255, 255, 255, 0.13),
-      transparent 70%
-    );
-  }
-
-  .tilt-sheen:hover::after { opacity: 1; }
 }
 
 /* ── Depth entrance ────────────────────────────────────────────────────
