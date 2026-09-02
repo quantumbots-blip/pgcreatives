@@ -153,7 +153,7 @@ export function FAQ() {
         {/* `.faq` has to wrap BOTH columns: the `:has()` selectors scope
             selection to it, so the pills and the panels must share it as an
             ancestor even though they sit in different grid cells. */}
-        <div className="faq mt-10 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+        <div className="faq mt-14 grid gap-12 lg:mt-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           {/* The radios live inside the group they belong to, each immediately
               before its own label. */}
           <AnimateOnScroll animation="lines">

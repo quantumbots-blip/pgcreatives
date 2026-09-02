@@ -70,7 +70,7 @@ export function ProgramShowcaseStages() {
   return (
       /* The journey, drawn. A connector runs behind the nodes so the five
          read as one sequence rather than five unrelated claims. */
-      <ol className="stage-track mt-16 sm:mt-24">
+      <ol className="stage-track mt-20 sm:mt-24">
         {stages.map((stage, i) => (
           <AnimateOnScroll
             key={stage.step}

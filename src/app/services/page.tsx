@@ -96,7 +96,7 @@ export default function ServicesPage() {
     <>
       <section className="section-tight">
         <div className="shell">
-          <AnimateOnScroll animation="lines" className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
+          <AnimateOnScroll animation="lines" className="mt-12 grid gap-9 lg:mt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
             <DisplayLines
               as="h1"
               className="display-1 text-white"
@@ -115,7 +115,7 @@ export default function ServicesPage() {
           <div className="shell">
 
             <div
-              className={`mt-10 grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16 ${
+              className={`mt-14 grid gap-12 lg:mt-10 lg:grid-cols-2 lg:items-center lg:gap-16 ${
                 i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
               }`}
             >
