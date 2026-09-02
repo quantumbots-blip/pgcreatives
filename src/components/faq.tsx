@@ -43,7 +43,7 @@ export const faqs: FAQItem[] = [
     category: "Pricing & Booking",
     question: "How much does a real estate shoot cost?",
     answer:
-      "Photography on its own starts at $225. Full listing packages start at $550, PG Core covers daytime photography, a premium listing video, drone photography, and three virtual twilights; PG Growth ($725) adds a Matterport or Zillow 3D tour and a 2D floor plan; PG Platinum ($1,000) adds twilight photography and a day-to-night listing video. Pricing scales with square footage and varies slightly by market, so send us the address and we'll give you an exact number.",
+      "Photography on its own starts at $250. Full listing packages start at $550, PG Core covers daytime photography, a premium listing video, drone photography, and three virtual twilights; PG Growth ($725) adds a Matterport or Zillow 3D tour and a 2D floor plan; PG Platinum ($1,000) adds twilight photography and a day-to-night listing video. Pricing scales with square footage and varies slightly by market, so send us the address and we'll give you an exact number.",
   },
   {
     category: "Pricing & Booking",
