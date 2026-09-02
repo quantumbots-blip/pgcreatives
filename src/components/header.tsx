@@ -375,7 +375,12 @@ export function Header() {
         ref={menuRef}
         aria-hidden={!mobileOpen}
         className={cn(
-          "fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-[#07090c]/97 backdrop-blur-2xl transition-all duration-400 md:hidden",
+          // Fully opaque, per the fix on main (#22): at 97% the page still
+          // showed faintly through the strip above the menu. Opaque also means
+          // the backdrop-blur behind it was doing nothing but costing a
+          // full-viewport filter on every frame, so it is gone. The ground
+          // colour rather than pure black, to match the rest of the site.
+          "fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-ground transition-all duration-400 md:hidden",
           mobileOpen
             ? "visible opacity-100 pointer-events-auto"
             : "invisible opacity-0 pointer-events-none"
@@ -447,7 +452,9 @@ export function Header() {
             >
               Book a shoot
             </Link>
-            <p className="meta mt-4 text-center">
+            {/* Balanced, so it does not break as three markets and a widowed
+                "Valley" on the second line. */}
+            <p className="meta mt-4 text-balance text-center leading-relaxed">
               Green Bay · Madison · Milwaukee · Fox Valley
             </p>
           </div>
