@@ -198,7 +198,7 @@ export function FAQ() {
             </div>
           </AnimateOnScroll>
 
-          <div className="faq-panels border-t border-line lg:pt-2">
+          <div className="faq-panels lg:pt-2">
             {categories.map((cat) => (
               <div
                 key={cat}
@@ -217,7 +217,7 @@ export function FAQ() {
                       data-reveal="fade-up"
                       style={{ "--reveal-delay": `${i * 0.06}s` } as React.CSSProperties}
                     >
-                      <summary className="flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left sm:py-6">
+                      <summary className="flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left">
                         <span className="text-base font-medium text-white sm:text-lg">
                           {faq.question}
                         </span>

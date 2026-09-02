@@ -89,24 +89,35 @@ const photos = [
 
 /* The two booking portals.
 
-   `pin` is the city's position over the state outline, as a percentage of the
-   artwork's box — Green Bay up in the northeast, Madison down in the
-   south-central. These are the cards that actually take a booking, so each one
-   shows where it covers rather than only naming it. */
+   `pin` is the city's real position over the state outline, as a percentage
+   of the artwork's box. Derived, not eyeballed: the outline fills the PNG
+   edge to edge (measured: opaque pixels span 0-511 x 1-548 of a 512x549
+   file), so a percentage maps straight onto Wisconsin's bounding box —
+   47.0808N to 42.4919N, 92.8893W to 86.8050W, the last being the Door
+   Peninsula rather than the state's water boundary, which is what the
+   artwork actually draws.
+
+   The projection checks out: compressing longitude by cos(44.8), as every
+   conic projection does, gives an aspect of 0.941 against the file's 0.933.
+   Plain equirectangular would be 1.326, so the artwork is projected and the
+   linear mapping below holds.
+
+     Green Bay  44.5192N  88.0198W  ->  80.0%, 55.8%
+     Madison    43.0731N  89.4012W  ->  57.3%, 87.3% */
 const portals = [
   {
     region: "Northeast Wisconsin",
     name: "Green Bay",
     areas: "Green Bay, Fox Valley and surrounding areas",
     href: "https://portal.spiro.media/order/pg/northeast-wisconsin",
-    pin: { x: "72%", y: "39%" },
+    pin: { x: "80%", y: "55.8%" },
   },
   {
     region: "South-central Wisconsin",
     name: "Madison",
     areas: "Madison, Dane County and surrounding areas",
     href: "https://portal.spiro.media/order/pg/madison",
-    pin: { x: "57%", y: "73%" },
+    pin: { x: "57.3%", y: "87.3%" },
   },
 ];
 

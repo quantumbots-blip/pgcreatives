@@ -1,15 +1,21 @@
 import Image from "next/image";
 import { Tilt } from "@/components/tilt";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { getVimeoMetas } from "@/lib/vimeo";
 
 /* Three reels, fanned like a deck.
-   Real frames from real shoots, cropped to the 9:16 the program actually
-   delivers, so the visual is the product rather than an illustration of it. */
-const reels = [
-  { src: "/images/dark-home-office.jpg", alt: "Agent filmed on location for a personal-brand reel" },
-  { src: "/images/marble-chef-kitchen.jpg", alt: "Kitchen detail filmed for a listing reel" },
-  { src: "/images/lakefront-screened-porch.jpg", alt: "Screened porch filmed for a listing reel" },
-];
+
+   The section sells putting an AGENT on camera, so all three frames have to
+   have one in them — two of these were listing interiors, which illustrated
+   the wrong thing. The second and third are real poster frames from reels the
+   program actually produced, pulled from Vimeo at build time, and they are
+   natively 640x1138, which is exactly the 9:16 these cards crop to. */
+const REEL_IDS = ["1177445392", "1174488968"];
+
+const localReel = {
+  src: "/images/dark-home-office.jpg",
+  alt: "Real estate agent filmed on location for a personal-brand reel",
+};
 
 /* The five outcomes as the sequence they actually are.
    They were a bulleted list of benefits in no particular order; read closely
@@ -24,7 +30,19 @@ const stages = [
   { step: "Close", detail: "Views become conversations, conversations become deals." },
 ];
 
-export function ProgramShowcaseDeck() {
+export async function ProgramShowcaseDeck() {
+  const metas = await getVimeoMetas(REEL_IDS);
+  const reels = [
+    localReel,
+    ...REEL_IDS.map((id, i) => ({
+      src: metas[id]?.thumbnail ?? `https://vumbnail.com/${id}.jpg`,
+      alt:
+        i === 0
+          ? "Agent talking to camera in a kitchen for a personal-brand reel"
+          : "Agent filmed outside a property for a personal-brand reel",
+    })),
+  ];
+
   return (
       <AnimateOnScroll animation="depth-right" delay={0.12} className="scene">
         <div className="reel-deck" aria-hidden="false">
@@ -34,7 +52,7 @@ export function ProgramShowcaseDeck() {
                 <span className="vf-b" aria-hidden="true" />
                 <Image
                   src={reel.src}
-                  alt={i === 0 ? reel.alt : ""}
+                  alt={reel.alt}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 30vw, 210px"
