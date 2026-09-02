@@ -45,9 +45,20 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
 
   return (
     <form ref={formRef} action={formAction} className="space-y-6 sm:space-y-8">
-      {/* Honeypot, hidden from humans, filled by bots */}
-      <div className="absolute -left-[9999px]" aria-hidden="true">
-        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+      {/* Honeypot, hidden from humans, filled by bots.
+
+          Sized down to a pixel. A default text input is about 318px wide, and
+          although this one is parked off-screen it still counted toward the
+          card's min-content width — which pushed the card past the viewport
+          at 320px the moment the type got a little wider. */}
+      <div className="absolute -left-[9999px] w-px overflow-hidden" aria-hidden="true">
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          className="w-px"
+        />
       </div>
 
       {/* Name row */}

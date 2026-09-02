@@ -6,9 +6,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans), "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-poppins), "Poppins Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --font-display: var(--font-archivo), "Archivo Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-poppins), "Poppins Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -114,7 +114,7 @@
   --brand-deep: #0b2c56;
 
   /* One vertical rhythm for the whole site. */
-  --section-y: clamp(5.5rem, 9vw, 10rem);
+  --section-y: clamp(7.5rem, 9vw, 10rem);
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 
   --background: #07090c;
@@ -576,18 +576,18 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .display-1 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.75rem, 7.2vw, 6.5rem);
-  line-height: 0.94;
-  letter-spacing: -0.035em;
+  font-size: clamp(2.6rem, 7vw, 6.25rem);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
 .display-2 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.125rem, 4.6vw, 4rem);
-  line-height: 1.0;
-  letter-spacing: -0.03em;
+  font-size: clamp(2rem, 4.4vw, 3.75rem);
+  line-height: 1.06;
+  letter-spacing: -0.018em;
   text-wrap: balance;
 }
 
@@ -595,18 +595,18 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(1.375rem, 2vw, 1.875rem);
-  line-height: 1.12;
-  letter-spacing: -0.02em;
+  line-height: 1.18;
+  letter-spacing: -0.012em;
 }
 
 /* The utility face. Camera metadata, not decoration: these labels carry
    location, sequence, and category — information the reader can use. */
 .meta {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: 0.6875rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
@@ -663,6 +663,9 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 
 .surface {
   position: relative;
+  /* `min-width: auto` on a grid item lets a single wide child push the card
+     past its column, and the page past the viewport with it. */
+  min-width: 0;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 1.25rem;
@@ -873,6 +876,11 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 
 .field {
   width: 100%;
+  /* A <select> takes its min-content width from its longest option, and
+     "Personal brand / Content Creator Program" measures 402px — enough to
+     push the whole card past a 320px viewport. Inputs behave the same way at
+     their default size. `min-width: 0` lets them shrink to their column. */
+  min-width: 0;
   border-radius: 0.625rem;
   border: 1px solid var(--line);
   background-color: #0a0d12;
@@ -902,7 +910,7 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .field-label {
   display: block;
   margin-bottom: 0.625rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: 0.6875rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1405,9 +1413,10 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   border-radius: 999px;
   border: 1px solid var(--line-strong);
   background: var(--surface);
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: 0.625rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: var(--signal-ink);
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }

@@ -191,7 +191,7 @@ export default function HomePage() {
             />
           </AnimateOnScroll>
 
-          <div className="mt-12 grid grid-cols-1 gap-4 sm:mt-16 md:grid-cols-3">
+          <div className="mt-16 grid grid-cols-1 gap-5 sm:mt-16 sm:gap-4 md:grid-cols-3">
             {services.map((service, i) => (
               <AnimateOnScroll key={service.title} animation="depth" delay={i * 0.1} className="scene h-full">
                 <Tilt className="h-full">
@@ -241,7 +241,7 @@ export default function HomePage() {
             />
           </AnimateOnScroll>
 
-          <div className="scene mt-12 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:grid-rows-2">
+          <div className="scene mt-16 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:grid-rows-2">
             {photos.map((photo, i) => (
               <AnimateOnScroll
                 key={photo.alt}
@@ -285,7 +285,7 @@ export default function HomePage() {
         <div className="grid-rules" aria-hidden="true" />
         <div className="shell relative">
 
-          <div className="mt-12 grid gap-12 lg:mt-16 lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-20">
+          <div className="mt-16 grid gap-14 lg:mt-16 lg:gap-12 lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-20">
             <AnimateOnScroll animation="lines">
               <div>
                 <DisplayLines
@@ -330,7 +330,7 @@ export default function HomePage() {
             />
           </AnimateOnScroll>
 
-          <div className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2">
+          <div className="mt-16 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-4">
             {portals.map((portal, i) => (
               <AnimateOnScroll key={portal.name} animation="depth" delay={i * 0.1} className="scene h-full">
                 <Tilt className="h-full" max={6} lift={20}>

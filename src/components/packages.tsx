@@ -57,7 +57,7 @@ export function Packages() {
           </div>
         </AnimateOnScroll>
 
-        <div className="scene mt-12 grid gap-4 sm:mt-16 lg:grid-cols-3">
+        <div className="scene mt-16 grid gap-5 sm:mt-16 lg:grid-cols-3 lg:gap-4">
           {packages.map((pkg, i) => (
             <AnimateOnScroll
               key={pkg.title}

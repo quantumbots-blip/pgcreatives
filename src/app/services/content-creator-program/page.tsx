@@ -133,7 +133,7 @@ export default async function ContentCreatorProgramPage() {
     <>
       <section className="section-tight">
         <div className="shell">
-          <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
+          <div className="mt-12 grid gap-9 lg:mt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
             <DisplayLines
               as="h1"
               className="display-1 text-white"
@@ -181,7 +181,7 @@ export default async function ContentCreatorProgramPage() {
             </div>
           </AnimateOnScroll>
 
-          <ol className="mt-12 sm:mt-16">
+          <ol className="mt-16 sm:mt-16">
             {whatWeDoItems.map((item, i) => (
               <AnimateOnScroll
                 key={item}
@@ -203,7 +203,7 @@ export default async function ContentCreatorProgramPage() {
       {/* ── Why it works ─────────────────────────────────────────────────── */}
       <section className="section">
         <div className="shell">
-          <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
+          <div className="mt-14 grid gap-12 lg:mt-10 lg:grid-cols-2 lg:items-start lg:gap-16">
             <AnimateOnScroll animation="fade-up">
               <div>
                 <DisplayLines
@@ -259,7 +259,7 @@ export default async function ContentCreatorProgramPage() {
             </div>
           </AnimateOnScroll>
 
-          <div className="scene mt-12 grid gap-4 sm:mt-16 lg:grid-cols-3">
+          <div className="scene mt-16 grid gap-5 sm:mt-16 lg:grid-cols-3 lg:gap-4">
             {tiers.map((tier, i) => (
               <AnimateOnScroll
                 key={tier.name}
@@ -297,7 +297,7 @@ export default async function ContentCreatorProgramPage() {
             />
           </AnimateOnScroll>
 
-          <dl className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 lg:grid-cols-3">
+          <dl className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 lg:grid-cols-3">
             {differences.map((d, i) => (
               <AnimateOnScroll
                 key={d.title}

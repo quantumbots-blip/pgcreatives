@@ -118,7 +118,7 @@ export default function TeamPage() {
           visible horizontal seam across the page. */}
       <section className="section-tight">
         <div className="shell">
-          <AnimateOnScroll animation="lines" className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
+          <AnimateOnScroll animation="lines" className="mt-12 grid gap-9 lg:mt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
             <DisplayLines
               as="h1"
               className="display-1 text-white"
@@ -175,7 +175,7 @@ export default function TeamPage() {
           shape to read on a page, every line starts in a different place. */}
       <section className="section">
         <div className="shell">
-          <div className="mt-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          <div className="mt-14 grid gap-12 lg:mt-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <AnimateOnScroll animation="fade-up">
               <div className="lg:sticky lg:top-28">
                 <DisplayLines
@@ -252,7 +252,7 @@ export default function TeamPage() {
             />
           </AnimateOnScroll>
 
-          <dl className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((value, i) => (
               <AnimateOnScroll
                 key={value.title}

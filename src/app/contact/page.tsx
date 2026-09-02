@@ -74,7 +74,7 @@ export default function ContactPage() {
       <section className="section-tight">
         <div className="shell">
           <AnimateOnScroll animation="lines">
-            <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
+            <div className="mt-12 grid gap-9 lg:mt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
               <DisplayLines
                 as="h1"
                 className="display-1 text-white"
@@ -110,11 +110,15 @@ export default function ContactPage() {
                 <ul className="mt-6 space-y-1">
                   {contactInfo.map((item) => {
                     const content = (
-                      <div className="flex items-start gap-3.5">
+                      <div className="flex w-full min-w-0 items-start gap-3.5">
                         <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
                         <div className="min-w-0">
                           <p className="meta">{item.label}</p>
-                          <p className="mt-1.5 break-words text-sm text-ink-2 transition-colors">
+                          {/* `break-words` wraps the text but does NOT reduce the element's
+                              min-content width, so the email still sized its column
+                              and pushed the card past a 320px viewport.
+                              `overflow-wrap: anywhere` is the one that does. */}
+                          <p className="mt-1.5 text-sm text-ink-2 transition-colors [overflow-wrap:anywhere]">
                             {item.value}
                           </p>
                         </div>

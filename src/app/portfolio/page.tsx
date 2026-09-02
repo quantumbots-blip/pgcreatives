@@ -332,7 +332,7 @@ export default async function PortfolioPage() {
       <section className="section-tight">
         <div className="shell">
           <AnimateOnScroll animation="lines">
-            <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
+            <div className="mt-12 grid gap-9 lg:mt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
               <DisplayLines
                 as="h1"
                 className="display-1 text-white"

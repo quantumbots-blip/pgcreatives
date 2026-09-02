@@ -192,7 +192,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         </AnimateOnScroll>
 
         {videos.length > 0 && (
-          <div className="mt-12 sm:mt-16">
+          <div className="mt-16 sm:mt-16">
             <h2 className="meta border-b border-line pb-4">
               Films <span className="text-ink-3">({videos.length})</span>
             </h2>
@@ -211,7 +211,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         )}
 
         {photos.length > 0 && (
-          <div className="mt-16 sm:mt-20">
+          <div className="mt-20 sm:mt-20">
             <h2 className="meta border-b border-line pb-4">
               Stills <span className="text-ink-3">({photos.length})</span>
             </h2>

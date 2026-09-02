@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Geist } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -9,19 +9,19 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { BokehField } from "@/components/bokeh-field";
 import { BUSINESS } from "@/lib/data";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+/* One family, taken from the logo.
 
-// The display face. Archivo is an American grotesque with the flat, wide
-// terminals of signage lettering — it holds up set very large and tight,
-// which is what the new headline scale asks of it. Only the weights the
-// design actually uses are requested; body copy stays on Geist.
-const archivo = Archivo({
-  variable: "--font-archivo",
+   The wordmark is a wide geometric sans with single-storey `a`, circular
+   bowls and vertically cut terminals; Poppins is the closest match available,
+   and it is what the whole site is set in now — display, body and labels.
+
+   Three weights, not five: 400 carries body copy, 600 the labels, navigation,
+   buttons and small headings, 700 the display type. Poppins is static rather
+   than variable on Google Fonts, so every weight is another file. */
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["400", "600", "700"],
   display: "swap",
 });
 
@@ -166,7 +166,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${archivo.variable} h-full antialiased`}
+      className={`${poppins.variable} h-full antialiased`}
     >
       {/* overflow-x-clip, not -hidden: `hidden` makes the body a scroll
           container, and on iOS Safari a scroll container on the body can

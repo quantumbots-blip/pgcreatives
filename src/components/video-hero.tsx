@@ -328,7 +328,7 @@ export function VideoHero() {
   }, [videoEnabled]);
 
   return (
-    <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[86svh] items-center overflow-clip sm:min-h-[92svh] lg:-mt-20 lg:min-h-screen">
+    <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[96svh] items-center overflow-clip sm:min-h-[92svh] lg:-mt-20 lg:min-h-screen">
       {/* The bottom half of the viewfinder ticks. The top two are drawn by
           `.viewfinder` itself; this empty element carries the other two. */}
       <span className="vf-b" aria-hidden="true" />
