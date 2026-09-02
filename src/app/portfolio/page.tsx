@@ -344,7 +344,7 @@ export default async function PortfolioPage() {
                   Madison, Milwaukee, and the Fox Valley.
                 </p>
                 <p className="meta mt-6">
-                  <span className="text-signal">{filmCount} films</span>
+                  <span className="text-signal-ink">{filmCount} films</span>
                   <span className="mx-2" aria-hidden="true">/</span>
                   <span>{stillCount} stills</span>
                 </p>

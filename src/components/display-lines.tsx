@@ -17,6 +17,13 @@ import type { CSSProperties, ReactNode } from "react";
  * The mask is `overflow: hidden` on a block, never padding plus negative
  * margins: adjacent margins collapse, and that produces drift that only
  * shows up once something above the heading changes height.
+ *
+ * Below 640px the masks collapse to inline flow and the browser breaks the
+ * heading itself. Authored breaks are a decision made for a wide measure;
+ * held on a phone they re-wrap into ragged shapes — "Three ways / we put
+ * your / work in front of people." Lines still fade in on their stagger
+ * there, since opacity applies to inline boxes even though transform
+ * does not.
  */
 export function DisplayLines({
   lines,
@@ -42,6 +49,10 @@ export function DisplayLines({
             style={{ "--line-delay": `${delay + i * stagger}s` } as CSSProperties}
           >
             {line}
+            {/* A trailing space so the authored lines still read as sentences
+                when they collapse to inline flow on narrow screens. Invisible
+                while each line is its own block. */}
+            {i < lines.length - 1 ? " " : ""}
           </span>
         </span>
       ))}

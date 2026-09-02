@@ -25,7 +25,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-line bg-surface">
-            <Lock className="h-6 w-6 text-signal" />
+            <Lock className="h-6 w-6 text-signal-ink" />
           </div>
           <h1 className="display-2 !text-[clamp(1.5rem,3vw,2rem)] text-white">
             Admin access

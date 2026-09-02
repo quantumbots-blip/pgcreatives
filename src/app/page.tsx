@@ -146,13 +146,13 @@ export default function HomePage() {
           reads as one row of evidence and takes a fraction of the height. */}
       <section className="pb-[calc(var(--section-y)/1.6)] pt-[calc(var(--section-y)/4)]">
         <div className="shell">
-          <dl className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-12">
+          <dl className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-12">
             {stats.map((stat, i) => (
               <AnimateOnScroll
                 key={stat.label}
                 animation="depth"
                 delay={i * 0.1}
-                className="flex flex-col-reverse"
+                className="flex flex-col-reverse items-center text-center"
               >
                 <dt className="meta mt-3">{stat.label}</dt>
                 <dd className="stat-figure display-2 !text-[clamp(2.25rem,4vw,3.25rem)]">
@@ -217,7 +217,7 @@ export default function HomePage() {
                     <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-2">
                       {service.description}
                     </p>
-                    <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-signal">
+                    <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-signal-ink">
                       Learn more
                       <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                     </span>
@@ -236,7 +236,7 @@ export default function HomePage() {
         <div className="shell relative">
           <AnimateOnScroll animation="rise">
             <DisplayLines
-              className="display-2 mt-8 max-w-2xl text-white"
+              className="display-2 mx-auto max-w-3xl text-center text-white"
               lines={["Every listing,", "in its best light."]}
             />
           </AnimateOnScroll>
@@ -325,7 +325,7 @@ export default function HomePage() {
         <div className="shell relative">
           <AnimateOnScroll animation="rise">
             <DisplayLines
-              className="display-2 mt-8 max-w-2xl text-white"
+              className="display-2 mx-auto max-w-3xl text-center text-white"
               lines={["Book a shoot, or tell", "us what you need."]}
             />
           </AnimateOnScroll>

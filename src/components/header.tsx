@@ -412,7 +412,7 @@ export function Header() {
                     active ? "text-white" : "text-white/55 active:text-white"
                   )}
                 >
-                  <Icon className={cn("h-5 w-5", active ? "text-signal" : "text-white/30")} />
+                  <Icon className={cn("h-5 w-5", active ? "text-signal-ink" : "text-white/30")} />
                   <span className="display-3 !text-2xl">{item.name}</span>
                   {active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-signal" />}
                 </Link>

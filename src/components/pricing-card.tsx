@@ -60,7 +60,7 @@ export function PricingCard({
       <ul className="mt-6 flex-1 space-y-3.5">
         {features.map((feature) => (
           <li key={feature} className="flex items-start gap-3 text-sm text-ink-2">
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal" />
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal-ink" />
             {feature}
           </li>
         ))}

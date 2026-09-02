@@ -379,7 +379,7 @@ export function VideoHero() {
         <div className="shell">
           <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
             <p className="animate-hero-fade-up meta flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-white/70">
-              <span className="text-signal">Green Bay</span>
+              <span className="text-signal-ink">Green Bay</span>
               <span aria-hidden="true">/</span>
               <span>Madison</span>
               <span aria-hidden="true">/</span>
@@ -437,7 +437,7 @@ export function VideoHero() {
         <div className="flex flex-col items-center gap-2.5">
           <span className="meta">Scroll</span>
           <div className="animate-hero-line h-10 w-px overflow-hidden">
-            <div className="animate-scroll-cue h-full w-px bg-gradient-to-b from-signal/70 to-transparent" />
+            <div className="animate-scroll-cue h-full w-px bg-gradient-to-b from-signal-ink/70 to-transparent" />
           </div>
         </div>
       </div>

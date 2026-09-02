@@ -232,7 +232,7 @@ export default async function ContentCreatorProgramPage() {
                       key={item}
                       className="flex items-start gap-3.5 py-2.5 text-[0.9375rem] text-ink-2"
                     >
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal" />
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal-ink" />
                       {item}
                     </li>
                   ))}

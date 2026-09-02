@@ -50,7 +50,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface text-white/45 transition-colors duration-200 hover:border-line-strong hover:text-signal"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-surface text-white/45 transition-colors duration-200 hover:border-line-strong hover:text-signal-ink"
                 >
                   <social.icon className="h-4 w-4" />
                   <span className="sr-only">{social.name}</span>
@@ -91,7 +91,7 @@ export function Footer() {
                     className="group flex min-h-11 items-center gap-3 text-sm text-ink-2 transition-colors duration-200 hover:text-white"
                   >
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface transition-colors group-hover:bg-white/[0.08]">
-                      <Phone className="h-3.5 w-3.5 text-white/45 transition-colors group-hover:text-signal" />
+                      <Phone className="h-3.5 w-3.5 text-white/45 transition-colors group-hover:text-signal-ink" />
                     </div>
                     <div>
                       <span className="meta">{phone.label}</span>
@@ -106,7 +106,7 @@ export function Footer() {
                   className="group flex min-h-11 items-center gap-3 text-sm text-ink-2 transition-colors duration-200 hover:text-white"
                 >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface transition-colors group-hover:bg-white/[0.08]">
-                    <Mail className="h-3.5 w-3.5 text-white/45 transition-colors group-hover:text-signal" />
+                    <Mail className="h-3.5 w-3.5 text-white/45 transition-colors group-hover:text-signal-ink" />
                   </div>
                   <span className="break-all">{BUSINESS.email}</span>
                 </a>
@@ -156,7 +156,7 @@ export function Footer() {
                   href={BUSINESS.madeBy.href}
                   target="_blank"
                   rel="noopener"
-                  className="inline-block py-2 text-white/60 underline-offset-4 transition-colors hover:text-signal hover:underline"
+                  className="inline-block py-2 text-white/60 underline-offset-4 transition-colors hover:text-signal-ink hover:underline"
                 >
                   {BUSINESS.madeBy.name}
                 </a>

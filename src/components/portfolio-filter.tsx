@@ -105,7 +105,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
           />
         )}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-[#07090c]/55 text-white backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:border-signal group-hover:text-signal sm:h-14 sm:w-14">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-[#07090c]/55 text-white backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:border-signal group-hover:text-signal-ink sm:h-14 sm:w-14">
             <Play className="ml-0.5 h-5 w-5" />
           </div>
         </div>
@@ -224,7 +224,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         {videos.length === 0 && photos.length === 0 && (
           <p className="mt-16 text-ink-2">
             Nothing filed under {activeCategory} yet. Try another subject, or{" "}
-            <a href="/contact" className="text-signal underline underline-offset-4">
+            <a href="/contact" className="text-signal-ink underline underline-offset-4">
               ask us what we have
             </a>
             .

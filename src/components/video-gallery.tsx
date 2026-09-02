@@ -67,7 +67,7 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
               />
             )}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-[#07090c]/55 text-white backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:border-signal group-hover:text-signal">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-[#07090c]/55 text-white backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:border-signal group-hover:text-signal-ink">
                 <Play className="ml-0.5 h-4 w-4" />
               </div>
             </div>

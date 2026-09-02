@@ -86,7 +86,7 @@ export const faqs: FAQItem[] = [
     category: "Production",
     question: "How long does a typical shoot take?",
     answer:
-      "A standard real estate shoot takes 1–2 hours depending on property size. Commercial and social media shoots vary from 2–6 hours based on scope. We'll give you a time estimate upfront.",
+      "A standard real estate shoot takes 1 to 2 hours depending on property size. Commercial and social media shoots vary from 2 to 6 hours based on scope. We'll give you a time estimate upfront.",
   },
   // Delivery & Licensing
   {
@@ -124,7 +124,7 @@ export const faqs: FAQItem[] = [
     category: "Results",
     question: "Can you help grow my social media presence?",
     answer:
-      "Yes. Beyond creating content, we advise on posting strategy, content calendars, and what types of video perform best for your industry. Many of our clients see 2–5x engagement increases within the first month.",
+      "Yes. Beyond creating content, we advise on posting strategy, content calendars, and what types of video perform best for your industry. Many of our clients see 2 to 5x engagement increases within the first month.",
   },
 ];
 

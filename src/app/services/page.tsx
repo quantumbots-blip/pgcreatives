@@ -133,7 +133,7 @@ export default function ServicesPage() {
                         key={item}
                         className="flex items-start gap-3 py-2 text-sm text-ink-2"
                       >
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal" />
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal-ink" />
                         {item}
                       </li>
                     ))}

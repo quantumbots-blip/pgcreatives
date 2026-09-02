@@ -50,7 +50,7 @@ export function Packages() {
               lines={["Three packages.", "One number each."]}
             />
             <p className="lede max-w-sm">
-              Everything a listing needs is already in the package —
+              Everything a listing needs is already in the package:
               photography, video, drone, and the extras that usually get billed
               separately. Anything bigger gets a custom quote.
             </p>
