@@ -1635,6 +1635,16 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 }
 
 @media (max-width: 768px) {
+  .header-shell::before {
+    inset: 0 0 -3.5rem 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(7, 9, 12, 0.94) 0%,
+      rgba(7, 9, 12, 0.66) 52%,
+      rgba(7, 9, 12, 0) 100%
+    );
+  }
+
   /* Cheaper blur on phones. A backdrop filter is charged per painted tile
      during scroll, and this one is fixed, so it is charged on every frame.
      A softer blur lets more of the backdrop through, so the base goes a
@@ -1666,4 +1676,24 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
       ),
       rgba(7, 9, 12, 0.68);
   }
+}
+
+/* The market list runs to 44 characters, which at the default mono tracking
+   is a few pixels wider than a 390px phone's content column — so it wrapped,
+   and a line ended on a separator. Tightening the tracking below 480px keeps
+   all four markets on one line, which is what the list is for. */
+@media (max-width: 480px) {
+  .hero-markets {
+    letter-spacing: 0.09em;
+    font-size: 0.625rem;
+  }
+}
+
+/* At 320px even that does not fit, and shrinking the type further would take
+   it below the 11px floor this site holds labels to. The separators go
+   instead: two balanced lines of market names, spaced rather than punctuated,
+   which never leaves a line ending on a slash. */
+@media (max-width: 360px) {
+  .hero-markets { gap: 0.25rem 0.85rem; }
+  .hero-markets [aria-hidden="true"] { display: none; }
 }
