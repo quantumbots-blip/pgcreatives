@@ -375,15 +375,20 @@ export default function HomePage() {
           </div>
 
           <AnimateOnScroll animation="depth" delay={0.15}>
-            <div className="surface surface-raised mt-4 p-6 sm:p-9 lg:p-12">
-              <div className="max-w-lg">
-                <p className="meta">Not sure which package?</p>
-                <p className="mt-3 text-lg text-ink-2">
-                  Send us the details and we&apos;ll come back with a quote and a
+            <div className="surface surface-raised quote-panel mt-4 p-6 sm:p-9 lg:p-12">
+              <div className="relative max-w-lg">
+                <p className="meta meta-signal">Not sure which package?</p>
+                {/* Was body-grey and the largest thing in the panel at once,
+                    so the block had no anchor. The ask is the heading. */}
+                <p className="display-3 mt-3.5 text-white">
+                  Tell us about the property.
+                </p>
+                <p className="mt-3 text-ink-2">
+                  Send the details and we&apos;ll come back with a quote and a
                   recommendation, usually the same day.
                 </p>
               </div>
-              <div className="mt-9">
+              <div className="relative mt-10">
                 <ContactForm />
               </div>
             </div>

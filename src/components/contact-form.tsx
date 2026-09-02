@@ -5,7 +5,7 @@ import { submitContactForm, type ContactState } from "@/app/actions/contact";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, CheckCircle2, Layers, Loader2, Mail, Phone, User } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 
 const initialState: ContactState = { success: false, error: null };
 
@@ -61,100 +61,91 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         />
       </div>
 
-      {/* Name row */}
+      {/* Name row.
+
+          No placeholders here. "John" and "Doe" repeated what the labels
+          already said, and set in the same grey as a real value they read as
+          a form somebody had started filling in. A placeholder earns its
+          place only where the expected format is not obvious. */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="space-y-2.5">
+        <div className="field-row">
           <Label htmlFor="firstName" className="field-label">
             First name <span className="field-required">*</span>
           </Label>
-          <div className="relative">
-            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
-            <Input
-              id="firstName"
-              name="firstName"
-              defaultValue={prior?.firstName ?? ""}
-              placeholder="John"
-              required
-              maxLength={50}
-              autoComplete="given-name"
-              className="field field-input has-icon"
-            />
-          </div>
+          <Input
+            id="firstName"
+            name="firstName"
+            defaultValue={prior?.firstName ?? ""}
+            required
+            maxLength={50}
+            autoComplete="given-name"
+            className="field field-input"
+          />
         </div>
-        <div className="space-y-2.5">
+        <div className="field-row">
           <Label htmlFor="lastName" className="field-label">
             Last name <span className="field-required">*</span>
           </Label>
-          <div className="relative">
-            <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
-            <Input
-              id="lastName"
-              name="lastName"
-              defaultValue={prior?.lastName ?? ""}
-              placeholder="Doe"
-              required
-              maxLength={50}
-              autoComplete="family-name"
-              className="field field-input has-icon"
-            />
-          </div>
+          <Input
+            id="lastName"
+            name="lastName"
+            defaultValue={prior?.lastName ?? ""}
+            required
+            maxLength={50}
+            autoComplete="family-name"
+            className="field field-input"
+          />
         </div>
       </div>
 
       {/* Email + Phone row */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="space-y-2.5">
+        <div className="field-row">
           <Label htmlFor="email" className="field-label">
             Email <span className="field-required">*</span>
           </Label>
-          <div className="relative">
-            <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
-            <Input
-              id="email"
-              name="email"
-              defaultValue={prior?.email ?? ""}
-              type="email"
-              placeholder="john@example.com"
-              required
-              maxLength={254}
-              autoComplete="email"
-              className="field field-input has-icon"
-            />
-          </div>
+          <Input
+            id="email"
+            name="email"
+            defaultValue={prior?.email ?? ""}
+            type="email"
+            placeholder="you@brokerage.com"
+            required
+            maxLength={254}
+            autoComplete="email"
+            className="field field-input"
+          />
         </div>
-        <div className="space-y-2.5">
+        <div className="field-row">
           <Label htmlFor="phone" className="field-label">
             Phone
           </Label>
-          <div className="relative">
-            <Phone className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
-            <Input
-              id="phone"
-              name="phone"
-              defaultValue={prior?.phone ?? ""}
-              type="tel"
-              placeholder="(555) 123-4567"
-              maxLength={20}
-              autoComplete="tel"
-              inputMode="tel"
-              className="field field-input has-icon"
-            />
-          </div>
+          {/* 555-01xx is the reserved fictional range, so this cannot be
+              mistaken for a number that reaches anybody. */}
+          <Input
+            id="phone"
+            name="phone"
+            defaultValue={prior?.phone ?? ""}
+            type="tel"
+            placeholder="(920) 555-0134"
+            maxLength={20}
+            autoComplete="tel"
+            inputMode="tel"
+            className="field field-input"
+          />
         </div>
       </div>
 
       {/* Service */}
-      <div className="space-y-2.5">
+      <div className="field-row">
         <Label htmlFor="service" className="field-label">
           Service you need
         </Label>
-        <div className="relative">
-        <Layers className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
         <select
           id="service"
           name="service"
           defaultValue={prior?.service ?? ""}
-          className="field field-input has-icon appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(255%2C255%2C255%2C0.45)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_14px_center] bg-no-repeat"
+          className="field field-input appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22rgba(255%2C255%2C255%2C0.45)%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_14px_center] bg-no-repeat"
         >
           <option value="" disabled className="bg-[#0f1319] text-white/60">
             Select a service...
@@ -163,19 +154,20 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           <option value="Personal Brand" className="bg-[#0f1319]">Personal brand / Content Creator Program</option>
           <option value="Commercial" className="bg-[#0f1319]">Commercial</option>
         </select>
-        </div>
       </div>
 
       {/* Message */}
-      <div className="space-y-2.5">
+      <div className="field-row">
         <Label htmlFor="message" className="field-label">
           Message
         </Label>
+        {/* Says what is actually useful to send, instead of asking for
+            "additional details" and leaving them to guess. */}
         <Textarea
           id="message"
           name="message"
           defaultValue={prior?.message ?? ""}
-          placeholder="Any additional details..."
+          placeholder="Property address, square footage, and when you need it."
           rows={4}
           maxLength={5000}
           className="field field-area"
