@@ -323,7 +323,7 @@ export function VideoHero() {
   }, [videoEnabled]);
 
   return (
-    <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[92svh] items-center overflow-clip lg:-mt-20 lg:min-h-screen">
+    <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[78svh] items-center overflow-clip sm:min-h-[92svh] lg:-mt-20 lg:min-h-screen">
       {/* The bottom half of the viewfinder ticks. The top two are drawn by
           `.viewfinder` itself; this empty element carries the other two. */}
       <span className="vf-b" aria-hidden="true" />
@@ -374,24 +374,32 @@ export function VideoHero() {
           subject standing on it. */}
       <div
         ref={contentRef}
-        className="hero-parallax-content relative z-10 w-full pb-20 pt-32 sm:pb-28 lg:pb-32"
+        className="hero-parallax-content relative z-10 w-full pb-14 pt-24 sm:pb-28 sm:pt-32 lg:pb-32"
       >
         <div className="shell">
           <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-            <p className="animate-hero-fade-up meta flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-white/70">
-              <span className="text-signal-ink">Green Bay</span>
-              <span aria-hidden="true">/</span>
-              <span>Madison</span>
-              <span aria-hidden="true">/</span>
-              <span>Milwaukee</span>
-              <span aria-hidden="true">/</span>
-              <span>Fox Valley</span>
+            <p className="animate-hero-fade-up meta hero-markets flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 text-white/70">
+              {[
+                { name: "Green Bay", first: true },
+                { name: "Madison" },
+                { name: "Milwaukee" },
+                { name: "Fox Valley", last: true },
+              ].map((m) => (
+                <span key={m.name} className="inline-flex items-center gap-x-2 whitespace-nowrap">
+                  <span className={m.first ? "text-signal-ink" : undefined}>{m.name}</span>
+                  {!m.last && <span aria-hidden="true">/</span>}
+                </span>
+              ))}
             </p>
 
+            {/* The trailing space matters. Below 640px these masks collapse to
+                inline flow so the browser can break the headline itself, and
+                without it the two lines run together as "Professionalgrade".
+                `DisplayLines` does the same thing for every other heading. */}
             <h1 className="display-1 mt-7 text-white">
               <span className="line-mask">
                 <span className="line-inner hero-line" style={{ animationDelay: "0.18s" }}>
-                  Professional
+                  Professional{" "}
                 </span>
               </span>
               <span className="line-mask">
