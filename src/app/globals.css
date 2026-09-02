@@ -881,41 +881,69 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
      push the whole card past a 320px viewport. Inputs behave the same way at
      their default size. `min-width: 0` lets them shrink to their column. */
   min-width: 0;
-  border-radius: 0.625rem;
-  border: 1px solid var(--line);
-  background-color: #0a0d12;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* Fields sit a step ABOVE the card, not below it.
+     They used to be #0a0d12 on a #0f1319 card on a #07090c ground: three
+     planes inside six points of luminance, so on a phone the whole panel was
+     one flat near-black wash with hairlines floating in it. A recessed well
+     only reads as depth on light UI, where darker means further away. On a
+     dark ground the eye reads brighter as nearer, so the input has to come
+     forward to look like something you can type into. */
+  background-color: #1a212b;
   color: var(--ink);
   font-size: 1rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
 
-/* --ink-3. Placeholder text is text: WCAG 1.4.3 applies to it, and
-   0.32 alpha measured 2.69:1 against the field well. */
-.field::placeholder { color: rgba(255, 255, 255, 0.52); }
+/* Placeholder text is text: WCAG 1.4.3 applies to it. Against the new,
+   lighter field well 0.46 alpha computes to 4.49:1 — under 4.5 by a hair.
+   0.5 gives 5.05:1. */
+.field::placeholder { color: rgba(255, 255, 255, 0.5); }
 
-.field:hover { border-color: var(--line-strong); }
+.field:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background-color: #1e2531;
+}
 
+/* Focus is the panel's one moment of colour: the ring, and a solid accent
+   bar down the leading edge. The bar is an inset shadow rather than a
+   pseudo-element so it works on <select> too, which cannot carry one. */
 .field:focus,
 .field:focus-visible {
   outline: none;
   border-color: var(--signal);
-  box-shadow: 0 0 0 3px rgba(43, 111, 184, 0.16);
-  background-color: #0c1017;
+  background-color: #202836;
+  box-shadow:
+    inset 3px 0 0 var(--signal),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 0 3px rgba(43, 111, 184, 0.22);
 }
 
-.field-input { height: 3rem; padding-inline: 0.875rem 0.875rem; }
-.field-input.has-icon { padding-left: 2.75rem; }
-.field-area { min-height: 7rem; padding: 0.875rem; resize: none; }
+.field-input { height: 3.125rem; padding-inline: 1rem; }
+.field-area { min-height: 7.5rem; padding: 0.9375rem 1rem; resize: none; }
 
 .field-label {
   display: block;
-  margin-bottom: 0.625rem;
+  /* Tight to its own field, loose to the next one. The label and the input
+     it names are one object; the gap between fields is what separates them.
+     This was 0.625rem against a 1.5rem field gap, close enough that the
+     column read as one undifferentiated stack. */
+  margin-bottom: 0.4375rem;
   font-family: var(--font-display);
   font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-2);
+  transition: color 0.2s ease;
 }
+
+/* The label lights up with its own field. `:has()` scopes it to the wrapper
+   that actually contains the focused input, the same way the FAQ rows work. */
+.field-row:has(.field:focus) .field-label { color: var(--signal-ink); }
 
 .field-required { color: var(--signal-ink); }
 /* ══════════════════════════════════════════════════════════════════════
@@ -1282,6 +1310,28 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 /* A surface that sits above the page rather than flush with it. Used where a
    card is the focus of its section — the contact form, the closing CTA — and
    a pointer tilt would be wrong because you are typing into it. */
+/* The lead-capture panel. It is the most valuable block on the page and it
+   was the dullest: a flat card the same value as everything around it. The
+   accent wash sits behind the heading only, so the colour reads as light
+   falling on the panel rather than as a tinted box. */
+.quote-panel {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(135% 100% at 0% 0%, rgba(43, 111, 184, 0.26) 0%, rgba(43, 111, 184, 0) 62%),
+    linear-gradient(180deg, #121822 0%, #0d1117 46%);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* A hairline of accent along the top edge, brightest where the wash is. */
+.quote-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--signal-ink) 0%, rgba(106, 176, 212, 0.18) 34%, transparent 72%);
+}
+
 .surface-raised {
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.05) inset,

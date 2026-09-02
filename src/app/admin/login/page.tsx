@@ -36,7 +36,7 @@ export default function AdminLoginPage() {
         </div>
 
         <form action={formAction} className="space-y-6">
-          <div className="space-y-2.5">
+          <div className="field-row">
             <Label htmlFor="password" className="field-label">
               Password
             </Label>
