@@ -79,7 +79,10 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         aria-label={`Play video: ${project.title}`}
         className={cn(
           "viewfinder group relative block w-full overflow-hidden rounded-xl border border-line bg-surface text-left",
-          videosPortrait ? "aspect-[4/5]" : "aspect-video"
+          /* Reels are shot 9:16. A 4:5 box crops a third of every frame, and
+             on a phone that crop was also only 187px wide. Phones get the
+             real aspect; from sm the 4:5 tile keeps the grid even. */
+          videosPortrait ? "aspect-[9/16] sm:aspect-[4/5]" : "aspect-video"
         )}
       >
         <span className="vf-b" aria-hidden="true" />
@@ -139,7 +142,10 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
       delay={(i % 4) * 0.06}
       className={cn(
         "viewfinder group relative overflow-hidden rounded-xl border border-line bg-surface",
-        canSpan(project, i, all.length) && "col-span-2 row-span-2"
+        /* The feature span starts at sm. In a single column a doubled row is
+           just a portrait box, and every photo here is landscape — it would
+           crop the best frames hardest. */
+        canSpan(project, i, all.length) && "sm:col-span-2 sm:row-span-2"
       )}
     >
       <span className="vf-b" aria-hidden="true" />
@@ -155,7 +161,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
           sizes={
             canSpan(project, i, all.length)
               ? "(min-width: 1360px) 580px, (min-width: 1024px) 40vw, (max-width: 640px) 100vw, 50vw"
-              : "(min-width: 1360px) 280px, (min-width: 1024px) 20vw, (max-width: 640px) 50vw, 33vw"
+              : "(min-width: 1360px) 280px, (min-width: 1024px) 20vw, (max-width: 640px) 100vw, 33vw"
           }
         />
       )}
@@ -215,7 +221,10 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
             <h2 className="meta border-b border-line pb-4">
               Stills <span className="text-ink-3">({photos.length})</span>
             </h2>
-            <div className="scene mt-6 grid auto-rows-[9rem] grid-flow-row-dense grid-cols-2 gap-3 sm:auto-rows-[11rem] sm:grid-cols-3 lg:auto-rows-[13rem] lg:grid-cols-4">
+            {/* One column on phones. Two columns of 189px tiles put the work
+                at 189x144 on a 430px screen — a photography portfolio showing
+                its photographs at thumbnail size. Full width is 398x256. */}
+            <div className="scene mt-6 grid auto-rows-[16rem] grid-flow-row-dense grid-cols-1 gap-3 sm:auto-rows-[11rem] sm:grid-cols-3 sm:gap-3 lg:auto-rows-[13rem] lg:grid-cols-4">
               {photos.map(renderPhoto)}
             </div>
           </div>
