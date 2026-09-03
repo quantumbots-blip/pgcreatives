@@ -59,7 +59,7 @@ const photos = [
     alt: "Living room with a lit fireplace and floor-to-ceiling windows over the water at sunset",
     caption: "Lakefront great room",
     meta: "Interior / twilight",
-    className: "col-span-2 sm:row-span-2",
+    className: "sm:col-span-2 sm:row-span-2",
   },
   {
     image: "/images/fireplace-living.jpg",
@@ -241,7 +241,10 @@ export default function HomePage() {
             />
           </AnimateOnScroll>
 
-          <div className="scene mt-16 grid grid-cols-2 gap-3 sm:mt-16 sm:grid-cols-4 sm:grid-rows-2">
+          {/* One column on phones. Two columns put a 4:3 interior at
+              189x141 — the listing photography this section exists to sell,
+              shown at the size of a contact sheet. Full width is 398x298. */}
+          <div className="scene mt-16 grid grid-cols-1 gap-3 sm:mt-16 sm:grid-cols-4 sm:grid-rows-2">
             {photos.map((photo, i) => (
               <AnimateOnScroll
                 key={photo.alt}
@@ -260,7 +263,7 @@ export default function HomePage() {
                   sizes={
                     photo.className
                       ? "(min-width: 1360px) 600px, (min-width: 640px) 47vw, 100vw"
-                      : "(min-width: 1360px) 300px, (min-width: 640px) 23vw, 50vw"
+                      : "(min-width: 1360px) 300px, (min-width: 640px) 23vw, 100vw"
                   }
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#07090c]/90 to-transparent p-4 pt-10 opacity-0 transition-opacity duration-400 group-hover:opacity-100">
