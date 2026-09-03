@@ -50,40 +50,45 @@ const services = [
   },
 ];
 
-/* The bento. Captions carry what the shot actually is, set as camera
-   metadata, the old grid had no captions at all, so five interiors read as
-   one undifferentiated wall of house. */
+/* The bento, showing the five frames the old site featured here, in the
+   order it ran them: the linear fireplace as the 2x2, then the marble
+   kitchen, the entryway, the vaulted great room and the pendant kitchen.
+   Verified against the files themselves, not their names — several images in
+   this folder are named after something they do not depict.
+
+   The captions stay. The old grid had none, so five interiors read as one
+   undifferentiated wall of house. */
 const photos = [
   {
-    image: "/images/lakefront-sunset-living.jpg",
-    alt: "Living room with a lit fireplace and floor-to-ceiling windows over the water at sunset",
-    caption: "Lakefront great room",
-    meta: "Interior / twilight",
+    image: "/images/fireplace-living.jpg",
+    alt: "Dining area beside a fluted linear fireplace under a round wood clock",
+    caption: "Linear fireplace",
+    meta: "Interior",
     className: "sm:col-span-2 sm:row-span-2",
   },
   {
-    image: "/images/fireplace-living.jpg",
-    alt: "Dining area beside a linear fireplace",
-    caption: "Linear fireplace",
+    image: "/images/marble-chef-kitchen.jpg",
+    alt: "Chef kitchen with a book-matched marble backsplash and waterfall island",
+    caption: "Marble chef kitchen",
+    meta: "Interior / kitchen",
+  },
+  {
+    image: "/images/modern-entryway.jpg",
+    alt: "Entryway with a patterned runner leading to black double doors",
+    caption: "Modern entryway",
     meta: "Interior",
   },
   {
-    image: "/images/stone-ranch-exterior.jpg",
-    alt: "Stone ranch home behind a long front lawn",
-    caption: "Stone ranch",
-    meta: "Exterior",
-  },
-  {
-    image: "/images/lakefront-screened-porch.jpg",
-    alt: "Screened porch with a vaulted wood ceiling over the water",
-    caption: "Screened porch",
+    image: "/images/luxury-living-room.jpg",
+    alt: "Open-concept great room under a vaulted ceiling with exposed white trusses",
+    caption: "Vaulted great room",
     meta: "Interior",
   },
   {
-    image: "/images/sunset-dining-room.jpg",
-    alt: "Dining room looking out over the water at sunset",
-    caption: "Dining at sunset",
-    meta: "Interior",
+    image: "/images/pendant-kitchen.jpg",
+    alt: "Kitchen island with globe pendants, a wood range hood and cane barstools",
+    caption: "Pendant kitchen",
+    meta: "Interior / kitchen",
   },
 ];
 
