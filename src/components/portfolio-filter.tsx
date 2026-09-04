@@ -69,8 +69,8 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
   const renderVideo = (project: Project, i: number) => (
     <AnimateOnScroll
       key={project.title}
-      animation={i % 2 ? "depth-right" : "depth-left"}
-      delay={(i % (videosPortrait ? 4 : 3)) * 0.07}
+      animation="depth"
+      delay={(i % (videosPortrait ? 5 : 3)) * 0.07}
     >
       <Tilt max={5} lift={14}>
       <button
@@ -102,7 +102,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
             )}
             sizes={
               videosPortrait
-                ? "(min-width: 1360px) 300px, (min-width: 1024px) 23vw, (max-width: 640px) 50vw, 33vw"
+                ? "(min-width: 1360px) 240px, (min-width: 1024px) 19vw, (max-width: 640px) 50vw, 33vw"
                 : "(min-width: 1360px) 400px, (min-width: 1024px) 31vw, (max-width: 640px) 100vw, 50vw"
             }
           />
@@ -138,10 +138,10 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
   const renderPhoto = (project: Project, i: number, all: Project[]) => (
     <AnimateOnScroll
       key={project.title}
-      animation={i % 2 ? "depth-right" : "depth-left"}
+      animation="depth"
       delay={(i % 4) * 0.06}
       className={cn(
-        "viewfinder group relative overflow-hidden rounded-xl border border-line bg-surface",
+        "drift viewfinder group relative overflow-hidden rounded-xl border border-line bg-surface",
         /* The feature span starts at sm. In a single column a doubled row is
            just a portrait box, and every photo here is landscape — it would
            crop the best frames hardest. */
@@ -198,15 +198,17 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         </AnimateOnScroll>
 
         {videos.length > 0 && (
-          <div className="mt-16 sm:mt-16">
+          <div className="mt-12 sm:mt-16">
             <h2 className="meta border-b border-line pb-4">
               Films <span className="text-ink-3">({videos.length})</span>
             </h2>
+            {/* Five across on desktop: fifteen reels fill three rows exactly,
+                where four columns left three alone on the last. */}
             <div
               className={cn(
                 "mt-6 grid gap-3",
                 videosPortrait
-                  ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
+                  ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
                   : "sm:grid-cols-2 lg:grid-cols-3",
                 "scene"
               )}

@@ -49,14 +49,13 @@ export function SplashScreen() {
     >
       <div className="animate-logo-loading">
         <Image
-          src="/images/pg-logo.png"
+          src="/logo-mark.png"
           alt="PG Creatives"
-          // Real aspect ratio of the file (400x333). The previous 280x80
-          // declaration was a 3.5:1 box for a 1.2:1 image, so the logo
-          // reflowed the moment the bytes arrived.
-          width={256}
-          height={213}
-          className="w-48 sm:w-64 h-auto"
+          // The 3D mark, cropped to its artwork (186x151). Declared at the
+          // file's real ratio so nothing reflows when the bytes arrive.
+          width={186}
+          height={151}
+          className="w-28 sm:w-36 h-auto"
           preload
         />
       </div>

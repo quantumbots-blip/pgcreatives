@@ -288,19 +288,6 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   --reveal-duration: 0.9s;
 }
 
-.reveal[data-reveal="fade-in-scale"] {
-  --reveal-from: scale(0.94);
-  --reveal-duration: 0.9s;
-}
-
-.reveal[data-reveal="slide-in-left"] {
-  --reveal-from: translate3d(-40px, 0, 0);
-}
-
-.reveal[data-reveal="slide-in-right"] {
-  --reveal-from: translate3d(40px, 0, 0);
-}
-
 html[data-reveal-ready] .reveal {
   transition:
     opacity var(--reveal-duration) cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay),
@@ -504,10 +491,6 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .reveal[data-reveal="rise"] {
     --reveal-from: translate3d(0, 28px, 0);
     --reveal-duration: 0.65s;
-  }
-  .reveal[data-reveal="slide-in-left"],
-  .reveal[data-reveal="slide-in-right"] {
-    --reveal-from: translate3d(0, 20px, 0);
   }
 
   /* The blanket `backdrop-filter: none` that used to live here was written
@@ -990,12 +973,15 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .tilt {
   transform-style: preserve-3d;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
 }
 
-/* Set from JS as the pointer moves; the fallback keeps the card flat. */
+/* Set from JS as the pointer moves; the fallback keeps the card flat.
+   `will-change` lives in here too: outside it, every one of the 49 portfolio
+   tiles was promoted to its own compositor layer on phones, for a pointer
+   effect that never runs on a touchscreen. */
 @media (pointer: fine) {
   .tilt {
+    will-change: transform;
     transform:
       perspective(1200px)
       rotateX(var(--tilt-x, 0deg))
@@ -1010,7 +996,10 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 }
 
 /* ── Depth entrance ────────────────────────────────────────────────────
-   Reveal variants that arrive through Z rather than sliding up the page.
+   The one card entrance: the card rises toward the reader out of the page.
+   There used to be left- and right-handed variants too, alternated across
+   every grid, so neighbouring tiles flew in from opposite angles. One
+   direction, staggered, reads as a sequence; two read as a scramble.
    Composited like every other reveal — transform and opacity only. */
 
 .reveal[data-reveal="depth"] {
@@ -1018,24 +1007,10 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   --reveal-duration: 1s;
 }
 
-.reveal[data-reveal="depth-left"] {
-  --reveal-from: perspective(1400px) translate3d(-40px, 24px, -220px) rotateY(14deg);
-  --reveal-duration: 1.05s;
-}
-
-.reveal[data-reveal="depth-right"] {
-  --reveal-from: perspective(1400px) translate3d(40px, 24px, -220px) rotateY(-14deg);
-  --reveal-duration: 1.05s;
-}
-
 @media (max-width: 768px) {
   /* Shorter Z travel on phones: the same distance reads as a lurch on a
      small viewport, and costs more to composite. */
   .reveal[data-reveal="depth"] {
-    --reveal-from: perspective(1000px) translate3d(0, 26px, -90px) rotateX(6deg);
-  }
-  .reveal[data-reveal="depth-left"],
-  .reveal[data-reveal="depth-right"] {
     --reveal-from: perspective(1000px) translate3d(0, 26px, -90px) rotateX(6deg);
   }
 }
@@ -1784,4 +1759,104 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 @media (max-width: 360px) {
   .hero-markets { gap: 0.25rem 0.85rem; }
   .hero-markets [aria-hidden="true"] { display: none; }
+}
+
+/* ── Page head ─────────────────────────────────────────────────────────
+   The h1 owns the full shell width, so its authored lines never wrap; the
+   lede sits beneath it in the right-hand column with an optional meta line
+   on the left. Sharing a row with the lede gave a 100px face a 625px column
+   and broke every two-line heading into four. */
+
+.page-head {
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 2.5rem;
+}
+
+.page-head-row {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.page-head-lede {
+  max-width: 34rem;
+}
+
+@media (min-width: 1024px) {
+  .page-head { gap: 2.5rem; }
+  .page-head-row {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 4rem;
+  }
+}
+
+/* ── Section head ──────────────────────────────────────────────────────
+   Heading left, lede or utility link right, on one baseline. The heading
+   column is 1.7fr so a 22-character display-2 line (703px at the largest size) holds in the 1280px shell. */
+
+.section-head {
+  display: grid;
+  gap: 1.25rem;
+  align-items: end;
+}
+
+.section-head-lede {
+  max-width: 28rem;
+}
+
+.section-head-link {
+  justify-self: start;
+}
+
+.section-head-link .rule-link {
+  font-size: 0.875rem;
+}
+
+@media (min-width: 1024px) {
+  .section-head {
+    grid-template-columns: 1.7fr 1fr;
+    gap: 4rem;
+  }
+  .section-head-lede { padding-bottom: 0.35rem; }
+  .section-head-link {
+    justify-self: end;
+    padding-bottom: 0.6rem;
+  }
+}
+
+/* ── Scroll-linked drift ───────────────────────────────────────────────
+   Inside a framed photograph the picture travels a few percent as its
+   frame crosses the viewport, so the work reads as footage rather than as a
+   wall of stills. Driven by the scroll position through a view() timeline:
+   no JavaScript, no listener, and the browser runs it on the compositor.
+   Pointer-and-desktop only, and never for a reduced-motion visitor; every
+   other browser simply sees the still. The hover zoom is restated in here
+   because `scale` is one property and this rule would otherwise cancel the
+   utility that set it.
+
+   One rule for anything wrapping a `.drift`: clip with `overflow: clip`, never
+   `hidden`. A view() timeline attaches to the nearest scroll container, and
+   `overflow: hidden` creates one, so a card clipped that way became the
+   scroller and the picture inside it never moved. */
+
+@keyframes drift-y {
+  from { translate: 0 -5%; }
+  to { translate: 0 5%; }
+}
+
+@supports (animation-timeline: view()) {
+  @media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .drift { overflow: clip; }
+    .drift > img {
+      scale: 1.12;
+      animation: drift-y linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+    .drift:hover > img,
+    .group:hover .drift > img {
+      scale: 1.17;
+    }
+  }
 }

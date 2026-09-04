@@ -286,16 +286,18 @@ export function Header() {
       >
         <ScrollProgress />
         <div className="mx-auto flex h-16 max-w-[80rem] items-center justify-between px-[var(--gutter)] lg:h-20">
-          {/* Logo. Sized to what it actually renders at — the mark is 96px of
-              artwork, and asking for a 105px box around a 64px slot is what
-              left a hard-edged dark plate beside it on phones. */}
-          <Link href="/" className="relative z-50 flex items-center" aria-label="PG Creatives — home">
+          {/* The wordmark, cropped to its artwork. The old file was the 3D
+              mark centred in a canvas that was mostly transparent, so at the
+              header's size the brand rendered about 33px wide: the smallest
+              thing on every page. The wordmark carries the name as well as
+              the mark, and at 26px tall it reads. */}
+          <Link href="/" className="relative z-50 flex items-center py-2" aria-label="PG Creatives, home">
             <Image
-              src="/logo.png"
+              src="/wordmark.png"
               alt="PG Creatives"
-              width={128}
-              height={70}
-              className="h-16 w-auto object-contain lg:h-[4.5rem]"
+              width={366}
+              height={77}
+              className="h-[22px] w-auto lg:h-[26px]"
               loading="eager"
             />
           </Link>
@@ -308,8 +310,10 @@ export function Header() {
               whole control set shares a single bar with a divider between
               browsing and acting, and the CTA is a filled pill inset at its
               end — one shape, one edge, one idea. */}
-          <nav className="hidden items-center md:flex">
-            <div className="glass flex items-center gap-0.5 rounded-full p-1 pl-2 backdrop-blur-xl backdrop-saturate-150 md:backdrop-blur-2xl">
+          {/* From lg, not md: at 768 the capsule was nearly the full viewport
+              and crowded the wordmark. Tablets take the menu instead. */}
+          <nav className="hidden items-center lg:flex">
+            <div className="glass flex items-center gap-0.5 rounded-full p-1 pl-2 backdrop-blur-xl backdrop-saturate-150 lg:backdrop-blur-2xl">
               {navigation.map((item) =>
                 item.children ? (
                   <DesktopDropdown
@@ -359,7 +363,7 @@ export function Header() {
           <button
             ref={hamburgerRef}
             onClick={() => setMobileOpen((v) => !v)}
-            className="glass relative z-50 flex h-11 w-11 items-center justify-center rounded-full backdrop-blur-xl backdrop-saturate-150 md:hidden"
+            className="glass relative z-50 flex h-11 w-11 items-center justify-center rounded-full backdrop-blur-xl backdrop-saturate-150 lg:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
@@ -380,7 +384,7 @@ export function Header() {
           // the backdrop-blur behind it was doing nothing but costing a
           // full-viewport filter on every frame, so it is gone. The ground
           // colour rather than pure black, to match the rest of the site.
-          "fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-ground transition-all duration-400 md:hidden",
+          "fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-ground transition-all duration-400 lg:hidden",
           mobileOpen
             ? "visible opacity-100 pointer-events-auto"
             : "invisible opacity-0 pointer-events-none"

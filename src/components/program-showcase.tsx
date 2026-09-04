@@ -44,7 +44,7 @@ export async function ProgramShowcaseDeck() {
   ];
 
   return (
-      <AnimateOnScroll animation="depth-right" delay={0.12} className="scene">
+      <AnimateOnScroll animation="depth" delay={0.12} className="scene">
         <div className="reel-deck" aria-hidden="false">
           {reels.map((reel, i) => (
             <Tilt key={reel.src} className={`reel-card reel-card-${i}`} max={8} lift={22}>

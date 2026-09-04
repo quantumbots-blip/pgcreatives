@@ -6,6 +6,8 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PricingCard } from "@/components/pricing-card";
 import { Tilt } from "@/components/tilt";
 import { DisplayLines } from "@/components/display-lines";
+import { PageHead } from "@/components/page-head";
+import { SectionHead } from "@/components/section-head";
 import { VideoGallery } from "@/components/video-gallery";
 import { getVimeoMetas } from "@/lib/vimeo";
 
@@ -131,34 +133,19 @@ export default async function ContentCreatorProgramPage() {
 
   return (
     <>
-      <section className="section-tight">
-        <div className="shell">
-          <div className="mt-12 grid gap-9 lg:mt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
-            <DisplayLines
-              as="h1"
-              className="display-1 text-white"
-              lines={["Content that", "performs."]}
-            />
-            <p className="lede lg:pb-3">
-              A monthly program built around consistency, strategy, and results,
-              so you grow your brand and win more deals. From $1,500 a month.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHead
+        lines={["Content that", "performs."]}
+        lede="A monthly program built around consistency, strategy, and results, so you grow your brand and win more deals. From $1,500 a month."
+      />
 
       {/* ── The work ─────────────────────────────────────────────────────── */}
       <section className="section">
         <div className="shell">
-          <AnimateOnScroll animation="rise">
-            <DisplayLines
-              className="display-2 mt-8 max-w-2xl text-white"
-              lines={["Real videos, from real", "agents in the program."]}
-            />
-          </AnimateOnScroll>
-          <AnimateOnScroll animation="fade-up" delay={0.12}>
-            <VideoGallery videos={videosWithThumbs} />
-          </AnimateOnScroll>
+          <SectionHead
+            lines={["Real videos, from real", "agents in the program."]}
+            lede={`${videosWithThumbs.length} reels made in the program, filmed and edited by us. Tap one to play it.`}
+          />
+          <VideoGallery videos={videosWithThumbs} />
         </div>
       </section>
 
@@ -168,20 +155,12 @@ export default async function ContentCreatorProgramPage() {
           strategy genuinely comes before filming, which comes before the edit. */}
       <section className="section">
         <div className="shell">
-          <AnimateOnScroll animation="rise">
-            <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-16">
-              <DisplayLines
-                className="display-2 text-white"
-                lines={["We run the whole", "creative process."]}
-              />
-              <p className="lede lg:pt-2">
-                You show up and be yourself. Everything on either side of that
-                is ours.
-              </p>
-            </div>
-          </AnimateOnScroll>
+          <SectionHead
+            lines={["We run the whole", "creative process."]}
+            lede="You show up and be yourself. Everything on either side of that is ours."
+          />
 
-          <ol className="mt-16 sm:mt-16">
+          <ol className="mt-12 sm:mt-16">
             {whatWeDoItems.map((item, i) => (
               <AnimateOnScroll
                 key={item}
@@ -203,8 +182,8 @@ export default async function ContentCreatorProgramPage() {
       {/* ── Why it works ─────────────────────────────────────────────────── */}
       <section className="section">
         <div className="shell">
-          <div className="mt-14 grid gap-12 lg:mt-10 lg:grid-cols-2 lg:items-start lg:gap-16">
-            <AnimateOnScroll animation="fade-up">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
+            <AnimateOnScroll animation="rise">
               <div>
                 <DisplayLines
                   className="display-2 text-white"
@@ -223,7 +202,7 @@ export default async function ContentCreatorProgramPage() {
               </div>
             </AnimateOnScroll>
 
-            <AnimateOnScroll animation="fade-up" delay={0.12}>
+            <AnimateOnScroll animation="depth" delay={0.12} className="scene">
               <div className="surface p-7 sm:p-9">
                 <p className="meta">What changes</p>
                 <ul className="mt-6">
@@ -246,24 +225,18 @@ export default async function ContentCreatorProgramPage() {
       {/* ── Pricing ──────────────────────────────────────────────────────── */}
       <section id="pricing" className="section scroll-mt-20">
         <div className="shell">
-          <AnimateOnScroll animation="rise">
-            <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <DisplayLines
-                className="display-2 max-w-xl text-white"
-                lines={["Three tiers. Every one", "includes the whole process."]}
-              />
-              <p className="lede max-w-sm">
-                Strategy, filming, editing, and coaching are in all three. The
-                tier sets how much you get each month.
-              </p>
-            </div>
-          </AnimateOnScroll>
+          {/* Three authored lines, not two: "includes the whole process." is
+              822px at the display size and no column on this page holds it. */}
+          <SectionHead
+            lines={["Three tiers.", "Every one includes", "the whole process."]}
+            lede="Strategy, filming, editing, and coaching are in all three. The tier sets how much you get each month."
+          />
 
-          <div className="scene mt-16 grid gap-5 sm:mt-16 lg:grid-cols-3 lg:gap-4">
+          <div className="scene mt-12 grid gap-5 sm:mt-16 lg:grid-cols-3 lg:gap-4">
             {tiers.map((tier, i) => (
               <AnimateOnScroll
                 key={tier.name}
-                animation={i === 0 ? "depth-left" : i === 2 ? "depth-right" : "depth"}
+                animation="depth"
                 delay={i * 0.1}
                 className={`pkg-fan h-full ${
                   i === 1 ? "pkg-fan-center" : i === 0 ? "pkg-fan-left" : "pkg-fan-right"
@@ -290,14 +263,9 @@ export default async function ContentCreatorProgramPage() {
       {/* ── The difference ───────────────────────────────────────────────── */}
       <section className="section">
         <div className="shell">
-          <AnimateOnScroll animation="rise">
-            <DisplayLines
-              className="display-2 mt-8 max-w-xl text-white"
-              lines={["Why this program", "is different."]}
-            />
-          </AnimateOnScroll>
+          <SectionHead lines={["Why this program", "is different."]} />
 
-          <dl className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 lg:grid-cols-3">
+          <dl className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 lg:grid-cols-3">
             {differences.map((d, i) => (
               <AnimateOnScroll
                 key={d.title}

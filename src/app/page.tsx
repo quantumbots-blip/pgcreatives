@@ -8,6 +8,7 @@ import { Tilt } from "@/components/tilt";
 import { Marquee } from "@/components/marquee";
 import { ProgramShowcaseDeck, ProgramShowcaseStages } from "@/components/program-showcase";
 import { DisplayLines } from "@/components/display-lines";
+import { SectionHead } from "@/components/section-head";
 import { Counter } from "@/components/counter";
 import { FAQ, faqs } from "@/components/faq";
 import { Packages } from "@/components/packages";
@@ -64,7 +65,7 @@ const photos = [
     alt: "Dining area beside a fluted linear fireplace under a round wood clock",
     caption: "Linear fireplace",
     meta: "Interior",
-    className: "sm:col-span-2 sm:row-span-2",
+    className: "sm:col-span-2 lg:row-span-2",
   },
   {
     image: "/images/marble-chef-kitchen.jpg",
@@ -189,22 +190,23 @@ export default function HomePage() {
       {/* ── Services ─────────────────────────────────────────────────────── */}
       <section className="section">
         <div className="shell">
-          <AnimateOnScroll animation="rise">
-            <DisplayLines
-              className="display-2 mt-8 max-w-2xl text-white"
-              lines={["Three ways we put your", "work in front of people."]}
-            />
-          </AnimateOnScroll>
+          <SectionHead
+            lines={["Three ways we put your", "work in front of people."]}
+            lede="Listing media for agents, production for businesses, and a monthly program for the agents who want to be known."
+          />
 
-          <div className="mt-16 grid grid-cols-1 gap-5 sm:mt-16 sm:gap-4 md:grid-cols-3">
+          <div className="mt-12 grid grid-cols-1 gap-5 sm:mt-16 sm:gap-4 md:grid-cols-3">
             {services.map((service, i) => (
               <AnimateOnScroll key={service.title} animation="depth" delay={i * 0.1} className="scene h-full">
                 <Tilt className="h-full">
+                {/* overflow-clip, not -hidden: `hidden` makes the card a scroll
+                    container, and the drifting image inside would attach its
+                    view timeline to the card instead of the viewport. */}
                 <Link
                   href={service.href}
-                  className="surface surface-interactive group flex h-full flex-col overflow-hidden"
+                  className="surface surface-interactive group flex h-full flex-col overflow-clip"
                 >
-                  <div className="relative aspect-[4/3] w-full overflow-hidden">
+                  <div className="drift relative aspect-[4/3] w-full overflow-hidden">
                     <Image
                       src={service.image}
                       alt=""
@@ -239,25 +241,26 @@ export default function HomePage() {
       <section className="section relative">
         <div className="grid-rules" aria-hidden="true" />
         <div className="shell relative">
-          <AnimateOnScroll animation="rise">
-            <DisplayLines
-              className="display-2 mx-auto max-w-3xl text-center text-white"
-              lines={["Every listing,", "in its best light."]}
-            />
-          </AnimateOnScroll>
+          <SectionHead
+            lines={["Every listing,", "in its best light."]}
+            link={{ href: "/portfolio", label: "See all the work" }}
+          />
 
-          {/* One column on phones. Two columns put a 4:3 interior at
-              189x141 — the listing photography this section exists to sell,
-              shown at the size of a contact sheet. Full width is 398x298. */}
-          <div className="scene mt-16 grid grid-cols-1 gap-3 sm:mt-16 sm:grid-cols-4 sm:grid-rows-2">
+          {/* One column on phones: two columns put a 4:3 interior at 189x141,
+              the listing photography this section exists to sell, shown at
+              the size of a contact sheet. Two columns from 640, where the
+              lead frame runs full width and the other four sit in a 2x2. The
+              four-column bento waits for 1024: below that its small tiles
+              measured 168x126 at 768 and 138x104 at 640. */}
+          <div className="scene mt-12 grid grid-cols-1 gap-3 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
             {photos.map((photo, i) => (
               <AnimateOnScroll
                 key={photo.alt}
-                animation={i === 0 ? "depth" : i % 2 ? "depth-right" : "depth-left"}
+                animation="depth"
                 delay={i * 0.07}
-                className={`viewfinder group relative overflow-hidden rounded-xl bg-surface ${
+                className={`drift viewfinder group relative overflow-hidden rounded-xl bg-surface ${
                   photo.className ?? ""
-                } ${photo.className ? "aspect-[16/10] sm:aspect-auto" : "aspect-[4/3]"}`}
+                } ${photo.className ? "aspect-[16/10] lg:aspect-auto" : "aspect-[4/3]"}`}
               >
                 <span className="vf-b" aria-hidden="true" />
                 <Image
@@ -267,8 +270,8 @@ export default function HomePage() {
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   sizes={
                     photo.className
-                      ? "(min-width: 1360px) 600px, (min-width: 640px) 47vw, 100vw"
-                      : "(min-width: 1360px) 300px, (min-width: 640px) 23vw, 100vw"
+                      ? "(min-width: 1360px) 600px, (min-width: 1024px) 47vw, 100vw"
+                      : "(min-width: 1360px) 300px, (min-width: 1024px) 23vw, (min-width: 640px) 47vw, 100vw"
                   }
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#07090c]/90 to-transparent p-4 pt-10 opacity-0 transition-opacity duration-400 group-hover:opacity-100">
@@ -293,7 +296,7 @@ export default function HomePage() {
         <div className="grid-rules" aria-hidden="true" />
         <div className="shell relative">
 
-          <div className="mt-16 grid gap-14 lg:mt-16 lg:gap-12 lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-20">
+          <div className="grid gap-14 lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-20">
             <AnimateOnScroll animation="lines">
               <div>
                 <DisplayLines
@@ -331,14 +334,12 @@ export default function HomePage() {
       <section id="book" className="section relative scroll-mt-20">
         <div className="grid-rules" aria-hidden="true" />
         <div className="shell relative">
-          <AnimateOnScroll animation="rise">
-            <DisplayLines
-              className="display-2 mx-auto max-w-3xl text-center text-white"
-              lines={["Book a shoot, or tell", "us what you need."]}
-            />
-          </AnimateOnScroll>
+          <SectionHead
+            lines={["Book a shoot, or tell", "us what you need."]}
+            lede="Green Bay and Madison book online in a minute. Anything else, send the details and we quote it the same day."
+          />
 
-          <div className="mt-16 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-4">
+          <div className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-4">
             {portals.map((portal, i) => (
               <AnimateOnScroll key={portal.name} animation="depth" delay={i * 0.1} className="scene h-full">
                 <Tilt className="h-full" max={6} lift={20}>
