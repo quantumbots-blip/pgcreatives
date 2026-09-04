@@ -1,4 +1,4 @@
-import { DisplayLines } from "@/components/display-lines";
+import { SectionHead } from "@/components/section-head";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { PricingCard } from "@/components/pricing-card";
 import { Tilt } from "@/components/tilt";
@@ -43,25 +43,16 @@ export function Packages() {
   return (
     <section className="section">
       <div className="shell">
-        <AnimateOnScroll animation="rise">
-          <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <DisplayLines
-              className="display-2 max-w-xl text-white"
-              lines={["Three packages.", "One number each."]}
-            />
-            <p className="lede max-w-sm">
-              Everything a listing needs is already in the package:
-              photography, video, drone, and the extras that usually get billed
-              separately. Anything bigger gets a custom quote.
-            </p>
-          </div>
-        </AnimateOnScroll>
+        <SectionHead
+          lines={["Three packages.", "One number each."]}
+          lede="Everything a listing needs is already in the package: photography, video, drone, and the extras that usually get billed separately. Anything bigger gets a custom quote."
+        />
 
-        <div className="scene mt-16 grid gap-5 sm:mt-16 lg:grid-cols-3 lg:gap-4">
+        <div className="scene mt-12 grid gap-5 sm:mt-16 lg:grid-cols-3 lg:gap-4">
           {packages.map((pkg, i) => (
             <AnimateOnScroll
               key={pkg.title}
-              animation={i === 0 ? "depth-left" : i === 2 ? "depth-right" : "depth"}
+              animation="depth"
               delay={i * 0.1}
               className={`pkg-fan h-full ${
                 i === 1 ? "pkg-fan-center" : i === 0 ? "pkg-fan-left" : "pkg-fan-right"
@@ -80,12 +71,16 @@ export function Packages() {
               </Tilt>
             </AnimateOnScroll>
           ))}
-          <p className="mt-8 text-sm text-ink-3">
+        </div>
+        {/* Outside the grid. As a fourth grid child this note landed in the
+            first column under PG Core, a third of the width it needed. */}
+        <AnimateOnScroll animation="fade-up" delay={0.1}>
+          <p className="mt-8 max-w-2xl text-sm text-ink-3">
             Package pricing scales with square footage and varies slightly
             between our Green Bay and Madison markets. Send us the address and
             we&apos;ll confirm the exact number.
           </p>
-        </div>
+        </AnimateOnScroll>
       </div>
     </section>
   );

@@ -5,6 +5,8 @@ import Image from "next/image";
 import { images } from "@/lib/images";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { DisplayLines } from "@/components/display-lines";
+import { PageHead } from "@/components/page-head";
+import { SectionHead } from "@/components/section-head";
 import { Tilt } from "@/components/tilt";
 
 export const revalidate = 3600;
@@ -116,42 +118,35 @@ export default function TeamPage() {
           No section background of its own. The old hero painted two radial
           gradients that stopped dead at the section boundary, leaving a
           visible horizontal seam across the page. */}
-      <section className="section-tight">
-        <div className="shell">
-          <AnimateOnScroll animation="lines" className="mt-12 grid gap-9 lg:mt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
-            <DisplayLines
-              as="h1"
-              className="display-1 text-white"
-              lines={["The creatives", "behind the scenes."]}
-            />
-            <p className="lede lg:pb-3">
-              A growing group of photographers, editors, and content strategists
-              working across Green Bay, Madison, Appleton, and the Fox Valley.
-            </p>
-          </AnimateOnScroll>
-        </div>
-      </section>
+      <PageHead
+        lines={["The creatives", "behind the scenes."]}
+        lede="A growing group of photographers, editors, and content strategists working across Green Bay, Madison, Appleton, and the Fox Valley."
+      />
 
       {/* ── Team ─────────────────────────────────────────────────────────── */}
       <section className="section">
         <div className="shell">
           <h2 className="sr-only">Meet the team</h2>
-          <div className="scene grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          {/* Five across on desktop: ten people fill two rows exactly, where
+              four columns left two alone on the last. */}
+          <div className="scene grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
             {team.map((member, index) => (
               <AnimateOnScroll
                 key={member.name}
-                animation={index % 2 ? "depth-right" : "depth-left"}
-                delay={index * 0.06}
+                animation="depth"
+                delay={(index % 5) * 0.06}
               >
                 <Tilt max={6} lift={16}>
-                <div className="group relative overflow-hidden rounded-2xl border border-line bg-surface">
-                  <div className="relative aspect-[3/4] overflow-hidden">
+                {/* overflow-clip on the card: `hidden` would make it a scroll
+                    container and the drift inside would track the card. */}
+                <div className="group relative overflow-clip rounded-2xl border border-line bg-surface">
+                  <div className="drift relative aspect-[3/4] overflow-hidden">
                     <Image
                       src={member.image}
                       alt={member.name}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-                      sizes="(max-width: 1024px) 50vw, 25vw"
+                      sizes="(max-width: 1024px) 50vw, 20vw"
                     />
                     {/* A deeper, longer scrim than the old half-height one: the
                         headshots vary wildly in exposure, and a light background
@@ -175,8 +170,8 @@ export default function TeamPage() {
           shape to read on a page, every line starts in a different place. */}
       <section className="section">
         <div className="shell">
-          <div className="mt-14 grid gap-12 lg:mt-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-            <AnimateOnScroll animation="fade-up">
+          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+            <AnimateOnScroll animation="rise">
               <div className="lg:sticky lg:top-28">
                 <DisplayLines
                   className="display-2 text-white"
@@ -205,7 +200,7 @@ export default function TeamPage() {
                 </div>
               </div>
             </AnimateOnScroll>
-            <AnimateOnScroll animation="fade-up" delay={0.1}>
+            <AnimateOnScroll animation="rise" delay={0.1}>
               <div className="space-y-6 text-base leading-relaxed text-ink-2 sm:text-lg">
                 <p>
                   I started PG Creatives at 19 years old with a simple goal: create
@@ -245,14 +240,12 @@ export default function TeamPage() {
       {/* ── Values ───────────────────────────────────────────────────────── */}
       <section className="section">
         <div className="shell">
-          <AnimateOnScroll animation="rise">
-            <DisplayLines
-              className="display-2 mt-8 max-w-xl text-white"
-              lines={["What drives us."]}
-            />
-          </AnimateOnScroll>
+          <SectionHead
+            lines={["What drives us."]}
+            lede="Four things every shoot is held to, whoever is behind the camera that day."
+          />
 
-          <dl className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((value, i) => (
               <AnimateOnScroll
                 key={value.title}

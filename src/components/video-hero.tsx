@@ -363,11 +363,15 @@ export function VideoHero() {
           }`}
         />
 
-        {/* Scrim. Weighted to the bottom-left, where the copy sits, and heavy
-            enough that the headline never has to compete with a lamp. The old
-            pair of even gradients left the type sitting on a lit fireplace. */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(7,9,12,0.97)_0%,rgba(7,9,12,0.88)_30%,rgba(7,9,12,0.62)_65%,rgba(7,9,12,0.72)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,rgba(7,9,12,0.35)_0%,rgba(7,9,12,0.72)_65%,rgba(7,9,12,0.9)_100%)]" />
+        {/* Scrim. Two layers: a vertical wash that stays dense at the bottom
+            where the buttons sit and thins through the middle, and a vignette
+            that darkens the edges and leaves the centre open. Together they
+            hold the headline at contrast without burying the footage. The
+            previous pair peaked at 0.97 and never dropped below 0.62, so the
+            fold read as white type on a black card and the loop, the one
+            thing a media company has to show, was barely there. */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(7,9,12,0.96)_0%,rgba(7,9,12,0.74)_26%,rgba(7,9,12,0.42)_58%,rgba(7,9,12,0.5)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_62%_58%_at_50%_54%,rgba(7,9,12,0.18)_0%,rgba(7,9,12,0.5)_62%,rgba(7,9,12,0.8)_100%)]" />
       </div>
 
       {/* Content.

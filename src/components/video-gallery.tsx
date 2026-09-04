@@ -26,19 +26,21 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
 
   return (
     <>
+      {/* Three across on desktop: nine reels fill three rows exactly, where
+          four columns left one alone on the last. */}
       <div
         className={cn(
           "mt-12 grid gap-3 sm:mt-16 sm:gap-4",
           portrait
-            ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
+            ? "grid-cols-2 sm:grid-cols-3"
             : "sm:grid-cols-2 lg:grid-cols-3"
         )}
       >
         {videos.map((video, i) => (
           <AnimateOnScroll
             key={video.vimeoId}
-            animation="fade-up"
-            delay={(i % (portrait ? 4 : 3)) * 0.08}
+            animation="depth"
+            delay={(i % 3) * 0.08}
           >
           <button
             type="button"
@@ -64,7 +66,7 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
                 )}
                 sizes={
                   portrait
-                    ? "(min-width: 1360px) 300px, (min-width: 1024px) 23vw, (max-width: 640px) 50vw, 33vw"
+                    ? "(min-width: 1360px) 400px, (min-width: 640px) 31vw, 50vw"
                     : "(min-width: 1360px) 400px, (min-width: 1024px) 31vw, (max-width: 640px) 100vw, 50vw"
                 }
               />

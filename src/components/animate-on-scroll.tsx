@@ -1,15 +1,15 @@
 import type { CSSProperties, ReactNode } from "react";
 
+/* Four entrances, and that is the whole grammar: small rows fade up, blocks
+   rise, cards arrive through Z, headings rise line by line out of a mask.
+   The lateral and scaling variants that used to sit alongside these were
+   never used consistently, and alternating them across a grid read as
+   tiles scrambling into place rather than arriving in sequence. */
 export type RevealAnimation =
   | "fade-up"
   | "rise"
-  | "fade-in-scale"
-  | "slide-in-left"
-  | "slide-in-right"
   /* Arrive through Z rather than sliding up the page. */
   | "depth"
-  | "depth-left"
-  | "depth-right"
   /* The container itself does not move — it exists only so its `.line-mask`
      children get `.is-visible` and can rise on their own. Wrapping a masked
      heading in a variant that also translates the block animates the same

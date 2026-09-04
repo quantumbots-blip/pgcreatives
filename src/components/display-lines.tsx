@@ -33,20 +33,33 @@ export function DisplayLines({
   delay = 0,
   /** Seconds between one line starting and the next. */
   stagger = 0.09,
+  /**
+   * Rise on page load instead of on intersection. For headings that are on
+   * screen when the page arrives (the hero, every inner page's h1): the
+   * observer marks those visible before it is allowed to hide anything, so
+   * without this they would never move at all.
+   */
+  entrance = false,
 }: {
   lines: ReactNode[];
   as?: "h1" | "h2" | "p" | "div";
   className?: string;
   delay?: number;
   stagger?: number;
+  entrance?: boolean;
 }) {
   return (
     <Tag className={className}>
       {lines.map((line, i) => (
         <span className="line-mask" key={i}>
           <span
-            className="line-inner"
-            style={{ "--line-delay": `${delay + i * stagger}s` } as CSSProperties}
+            className={entrance ? "line-inner hero-line" : "line-inner"}
+            style={
+              {
+                "--line-delay": `${delay + i * stagger}s`,
+                ...(entrance ? { animationDelay: `${0.18 + i * 0.12}s` } : null),
+              } as CSSProperties
+            }
           >
             {line}
             {/* A trailing space so the authored lines still read as sentences

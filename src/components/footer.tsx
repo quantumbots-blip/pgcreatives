@@ -16,6 +16,8 @@ const socialLinks = [
   { name: "Instagram", href: BUSINESS.socials.instagram, icon: InstagramIcon },
 ];
 
+/* The column headings are h2s: on a page with no h2 of its own (contact,
+   the 404) an h3 here skipped a level straight from the h1. */
 export function Footer() {
   return (
     <footer className="relative overflow-x-clip">
@@ -26,16 +28,21 @@ export function Footer() {
             On the shell itself it painted across the gutters too, making it
             the only edge-to-edge hairline on the site. */}
         <div className="border-t border-line pt-14 sm:pt-20">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_1fr_1fr] lg:gap-12">
+        {/* The contact column is the widest of the three link columns: it
+            holds the longest strings on the page, and at `1fr` the email
+            broke mid-word as "gmail.c / om". */}
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.7fr_1.3fr_1fr] lg:gap-12">
           {/* Brand column */}
-          <div className="sm:col-span-2 lg:col-span-1 space-y-3">
-            <Link href="/" className="inline-block">
+          <div className="sm:col-span-2 lg:col-span-1 space-y-5">
+            <Link href="/" className="inline-block" aria-label="PG Creatives, home">
+              {/* The wordmark cropped to its artwork. The old file kept it
+                  inside a mostly transparent canvas, so it rendered 70px wide. */}
               <Image
-                src="/images/pg-logo.png"
+                src="/wordmark.png"
                 alt="PG Creatives"
-                width={96}
-                height={80}
-                className="h-16 sm:h-20 w-auto object-contain opacity-90 transition-opacity duration-300 hover:opacity-100"
+                width={366}
+                height={77}
+                className="h-8 w-auto opacity-90 transition-opacity duration-300 hover:opacity-100 sm:h-9"
               />
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-ink-2">
@@ -61,9 +68,9 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="meta">
+            <h2 className="meta">
               Navigation
-            </h3>
+            </h2>
             <ul className="mt-5 space-y-3">
               {footerLinks.map((link) => (
                 <li key={link.href}>
@@ -80,9 +87,9 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="meta">
+            <h2 className="meta">
               Get in Touch
-            </h3>
+            </h2>
             <ul className="mt-5 space-y-4">
               {Object.values(BUSINESS.phones).map((phone) => (
                 <li key={phone.label}>
@@ -108,7 +115,12 @@ export function Footer() {
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface transition-colors group-hover:bg-white/[0.08]">
                     <Mail className="h-3.5 w-3.5 text-white/45 transition-colors group-hover:text-signal-ink" />
                   </div>
-                  <span className="break-all">{BUSINESS.email}</span>
+                  {/* A break opportunity after the @ and `anywhere` as the
+                      fallback, so a narrow column splits the address at the
+                      one place it still reads as an address. */}
+                  <span className="[overflow-wrap:anywhere]">
+                    {BUSINESS.email.split("@")[0]}@<wbr />{BUSINESS.email.split("@")[1]}
+                  </span>
                 </a>
               </li>
               <li>
@@ -124,9 +136,9 @@ export function Footer() {
 
           {/* Portals */}
           <div>
-            <h3 className="meta">
+            <h2 className="meta">
               Client portals
-            </h3>
+            </h2>
             <div className="mt-5 space-y-2.5">
               {Object.values(BUSINESS.portals).map((portal) => (
                 <a
@@ -178,10 +190,6 @@ export function Footer() {
               >
                 Admin
               </Link>
-              <span className="hidden h-3 w-px bg-white/10 sm:block" />
-              <span className="hidden text-xs text-ink-3 sm:block">
-                Wisconsin
-              </span>
             </div>
           </div>
         </div>

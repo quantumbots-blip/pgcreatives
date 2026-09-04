@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { DisplayLines } from "@/components/display-lines";
+import { PageHead } from "@/components/page-head";
 import { Tilt } from "@/components/tilt";
 
 export const revalidate = 3600;
@@ -94,32 +95,21 @@ const services = [
 export default function ServicesPage() {
   return (
     <>
-      <section className="section-tight">
-        <div className="shell">
-          <AnimateOnScroll animation="lines" className="mt-12 grid gap-9 lg:mt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
-            <DisplayLines
-              as="h1"
-              className="display-1 text-white"
-              lines={["Three things,", "done right."]}
-            />
-            <p className="lede lg:pb-3">
-              Listing media that sells the house, commercial work for everyone
-              else, and a monthly program for the agents who want to be known.
-            </p>
-          </AnimateOnScroll>
-        </div>
-      </section>
+      <PageHead
+        lines={["Three things,", "done right."]}
+        lede="Listing media that sells the house, commercial work for everyone else, and a monthly program for the agents who want to be known."
+      />
 
       {services.map((service, i) => (
         <section key={service.id} id={service.id} className="section scroll-mt-20">
           <div className="shell">
 
             <div
-              className={`mt-14 grid gap-12 lg:mt-10 lg:grid-cols-2 lg:items-center lg:gap-16 ${
+              className={`grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16 ${
                 i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
               }`}
             >
-              <AnimateOnScroll animation={i % 2 === 1 ? "depth-right" : "depth-left"}>
+              <AnimateOnScroll animation="rise">
                 <div>
                   <DisplayLines
                     className="display-2 text-white"
@@ -151,7 +141,7 @@ export default function ServicesPage() {
 
               <AnimateOnScroll animation="depth" delay={0.1} className="scene">
                 <Tilt max={6} lift={20}>
-                <div className="viewfinder relative aspect-[4/3] overflow-hidden rounded-2xl border border-line bg-surface">
+                <div className="drift viewfinder relative aspect-[4/3] overflow-hidden rounded-2xl border border-line bg-surface">
                   <span className="vf-b" aria-hidden="true" />
                   <Image
                     src={service.image}

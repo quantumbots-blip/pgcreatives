@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { RotateCcw } from "lucide-react";
 
 export default function Error({
   error,
@@ -14,17 +15,26 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-5 sm:px-6">
-      <h2 className="text-2xl font-bold text-white">Something went wrong</h2>
-      <p className="mt-3 text-white/60">
-        An unexpected error occurred. Please try again.
-      </p>
-      <button
-        onClick={reset}
-        className="mt-6 rounded-full bg-gradient-to-r from-purple-dim to-purple px-8 py-3 text-sm font-semibold text-white ring-1 ring-purple/40 shadow-[0_0_15px_rgba(55,140,210,0.25),0_0_40px_rgba(55,140,210,0.1)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(55,140,210,0.4),0_0_50px_rgba(55,140,210,0.15)]"
-      >
-        Try Again
-      </button>
-    </div>
+    <section className="section flex min-h-[70vh] items-center">
+      <div className="shell">
+        <div className="max-w-3xl">
+          <p className="meta meta-signal">Something went wrong</p>
+          <h1 className="display-1 mt-5 text-white">That frame did not load.</h1>
+          <p className="lede mt-6 max-w-lg">
+            An unexpected error stopped this page. Trying again usually fixes
+            it. If it keeps happening, email us and we will sort it out.
+          </p>
+          <div className="mt-9 flex flex-wrap items-center gap-4">
+            <button type="button" onClick={reset} className="btn btn-primary">
+              <RotateCcw className="h-4 w-4" />
+              Try again
+            </button>
+            <a href="mailto:pgcreativeswisconsin@gmail.com" className="btn btn-ghost">
+              Email us
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

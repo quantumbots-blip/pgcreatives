@@ -1,5 +1,4 @@
-import { AnimateOnScroll } from "@/components/animate-on-scroll";
-import { DisplayLines } from "@/components/display-lines";
+import { PageHead } from "@/components/page-head";
 import { PortfolioFilter } from "@/components/portfolio-filter";
 import { getVimeoMetas } from "@/lib/vimeo";
 
@@ -329,30 +328,17 @@ export default async function PortfolioPage() {
 
   return (
     <>
-      <section className="section-tight">
-        <div className="shell">
-          <AnimateOnScroll animation="lines">
-            <div className="mt-12 grid gap-9 lg:mt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
-              <DisplayLines
-                as="h1"
-                className="display-1 text-white"
-                lines={["Every listing,", "in its best light."]}
-              />
-              <div className="lg:pb-3">
-                <p className="lede">
-                  Work made for agents, brokers, and businesses across Green Bay,
-                  Madison, Milwaukee, and the Fox Valley.
-                </p>
-                <p className="meta mt-6">
-                  <span className="text-signal-ink">{filmCount} films</span>
-                  <span className="mx-2" aria-hidden="true">/</span>
-                  <span>{stillCount} stills</span>
-                </p>
-              </div>
-            </div>
-          </AnimateOnScroll>
-        </div>
-      </section>
+      <PageHead
+        lines={["Every listing,", "in its best light."]}
+        lede="Work made for agents, brokers, and businesses across Green Bay, Madison, Milwaukee, and the Fox Valley."
+        meta={
+          <p className="meta">
+            <span className="text-signal-ink">{filmCount} films</span>
+            <span className="mx-2" aria-hidden="true">/</span>
+            <span>{stillCount} stills</span>
+          </p>
+        }
+      />
 
       <section className="section pt-0">
         <PortfolioFilter projects={projectsWithThumbs} />
