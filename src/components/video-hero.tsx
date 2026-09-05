@@ -441,14 +441,16 @@ export function VideoHero() {
         <div className="shell">
           <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
             <p className="animate-hero-fade-up meta hero-markets flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 text-white/70">
+              {/* All four markets in the same gray. Green Bay used to carry
+                  the accent, which read as a ranking the owner never meant. */}
               {[
-                { name: "Green Bay", first: true },
+                { name: "Green Bay" },
                 { name: "Madison" },
                 { name: "Milwaukee" },
                 { name: "Fox Valley", last: true },
               ].map((m) => (
                 <span key={m.name} className="inline-flex items-center gap-x-2 whitespace-nowrap">
-                  <span className={m.first ? "text-signal-ink" : undefined}>{m.name}</span>
+                  <span>{m.name}</span>
                   {!m.last && <span aria-hidden="true">/</span>}
                 </span>
               ))}
