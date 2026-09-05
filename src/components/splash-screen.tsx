@@ -53,9 +53,11 @@ export function SplashScreen() {
           alt="PG Creatives"
           // The 3D mark, cropped to its artwork (186x151). Declared at the
           // file's real ratio so nothing reflows when the bytes arrive.
+          // Rendered at 90px / 115px: a fifth smaller than the 112 / 144 it
+          // opened at, which the owner found too big for a splash.
           width={186}
           height={151}
-          className="w-28 sm:w-36 h-auto"
+          className="w-[5.6rem] sm:w-[7.2rem] h-auto"
           preload
         />
       </div>

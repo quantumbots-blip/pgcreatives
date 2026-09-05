@@ -5,28 +5,74 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
 
-// Two renditions of the same 75-second loop. The desktop file is 16:9 at 720p;
-// the phone file is the 9:16 centre crop that `object-cover` actually displays
-// on a portrait screen, so none of its bytes are spent on pixels that get
-// cropped away.
+// The same 75-second loop in two layouts and two codecs, all cut from the
+// 1920x1080 30fps master in git history (blob 91b2067, the file the previous
+// rendition was made from).
 //
-// This is the FULL take, restored from the 1920x1080 master in git history
-// (26e9519). It had been cut to 24.5s to save weight, which made the loop
-// obvious. Re-encoded two-pass at 24fps instead — 380k desktop, 190k mobile —
-// which buys back all three minutes of footage for +28% and +64% bytes
-// respectively. The file is behind a heavy scrim and only ever downloads on a
-// fast connection, so the lower bitrate costs nothing anyone can see.
-const VIDEO_SRC_DESKTOP = "/hero-video-v6.mp4";
-const VIDEO_SRC_MOBILE = "/hero-video-mobile-v2.mp4";
+// Layouts: the desktop file is the full 16:9 frame at 1080p; the phone file
+// is the 9:16 centre crop that `object-cover` actually displays on a portrait
+// screen, so none of its bytes are spent on pixels that get cropped away.
+//
+// Codecs: HEVC is roughly half the bytes of H.264 at the same quality, and
+// every browser this code hands it to decodes it in hardware (Safari on every
+// Apple device, Chrome and Edge on machines with a decoder), so it costs no
+// more battery than H.264 would. H.264 is the fallback every browser plays.
+//
+// History: the previous files were 1280x720 at 24fps and ~380k, chosen when a
+// dense scrim hid the footage. The scrim is lighter now and the compression
+// showed: soft, blocky in the twilight shots, and 24fps from a 30fps source
+// stuttered on every smooth drone move. These are 1080p at the native 30fps,
+// with a capped-CRF encode that spends bits where the picture needs them.
+const RENDITIONS = {
+  desktop: {
+    hevc: "/hero-video-v7-hevc.mp4",
+    h264: "/hero-video-v7-h264.mp4",
+  },
+  mobile: {
+    hevc: "/hero-video-mobile-v3-hevc.mp4",
+    h264: "/hero-video-mobile-v3-h264.mp4",
+  },
+} as const;
+type Codec = keyof (typeof RENDITIONS)["desktop"];
+
+// Main profile, main tier, level 4 (1080p30): what the desktop file is, and
+// well within what every HEVC hardware decoder ever shipped can handle.
+const HEVC_TYPE = 'video/mp4; codecs="hvc1.1.6.L120.B0"';
+
+// Pick the codec once per page. `mediaCapabilities` is the only API that says
+// whether a decode would be hardware-accelerated; `canPlayType` answers
+// "probably" for HEVC on machines that would grind it out in software, and a
+// looping background is the last thing that should burn CPU for 75 seconds
+// at a time. Anything short of a confident yes gets H.264.
+async function pickCodec(): Promise<Codec> {
+  try {
+    const mc = navigator.mediaCapabilities;
+    if (!mc?.decodingInfo) return "h264";
+    const info = await mc.decodingInfo({
+      type: "file",
+      video: {
+        contentType: HEVC_TYPE,
+        width: 1920,
+        height: 1080,
+        bitrate: 2_000_000,
+        framerate: 30,
+      },
+    });
+    return info.supported && info.smooth && info.powerEfficient
+      ? "hevc"
+      : "h264";
+  } catch {
+    return "h264";
+  }
+}
 
 // Matches the site's mobile breakpoint. A phone in landscape is wider than this
 // and correctly gets the 16:9 file, which is the one that fits that shape.
 const MOBILE_QUERY = "(max-width: 768px)";
 
-function heroVideoSrc() {
-  return window.matchMedia(MOBILE_QUERY).matches
-    ? VIDEO_SRC_MOBILE
-    : VIDEO_SRC_DESKTOP;
+function heroVideoSrc(codec: Codec) {
+  const layout = window.matchMedia(MOBILE_QUERY).matches ? "mobile" : "desktop";
+  return RENDITIONS[layout][codec];
 }
 
 type NavigatorWithConnection = Navigator & {
@@ -52,7 +98,9 @@ export function VideoHero() {
   const bgRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [videoReady, setVideoReady] = useState(false);
-  const [videoEnabled, setVideoEnabled] = useState(false);
+  // Null until the page has decided to fetch the video at all; then the codec
+  // it settled on. Set exactly once.
+  const [codec, setCodec] = useState<Codec | null>(null);
 
   // Parallax: the backdrop drifts at a quarter of scroll speed and the copy
   // lifts and fades as the visitor leaves the hero. Pointer devices only —
@@ -150,7 +198,10 @@ export function VideoHero() {
     // life and this video is decorative — it must never compete with it.
     let canceled = false;
     const start = () => {
-      if (!canceled) setVideoEnabled(true);
+      if (canceled) return;
+      pickCodec().then((c) => {
+        if (!canceled) setCodec(c);
+      });
     };
 
     // requestIdleCallback is unsupported on Safari before 17, which is exactly
@@ -168,7 +219,7 @@ export function VideoHero() {
   }, []);
 
   useEffect(() => {
-    if (!videoEnabled) return;
+    if (!codec) return;
     const video = videoRef.current;
     if (!video) return;
 
@@ -198,7 +249,7 @@ export function VideoHero() {
     // one prompted by a user gesture.
     const attachSource = () => {
       if (video.getAttribute("src")) return;
-      video.setAttribute("src", heroVideoSrc());
+      video.setAttribute("src", heroVideoSrc(codec));
     };
 
     // The source failed for good — unsupported codec, 404, corrupt file. Give
@@ -325,7 +376,7 @@ export function VideoHero() {
       // Hand the buffer back on navigation instead of leaving it held.
       releaseSource();
     };
-  }, [videoEnabled]);
+  }, [codec]);
 
   return (
     <section className="scene viewfinder viewfinder-front viewfinder-hero relative -mt-16 flex min-h-[96svh] items-center overflow-clip sm:min-h-[92svh] lg:-mt-20 lg:min-h-screen">
