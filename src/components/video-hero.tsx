@@ -22,7 +22,9 @@ import { ArrowRight, Play } from "lucide-react";
 // dense scrim hid the footage. The scrim is lighter now and the compression
 // showed: soft, blocky in the twilight shots, and 24fps from a 30fps source
 // stuttered on every smooth drone move. These are 1080p at the native 30fps,
-// with a capped-CRF encode that spends bits where the picture needs them.
+// two-pass at a fixed byte budget, so the bits go where the picture needs
+// them. CRF was measured and rejected: the twilight drone shots are grainy
+// and CRF 22 made the loop 45 MB.
 const RENDITIONS = {
   desktop: {
     hevc: "/hero-video-v7-hevc.mp4",
