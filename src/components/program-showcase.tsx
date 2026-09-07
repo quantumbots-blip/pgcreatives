@@ -5,24 +5,33 @@ import { getVimeoMetas } from "@/lib/vimeo";
 
 /* Three reels, fanned like a deck.
 
-   The section sells putting an AGENT on camera, so the deck has three jobs at
+   The section sells putting an AGENT on camera, so the deck has four jobs at
    once, and missing any one of them makes it argue against itself:
 
      1. every frame has a person in it (it once held listing interiors),
-     2. every person is looking down the lens, and
-     3. they are three different people.
+     2. every person is looking down the lens,
+     3. they are three different people, and
+     4. the burnt-in caption is whole and reads as words.
 
    Rule 3 is the one that is easy to break without noticing. The middle and
    right cards were 1164740705 and 1174488968 — two reels, two outfits, two
    locations, and the same agent in both, which reads as a portfolio of one
    client. Compare faces, not hair and coats.
 
+   Rule 4 is the one that catches you out, because these captions are animated.
+   A poster is a single frame, so it can land while a word is still sliding in
+   from off-frame: 1156930119 sat here reading "On Lake chigan", with half of
+   Michigan still outside the picture. A word can also be caught mid-fade and
+   come out ghosted (1175629817's "pretty"). And a whole caption can be
+   perfectly legible and still fail — 1163714583's "If your" is not cut off,
+   it is simply not a phrase. Read the caption aloud before choosing a reel.
+
    Rule 2 is the one that cannot be fixed in code. Vimeo picks a single poster
    per video and the public oEmbed hands out only that one, so a subject who is
    mid-turn is a reason to change the reel, not the second: that is what took
    1177445392 out, whose poster catches the agent side-on under a "surprises"
-   caption. If you want a specific reel in here, change its thumbnail on Vimeo
-   instead.
+   caption. Same for a clipped caption. If you want a specific reel in here,
+   change its thumbnail on Vimeo instead.
 
    The card that used to be a local file is a reel now too, so all three are
    real posters from work the program produced, natively 640x1138 — exactly the
@@ -31,17 +40,18 @@ import { getVimeoMetas } from "@/lib/vimeo";
    Judge a replacement on the poster at 210px wide, not on the video, and on
    the real i.vimeocdn.com frame: vumbnail.com serves a landscape crop that
    makes every subject look closer than they render here. */
+/* Captions noted so the next edit can check rule 4 without opening Vimeo. */
 const REELS = [
   {
-    id: "1156930119",
-    alt: "Agent looking to camera outside a lakefront listing, for a personal-brand reel",
+    id: "1166726096", // "On paper"
+    alt: "Agent looking to camera on a residential street, for a personal-brand reel",
   },
   {
-    id: "1163714583",
-    alt: "Agent talking straight to camera in a kitchen, for a personal-brand reel",
+    id: "1177761655", // "The last thing you want"
+    alt: "Agent talking straight to camera outside a house, for a personal-brand reel",
   },
   {
-    id: "1174488968",
+    id: "1174488968", // "Everyone thinks"
     alt: "Agent looking to camera outside a property, for a personal-brand reel",
   },
 ];
