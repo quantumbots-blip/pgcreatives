@@ -448,6 +448,12 @@ export async function isDuplicateSubmission(
 
 export async function recordBlockedAttempt(reason: BlockReason, ipHash: string | null) {
   try {
+    /* The honeypot and BotID both turn a submission away before the intake
+       checks run, so on a cold instance this is the first thing to touch the
+       database and blocked_attempts may not exist yet. ensureSchema is
+       memoised, so asking for it here costs nothing after the first call and
+       stops the first block of each instance going uncounted. */
+    await ensureSchema();
     const sql = getDb();
     await sql`
       INSERT INTO blocked_attempts (reason, ip_hash) VALUES (${reason}, ${ipHash})
