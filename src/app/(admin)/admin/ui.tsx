@@ -18,9 +18,10 @@ export function DeltaChip({
   pct: number | null;
   invert?: boolean;
 }) {
-  if (pct === null) {
-    return <span className="text-[11px] text-ink-3">no earlier figure</span>;
-  }
+  /* Nothing to compare against renders nothing. The range row already says
+     so once, and repeating "no earlier figure" under four numbers reads as
+     four separate problems rather than one property of the range. */
+  if (pct === null) return null;
   if (pct === 0) {
     return (
       <span className="inline-flex items-center gap-0.5 rounded-full bg-white/[0.06] px-1.5 py-0.5 text-[11px] font-medium text-ink-3">
