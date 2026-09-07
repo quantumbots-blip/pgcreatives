@@ -111,7 +111,7 @@ export default async function TrafficPage({
               })}
               <span className="ml-auto text-[11px] text-ink-3">
                 {range === "all"
-                  ? "Second half of the record against the first"
+                  ? "Everything recorded, with nothing earlier to compare against"
                   : "Compared with the same length before it"}
               </span>
             </div>
@@ -123,14 +123,22 @@ export default async function TrafficPage({
                 label="Views"
                 value={traffic.views.current.toLocaleString()}
                 delta={traffic.views.pct}
-                sub={`${traffic.views.previous.toLocaleString()} before`}
+                sub={
+                  traffic.views.pct === null
+                    ? undefined
+                    : `${traffic.views.previous.toLocaleString()} before`
+                }
               />
               <Stat
                 icon={Users}
                 label="Visitors"
                 value={traffic.visitors.current.toLocaleString()}
                 delta={traffic.visitors.pct}
-                sub={`${traffic.visitors.previous.toLocaleString()} before`}
+                sub={
+                  traffic.visitors.pct === null
+                    ? undefined
+                    : `${traffic.visitors.previous.toLocaleString()} before`
+                }
               />
               <Stat
                 icon={Target}
@@ -138,7 +146,11 @@ export default async function TrafficPage({
                 value={traffic.leads.current.toLocaleString()}
                 accent
                 delta={traffic.leads.pct}
-                sub={`${traffic.leads.previous.toLocaleString()} before`}
+                sub={
+                  traffic.leads.pct === null
+                    ? undefined
+                    : `${traffic.leads.previous.toLocaleString()} before`
+                }
               />
               <Stat
                 icon={Target}
