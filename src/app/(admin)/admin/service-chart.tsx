@@ -23,7 +23,7 @@ export function ServiceChart({
 
   if (data.length === 0) {
     return (
-      <p className="py-10 text-center text-sm text-white/30">
+      <p className="py-10 text-center text-sm text-ink-3">
         No service data yet
       </p>
     );
@@ -38,18 +38,18 @@ export function ServiceChart({
         return (
           <div key={item.service} className="group">
             <div className="mb-1.5 flex items-center justify-between">
-              <span className="max-w-[140px] sm:max-w-[200px] truncate text-xs sm:text-sm text-white/60 group-hover:text-white/80 transition-colors">
+              <span className="max-w-[140px] truncate text-xs text-ink-2 transition-colors group-hover:text-white sm:max-w-[200px] sm:text-sm">
                 {item.service}
               </span>
-              <span className="text-xs font-medium tabular-nums text-white/40">
+              <span className="text-xs font-medium tabular-nums text-ink-3">
                 {item.count}
               </span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-purple/10">
+            <div className="h-2 overflow-hidden rounded-full bg-white/[0.08]">
               <div
                 data-bar
                 data-width={`${pct}%`}
-                className="h-full rounded-full bg-gradient-to-r from-purple-dim to-purple transition-all duration-700 ease-out group-hover:to-purple-light"
+                className="h-full rounded-full bg-signal transition-all duration-700 ease-out group-hover:bg-signal-ink"
                 style={{ width: "0%" }}
               />
             </div>

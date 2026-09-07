@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useActionState, useRef } from "react";
+import { useState, useActionState, useRef, useEffect } from "react";
 import { submitContactForm, type ContactState } from "@/app/actions/contact";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,6 +21,24 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
   );
   const formRef = useRef<HTMLFormElement>(null);
   const prior = state.values;
+
+  /* A signed timestamp, fetched when the form mounts and sent back with the
+     message. The gap between the two is how long somebody spent filling this
+     in, which is the one thing that separates a person from a script posting
+     at the endpoint. Both pages holding this form are cached, so the token
+     cannot be rendered into the HTML: it would date the cache entry, not the
+     visit. A failed fetch is not worth surfacing, the form still submits. */
+  const [formToken, setFormToken] = useState("");
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/form-token", { signal: controller.signal })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.token) setFormToken(data.token);
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
 
   if (state.success) {
     return (
@@ -60,6 +78,8 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
           className="w-px"
         />
       </div>
+
+      <input type="hidden" name="formToken" value={formToken} readOnly />
 
       {/* Name row.
 

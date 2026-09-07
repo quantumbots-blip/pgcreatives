@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withBotId } from "botid/next/config";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -113,4 +114,8 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+/* BotID adds two same-origin rewrites that proxy its challenge, so the strict
+   CSP above keeps covering it: nothing new is loaded from a third-party host.
+   It appends its own header rule after ours, which is what lets the challenge
+   frame itself on the proxy path while the rest of the site stays DENY. */
+export default withBotId(nextConfig);

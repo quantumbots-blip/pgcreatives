@@ -24,7 +24,18 @@ export type Submission = {
   message: string;
   status: SubmissionStatus;
   created_at: string;
+  /** Quarantined by the content filter. Hidden from the main list. */
+  is_spam: boolean;
+  spam_score: number;
+  spam_reasons: string | null;
+  /** Owner's private notes on the lead. */
+  notes: string | null;
+  /** Stamped the first time the lead is moved to Contacted. */
+  contacted_at: string | null;
 };
+
+/** Why a submission never made it as far as the table. */
+export type BlockReason = "honeypot" | "bot" | "rate_limit" | "duplicate";
 
 /** Run once per request to ensure required columns/tables exist (idempotent). */
 export async function ensureSchema() {
@@ -34,6 +45,47 @@ export async function ensureSchema() {
   await sql`
     ALTER TABLE submissions
     ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'new'
+  `;
+  // Spam quarantine, notes and provenance. Nothing here is destructive: every
+  // column is additive with a default, so a deploy that lands before this runs
+  // still writes rows that read back correctly.
+  await sql`
+    ALTER TABLE submissions
+      ADD COLUMN IF NOT EXISTS is_spam BOOLEAN NOT NULL DEFAULT FALSE,
+      ADD COLUMN IF NOT EXISTS spam_score INTEGER NOT NULL DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS spam_reasons TEXT,
+      ADD COLUMN IF NOT EXISTS notes TEXT,
+      ADD COLUMN IF NOT EXISTS contacted_at TIMESTAMPTZ,
+      ADD COLUMN IF NOT EXISTS fingerprint VARCHAR(32),
+      ADD COLUMN IF NOT EXISTS ip_hash VARCHAR(64),
+      ADD COLUMN IF NOT EXISTS user_agent VARCHAR(400)
+  `;
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_submissions_created_at
+    ON submissions (created_at DESC)
+  `;
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_submissions_spam_created
+    ON submissions (is_spam, created_at DESC)
+  `;
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_submissions_fingerprint
+    ON submissions (fingerprint)
+  `;
+  // Attempts turned away before they became rows. Kept so the dashboard can
+  // show that the filter is doing something rather than that nobody wrote in.
+  // Deliberately holds no personal data, only a salted hash of the address.
+  await sql`
+    CREATE TABLE IF NOT EXISTS blocked_attempts (
+      id SERIAL PRIMARY KEY,
+      reason VARCHAR(20) NOT NULL,
+      ip_hash VARCHAR(64),
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_blocked_attempts_created_at
+    ON blocked_attempts (created_at DESC)
   `;
   await sql`
     CREATE TABLE IF NOT EXISTS audit_logs (
@@ -256,27 +308,178 @@ export async function saveSubmission(data: {
   phone: string;
   service: string;
   message: string;
+  isSpam: boolean;
+  spamScore: number;
+  spamReasons: string;
+  fingerprint: string;
+  ipHash: string | null;
+  userAgent: string | null;
 }) {
   const sql = getDb();
   await sql`
-    INSERT INTO submissions (first_name, last_name, email, company, phone, service, message, status)
-    VALUES (${data.firstName}, ${data.lastName}, ${data.email}, ${data.company || null}, ${data.phone || null}, ${data.service || null}, ${data.message}, 'new')
+    INSERT INTO submissions (
+      first_name, last_name, email, company, phone, service, message, status,
+      is_spam, spam_score, spam_reasons, fingerprint, ip_hash, user_agent
+    )
+    VALUES (
+      ${data.firstName}, ${data.lastName}, ${data.email}, ${data.company || null},
+      ${data.phone || null}, ${data.service || null}, ${data.message}, 'new',
+      ${data.isSpam}, ${data.spamScore}, ${data.spamReasons || null},
+      ${data.fingerprint}, ${data.ipHash}, ${data.userAgent}
+    )
   `;
 }
 
+const SUBMISSION_COLUMNS = `
+  id, first_name, last_name, email, company, phone, service, message,
+  COALESCE(status, 'new') AS status, created_at,
+  COALESCE(is_spam, FALSE) AS is_spam,
+  COALESCE(spam_score, 0) AS spam_score,
+  spam_reasons, notes, contacted_at
+`;
+
+/** Real leads. Quarantined submissions live in getSpamSubmissions. */
 export async function getSubmissions(): Promise<Submission[]> {
   const sql = getDb();
-  const rows = await sql`
-    SELECT id, first_name, last_name, email, company, phone, service, message,
-           COALESCE(status, 'new') as status, created_at
-    FROM submissions ORDER BY created_at DESC
-  `;
+  const rows = await sql.query(
+    `SELECT ${SUBMISSION_COLUMNS} FROM submissions
+     WHERE COALESCE(is_spam, FALSE) = FALSE
+     ORDER BY created_at DESC`,
+  );
+  return rows as Submission[];
+}
+
+/**
+ * Quarantined submissions, newest first. Capped: the point of the tab is to
+ * let the owner spot something wrongly caught, and nothing wrongly caught is
+ * ever going to be the two hundredth item down.
+ */
+export async function getSpamSubmissions(limit = 200): Promise<Submission[]> {
+  const sql = getDb();
+  const rows = await sql.query(
+    `SELECT ${SUBMISSION_COLUMNS} FROM submissions
+     WHERE COALESCE(is_spam, FALSE) = TRUE
+     ORDER BY created_at DESC
+     LIMIT $1`,
+    [limit],
+  );
   return rows as Submission[];
 }
 
 export async function updateSubmissionStatus(id: number, status: SubmissionStatus) {
   const sql = getDb();
-  await sql`UPDATE submissions SET status = ${status} WHERE id = ${id}`;
+  // contacted_at is stamped once and never moved. It answers "when did I first
+  // get back to this person", so a later trip back through the statuses must
+  // not rewrite it.
+  await sql`
+    UPDATE submissions
+    SET status = ${status},
+        contacted_at = CASE
+          WHEN ${status} = 'new' THEN contacted_at
+          WHEN contacted_at IS NULL THEN NOW()
+          ELSE contacted_at
+        END
+    WHERE id = ${id}
+  `;
+}
+
+/** Move a submission into or out of quarantine. */
+export async function setSubmissionSpam(id: number, isSpam: boolean) {
+  const sql = getDb();
+  await sql`UPDATE submissions SET is_spam = ${isSpam} WHERE id = ${id}`;
+}
+
+export async function updateSubmissionNotes(id: number, notes: string) {
+  const sql = getDb();
+  await sql`UPDATE submissions SET notes = ${notes || null} WHERE id = ${id}`;
+}
+
+export async function deleteSubmission(id: number) {
+  const sql = getDb();
+  await sql`DELETE FROM submissions WHERE id = ${id}`;
+}
+
+/** Permanently remove everything currently in quarantine. */
+export async function deleteAllSpam(): Promise<number> {
+  const sql = getDb();
+  const rows = await sql`
+    DELETE FROM submissions WHERE COALESCE(is_spam, FALSE) = TRUE RETURNING id
+  `;
+  return rows.length;
+}
+
+// ── Intake guards ──
+
+/** How many submissions this address has sent inside the window. */
+export async function countRecentByEmail(email: string, hours: number): Promise<number> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT COUNT(*)::int AS count FROM submissions
+    WHERE LOWER(email) = LOWER(${email})
+      AND created_at >= NOW() - MAKE_INTERVAL(hours => ${hours})
+  `;
+  return Number(rows[0]?.count ?? 0);
+}
+
+/** Site wide intake in the window, used as a flood breaker. */
+export async function countRecentTotal(hours: number): Promise<number> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT COUNT(*)::int AS count FROM submissions
+    WHERE created_at >= NOW() - MAKE_INTERVAL(hours => ${hours})
+  `;
+  return Number(rows[0]?.count ?? 0);
+}
+
+/** Has this exact message already arrived recently? */
+export async function isDuplicateSubmission(
+  fingerprint: string,
+  hours: number,
+): Promise<boolean> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT 1 FROM submissions
+    WHERE fingerprint = ${fingerprint}
+      AND created_at >= NOW() - MAKE_INTERVAL(hours => ${hours})
+    LIMIT 1
+  `;
+  return rows.length > 0;
+}
+
+export async function recordBlockedAttempt(reason: BlockReason, ipHash: string | null) {
+  try {
+    /* The honeypot and BotID both turn a submission away before the intake
+       checks run, so on a cold instance this is the first thing to touch the
+       database and blocked_attempts may not exist yet. ensureSchema is
+       memoised, so asking for it here costs nothing after the first call and
+       stops the first block of each instance going uncounted. */
+    await ensureSchema();
+    const sql = getDb();
+    await sql`
+      INSERT INTO blocked_attempts (reason, ip_hash) VALUES (${reason}, ${ipHash})
+    `;
+  } catch {
+    // Counting blocks must never be the reason a submission fails.
+  }
+}
+
+/** What the filter has caught, for the dashboard. */
+export async function getSpamStats() {
+  const sql = getDb();
+  const [row] = await sql`
+    SELECT
+      (SELECT COUNT(*)::int FROM submissions WHERE COALESCE(is_spam, FALSE) = TRUE)                    AS quarantined_total,
+      (SELECT COUNT(*)::int FROM submissions WHERE COALESCE(is_spam, FALSE) = TRUE
+         AND created_at >= NOW() - INTERVAL '7 days')                                                  AS quarantined_week,
+      (SELECT COUNT(*)::int FROM blocked_attempts WHERE created_at >= NOW() - INTERVAL '7 days')       AS blocked_week,
+      (SELECT COUNT(*)::int FROM blocked_attempts)                                                     AS blocked_total
+  `;
+  return {
+    quarantinedTotal: Number(row?.quarantined_total ?? 0),
+    quarantinedWeek: Number(row?.quarantined_week ?? 0),
+    blockedWeek: Number(row?.blocked_week ?? 0),
+    blockedTotal: Number(row?.blocked_total ?? 0),
+  };
 }
 
 export async function getSubmissionStats() {
@@ -293,11 +496,13 @@ export async function getSubmissionStats() {
                            AND created_at <  NOW() - INTERVAL '7 days')                     AS last_week,
         COUNT(*) FILTER (WHERE COALESCE(status, 'new') = 'new')                             AS new_leads
       FROM submissions
+      WHERE COALESCE(is_spam, FALSE) = FALSE
     ),
     daily AS (
       SELECT DATE(created_at) AS day, COUNT(*) AS count
       FROM submissions
       WHERE created_at >= NOW() - INTERVAL '30 days'
+        AND COALESCE(is_spam, FALSE) = FALSE
       GROUP BY DATE(created_at)
       ORDER BY day ASC
     )
@@ -337,6 +542,7 @@ export async function getServiceBreakdown() {
     SELECT service, COUNT(*) as count
     FROM submissions
     WHERE service IS NOT NULL AND service != ''
+      AND COALESCE(is_spam, FALSE) = FALSE
     GROUP BY service
     ORDER BY count DESC
   `;
@@ -348,6 +554,7 @@ export async function getStatusCounts() {
   const rows = await sql`
     SELECT COALESCE(status, 'new') as status, COUNT(*) as count
     FROM submissions
+    WHERE COALESCE(is_spam, FALSE) = FALSE
     GROUP BY COALESCE(status, 'new')
   `;
   const counts: Record<SubmissionStatus, number> = {
