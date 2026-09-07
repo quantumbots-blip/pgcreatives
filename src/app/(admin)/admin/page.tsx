@@ -1,26 +1,18 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { verifySessionFull } from "@/lib/auth";
 import {
-  ArrowDownRight,
-  ArrowUpRight,
   Calendar,
   CheckCircle2,
-  Eye,
-  Globe,
-  LogOut,
+  Clock,
   Mail,
   MessageSquare,
-  Monitor,
   Phone,
   Send,
   ShieldCheck,
-  Smartphone,
   Sparkles,
-  Tablet,
+  Timer,
   TrendingUp,
-  Users,
 } from "lucide-react";
 import {
   ensureSchema,
@@ -30,84 +22,26 @@ import {
   getSubmissionStats,
   getServiceBreakdown,
   getStatusCounts,
-  getPageViewStats,
   getSpamStats,
 } from "@/lib/db";
 import type { SubmissionStatus } from "@/lib/db";
-import { logoutAction } from "@/app/actions/auth";
+import { getResponseInsights, getLeadsByDay } from "@/lib/insights";
 import { BUSINESS } from "@/lib/data";
 import { SubmissionsTable } from "./submissions-table";
 import { NewLeads } from "./new-leads";
 import { ServiceChart } from "./service-chart";
+import { AdminNav } from "./nav";
+import { AddLead } from "./add-lead";
+import { Panel, Stat, BarChart } from "./ui";
 
 export const dynamic = "force-dynamic";
 
-/** One card in the row of numbers across the top. */
-function Stat({
-  icon: Icon,
-  value,
-  label,
-  sub,
-  accent,
-  trend,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  value: string | number;
-  label: string;
-  sub?: string;
-  accent?: boolean;
-  trend?: { pct: number; up: boolean };
-}) {
-  return (
-    <div className="rounded-xl border border-line bg-surface p-4">
-      <div className="flex items-center gap-2 text-ink-3">
-        <Icon className="h-4 w-4 shrink-0 text-signal-ink" />
-        <span className="text-[11px] uppercase tracking-[0.12em]">{label}</span>
-      </div>
-      <div className="mt-2 flex flex-wrap items-baseline gap-2">
-        <p
-          className={`text-2xl font-bold tabular-nums ${accent ? "text-signal-ink" : "text-white"}`}
-        >
-          {value}
-        </p>
-        {trend && trend.pct !== 0 && (
-          <span
-            className={`inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[11px] font-medium ${
-              trend.up ? "bg-emerald-500/10 text-emerald-300" : "bg-red-500/10 text-red-300"
-            }`}
-          >
-            {trend.up ? (
-              <ArrowUpRight className="h-3 w-3" />
-            ) : (
-              <ArrowDownRight className="h-3 w-3" />
-            )}
-            {Math.abs(trend.pct)}%
-          </span>
-        )}
-      </div>
-      {sub && <p className="mt-1 text-[11px] text-ink-3">{sub}</p>}
-    </div>
-  );
-}
-
-function Panel({
-  title,
-  aside,
-  children,
-}: {
-  title: string;
-  aside?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="rounded-xl border border-line bg-surface p-4 sm:p-6">
-      <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2 sm:mb-5">
-        <h2 className="text-xs font-medium uppercase tracking-[0.15em] text-ink-3">{title}</h2>
-        {aside}
-      </div>
-      {children}
-    </section>
-  );
+/** "3h" or "2d", whichever reads better for the size of the number. */
+function humanHours(hours: number | null): string {
+  if (hours === null) return "n/a";
+  if (hours < 1) return `${Math.round(hours * 60)}m`;
+  if (hours < 48) return `${Math.round(hours)}h`;
+  return `${Math.round(hours / 24)}d`;
 }
 
 export default async function AdminDashboard() {
@@ -137,86 +71,61 @@ export default async function AdminDashboard() {
     booked: 0,
     archived: 0,
   };
-  let traffic: Awaited<ReturnType<typeof getPageViewStats>> = {
-    totalViews: 0,
-    totalUnique: 0,
-    monthViews: 0,
-    monthUnique: 0,
-    weekViews: 0,
-    todayViews: 0,
-    dailyViews: [],
-    topPages: [],
-    deviceBreakdown: [],
-    topReferrers: [],
-  };
   let spamStats = { quarantinedTotal: 0, quarantinedWeek: 0, blockedWeek: 0, blockedTotal: 0 };
+  let response: Awaited<ReturnType<typeof getResponseInsights>> = {
+    medianHours: null,
+    answeredCount: 0,
+    sameDayPct: null,
+    oldestWaitingHours: null,
+    waitingCount: 0,
+  };
+  let leadsByDay: { day: string; count: number }[] = [];
   let dbError = false;
 
   try {
     await Promise.all([ensureSchema(), ensurePageViewsTable()]);
-    [stats, submissions, spam, serviceBreakdown, statusCounts, traffic, spamStats] =
+    [stats, submissions, spam, serviceBreakdown, statusCounts, spamStats, response, leadsByDay] =
       await Promise.all([
         getSubmissionStats(),
         getSubmissions(),
         getSpamSubmissions(),
         getServiceBreakdown(),
         getStatusCounts(),
-        getPageViewStats(),
         getSpamStats(),
+        getResponseInsights(),
+        getLeadsByDay(30),
       ]);
   } catch {
     dbError = true;
   }
 
-  const newLeads = submissions.filter((s) => (s.status || "new") === "new");
-  const maxDaily = Math.max(...stats.daily.map((d) => Number(d.count)), 1);
+  /* Needs a reply is not simply "new" any more. A lead the owner parked until
+     Thursday is exactly as much of a to do on Thursday as one that arrived
+     that morning, so a due follow up joins the same list rather than sitting
+     in a second one nobody would open. */
+  const needsReply = submissions.filter((s) => {
+    const status = s.status || "new";
+    if (status === "new") return true;
+    if (status === "archived") return false;
+    return s.follow_up_due;
+  });
 
-  // Week-over-week trend
+  const filteredWeek = spamStats.quarantinedWeek + spamStats.blockedWeek;
   const weekDiff = stats.thisWeek - stats.lastWeek;
   const weekTrendPct =
     stats.lastWeek > 0
       ? Math.round((weekDiff / stats.lastWeek) * 100)
       : stats.thisWeek > 0
-        ? 100
+        ? null
         : 0;
 
-  // Conversion rate: booked / (total - archived), avoid division by zero
   const activePipeline = stats.total - statusCounts.archived;
   const conversionRate =
     activePipeline > 0 ? Math.round((statusCounts.booked / activePipeline) * 100) : 0;
 
-  const filteredWeek = spamStats.quarantinedWeek + spamStats.blockedWeek;
-
   return (
     <div className="min-h-screen bg-ground">
-      <header className="border-b border-line bg-surface">
-        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6">
-          <div className="min-w-0">
-            <h1 className="truncate text-base font-semibold text-white sm:text-lg">
-              PG Creatives
-            </h1>
-            <p className="text-[11px] text-ink-3">Leads and traffic</p>
-          </div>
-          <div className="flex items-center gap-2 sm:gap-4">
-            <Link
-              href="/"
-              className="inline-flex min-h-9 items-center px-2 text-xs text-ink-3 transition-colors hover:text-white sm:text-sm"
-            >
-              View site
-            </Link>
-            <form action={logoutAction}>
-              <button
-                type="submit"
-                className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-xs text-ink-3 transition-colors hover:border-line-strong hover:text-white sm:px-4 sm:text-sm"
-              >
-                <LogOut className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Sign out</span>
-                <span className="sm:hidden">Out</span>
-              </button>
-            </form>
-          </div>
-        </div>
-      </header>
+      <AdminNav waiting={needsReply.length} />
 
       <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:space-y-8 sm:px-6 sm:py-10">
         {dbError && (
@@ -228,29 +137,41 @@ export default async function AdminDashboard() {
         )}
 
         {/* Everyone waiting on a reply, before anything else on the page. */}
-        <NewLeads leads={newLeads} />
+        <NewLeads leads={needsReply} />
+
+        <div className="flex flex-wrap items-start gap-3">
+          <AddLead />
+        </div>
 
         {/* ── The numbers ── */}
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Stat
             icon={Sparkles}
-            value={stats.newLeads}
-            label="New leads"
+            value={needsReply.length}
+            label="Needs a reply"
             accent
-            sub={stats.newLeads === 0 ? "nothing waiting" : "waiting on you"}
+            sub={
+              response.oldestWaitingHours === null
+                ? "nothing waiting"
+                : `longest wait ${humanHours(response.oldestWaitingHours)}`
+            }
+          />
+          <Stat
+            icon={Timer}
+            value={humanHours(response.medianHours)}
+            label="Typical reply time"
+            sub={
+              response.answeredCount === 0
+                ? "starts once you answer one"
+                : `${response.sameDayPct}% inside a day, over ${response.answeredCount} answered`
+            }
           />
           <Stat
             icon={TrendingUp}
             value={stats.thisWeek}
             label="This week"
-            trend={{ pct: weekTrendPct, up: weekDiff >= 0 }}
+            delta={weekTrendPct}
             sub={`${stats.lastWeek} the week before`}
-          />
-          <Stat
-            icon={Calendar}
-            value={stats.thisMonth}
-            label="This month"
-            sub={`${stats.total} all time`}
           />
           <Stat
             icon={ShieldCheck}
@@ -259,7 +180,7 @@ export default async function AdminDashboard() {
             sub={
               filteredWeek === 0
                 ? "nothing caught this week"
-                : `${spamStats.blockedWeek} blocked, ${spamStats.quarantinedWeek} held for review`
+                : `${spamStats.blockedWeek} blocked, ${spamStats.quarantinedWeek} held`
             }
           />
         </div>
@@ -297,6 +218,18 @@ export default async function AdminDashboard() {
               </div>
             ))}
           </div>
+          <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-4 text-xs text-ink-3">
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="h-3.5 w-3.5 text-signal-ink" />
+              {response.answeredCount === 0
+                ? "No reply times recorded yet"
+                : `${response.answeredCount} answered, typically in ${humanHours(response.medianHours)}`}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Calendar className="h-3.5 w-3.5 text-signal-ink" />
+              {stats.thisMonth} this month, {stats.total} all time
+            </span>
+          </div>
         </Panel>
 
         {/* ── Charts ── */}
@@ -307,173 +240,18 @@ export default async function AdminDashboard() {
             </Panel>
           </div>
           <div className="lg:col-span-7">
-            <Panel title="Submissions, last 30 days">
-              {stats.daily.length === 0 ? (
-                <p className="py-10 text-center text-sm text-ink-3">No submissions yet</p>
-              ) : (
-                <div className="flex h-40 items-end gap-1">
-                  {stats.daily.map((d) => (
-                    <div
-                      key={d.day}
-                      className="group relative flex-1"
-                      title={`${d.day}: ${d.count} submission${Number(d.count) !== 1 ? "s" : ""}`}
-                    >
-                      <div
-                        className="w-full rounded-t bg-signal transition-colors group-hover:bg-signal-ink"
-                        style={{
-                          height: `${(Number(d.count) / maxDaily) * 100}%`,
-                          minHeight: "4px",
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+            <Panel title="Leads, last 30 days">
+              <BarChart
+                data={leadsByDay.map((d) => ({
+                  day: d.day,
+                  value: d.count,
+                  hint: `${d.day}: ${d.count} lead${d.count === 1 ? "" : "s"}`,
+                }))}
+                emptyLabel="No leads in the last 30 days"
+              />
             </Panel>
           </div>
         </div>
-
-        {/* ── Traffic ── */}
-        <Panel
-          title="Website traffic"
-          aside={<span className="text-xs text-ink-3">Last 30 days</span>}
-        >
-          <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <Stat
-              icon={Eye}
-              value={traffic.monthViews.toLocaleString()}
-              label="Views"
-              sub={`${traffic.totalViews.toLocaleString()} all time`}
-            />
-            <Stat
-              icon={Users}
-              value={traffic.monthUnique.toLocaleString()}
-              label="Visitors"
-              sub={`${traffic.totalUnique.toLocaleString()} all time`}
-            />
-            <Stat
-              icon={TrendingUp}
-              value={traffic.weekViews.toLocaleString()}
-              label="This week"
-            />
-            <Stat icon={Sparkles} value={traffic.todayViews.toLocaleString()} label="Today" />
-          </div>
-
-          {traffic.dailyViews.length > 0 && (
-            <div className="mb-6">
-              <p className="mb-3 text-xs text-ink-3">Daily views</p>
-              <div className="flex h-28 items-end gap-1">
-                {traffic.dailyViews.map((d) => {
-                  const max = Math.max(...traffic.dailyViews.map((v) => Number(v.views)), 1);
-                  return (
-                    <div
-                      key={d.day}
-                      className="group relative flex-1"
-                      title={`${d.day}: ${d.views} views, ${d.visitors} visitors`}
-                    >
-                      <div
-                        className="w-full rounded-t bg-signal transition-colors group-hover:bg-signal-ink"
-                        style={{
-                          height: `${(Number(d.views) / max) * 100}%`,
-                          minHeight: "2px",
-                        }}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="min-w-0 sm:col-span-2 lg:col-span-1">
-              <p className="mb-3 text-xs font-medium uppercase tracking-[0.12em] text-ink-3">
-                Top pages
-              </p>
-              {traffic.topPages.length === 0 ? (
-                <p className="text-xs text-ink-3">No data yet</p>
-              ) : (
-                <div className="space-y-2">
-                  {traffic.topPages.map((page) => (
-                    <div
-                      key={page.path}
-                      className="flex items-center justify-between gap-2 rounded-lg bg-surface-hi px-3 py-2"
-                    >
-                      <span className="min-w-0 truncate font-mono text-xs text-ink-2">
-                        {page.path}
-                      </span>
-                      <span className="shrink-0 text-[11px] text-ink-3">
-                        {Number(page.views).toLocaleString()} views
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="min-w-0">
-              <p className="mb-3 text-xs font-medium uppercase tracking-[0.12em] text-ink-3">
-                Devices
-              </p>
-              {traffic.deviceBreakdown.length === 0 ? (
-                <p className="text-xs text-ink-3">No data yet</p>
-              ) : (
-                <div className="space-y-2">
-                  {traffic.deviceBreakdown.map((d) => {
-                    const total = traffic.deviceBreakdown.reduce(
-                      (sum, v) => sum + Number(v.count),
-                      0,
-                    );
-                    const pct = total > 0 ? Math.round((Number(d.count) / total) * 100) : 0;
-                    const Icon =
-                      d.device === "mobile" ? Smartphone : d.device === "tablet" ? Tablet : Monitor;
-                    return (
-                      <div
-                        key={d.device}
-                        className="flex items-center gap-3 rounded-lg bg-surface-hi px-3 py-2"
-                      >
-                        <Icon className="h-3.5 w-3.5 shrink-0 text-signal-ink" />
-                        <span className="min-w-0 flex-1 truncate text-xs capitalize text-ink-2">
-                          {d.device}
-                        </span>
-                        <span className="shrink-0 text-[11px] text-ink-3">{pct}%</span>
-                        <div className="h-1.5 w-10 shrink-0 overflow-hidden rounded-full bg-white/[0.08] sm:w-16">
-                          <div className="h-full rounded-full bg-signal" style={{ width: `${pct}%` }} />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            <div className="min-w-0">
-              <p className="mb-3 text-xs font-medium uppercase tracking-[0.12em] text-ink-3">
-                Top referrers
-              </p>
-              {traffic.topReferrers.length === 0 ? (
-                <p className="text-xs text-ink-3">No data yet</p>
-              ) : (
-                <div className="space-y-2">
-                  {traffic.topReferrers.map((ref) => (
-                    <div
-                      key={ref.source}
-                      className="flex items-center justify-between gap-2 rounded-lg bg-surface-hi px-3 py-2"
-                    >
-                      <div className="flex min-w-0 items-center gap-2">
-                        <Globe className="h-3.5 w-3.5 shrink-0 text-signal-ink" />
-                        <span className="truncate text-xs text-ink-2">{ref.source}</span>
-                      </div>
-                      <span className="shrink-0 text-[11px] text-ink-3">
-                        {Number(ref.count).toLocaleString()}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </Panel>
 
         {/* ── Reference ── */}
         <Panel title="Contact numbers">

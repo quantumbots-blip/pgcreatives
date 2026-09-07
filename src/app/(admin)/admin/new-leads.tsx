@@ -5,6 +5,7 @@ import { Clock, Building2, CheckCircle2, Ban } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Submission } from "@/lib/db";
 import { LeadActions } from "./lead-actions";
+import { FollowUp } from "./follow-up";
 import { markSpamAction, updateStatusAction } from "@/app/actions/admin";
 import { timeAgo, hoursSince, serviceLabel } from "./format";
 
@@ -31,6 +32,20 @@ export function NewLeads({ leads }: { leads: Submission[] }) {
      "I only wanted to read the address" lives inside the card. Removing it on
      tap would take the undo with it. */
   const [answered, setAnswered] = useState<Set<number>>(new Set());
+  const [syncedFrom, setSyncedFrom] = useState(leads);
+
+  /* Keep the local copy in step with the server.
+     These lists are held in state so a tap responds immediately instead of
+     waiting for a round trip. The cost is that useState ignores later props:
+     after adding a lead, router.refresh() re-rendered the server component
+     and this kept showing the old array, so a new lead only appeared after a
+     hard reload. Comparing the incoming array by identity during render is
+     React's own answer to that, and it settles before anything paints. */
+  if (leads !== syncedFrom) {
+    setSyncedFrom(leads);
+    setRows(leads);
+    setAnswered(new Set());
+  }
 
   function drop(id: number) {
     setRows((prev) => prev.filter((r) => r.id !== id));
@@ -76,7 +91,14 @@ export function NewLeads({ leads }: { leads: Submission[] }) {
 
       <ul className="space-y-3">
         {rows.map((lead) => {
-          const age = ageTone(hoursSince(lead.created_at));
+          /* A lead the owner parked until today is here for a different
+             reason than one that arrived this morning, and its age is beside
+             the point. Say which it is rather than telling somebody a lead
+             they already answered is going cold. */
+          const isDueFollowUp = (lead.status || "new") !== "new" && lead.follow_up_due;
+          const age = isDueFollowUp
+            ? { label: "Follow up due", className: "bg-amber-500/12 text-amber-300" }
+            : ageTone(hoursSince(lead.created_at));
           const isAnswered = answered.has(lead.id);
           return (
             <li
@@ -96,7 +118,9 @@ export function NewLeads({ leads }: { leads: Submission[] }) {
                     <span aria-hidden="true">&middot;</span>
                     <span className="inline-flex items-center gap-1">
                       <Clock className="h-3 w-3" />
-                      {timeAgo(lead.created_at)}
+                      {isDueFollowUp
+                        ? `you asked to revisit this, came in ${timeAgo(lead.created_at)}`
+                        : timeAgo(lead.created_at)}
                     </span>
                     {lead.company && (
                       <>
@@ -125,10 +149,20 @@ export function NewLeads({ leads }: { leads: Submission[] }) {
                 </p>
               )}
 
-              <div className="mt-4">
+              <div className="mt-4 space-y-3">
                 <LeadActions
                   submission={lead}
                   onStatusChange={(id, status) => setAnsweredState(id, status === "contacted")}
+                />
+                <FollowUp
+                  id={lead.id}
+                  followUpAt={lead.follow_up_at}
+                  isDue={lead.follow_up_due}
+                  onChange={(iso) => {
+                    // Clearing a due reminder is what takes the card off the
+                    // list, so drop it rather than leaving a stale row.
+                    if (isDueFollowUp && iso === null) drop(lead.id);
+                  }}
                 />
               </div>
 

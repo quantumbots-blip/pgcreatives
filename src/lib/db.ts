@@ -32,6 +32,19 @@ export type Submission = {
   notes: string | null;
   /** Stamped the first time the lead is moved to Contacted. */
   contacted_at: string | null;
+  /** When the owner wants this back on the Needs a reply list. */
+  follow_up_at: string | null;
+  /** Where the visitor came from, captured by the form. */
+  source_referrer: string | null;
+  source_landing: string | null;
+  source_campaign: string | null;
+  /** "form" for the website, "manual" for one entered by hand. */
+  created_via: string;
+  /* Whether the reminder has come round, decided by the database rather than
+     the browser. A component cannot ask the time during render without the
+     React compiler objecting, and it should not: two cards rendered a
+     millisecond apart would be answering the question separately. */
+  follow_up_due: boolean;
 };
 
 /** Why a submission never made it as far as the table. */
@@ -59,6 +72,20 @@ export async function ensureSchema() {
       ADD COLUMN IF NOT EXISTS fingerprint VARCHAR(32),
       ADD COLUMN IF NOT EXISTS ip_hash VARCHAR(64),
       ADD COLUMN IF NOT EXISTS user_agent VARCHAR(400)
+  `;
+  // Follow ups, where the lead came from, and how it got here.
+  await sql`
+    ALTER TABLE submissions
+      ADD COLUMN IF NOT EXISTS follow_up_at TIMESTAMPTZ,
+      ADD COLUMN IF NOT EXISTS source_referrer VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS source_landing VARCHAR(500),
+      ADD COLUMN IF NOT EXISTS source_campaign VARCHAR(120),
+      ADD COLUMN IF NOT EXISTS created_via VARCHAR(20) NOT NULL DEFAULT 'form'
+  `;
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_submissions_follow_up
+    ON submissions (follow_up_at)
+    WHERE follow_up_at IS NOT NULL
   `;
   await sql`
     CREATE INDEX IF NOT EXISTS idx_submissions_created_at
@@ -314,20 +341,69 @@ export async function saveSubmission(data: {
   fingerprint: string;
   ipHash: string | null;
   userAgent: string | null;
+  sourceReferrer: string | null;
+  sourceLanding: string | null;
+  sourceCampaign: string | null;
 }) {
   const sql = getDb();
   await sql`
     INSERT INTO submissions (
       first_name, last_name, email, company, phone, service, message, status,
-      is_spam, spam_score, spam_reasons, fingerprint, ip_hash, user_agent
+      is_spam, spam_score, spam_reasons, fingerprint, ip_hash, user_agent,
+      source_referrer, source_landing, source_campaign, created_via
     )
     VALUES (
       ${data.firstName}, ${data.lastName}, ${data.email}, ${data.company || null},
       ${data.phone || null}, ${data.service || null}, ${data.message}, 'new',
       ${data.isSpam}, ${data.spamScore}, ${data.spamReasons || null},
-      ${data.fingerprint}, ${data.ipHash}, ${data.userAgent}
+      ${data.fingerprint}, ${data.ipHash}, ${data.userAgent},
+      ${data.sourceReferrer}, ${data.sourceLanding}, ${data.sourceCampaign}, 'form'
     )
   `;
+}
+
+/**
+ * A lead that arrived some other way: a phone call, an Instagram message,
+ * somebody stopping the owner at a showing. Without this the pipeline only
+ * ever describes the website form, and the conversion figures quietly claim
+ * those other inquiries never happened.
+ */
+/* email is empty rather than null when somebody only left a number. The
+   column has been NOT NULL since the table was created and every read path
+   types it as a string, so widening it would ripple through the export, the
+   search and the contact buttons for no gain. Callers treat "" as "no email",
+   which is what the add form already enforces: a lead needs an email or a
+   phone, not both. */
+export async function createManualLead(data: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  company: string;
+  phone: string;
+  service: string;
+  message: string;
+  sourceReferrer: string;
+}): Promise<number> {
+  const sql = getDb();
+  const rows = await sql`
+    INSERT INTO submissions (
+      first_name, last_name, email, company, phone, service, message, status,
+      is_spam, spam_score, source_referrer, created_via
+    )
+    VALUES (
+      ${data.firstName}, ${data.lastName}, ${data.email}, ${data.company || null},
+      ${data.phone || null}, ${data.service || null}, ${data.message}, 'new',
+      FALSE, 0, ${data.sourceReferrer || null}, 'manual'
+    )
+    RETURNING id
+  `;
+  return Number(rows[0].id);
+}
+
+/** Put a lead back on the Needs a reply list on a chosen day. */
+export async function setFollowUp(id: number, isoDate: string | null) {
+  const sql = getDb();
+  await sql`UPDATE submissions SET follow_up_at = ${isoDate} WHERE id = ${id}`;
 }
 
 const SUBMISSION_COLUMNS = `
@@ -335,7 +411,10 @@ const SUBMISSION_COLUMNS = `
   COALESCE(status, 'new') AS status, created_at,
   COALESCE(is_spam, FALSE) AS is_spam,
   COALESCE(spam_score, 0) AS spam_score,
-  spam_reasons, notes, contacted_at
+  spam_reasons, notes, contacted_at, follow_up_at,
+  source_referrer, source_landing, source_campaign,
+  COALESCE(created_via, 'form') AS created_via,
+  (follow_up_at IS NOT NULL AND follow_up_at <= NOW()) AS follow_up_due
 `;
 
 /** Real leads. Quarantined submissions live in getSpamSubmissions. */

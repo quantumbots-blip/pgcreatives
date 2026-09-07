@@ -210,6 +210,15 @@ export async function submitContactForm(
   const hdrs = await headers();
   const userAgent = (hdrs.get("user-agent") ?? "").slice(0, 400) || null;
 
+  /* How the visit started, captured on the first page of the session. Only
+     ever used to group leads by channel, never shown to the visitor. */
+  const sourceReferrer =
+    truncate(String(formData.get("sourceReferrer") ?? "").trim(), 255) || null;
+  const sourceLanding =
+    truncate(String(formData.get("sourceLanding") ?? "").trim(), 500) || null;
+  const sourceCampaign =
+    truncate(String(formData.get("sourceCampaign") ?? "").trim(), 120) || null;
+
   if (dbReachable) {
     try {
       await saveSubmission({
@@ -226,6 +235,9 @@ export async function submitContactForm(
         fingerprint,
         ipHash,
         userAgent,
+        sourceReferrer,
+        sourceLanding,
+        sourceCampaign,
       });
     } catch (err) {
       console.error("[contact] Database save failed:", (err as Error).message);

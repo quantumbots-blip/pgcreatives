@@ -15,6 +15,8 @@ import {
   ShieldAlert,
   Clock,
   StickyNote,
+  Compass,
+  PhoneIncoming,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Submission, SubmissionStatus } from "@/lib/db";
@@ -28,6 +30,7 @@ import {
   emptySpamAction,
 } from "@/app/actions/admin";
 import { LeadActions } from "./lead-actions";
+import { FollowUp } from "./follow-up";
 import { STATUS_OPTIONS, statusConfig, timeAgo, fullDate, serviceLabel } from "./format";
 
 type Tab = "all" | SubmissionStatus | "spam";
@@ -55,6 +58,20 @@ export function SubmissionsTable({
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [leads, setLeads] = useState(submissions);
   const [quarantined, setQuarantined] = useState(spam);
+  const [syncedFrom, setSyncedFrom] = useState(submissions);
+
+  /* Keep the local copy in step with the server.
+     These lists are held in state so a tap responds immediately instead of
+     waiting for a round trip. The cost is that useState ignores later props:
+     after adding a lead, router.refresh() re-rendered the server component
+     and this kept showing the old array, so a new lead only appeared after a
+     hard reload. Comparing the incoming array by identity during render is
+     React's own answer to that, and it settles before anything paints. */
+  if (submissions !== syncedFrom) {
+    setSyncedFrom(submissions);
+    setLeads(submissions);
+    setQuarantined(spam);
+  }
 
   const isSpamTab = tab === "spam";
   const source = isSpamTab ? quarantined : leads;
@@ -445,7 +462,7 @@ export function SubmissionsTable({
                           {sub.first_name} {sub.last_name}
                         </p>
                         <p className="mt-0.5 truncate text-xs text-ink-3">
-                          {sub.email}
+                          {sub.email?.trim() || sub.phone || "no contact details"}
                         </p>
                       </div>
                       <div className="flex shrink-0 items-center gap-2">
@@ -476,7 +493,9 @@ export function SubmissionsTable({
                     </div>
                     <p className="mt-1 text-xs text-ink-3">
                       {serviceLabel(sub.service)}
+                      {sub.created_via === "manual" ? " · added by hand" : ""}
                       {sub.notes ? " · has notes" : ""}
+                      {sub.follow_up_at ? " · follow up set" : ""}
                     </p>
                   </button>
                 </div>
@@ -499,15 +518,17 @@ export function SubmissionsTable({
                     )}
 
                     <div className="grid gap-3 sm:grid-cols-2">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Mail className="h-3.5 w-3.5 shrink-0 text-signal-ink" />
-                        <a
-                          href={`mailto:${sub.email}`}
-                          className="break-all text-ink-2 transition-colors hover:text-white"
-                        >
-                          {sub.email}
-                        </a>
-                      </div>
+                      {sub.email?.trim() && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Mail className="h-3.5 w-3.5 shrink-0 text-signal-ink" />
+                          <a
+                            href={`mailto:${sub.email}`}
+                            className="break-all text-ink-2 transition-colors hover:text-white"
+                          >
+                            {sub.email}
+                          </a>
+                        </div>
+                      )}
                       {sub.phone && (
                         <div className="flex items-center gap-2 text-sm">
                           <Phone className="h-3.5 w-3.5 shrink-0 text-signal-ink" />
@@ -529,6 +550,28 @@ export function SubmissionsTable({
                         <Clock className="h-3.5 w-3.5 shrink-0 text-signal-ink" />
                         <span className="text-ink-2">{fullDate(sub.created_at)}</span>
                       </div>
+                      {/* Where this one came from. Blank on everything that
+                          arrived before attribution existed, so it is only
+                          rendered when there is something to say. */}
+                      {sub.created_via === "manual" ? (
+                        <div className="flex items-center gap-2 text-sm">
+                          <PhoneIncoming className="h-3.5 w-3.5 shrink-0 text-signal-ink" />
+                          <span className="text-ink-2">
+                            Added by hand
+                            {sub.source_referrer ? ` (${sub.source_referrer})` : ""}
+                          </span>
+                        </div>
+                      ) : (
+                        sub.source_referrer && (
+                          <div className="flex items-center gap-2 text-sm">
+                            <Compass className="h-3.5 w-3.5 shrink-0 text-signal-ink" />
+                            <span className="min-w-0 truncate text-ink-2">
+                              Came from {sub.source_referrer}
+                              {sub.source_landing ? `, landed on ${sub.source_landing}` : ""}
+                            </span>
+                          </div>
+                        )
+                      )}
                     </div>
 
                     {sub.message?.trim() && (
@@ -576,6 +619,14 @@ export function SubmissionsTable({
                               First answered {fullDate(sub.contacted_at)}
                             </p>
                           )}
+                          <div className="mt-3">
+                            <FollowUp
+                              id={sub.id}
+                              followUpAt={sub.follow_up_at}
+                              isDue={sub.follow_up_due}
+                              onChange={(iso) => patchLead(sub.id, { follow_up_at: iso })}
+                            />
+                          </div>
                         </div>
 
                         <NotesField submission={sub} onSaved={(notes) => patchLead(sub.id, { notes })} />

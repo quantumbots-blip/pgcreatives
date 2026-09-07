@@ -5,11 +5,19 @@ import { checkRateLimit } from "@/lib/rate-limit";
 
 // Use env var with no hardcoded fallback — generate random salt per server
 // instance if missing so analytics still works but the salt isn't predictable.
+/* The salt has to be stable or the visitor count is fiction.
+   It was never set, so every deploy minted a new random one and the same
+   person counted as a new visitor from then on. That is why the table held
+   5,025 "visitors" against 8,497 views: 1.7 views each, which no real site
+   produces. Keeping the random fallback for the case where it is genuinely
+   absent, since a rotating salt is still better for privacy than a constant
+   nobody chose, but the warning now says what it costs. */
 const SALT = (() => {
   if (process.env.ANALYTICS_SALT) return process.env.ANALYTICS_SALT;
   const fallback = crypto.randomUUID();
   console.warn(
-    "[track] ANALYTICS_SALT env var is missing — using random per-instance salt. Analytics visitor hashes will not be stable across deploys.",
+    "[track] ANALYTICS_SALT is missing. Visitor hashes reset on every deploy, " +
+      "so unique visitor counts will be inflated. Set it to a random 32+ character string.",
   );
   return fallback;
 })();
@@ -74,10 +82,12 @@ function extractDomain(referrer: string | null): string | null {
   if (!referrer) return null;
   try {
     const url = new URL(referrer);
-    // Ignore self-referrals
+    // Ignore self-referrals, and anything that is us working on the site.
     if (
       url.hostname === "pgcreativeswi.com" ||
       url.hostname === "www.pgcreativeswi.com" ||
+      url.hostname === "localhost" ||
+      url.hostname === "127.0.0.1" ||
       url.hostname.endsWith(".vercel.app")
     )
       return null;
@@ -89,6 +99,21 @@ function extractDomain(referrer: string | null): string | null {
 
 export async function POST(request: NextRequest) {
   try {
+    /* Only the live site is counted.
+       Every environment points at the same Neon database, so a local dev
+       session and every preview deployment were writing straight into the
+       owner's analytics. It showed: "localhost" was the fourth largest
+       referrer on the site with 868 views, and the first hit of each local
+       session, having no referrer, was landing in the same bucket as a real
+       visitor arriving direct. Recording nothing outside production is the
+       only reliable line, since the database cannot tell us who wrote a row. */
+    if (process.env.VERCEL_ENV && process.env.VERCEL_ENV !== "production") {
+      return NextResponse.json({ ok: true });
+    }
+    if (!process.env.VERCEL_ENV && process.env.NODE_ENV !== "production") {
+      return NextResponse.json({ ok: true });
+    }
+
     // Origin validation
     if (!isAllowedOrigin(request)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });

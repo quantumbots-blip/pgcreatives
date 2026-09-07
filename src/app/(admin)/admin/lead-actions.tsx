@@ -89,6 +89,7 @@ export function LeadActions({
   const [justMarked, setJustMarked] = useState(false);
 
   const tel = dialable(submission.phone);
+  const hasEmail = Boolean(submission.email?.trim());
   const wasNew = submission.status === "new";
 
   /* sms: takes its body after a "?&" on iOS and a "?" on Android. "?&" is the
@@ -96,9 +97,11 @@ export function LeadActions({
   const smsHref = tel
     ? `sms:${tel}?&body=${encodeURIComponent(smsBody(submission))}`
     : null;
-  const mailHref = `mailto:${submission.email}?subject=${encodeURIComponent(
-    emailSubject(submission),
-  )}&body=${encodeURIComponent(emailBody(submission))}`;
+  const mailHref = hasEmail
+    ? `mailto:${submission.email}?subject=${encodeURIComponent(
+        emailSubject(submission),
+      )}&body=${encodeURIComponent(emailBody(submission))}`
+    : null;
 
   async function markContacted() {
     if (!wasNew) return;
@@ -166,10 +169,20 @@ export function LeadActions({
           </a>
         )}
 
-        <a href={mailHref} onClick={markContacted} className={secondary}>
-          <Mail className="h-4 w-4" />
-          Email
-        </a>
+        {mailHref ? (
+          <a href={mailHref} onClick={markContacted} className={secondary}>
+            <Mail className="h-4 w-4" />
+            Email
+          </a>
+        ) : (
+          <span
+            className={cn(base, "border-line bg-surface text-ink-3 cursor-not-allowed")}
+            title="This lead did not leave an email address"
+          >
+            <Mail className="h-4 w-4" />
+            No email
+          </span>
+        )}
 
         <button type="button" onClick={copyDetails} className={secondary}>
           {copied ? <Check className="h-4 w-4 text-signal-ink" /> : <Copy className="h-4 w-4" />}

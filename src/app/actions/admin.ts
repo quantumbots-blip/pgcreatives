@@ -8,6 +8,8 @@ import {
   setSubmissionSpam,
   deleteSubmission,
   deleteAllSpam,
+  createManualLead,
+  setFollowUp,
   logAuditEvent,
 } from "@/lib/db";
 import type { SubmissionStatus } from "@/lib/db";
@@ -148,4 +150,83 @@ export async function emptySpamAction(): Promise<ActionResult & { deleted?: numb
 
   revalidatePath("/admin");
   return { success: true, deleted };
+}
+
+/**
+ * Park a lead until a chosen day, when it comes back to the top of the page.
+ *
+ * The gap this fills is the one that actually loses work: a lead gets a reply,
+ * moves to Contacted, and is never thought about again. Contacted is not an
+ * outcome, it is the middle of one.
+ */
+export async function setFollowUpAction(
+  id: number,
+  days: number | null,
+): Promise<ActionResult> {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
+  if (!validId(id)) return { error: "Invalid submission ID" };
+  if (days !== null && (!Number.isInteger(days) || days < 1 || days > 365)) {
+    return { error: "Invalid follow up window" };
+  }
+
+  const when =
+    days === null ? null : new Date(Date.now() + days * 86_400_000).toISOString();
+  await setFollowUp(id, when);
+  await logAuditEvent({
+    action: days === null ? "clear_follow_up" : "set_follow_up",
+    targetTable: "submissions",
+    targetId: id,
+    newValue: when ?? undefined,
+  });
+
+  revalidatePath("/admin");
+  return { success: true };
+}
+
+/**
+ * A lead that came in by phone or Instagram message.
+ *
+ * Without it the pipeline only ever describes the website form, and every
+ * conversion figure on the dashboard quietly claims the other inquiries never
+ * happened. Only a name is required: somebody taking a call has a name and a
+ * number long before they have anything else.
+ */
+export async function addLeadAction(formData: FormData): Promise<ActionResult> {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
+
+  const read = (key: string, max: number) =>
+    String(formData.get(key) ?? "").trim().slice(0, max);
+
+  const firstName = read("firstName", 50);
+  const lastName = read("lastName", 50);
+  const email = read("email", 254);
+  const phone = read("phone", 20);
+
+  if (!firstName) return { error: "A first name is the one thing this needs." };
+  if (!email && !phone) {
+    return { error: "Add an email or a phone number, otherwise there is no way to reach them." };
+  }
+  if (email && !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email)) {
+    return { error: "That email address does not look right." };
+  }
+
+  const id = await createManualLead({
+    firstName,
+    lastName,
+    email,
+    company: read("company", 100),
+    phone,
+    service: read("service", 100),
+    message: read("message", 5000),
+    sourceReferrer: read("sourceReferrer", 255),
+  });
+
+  await logAuditEvent({
+    action: "add_manual_lead",
+    targetTable: "submissions",
+    targetId: id,
+  });
+
+  revalidatePath("/admin");
+  return { success: true };
 }

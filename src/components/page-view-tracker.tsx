@@ -2,11 +2,16 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { captureFirstTouch } from "@/lib/first-touch";
 
 export function PageViewTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // Records the arrival once per session, so a lead submitted three pages
+    // later still knows whether it came from Instagram or a search.
+    captureFirstTouch(pathname);
+
     // Fire-and-forget — don't block rendering
     const referrer =
       document.referrer && document.referrer !== window.location.href
