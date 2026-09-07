@@ -47,3 +47,6 @@ next-env.d.ts
 
 # Claude Code worktrees
 .claude/worktrees/
+
+# local scratch (verification harnesses, screenshots)
+.scratch/

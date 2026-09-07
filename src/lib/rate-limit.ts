@@ -72,6 +72,15 @@ export async function checkRateLimit(
       )
     `;
 
+    /* Occasionally clear out every expired row, not only this key's.
+       The per key delete below never touches a key that is never seen again,
+       so one row was left behind per address that ever loaded the site and
+       the table had grown into the thousands. One sweep in fifty keeps it
+       flat without putting a delete in front of every request. */
+    if (Math.random() < 0.02) {
+      await sql`DELETE FROM rate_limits WHERE window_start < NOW() - INTERVAL '24 hours'`;
+    }
+
     // Clean expired entries for this key
     await sql`
       DELETE FROM rate_limits
