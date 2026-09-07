@@ -2,6 +2,7 @@
 
 import { useState, useActionState, useRef, useEffect } from "react";
 import { submitContactForm, type ContactState } from "@/app/actions/contact";
+import { readFirstTouch } from "@/lib/first-touch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,6 +30,25 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
      cannot be rendered into the HTML: it would date the cache entry, not the
      visit. A failed fetch is not worth surfacing, the form still submits. */
   const [formToken, setFormToken] = useState("");
+  /* Where this visit started, attached on the way out rather than mirrored
+     into state on mount. sessionStorage is not readable while the server
+     renders, so holding it in state would mean an effect writing state on
+     every mount purely to carry a value the submit already has access to. */
+  function submitWithSource(formData: FormData) {
+    const touch = readFirstTouch();
+    if (touch) {
+      /* "direct" rather than blank when somebody typed the address or
+         followed a bookmark. Blank would be stored as null, which is also
+         what every lead from before attribution existed looks like, and the
+         dashboard would then report years of unknown arrivals as direct
+         traffic it never measured. */
+      formData.set("sourceReferrer", touch.referrer ?? "direct");
+      formData.set("sourceLanding", touch.landing ?? "");
+      formData.set("sourceCampaign", touch.campaign ?? "");
+    }
+    formAction(formData);
+  }
+
   useEffect(() => {
     const controller = new AbortController();
     fetch("/api/form-token", { signal: controller.signal })
@@ -62,7 +82,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
   }
 
   return (
-    <form ref={formRef} action={formAction} className="space-y-6 sm:space-y-8">
+    <form ref={formRef} action={submitWithSource} className="space-y-6 sm:space-y-8">
       {/* Honeypot, hidden from humans, filled by bots.
 
           Sized down to a pixel. A default text input is about 318px wide, and
