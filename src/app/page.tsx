@@ -172,20 +172,7 @@ export default function HomePage() {
 
       {/* Sits directly under the stats so the two share one rule instead of
           closing one band and opening another. */}
-      <Marquee
-        items={[
-          "Green Bay",
-          "Listing photography",
-          "Madison",
-          "Drone and aerial",
-          "Milwaukee",
-          "3D virtual tours",
-          "Fox Valley",
-          "Listing video",
-          "Appleton",
-          "Personal brand content",
-        ]}
-      />
+      <Marquee />
 
       {/* ── Services ─────────────────────────────────────────────────────── */}
       <section className="section">
