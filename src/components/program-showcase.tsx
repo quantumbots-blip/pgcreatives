@@ -5,31 +5,47 @@ import { getVimeoMetas } from "@/lib/vimeo";
 
 /* Three reels, fanned like a deck.
 
-   The section sells putting an AGENT on camera, so all three frames have to
-   have one in them — two of these were listing interiors, which illustrated
-   the wrong thing. The second and third are real poster frames from reels the
-   program actually produced, pulled from Vimeo at build time, and they are
-   natively 640x1138, which is exactly the 9:16 these cards crop to.
+   The section sells putting an AGENT on camera, so the deck has three jobs at
+   once, and missing any one of them makes it argue against itself:
 
-   The middle card is the one the fan holds up, so it is the one that has to
-   land. It used to be 1177445392, whose poster catches the agent mid-turn,
-   side-on, under a "surprises" caption — a reel about being on camera,
-   illustrated by someone facing away from it.
+     1. every frame has a person in it (it once held listing interiors),
+     2. every person is looking down the lens, and
+     3. they are three different people.
 
-   The frame cannot be fixed in code. Vimeo picks one poster per video and
-   the public oEmbed hands out only that one, so the change is a different
-   reel: 1164740705 is the only reel here whose poster has the agent standing
-   still and addressing the lens rather than walking toward it, and its dark
-   interior sits better between the two lighter outer cards. Judge a
-   replacement on the poster at 210px wide, not on the video — and on the real
-   i.vimeocdn.com frame, since vumbnail.com serves a landscape crop of it that
+   Rule 3 is the one that is easy to break without noticing. The middle and
+   right cards were 1164740705 and 1174488968 — two reels, two outfits, two
+   locations, and the same agent in both, which reads as a portfolio of one
+   client. Compare faces, not hair and coats.
+
+   Rule 2 is the one that cannot be fixed in code. Vimeo picks a single poster
+   per video and the public oEmbed hands out only that one, so a subject who is
+   mid-turn is a reason to change the reel, not the second: that is what took
+   1177445392 out, whose poster catches the agent side-on under a "surprises"
+   caption. If you want a specific reel in here, change its thumbnail on Vimeo
+   instead.
+
+   The card that used to be a local file is a reel now too, so all three are
+   real posters from work the program produced, natively 640x1138 — exactly the
+   9:16 these cards crop to.
+
+   Judge a replacement on the poster at 210px wide, not on the video, and on
+   the real i.vimeocdn.com frame: vumbnail.com serves a landscape crop that
    makes every subject look closer than they render here. */
-const REEL_IDS = ["1164740705", "1174488968"];
-
-const localReel = {
-  src: "/images/dark-home-office.jpg",
-  alt: "Real estate agent filmed on location for a personal-brand reel",
-};
+const REELS = [
+  {
+    id: "1156930119",
+    alt: "Agent looking to camera outside a lakefront listing, for a personal-brand reel",
+  },
+  {
+    id: "1163714583",
+    alt: "Agent talking straight to camera in a kitchen, for a personal-brand reel",
+  },
+  {
+    id: "1174488968",
+    alt: "Agent looking to camera outside a property, for a personal-brand reel",
+  },
+];
+const REEL_IDS = REELS.map((reel) => reel.id);
 
 /* The five outcomes as the sequence they actually are.
    They were a bulleted list of benefits in no particular order; read closely
@@ -46,16 +62,10 @@ const stages = [
 
 export async function ProgramShowcaseDeck() {
   const metas = await getVimeoMetas(REEL_IDS);
-  const reels = [
-    localReel,
-    ...REEL_IDS.map((id, i) => ({
-      src: metas[id]?.thumbnail ?? `https://vumbnail.com/${id}.jpg`,
-      alt:
-        i === 0
-          ? "Agent talking straight to camera for a personal-brand reel"
-          : "Agent filmed outside a property for a personal-brand reel",
-    })),
-  ];
+  const reels = REELS.map(({ id, alt }) => ({
+    src: metas[id]?.thumbnail ?? `https://vumbnail.com/${id}.jpg`,
+    alt,
+  }));
 
   return (
       <AnimateOnScroll animation="depth" delay={0.12} className="scene">
