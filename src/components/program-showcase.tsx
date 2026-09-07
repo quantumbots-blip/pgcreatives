@@ -9,8 +9,22 @@ import { getVimeoMetas } from "@/lib/vimeo";
    have one in them — two of these were listing interiors, which illustrated
    the wrong thing. The second and third are real poster frames from reels the
    program actually produced, pulled from Vimeo at build time, and they are
-   natively 640x1138, which is exactly the 9:16 these cards crop to. */
-const REEL_IDS = ["1177445392", "1174488968"];
+   natively 640x1138, which is exactly the 9:16 these cards crop to.
+
+   The middle card is the one the fan holds up, so it is the one that has to
+   land. It used to be 1177445392, whose poster catches the agent mid-turn,
+   side-on, under a "surprises" caption — a reel about being on camera,
+   illustrated by someone facing away from it.
+
+   The frame cannot be fixed in code. Vimeo picks one poster per video and
+   the public oEmbed hands out only that one, so the change is a different
+   reel: 1164740705 is the only reel here whose poster has the agent standing
+   still and addressing the lens rather than walking toward it, and its dark
+   interior sits better between the two lighter outer cards. Judge a
+   replacement on the poster at 210px wide, not on the video — and on the real
+   i.vimeocdn.com frame, since vumbnail.com serves a landscape crop of it that
+   makes every subject look closer than they render here. */
+const REEL_IDS = ["1164740705", "1174488968"];
 
 const localReel = {
   src: "/images/dark-home-office.jpg",
@@ -38,7 +52,7 @@ export async function ProgramShowcaseDeck() {
       src: metas[id]?.thumbnail ?? `https://vumbnail.com/${id}.jpg`,
       alt:
         i === 0
-          ? "Agent talking to camera in a kitchen for a personal-brand reel"
+          ? "Agent talking straight to camera for a personal-brand reel"
           : "Agent filmed outside a property for a personal-brand reel",
     })),
   ];
