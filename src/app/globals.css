@@ -1063,18 +1063,18 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
      at the desktop gap it would be showing one and a half with a hole either
      side. It closes faster than the artwork does. */
   --logo-scale: 0.72;
-  --logo-gap: 1.5rem;
+  --logo-gap: 2rem;
   overflow: hidden;
   -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
   mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
 
 @media (min-width: 640px) {
-  .marquee { --logo-scale: 0.85; --logo-gap: 1.875rem; }
+  .marquee { --logo-scale: 0.85; --logo-gap: 2.625rem; }
 }
 
 @media (min-width: 1024px) {
-  .marquee { --logo-scale: 1; --logo-gap: 2.25rem; }
+  .marquee { --logo-scale: 1; --logo-gap: 3.25rem; }
 }
 
 .marquee-track {
@@ -1083,7 +1083,11 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
      translating -50% is exactly one half and the loop is seamless whatever
      the content measures. */
   width: max-content;
-  animation: marquee-run 52s linear infinite;
+  /* Tied to the half's width, not chosen for its own sake. The animation runs
+     one half in one duration, so widening the gaps also speeds the strip up:
+     the 52s that gave 91px/s at the old spacing gave 104px/s once the half
+     grew to 5385px. 60s puts it back. */
+  animation: marquee-run 60s linear infinite;
   will-change: transform;
 }
 
