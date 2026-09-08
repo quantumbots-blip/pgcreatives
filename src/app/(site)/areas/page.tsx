@@ -3,7 +3,6 @@ import Link from "next/link";
 import { PageHead } from "@/components/page-head";
 import { BUSINESS } from "@/lib/data";
 import { MARKETS } from "@/lib/markets";
-import { filmsForMarket } from "@/lib/films";
 import { pageMetadata } from "@/lib/metadata";
 import { breadcrumbs, jsonLd, ORG_ID, SITE_ID } from "@/lib/seo";
 
@@ -59,7 +58,7 @@ export default function AreasPage() {
 
       <PageHead
         lines={["Four markets,", "one crew."]}
-        lede="Each market has its own number, and most have their own work. Where we travel rather than sit, the page says so."
+        lede="Four markets, each with its own number and its own crew. Green Bay is the home one, Milwaukee is the newest."
         meta={<p className="meta">{BUSINESS.locationText}</p>}
       />
 
@@ -67,7 +66,6 @@ export default function AreasPage() {
         <div className="shell">
           <div className="grid gap-4 md:grid-cols-2">
             {MARKETS.map((market) => {
-              const count = filmsForMarket(market.slug).length;
               const phone = BUSINESS.phones[market.phoneKey];
               return (
                 <Link
@@ -75,9 +73,7 @@ export default function AreasPage() {
                   href={`/areas/${market.slug}`}
                   className="surface group flex flex-col p-6 transition-colors"
                 >
-                  <p className="meta mb-2">
-                    {count > 0 ? `${count} ${count === 1 ? "film" : "films"} shot here` : "Travelled to"}
-                  </p>
+                  <p className="meta mb-2">{market.status}</p>
                   <h2 className="display-3 mb-3 text-white">
                     {market.city === "the Fox Valley" ? "The Fox Valley" : market.city}
                   </h2>
