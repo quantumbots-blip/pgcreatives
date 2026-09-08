@@ -95,14 +95,29 @@ function hashToken(token: string): string {
  * Store a session token hash in the database sessions table.
  * Expires after 4 hours (matches cookie maxAge).
  */
-export async function createSession(token: string): Promise<void> {
+export async function createSession(token: string, email?: string | null): Promise<void> {
   try {
-    const { getDb } = await import("@/lib/db");
+    const { getDb, ensureSchema } = await import("@/lib/db");
+    /* Signing in is often the first request a cold instance serves, before
+       anything else has touched the database. Without this the insert below
+       hits a sessions table that has no email column yet, throws into the
+       catch, and leaves no row: the cookie is then set but verifySessionFull
+       finds nothing and bounces straight back to the login page, which reads
+       as a wrong password. ensureSchema is memoised, so this costs one call
+       per instance. */
+    await ensureSchema();
     const sql = getDb();
     const tokenHash = hashToken(token);
+    /* Eight hours for a named account, four for the shared password. A
+       session tied to a person who can be identified afterwards is worth
+       less caution than one that could be anybody. */
     await sql`
-      INSERT INTO sessions (token_hash, expires_at)
-      VALUES (${tokenHash}, NOW() + INTERVAL '4 hours')
+      INSERT INTO sessions (token_hash, expires_at, email)
+      VALUES (
+        ${tokenHash},
+        NOW() + (CASE WHEN ${email ?? null}::text IS NULL THEN INTERVAL '4 hours' ELSE INTERVAL '8 hours' END),
+        ${email ?? null}
+      )
     `;
   } catch {
     // If DB is unavailable, session still works via HMAC-only verification
@@ -146,4 +161,21 @@ export async function isSessionValid(token: string): Promise<boolean> {
 export async function verifySessionFull(cookie: string): Promise<boolean> {
   if (!verifySessionToken(cookie)) return false;
   return isSessionValid(cookie);
+}
+
+/** Who this session belongs to, or null for a shared password session. */
+export async function getSessionEmail(token: string): Promise<string | null> {
+  try {
+    const { getDb, ensureSchema } = await import("@/lib/db");
+    await ensureSchema();
+    const sql = getDb();
+    const rows = await sql`
+      SELECT email FROM sessions
+      WHERE token_hash = ${hashToken(token)} AND expires_at > NOW()
+      LIMIT 1
+    `;
+    return rows[0]?.email ?? null;
+  } catch {
+    return null;
+  }
 }

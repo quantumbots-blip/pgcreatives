@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { verifySessionFull } from "@/lib/auth";
+import { verifySessionFull, getSessionEmail } from "@/lib/auth";
 import {
   Calendar,
   CheckCircle2,
@@ -54,6 +54,8 @@ export default async function AdminDashboard() {
   if (!session || !(await verifySessionFull(session.value))) {
     redirect("/admin/login");
   }
+  // Null on a shared password session, which has nobody to name.
+  const signedInAs = await getSessionEmail(session.value);
 
   let stats = {
     total: 0,
@@ -130,7 +132,7 @@ export default async function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-ground">
-      <AdminNav waiting={needsReply.length} />
+      <AdminNav waiting={needsReply.length} signedInAs={signedInAs} />
 
       <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:space-y-8 sm:px-6 sm:py-10">
         {dbError && (

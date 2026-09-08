@@ -13,7 +13,7 @@ import {
   logAuditEvent,
 } from "@/lib/db";
 import type { SubmissionStatus } from "@/lib/db";
-import { verifySessionFull } from "@/lib/auth";
+import { verifySessionFull, getSessionEmail } from "@/lib/auth";
 
 export type ActionResult = { success?: true; error?: string };
 
@@ -29,6 +29,17 @@ async function requireAdmin(): Promise<boolean> {
   const session = cookieStore.get("admin_session");
   if (!session) return false;
   return verifySessionFull(session.value);
+}
+
+/**
+ * Who is doing this, for the audit log. Null on a shared password session,
+ * which is the whole reason signing in with an account is worth having: the
+ * log could say what changed but never who changed it.
+ */
+async function actor(): Promise<string | null> {
+  const cookieStore = await cookies();
+  const session = cookieStore.get("admin_session");
+  return session ? getSessionEmail(session.value) : null;
 }
 
 function validId(id: unknown): id is number {
@@ -50,6 +61,7 @@ export async function updateStatusAction(
 
   await updateSubmissionStatus(id, status);
   await logAuditEvent({
+    actor: await actor(),
     action: "update_status",
     targetTable: "submissions",
     targetId: id,
@@ -71,6 +83,7 @@ export async function bulkStatusAction(
 
   for (const id of ids) await updateSubmissionStatus(id, status);
   await logAuditEvent({
+    actor: await actor(),
     action: "bulk_update_status",
     targetTable: "submissions",
     newValue: `${status} x${ids.length}`,
@@ -85,7 +98,7 @@ export async function saveNotesAction(id: number, notes: string): Promise<Action
   if (!validId(id)) return { error: "Invalid submission ID" };
 
   await updateSubmissionNotes(id, String(notes ?? "").slice(0, 4000));
-  await logAuditEvent({ action: "save_notes", targetTable: "submissions", targetId: id });
+  await logAuditEvent({ actor: await actor(), action: "save_notes", targetTable: "submissions", targetId: id });
 
   revalidatePath("/admin");
   return { success: true };
@@ -102,6 +115,7 @@ export async function markSpamAction(id: number, isSpam: boolean): Promise<Actio
 
   await setSubmissionSpam(id, isSpam);
   await logAuditEvent({
+    actor: await actor(),
     action: isSpam ? "mark_spam" : "mark_not_spam",
     targetTable: "submissions",
     targetId: id,
@@ -117,6 +131,7 @@ export async function bulkSpamAction(ids: number[], isSpam: boolean): Promise<Ac
 
   for (const id of ids) await setSubmissionSpam(id, isSpam);
   await logAuditEvent({
+    actor: await actor(),
     action: isSpam ? "bulk_mark_spam" : "bulk_mark_not_spam",
     targetTable: "submissions",
     newValue: `x${ids.length}`,
@@ -131,7 +146,7 @@ export async function deleteSubmissionAction(id: number): Promise<ActionResult> 
   if (!validId(id)) return { error: "Invalid submission ID" };
 
   await deleteSubmission(id);
-  await logAuditEvent({ action: "delete_submission", targetTable: "submissions", targetId: id });
+  await logAuditEvent({ actor: await actor(), action: "delete_submission", targetTable: "submissions", targetId: id });
 
   revalidatePath("/admin");
   return { success: true };
@@ -143,6 +158,7 @@ export async function emptySpamAction(): Promise<ActionResult & { deleted?: numb
 
   const deleted = await deleteAllSpam();
   await logAuditEvent({
+    actor: await actor(),
     action: "empty_spam",
     targetTable: "submissions",
     newValue: `${deleted} deleted`,
@@ -173,6 +189,7 @@ export async function setFollowUpAction(
     days === null ? null : new Date(Date.now() + days * 86_400_000).toISOString();
   await setFollowUp(id, when);
   await logAuditEvent({
+    actor: await actor(),
     action: days === null ? "clear_follow_up" : "set_follow_up",
     targetTable: "submissions",
     targetId: id,
@@ -222,6 +239,7 @@ export async function addLeadAction(formData: FormData): Promise<ActionResult> {
   });
 
   await logAuditEvent({
+    actor: await actor(),
     action: "add_manual_lead",
     targetTable: "submissions",
     targetId: id,

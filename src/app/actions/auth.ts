@@ -3,6 +3,8 @@
 import { cookies } from "next/headers";
 import { createSessionToken, verifyPassword, createSession, revokeSession } from "@/lib/auth";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { googleConfigured } from "@/lib/google-auth";
+import { logAuditEvent } from "@/lib/db";
 
 export type AuthState = { success: boolean; error: string | null };
 
@@ -10,6 +12,17 @@ export async function loginAction(
   _prev: AuthState,
   formData: FormData,
 ): Promise<AuthState> {
+  /* Once Google sign in is configured the password is gone, not merely
+     hidden. Leaving it working behind a form nobody renders would mean the
+     dashboard's real security was still whatever the password's strength is,
+     and an attacker would simply post to this action directly. */
+  if (googleConfigured()) {
+    return {
+      success: false,
+      error: "This dashboard signs in with Google now.",
+    };
+  }
+
   const ip = await getClientIp();
 
   // Rate limit: 5 attempts per 15 minutes per IP
@@ -28,8 +41,10 @@ export async function loginAction(
 
   const token = createSessionToken();
 
-  // Store session in DB for revocation support
-  await createSession(token);
+  // Store session in DB for revocation support. No email: a shared password
+  // cannot say who is behind it, which is the reason Google exists here.
+  await createSession(token, null);
+  await logAuditEvent({ action: "sign_in_password" });
 
   const cookieStore = await cookies();
   cookieStore.set("admin_session", token, {

@@ -132,6 +132,11 @@ export async function ensureSchema() {
       expires_at TIMESTAMPTZ NOT NULL
     )
   `;
+  // Who is signed in, once signing in means an account rather than a shared
+  // password. Null on a password session, which cannot name anybody.
+  await sql`ALTER TABLE sessions ADD COLUMN IF NOT EXISTS email VARCHAR(254)`;
+  // The person behind a change. Same reasoning: it was unanswerable before.
+  await sql`ALTER TABLE audit_logs ADD COLUMN IF NOT EXISTS actor VARCHAR(254)`;
 
   schemaEnsured = true;
 }
@@ -141,12 +146,13 @@ export async function logAuditEvent(data: {
   targetTable?: string;
   targetId?: number;
   newValue?: string;
+  actor?: string | null;
 }) {
   try {
     const sql = getDb();
     await sql`
-      INSERT INTO audit_logs (action, target_table, target_id, new_value)
-      VALUES (${data.action}, ${data.targetTable ?? null}, ${data.targetId ?? null}, ${data.newValue ?? null})
+      INSERT INTO audit_logs (action, target_table, target_id, new_value, actor)
+      VALUES (${data.action}, ${data.targetTable ?? null}, ${data.targetId ?? null}, ${data.newValue ?? null}, ${data.actor ?? null})
     `;
   } catch {
     // Audit logging should never block the main operation
