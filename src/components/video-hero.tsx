@@ -459,15 +459,22 @@ export function VideoHero() {
             {/* The trailing space matters. Below 640px these masks collapse to
                 inline flow so the browser can break the headline itself, and
                 without it the two lines run together as "Professionalgrade".
-                `DisplayLines` does the same thing for every other heading. */}
-            <h1 className="display-1 mt-[clamp(2rem,6svh,3.75rem)] text-white">
+                `DisplayLines` does the same thing for every other heading.
+
+                The colour lives in `.hero-display` rather than a `text-white`
+                utility, because the second line paints itself with a clipped
+                gradient and a utility colour would land on top of it. */}
+            <h1 className="hero-display mt-[clamp(2rem,6svh,3.75rem)]">
               <span className="line-mask">
                 <span className="line-inner hero-line" style={{ animationDelay: "0.18s" }}>
                   Professional{" "}
                 </span>
               </span>
               <span className="line-mask">
-                <span className="line-inner hero-line" style={{ animationDelay: "0.30s" }}>
+                <span
+                  className="line-inner hero-line hero-sheen"
+                  style={{ animationDelay: "0.30s" }}
+                >
                   grade media.
                 </span>
               </span>
