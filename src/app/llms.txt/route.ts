@@ -72,8 +72,11 @@ function build(): string {
     ...MARKETS.map((m) => {
       const count = filmsForMarket(m.slug).length;
       const phone = BUSINESS.phones[m.phoneKey].number;
-      const work = count > 0 ? `${count} film${count === 1 ? "" : "s"} in the portfolio shot here` : "covered by travel, no work shot here yet";
-      return `- **${m.name}** (${phone}): ${m.towns.join(", ")}. ${work}. ${BUSINESS.url}/areas/${m.slug}`;
+      const work =
+        count > 0
+          ? `${count} film${count === 1 ? "" : "s"} in the portfolio shot here`
+          : "shoots underway, films not published yet";
+      return `- **${m.name}** (${phone}): ${m.towns.join(", ")}. ${m.status}, ${work}. ${BUSINESS.url}/areas/${m.slug}`;
     }),
     "",
     "## Common questions",

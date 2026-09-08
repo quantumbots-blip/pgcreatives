@@ -52,9 +52,9 @@ export async function generateMetadata({
  * shot, its own number, its own people, its own booking route, and copy
  * written about that market rather than templated.
  *
- * Milwaukee has no films. Rather than borrowing somebody else's work to fill
- * the space, that page says plainly that it is a market we travel to, and
- * shows nothing it did not shoot there.
+ * Milwaukee has no published films yet, being a branch that opened recently.
+ * Rather than borrowing somebody else's work to fill the space, that page says
+ * the first films are in the edit and shows nothing it did not shoot there.
  */
 
 /** The local schema. areaServed is the actual towns, not the state. */
@@ -145,11 +145,7 @@ export default async function MarketPage({
               {phone.number}
             </a>
             <span className="mx-2" aria-hidden="true">/</span>
-            <span>
-              {films.length > 0
-                ? `${films.length} ${films.length === 1 ? "film" : "films"} shot here`
-                : "Covered by travel"}
-            </span>
+            <span>{market.status}</span>
           </p>
         }
       />
@@ -187,8 +183,11 @@ export default async function MarketPage({
         <section className="section">
           <div className="shell">
             <SectionHead
-              lines={["No work shot", "here yet."]}
-              lede={`The portfolio was shot in the north and the valley. Rather than show you somebody else's ${market.city} listing, here is everything we have made. The same crew does the same job here.`}
+              lines={market.emptyState?.lines ?? ["Work from here", "is coming."]}
+              lede={
+                market.emptyState?.lede ??
+                `Nothing published from ${market.city} yet. Here is everything we have made elsewhere.`
+              }
             />
             <Link href="/portfolio" className="btn btn-primary">
               See the full portfolio
@@ -204,7 +203,7 @@ export default async function MarketPage({
             lede={
               portal
                 ? "Agents book through the portal. Everyone else uses the form, and we usually reply the same day."
-                : "Give us a little more notice than you would in the north, and we will make the date work."
+                : "Send the address and the date and we will come back the same day."
             }
           />
           <div className="grid gap-4 sm:grid-cols-2">
@@ -213,14 +212,14 @@ export default async function MarketPage({
               <a href={phone.href} className="display-3 text-signal-ink">
                 {phone.number}
               </a>
-              {market.people.length > 0 && (
-                <p className="mt-3 text-sm text-ink-3">
-                  Reaches {market.people.join(" and ")}.
-                </p>
-              )}
+              <p className="mt-3 text-sm text-ink-3">
+                {market.people.length > 0
+                  ? `Reaches ${market.people.join(" and ")}.`
+                  : `Reaches the ${market.city} branch directly.`}
+              </p>
             </div>
             <div className="surface p-6">
-              <p className="meta mb-2">{portal ? "Book a listing" : "Get a date held"}</p>
+              <p className="meta mb-2">{portal ? "Book a listing" : "Hold a date"}</p>
               {portal ? (
                 <a href={portal.href} className="btn btn-primary" target="_blank" rel="noopener">
                   {portal.label}
@@ -250,11 +249,7 @@ export default async function MarketPage({
                 className="rounded-lg border border-line px-4 py-3 text-sm text-ink-2 transition-colors hover:border-line-strong hover:text-white"
               >
                 {m.city === "the Fox Valley" ? "The Fox Valley" : m.city}
-                <span className="ml-2 text-ink-3">
-                  {filmsForMarket(m.slug).length > 0
-                    ? `${filmsForMarket(m.slug).length} films`
-                    : "travelled to"}
-                </span>
+                <span className="ml-2 text-ink-3">{m.status.toLowerCase()}</span>
               </Link>
             ))}
           </div>
