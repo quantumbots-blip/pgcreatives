@@ -19,7 +19,7 @@ const TABS = [
   { href: "/admin/emails", label: "Emails", icon: Mail },
 ];
 
-export function AdminNav({ waiting }: { waiting: number }) {
+export function AdminNav({ waiting, signedInAs }: { waiting: number; signedInAs?: string | null }) {
   const pathname = usePathname();
 
   return (
@@ -28,7 +28,9 @@ export function AdminNav({ waiting }: { waiting: number }) {
         <div className="flex min-w-0 items-center gap-4 sm:gap-8">
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-white sm:text-base">PG Creatives</p>
-            <p className="hidden text-[11px] text-ink-3 sm:block">Dashboard</p>
+            <p className="hidden truncate text-[11px] text-ink-3 sm:block" title={signedInAs ?? undefined}>
+              {signedInAs ?? "Dashboard"}
+            </p>
           </div>
 
           <nav className="flex items-center gap-1">

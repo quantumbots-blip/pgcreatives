@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Mail, Eye, Send, AlertCircle } from "lucide-react";
-import { verifySessionFull } from "@/lib/auth";
+import { verifySessionFull, getSessionEmail } from "@/lib/auth";
 import { ensureSchema, getSubmissions } from "@/lib/db";
 import { EMAIL_KINDS, KIND_LABEL, renderSample, type EmailKind } from "@/lib/email/templates";
 import { cn } from "@/lib/utils";
@@ -53,6 +53,8 @@ export default async function EmailPreviewPage({
   if (!session || !(await verifySessionFull(session.value))) {
     redirect("/admin/login");
   }
+  // Null on a shared password session, which has nobody to name.
+  const signedInAs = await getSessionEmail(session.value);
 
   const kind = parseKind((await searchParams).kind);
   const mail = renderSample(kind);
@@ -69,7 +71,7 @@ export default async function EmailPreviewPage({
 
   return (
     <div className="min-h-screen bg-ground">
-      <AdminNav waiting={waiting} />
+      <AdminNav waiting={waiting} signedInAs={signedInAs} />
 
       <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:space-y-8 sm:px-6 sm:py-10">
         <div className="flex flex-wrap items-center gap-2">

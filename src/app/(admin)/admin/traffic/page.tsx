@@ -15,7 +15,7 @@ import {
   Link2,
   Unlink,
 } from "lucide-react";
-import { verifySessionFull } from "@/lib/auth";
+import { verifySessionFull, getSessionEmail } from "@/lib/auth";
 import { ensureSchema, ensurePageViewsTable, getSubmissions } from "@/lib/db";
 import {
   getTrafficInsights,
@@ -52,6 +52,8 @@ export default async function TrafficPage({
   if (!session || !(await verifySessionFull(session.value))) {
     redirect("/admin/login");
   }
+  // Null on a shared password session, which has nobody to name.
+  const signedInAs = await getSessionEmail(session.value);
 
   const range = parseRange((await searchParams).range);
 
@@ -82,7 +84,7 @@ export default async function TrafficPage({
 
   return (
     <div className="min-h-screen bg-ground">
-      <AdminNav waiting={waiting} />
+      <AdminNav waiting={waiting} signedInAs={signedInAs} />
 
       <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:space-y-8 sm:px-6 sm:py-10">
         {dbError || !traffic ? (
