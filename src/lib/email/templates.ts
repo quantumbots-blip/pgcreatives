@@ -9,6 +9,7 @@ import {
   DASHBOARD_URL,
   SITE_URL,
   type Button,
+  type ButtonRow,
   type RenderedEmail,
 } from "./layout";
 import {
@@ -78,11 +79,23 @@ export function newLeadEmail(d: NewLeadData): RenderedEmail {
   /* Call first, because it is the fastest way to win a real estate booking
      and the one the owner is least likely to do from an inbox. Text and email
      arrive already written. */
-  const buttons: Button[] = [];
+  /* Calling is the action worth taking, so it gets the full width and the
+     only filled button. Text and email are the two alternatives to it and
+     pair naturally, which also keeps them wide enough for a long first name
+     where three across would not. Following up in the dashboard is a
+     different kind of act and sits on its own underneath.
+
+     Four buttons stacked read as a form rather than a choice, which is what
+     this looked like before. */
+  const pair: Button[] = [];
+  if (sms) pair.push({ href: sms, label: "Send a text", style: "outline" });
+  if (mail) pair.push({ href: mail, label: "Reply by email", style: "outline" });
+
+  const buttons: (Button | ButtonRow)[] = [];
   if (tel) buttons.push({ href: tel, label: `Call ${firstName}` });
-  if (sms) buttons.push({ href: sms, label: "Text them back", style: "outline" });
-  if (mail) buttons.push({ href: mail, label: "Reply by email", style: "outline" });
-  buttons.push({ href: DASHBOARD_URL, label: "Open the dashboard", style: "outline" });
+  if (pair.length === 2) buttons.push({ row: pair });
+  else buttons.push(...pair);
+  buttons.push({ href: DASHBOARD_URL, label: "Follow up in the dashboard", style: "outline" });
 
   const prettyPhone = formatPhone(d.phone);
   const phoneHtml = d.phone
