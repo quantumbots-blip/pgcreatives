@@ -35,7 +35,7 @@ import {
 export const EMAIL_KINDS = ["new_lead", "weekly_digest", "lead_confirmation"] as const;
 export type EmailKind = (typeof EMAIL_KINDS)[number];
 
-const linkStyle = `color:${COLOR.signalDeep};text-decoration:underline`;
+const linkStyle = `color:${COLOR.signalInk};text-decoration:underline`;
 
 /** How long they have been waiting, in words. */
 function waitedFor(days: number): string {
@@ -171,7 +171,7 @@ export function weeklyDigestEmail(d: WeeklyDigestData): RenderedEmail {
     ? d.waitingNames
         .map(
           (w) =>
-            `<div style="padding:3px 0"><strong style="color:${COLOR.ink}">${esc(w.name)}</strong>` +
+            `<div style="padding:4px 0"><strong style="color:${COLOR.ink}">${esc(w.name)}</strong>` +
             (w.service ? `<span style="color:${COLOR.ink3}"> &middot; ${esc(w.service)}</span>` : "") +
             `<span style="color:${COLOR.ink3}"> &middot; waiting ${esc(waitedFor(w.days))}</span></div>`,
         )

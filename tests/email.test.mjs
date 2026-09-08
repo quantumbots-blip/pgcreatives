@@ -41,9 +41,20 @@ test("built for email clients, not browsers", () => {
     assert.ok(!/display:\s*flex/i.test(m.html), `${kind}: uses flexbox`);
     assert.ok(!/display:\s*grid/i.test(m.html), `${kind}: uses grid`);
     assert.ok(!/position:\s*(absolute|fixed)/i.test(m.html), `${kind}: uses positioning`);
-    // Nothing loaded from a third party, and no remote font.
-    assert.ok(!/<link[^>]+stylesheet/i.test(m.html), `${kind}: external stylesheet`);
-    assert.ok(!/@font-face|fonts\.googleapis/i.test(m.html), `${kind}: web font`);
+    /* One external stylesheet is allowed and only one: the site's face from
+       Google Fonts. Apple Mail and iOS Mail load it, which is where this is
+       mostly read, and every other client ignores it. It is an enhancement,
+       never a dependency, so the fallback stack has to be there too. */
+    const links = m.html.match(/<link[^>]+stylesheet[^>]*>/gi) ?? [];
+    assert.ok(links.length <= 1, `${kind}: more than one external stylesheet`);
+    for (const link of links) {
+      assert.match(link, /fonts\.googleapis\.com/, `${kind}: unexpected external stylesheet`);
+    }
+    assert.ok(
+      m.html.includes("'Helvetica Neue', Helvetica, Arial, sans-serif"),
+      `${kind}: no fallback font stack, so the web font is a dependency`,
+    );
+    assert.ok(!/@font-face/i.test(m.html), `${kind}: inline font face`);
     assert.ok(!/<script/i.test(m.html), `${kind}: script tag`);
     // Layout tables must be invisible to a screen reader.
     const tables = m.html.match(/<table/g) ?? [];
@@ -97,7 +108,11 @@ test("a new lead can be called, texted and emailed straight from the inbox", () 
     1,
     "exactly one filled button, so the primary action is obvious",
   );
-  assert.match(m.html, /prefers-color-scheme:dark/, "no designed dark rendering");
+  /* The email is dark, so there is no light version for a client to switch
+     away from. What matters instead is that it says so, and that every colour
+     is stated rather than inherited. */
+  assert.match(m.html, /name="color-scheme" content="dark"/, "does not declare itself dark");
+  assert.match(m.html, /background:#07090c/, "not on the site's ground");
   assert.match(m.subject, /^New lead: Heather Zeitler/);
   // The plain text twin carries the same links.
   assert.ok(m.text.includes("tel:+19205911323"), "plain text has no call link");
@@ -183,4 +198,48 @@ test("a rejected send is reported, not swallowed", async () => {
 
   if (saved === undefined) delete process.env.RESEND_API_KEY;
   else process.env.RESEND_API_KEY = saved;
+});
+
+test("nothing that carries a radius also carries a bgcolor attribute", () => {
+  /* This is the bug the owner photographed: a `bgcolor` attribute paints a
+     square that `border-radius` never clips, so a rounded button sat inside a
+     hard cornered box and the card showed a pale edge at its corners. */
+  for (const [kind, m] of all()) {
+    const tags = m.html.match(/<t[dr][^>]*>/g) ?? [];
+    for (const tag of tags) {
+      if (/border-radius/.test(tag)) {
+        assert.ok(!/bgcolor=/i.test(tag), `${kind}: rounded element still has a bgcolor: ${tag.slice(0, 120)}`);
+      }
+    }
+  }
+});
+
+test("borders are separate, or every rounded corner is a lie", () => {
+  /* border-collapse:collapse makes border-radius on a table cell undefined.
+     Every bordered pill then draws a square outline around a rounded fill,
+     which is the artefact the owner photographed. */
+  for (const [kind, m] of all()) {
+    assert.ok(
+      !/border-collapse:\s*collapse/.test(m.html),
+      `${kind}: collapsed borders will square off every rounded corner`,
+    );
+    assert.match(m.html, /border-collapse:separate/, `${kind}: border-collapse not set at all`);
+  }
+});
+
+test("it is the website, not a white card wearing a logo", () => {
+  for (const [kind, m] of all()) {
+    // One ground throughout. A white surface anywhere is the old design.
+    assert.ok(
+      !/background:#ffffff/i.test(m.html),
+      `${kind}: a white surface, which is not what the site looks like`,
+    );
+    assert.ok(m.html.includes(":999px"), `${kind}: buttons are not the site's pill`);
+    // The accent may fill a shape but must never be the colour of a word: it
+    // measures 3.86:1 on this ground and fails.
+    assert.ok(
+      !/color:#2b6fb8/i.test(m.html),
+      `${kind}: --signal used as text, which fails contrast on the ground`,
+    );
+  }
 });
