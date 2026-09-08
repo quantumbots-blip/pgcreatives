@@ -1,6 +1,7 @@
 import { PageHead } from "@/components/page-head";
 import { PortfolioFilter } from "@/components/portfolio-filter";
 import { getVimeoMetas } from "@/lib/vimeo";
+import { breadcrumbs, videoGallery, jsonLd } from "@/lib/seo";
 
 export const revalidate = 3600;
 
@@ -326,8 +327,38 @@ export default async function PortfolioPage() {
   const filmCount = projects.filter((p) => p.type === "video").length;
   const stillCount = projects.filter((p) => p.type === "photo").length;
 
+  /* The films, described so they can be found.
+     Google indexes video on its own surface and answer engines quote it when
+     somebody asks to see a company's work. Built from Vimeo's real upload
+     dates and durations; anything Vimeo did not answer for is left out
+     rather than given an invented date. */
+  const videoSchema = videoGallery(
+    projects
+      .filter((p) => p.type === "video" && p.vimeoId && metas[p.vimeoId])
+      .map((p) => ({
+        title: p.title,
+        category: p.category,
+        vimeoId: p.vimeoId!,
+        meta: metas[p.vimeoId!],
+      })),
+    "/portfolio",
+    "PG Creatives portfolio",
+  );
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(breadcrumbs([{ name: "Portfolio", path: "/portfolio" }])),
+        }}
+      />
+      {videoSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(videoSchema) }}
+        />
+      )}
       <PageHead
         lines={["Every listing,", "in its best light."]}
         lede="Work made for agents, brokers, and businesses across Green Bay, Madison, Milwaukee, and the Fox Valley."

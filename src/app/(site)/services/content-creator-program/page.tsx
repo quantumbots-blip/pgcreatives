@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { breadcrumbs, service, videoGallery, jsonLd } from "@/lib/seo";
 import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
@@ -124,7 +125,35 @@ const differences = [
 ];
 
 export default async function ContentCreatorProgramPage() {
+  const schema = [
+    breadcrumbs([
+      { name: "Services", path: "/services" },
+      { name: "Content Creator Program", path: "/services/content-creator-program" },
+    ]),
+    service({
+      name: "Content Creator Program",
+      description:
+        "A monthly personal brand content program for real estate agents. Strategy, filming, editing and coaching, handled end to end.",
+      path: "/services/content-creator-program",
+    }),
+  ];
+
   const metas = await getVimeoMetas(showcaseVideos.map((v) => v.vimeoId));
+
+  /* These nine reels appear nowhere else on the site, so without this they
+     would be the only work with no description a search engine can read. */
+  const videoSchema = videoGallery(
+    showcaseVideos
+      .filter((v) => metas[v.vimeoId])
+      .map((v) => ({
+        title: v.title,
+        category: "Content Creator Program",
+        vimeoId: v.vimeoId,
+        meta: metas[v.vimeoId],
+      })),
+    "/services/content-creator-program",
+    "Content Creator Program work",
+  );
   const videosWithThumbs = showcaseVideos.map((v) => ({
     ...v,
     thumbnail: metas[v.vimeoId]?.thumbnail,
@@ -133,6 +162,16 @@ export default async function ContentCreatorProgramPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(schema) }}
+      />
+      {videoSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(videoSchema) }}
+        />
+      )}
       <PageHead
         lines={["Content that", "performs."]}
         lede="A monthly program built around consistency, strategy, and results, so you grow your brand and win more deals. From $1,500 a month."
