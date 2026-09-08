@@ -552,7 +552,7 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 }
 
 /* ── Type ──────────────────────────────────────────────────────────────
-   Display type is Archivo, set tight and large. The old scale topped out
+   Display type is Poppins, set tight and large. The old scale topped out
    at 48px on a 1440 viewport, which is smaller than the hero video behind
    it — the headline lost every fight it was in. */
 
@@ -563,6 +563,71 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   line-height: 1.0;
   letter-spacing: -0.02em;
   text-wrap: balance;
+}
+
+/* The hero headline is not doing a page heading's job.
+
+   It sits over moving footage that is bright in one frame and dark in the
+   next, so flat white type at heading scale reads as a caption laid on top
+   of somebody else's picture. This is set larger and tighter than
+   `.display-1` so it holds the frame, lifted off the footage by a soft
+   contact shadow, and the second line carries a cool sheen so the two lines
+   are one object rather than two sentences.
+
+   It is a separate class rather than a change to `.display-1`, which every
+   other page heading uses at a size chosen for a page, not a film. */
+
+.hero-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3.05rem, 11.4vw, 8.25rem);
+  line-height: 0.94;
+  letter-spacing: -0.042em;
+  text-wrap: balance;
+  color: #fff;
+  /* Two radii: a tight one that holds the letter edges against bright
+     siding, a wide one that seats the whole headline in a busy frame. */
+  filter:
+    drop-shadow(0 0 30px rgba(7, 9, 12, 0.8))
+    drop-shadow(0 0 84px rgba(7, 9, 12, 0.5));
+}
+
+@media (max-width: 640px) {
+  /* One shadow on a phone. The headline repaints on every frame of its
+     entrance, and a second large blur radius is the expensive half. */
+  .hero-display {
+    filter: drop-shadow(0 0 26px rgba(7, 9, 12, 0.82));
+  }
+}
+
+/* Tighter leading means a deeper descender. The shared mask reserves 0.12em
+   below the line, which is enough at `line-height: 1` but clips the tail of
+   the "g" in "grade" at the hero's 0.94. */
+.hero-display .line-mask {
+  padding-bottom: 0.26em;
+  margin-bottom: -0.26em;
+}
+
+/* The sheen goes on the line itself, not the h1, so the background is
+   clipped by the same element that paints it. Clipping across descendants
+   that are promoted to their own compositor layers (`.line-inner` carries
+   `will-change: transform`) is where this effect goes wrong in Safari.
+
+   Guarded, because `color: transparent` in a browser that cannot clip a
+   background to text would erase the line completely. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero-sheen {
+    background-image: linear-gradient(
+      168deg,
+      #ffffff 0%,
+      #ffffff 34%,
+      #dbeaf6 68%,
+      #8dbcdf 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 .display-2 {
