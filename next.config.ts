@@ -35,6 +35,26 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      /* Addresses from the old site that people still follow.
+         They showed up in the dashboard's dead link report: /pages-sitemap.xml
+         and the "copy-of-" naming are both Wix, so these are links left in
+         profiles, directory listings and posts pointing at pages that moved
+         when the site was rebuilt. Each one was landing on the 404.
+         /blank and /pages-sitemap.xml have no sensible destination and are
+         left alone rather than guessed at. */
+      { source: "/meet-the-team", destination: "/team", permanent: true },
+      { source: "/about", destination: "/team", permanent: true },
+      { source: "/faq", destination: "/services", permanent: true },
+      {
+        source: "/personal-branding",
+        destination: "/services/content-creator-program",
+        permanent: true,
+      },
+      {
+        source: "/copy-of-branding",
+        destination: "/services/content-creator-program",
+        permanent: true,
+      },
       // www serves the full site as a second host. Canonical tags point at the
       // apex, but a real redirect is what stops the duplicate from being
       // crawled and linked to at all.
@@ -97,7 +117,13 @@ const nextConfig: NextConfig = {
               "default-src 'self'",
               `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob: https://images.unsplash.com https://i.vimeocdn.com https://vumbnail.com",
+              /* The canonical host is listed alongside 'self' because the
+                 email preview renders the real templates, and those carry
+                 absolute URLs so a logo still loads from an inbox. Same
+                 origin in production, cross origin on localhost and on a
+                 preview deployment, where the logo would otherwise be a
+                 broken box. */
+              "img-src 'self' data: blob: https://pgcreativeswi.com https://images.unsplash.com https://i.vimeocdn.com https://vumbnail.com",
               "font-src 'self'",
               "connect-src 'self' blob:",
               "media-src 'self'",

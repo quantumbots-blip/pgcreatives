@@ -14,7 +14,11 @@ import {
 } from "@/lib/db";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { checkFormToken } from "@/lib/form-token";
+import { BUSINESS } from "@/lib/data";
 import { scoreSubmission, submissionFingerprint } from "@/lib/spam";
+import { newLeadEmail, leadConfirmationEmail } from "@/lib/email/templates";
+import { sendPush } from "@/lib/push";
+import { subjectFor, formatPhone } from "@/lib/lead-messages";
 
 export type ContactState = {
   success: boolean;
@@ -32,8 +36,6 @@ export type ContactState = {
     message: string;
   };
 };
-
-const sanitizeHeader = (s: string) => s.replace(/[\r\n\0]/g, "");
 
 const MAX_LENGTHS = {
   firstName: 50,
@@ -245,6 +247,23 @@ export async function submitContactForm(
     }
   }
 
+  /* The buzz on the owner's phone. Fired before the email because it is the
+     part that changes behaviour: an email joins a queue, a notification
+     interrupts. Never awaited into the visitor's path in a way that could
+     fail their submission, and sendPush swallows its own errors. */
+  void sendPush({
+    title: `New lead: ${firstName} ${lastName}`.trim(),
+    body: [
+      subjectFor(service),
+      formatPhone(phone) || email,
+      message ? message.replace(/\s+/g, " ").slice(0, 90) : "",
+    ]
+      .filter(Boolean)
+      .join(" · "),
+    url: "/admin",
+    tag: "pg-lead",
+  });
+
   /* Quarantined mail is not forwarded. It is in the dashboard's Spam tab with
      its reasons attached, and one tap puts it back if the filter got it
      wrong. The whole point of the exercise is that this does not reach the
@@ -268,37 +287,50 @@ export async function submitContactForm(
   }
 
   const resend = new Resend(apiKey);
-  const digits = phone.replace(/\D/g, "");
-  const dialable = digits.length === 10 ? `+1${digits}` : digits.length === 11 ? `+${digits}` : "";
+
+  const notification = newLeadEmail({
+    firstName,
+    lastName,
+    email,
+    phone,
+    company,
+    service,
+    message,
+    source: sourceReferrer,
+    receivedAt: new Date().toISOString(),
+  });
 
   try {
     await resend.emails.send({
       from: "PG Creatives <noreply@pgcreativeswi.com>",
-      to: "pgcreativeswisconsin@gmail.com",
-      replyTo: sanitizeHeader(email),
-      subject: `New Inquiry: ${sanitizeHeader(firstName)} ${sanitizeHeader(lastName)}`,
-      text: [
-        `New contact form submission from pgcreativeswi.com`,
-        ``,
-        `Name: ${firstName} ${lastName}`,
-        `Email: ${email}`,
-        `Company: ${company || "Not provided"}`,
-        `Phone: ${phone || "Not provided"}`,
-        `Service: ${service || "Not specified"}`,
-        ``,
-        `Message:`,
-        message,
-        ``,
-        `Next steps`,
-        // The three things worth doing next, as links that work from a phone.
-        `Reply: mailto:${email}`,
-        dialable ? `Call: tel:${dialable}` : `Call: no number given`,
-        dialable ? `Text: sms:${dialable}` : ``,
-        `Dashboard: https://pgcreativeswi.com/admin`,
-      ]
-        .filter(Boolean)
-        .join("\n"),
+      to: BUSINESS.email,
+      replyTo: notification.replyTo,
+      subject: notification.subject,
+      html: notification.html,
+      text: notification.text,
     });
+
+    /* An acknowledgement to the person who wrote in. Off unless the owner
+       turns it on, because it is his name on an email landing in a customer's
+       inbox and that is his decision to make, not a default. The dashboard
+       has a preview of exactly what it says. */
+    if (process.env.CONFIRM_LEADS === "1") {
+      const confirmation = leadConfirmationEmail({ firstName, service, message });
+      try {
+        await resend.emails.send({
+          from: "PG Creatives <noreply@pgcreativeswi.com>",
+          to: email,
+          replyTo: BUSINESS.email,
+          subject: confirmation.subject,
+          html: confirmation.html,
+          text: confirmation.text,
+        });
+      } catch (err) {
+        // The lead is safe either way. A failed courtesy note is not a
+        // reason to tell the visitor their message did not go through.
+        console.error("[contact] Confirmation to the visitor failed:", (err as Error).message);
+      }
+    }
 
     return { success: true, error: null };
   } catch (err) {

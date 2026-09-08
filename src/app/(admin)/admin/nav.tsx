@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut, Inbox, BarChart3 } from "lucide-react";
+import { LogOut, Inbox, BarChart3, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { logoutAction } from "@/app/actions/auth";
 
@@ -16,6 +16,7 @@ import { logoutAction } from "@/app/actions/auth";
 const TABS = [
   { href: "/admin", label: "Leads", icon: Inbox },
   { href: "/admin/traffic", label: "Traffic", icon: BarChart3 },
+  { href: "/admin/emails", label: "Emails", icon: Mail },
 ];
 
 export function AdminNav({ waiting }: { waiting: number }) {

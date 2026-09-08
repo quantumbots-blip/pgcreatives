@@ -32,6 +32,7 @@ import { NewLeads } from "./new-leads";
 import { ServiceChart } from "./service-chart";
 import { AdminNav } from "./nav";
 import { AddLead } from "./add-lead";
+import { LeadAlerts } from "./alerts";
 import { Panel, Stat, BarChart } from "./ui";
 
 export const dynamic = "force-dynamic";
@@ -119,6 +120,10 @@ export default async function AdminDashboard() {
         ? null
         : 0;
 
+  /* Empty when the keys are not set, which hides the toggle rather than
+     offering a button that cannot work. */
+  const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? "";
+
   const activePipeline = stats.total - statusCounts.archived;
   const conversionRate =
     activePipeline > 0 ? Math.round((statusCounts.booked / activePipeline) * 100) : 0;
@@ -138,6 +143,8 @@ export default async function AdminDashboard() {
 
         {/* Everyone waiting on a reply, before anything else on the page. */}
         <NewLeads leads={needsReply} />
+
+        {vapidKey && <LeadAlerts vapidKey={vapidKey} />}
 
         <div className="flex flex-wrap items-start gap-3">
           <AddLead />

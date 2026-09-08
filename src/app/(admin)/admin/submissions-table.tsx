@@ -32,6 +32,7 @@ import {
 import { LeadActions } from "./lead-actions";
 import { FollowUp } from "./follow-up";
 import { STATUS_OPTIONS, statusConfig, timeAgo, fullDate, serviceLabel } from "./format";
+import { formatPhone } from "@/lib/lead-messages";
 
 type Tab = "all" | SubmissionStatus | "spam";
 
@@ -462,7 +463,7 @@ export function SubmissionsTable({
                           {sub.first_name} {sub.last_name}
                         </p>
                         <p className="mt-0.5 truncate text-xs text-ink-3">
-                          {sub.email?.trim() || sub.phone || "no contact details"}
+                          {sub.email?.trim() || formatPhone(sub.phone) || "no contact details"}
                         </p>
                       </div>
                       <div className="flex shrink-0 items-center gap-2">
@@ -536,7 +537,7 @@ export function SubmissionsTable({
                             href={`tel:${sub.phone}`}
                             className="text-ink-2 transition-colors hover:text-white"
                           >
-                            {sub.phone}
+                            {formatPhone(sub.phone)}
                           </a>
                         </div>
                       )}
