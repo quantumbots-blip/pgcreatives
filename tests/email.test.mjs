@@ -16,7 +16,9 @@ test("every email has a one line subject, a button and a plain text twin", () =>
     assert.ok(m.subject.length > 8, `${kind}: subject too short`);
     assert.ok(!/[\r\n]/.test(m.subject), `${kind}: subject has a newline`);
     assert.ok(m.subject.length <= 200, `${kind}: subject too long`);
-    assert.match(m.html, /<a href="[^"]+" style="display:block/, `${kind}: no button`);
+    // Attribute order is not the contract. A button is an anchor that fills
+    // its cell, however many classes sit between the href and the style.
+    assert.match(m.html, /<a href="[^"]+"[^>]*style="[^"]*display:block/, `${kind}: no button`);
     assert.ok(m.text.length > 80, `${kind}: plain text twin too thin`);
     assert.match(m.html, /^<!doctype html>/, `${kind}: no doctype`);
   }
@@ -86,6 +88,16 @@ test("a new lead can be called, texted and emailed straight from the inbox", () 
     "the text body is not pre written",
   );
   assert.equal(m.replyTo, "heathersellswi@gmail.com", "reply should reach the customer");
+  /* Call is the only filled button and takes the full width; text and email
+     pair beside each other. Four stacked buttons read as a form. */
+  assert.equal((m.html.match(/class="pg-col"/g) ?? []).length, 2, "text and email should pair");
+  assert.match(m.html, /@media \(min-width:400px\)/, "no rule to put the pair in a row");
+  assert.equal(
+    (m.html.match(/class="pg-btn"/g) ?? []).length,
+    1,
+    "exactly one filled button, so the primary action is obvious",
+  );
+  assert.match(m.html, /prefers-color-scheme:dark/, "no designed dark rendering");
   assert.match(m.subject, /^New lead: Heather Zeitler/);
   // The plain text twin carries the same links.
   assert.ok(m.text.includes("tel:+19205911323"), "plain text has no call link");
