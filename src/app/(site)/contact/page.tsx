@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { breadcrumbs, contactPage, jsonLd } from "@/lib/seo";
 import { pageMetadata } from "@/lib/metadata";
 import { CalendarDays, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
@@ -69,8 +70,14 @@ const contactInfo = [
 
 
 export default function ContactPage() {
+  const schema = [breadcrumbs([{ name: "Contact", path: "/contact" }]), contactPage()];
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(schema) }}
+      />
       <PageHead
         lines={["Let\u2019s make", "something together."]}
         lede="Tell us about the project and we’ll come back with a quote and a recommendation, usually the same day."

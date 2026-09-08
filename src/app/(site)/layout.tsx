@@ -8,6 +8,7 @@ import { SplashScreen } from "@/components/splash-screen";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { BokehField } from "@/components/bokeh-field";
 import { BUSINESS } from "@/lib/data";
+import { ORG_ID, webSite, jsonLd } from "@/lib/seo";
 
 /* One family, taken from the logo.
 
@@ -38,8 +39,12 @@ export const metadata: Metadata = {
     default: "PG Creatives | Professional Grade Media",
     template: "%s | PG Creatives",
   },
+  /* 181 characters before, so Google cut it mid sentence in every result.
+     Under 160 now, leading with the words people actually search and
+     carrying a real starting price, which is the kind of concrete fact an
+     answer engine will quote. */
   description:
-    "Professional grade media for tailored experiences. Real estate photography, videography, drone shots, 3D tours, and commercial branding in Green Bay, Madison & Milwaukee, Wisconsin.",
+    "Real estate photography, listing video, drone and 3D tours for agents across Green Bay, Madison, Milwaukee and the Fox Valley. Packages from $550.",
   keywords: [
     "PG Creatives",
     "real estate photography",
@@ -96,7 +101,7 @@ const localBusinessJsonLd = {
   // PhotographyBusiness is a real schema.org subtype of LocalBusiness and a
   // better match than the generic base.
   "@type": "PhotographyBusiness",
-  "@id": `${BUSINESS.url}/#business`,
+  "@id": ORG_ID,
   name: BUSINESS.name,
   legalName: BUSINESS.legalName,
   description: BUSINESS.description,
@@ -176,9 +181,17 @@ export default function RootLayout({
         <a id="skip-link" href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:rounded-lg focus:bg-signal focus:text-[#07090c] focus:px-4 focus:py-2 focus:font-semibold">
           Skip to main content
         </a>
+        {/* One organization node with a stable @id, and the site itself.
+            Every page's own schema references these rather than repeating
+            the business, which is what lets a crawler treat six pages as one
+            entity instead of six unrelated documents. */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(webSite()) }}
         />
         <PageViewTracker />
         <ScrollReveal />

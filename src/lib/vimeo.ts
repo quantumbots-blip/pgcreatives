@@ -2,12 +2,23 @@ export type VimeoMeta = {
   thumbnail: string;
   /** True when the video is taller than it is wide (vertical / social reel). */
   portrait: boolean;
+  /** Seconds, from Vimeo. 0 when the call failed. */
+  duration: number;
+  /** ISO 8601, from Vimeo's upload_date. Null when the call failed.
+     Needed for VideoObject: Google requires a real uploadDate, and a made
+     up one is worse than no schema at all. */
+  uploadDate: string | null;
 };
 
 const cache = new Map<string, VimeoMeta>();
 
 function fallbackFor(vimeoId: string): VimeoMeta {
-  return { thumbnail: `https://vumbnail.com/${vimeoId}.jpg`, portrait: false };
+  return {
+    thumbnail: `https://vumbnail.com/${vimeoId}.jpg`,
+    portrait: false,
+    duration: 0,
+    uploadDate: null,
+  };
 }
 
 export async function getVimeoMeta(vimeoId: string): Promise<VimeoMeta> {
@@ -28,10 +39,20 @@ export async function getVimeoMeta(vimeoId: string): Promise<VimeoMeta> {
     const data = await res.json();
     const width = Number(data.width) || 0;
     const height = Number(data.height) || 0;
+    /* Vimeo returns "2025-07-26 16:11:10", which is not a date any parser
+       should be handed as is. Treated as UTC, since Vimeo does not say
+       otherwise, rather than left to the server's local zone. */
+    const raw = typeof data.upload_date === "string" ? data.upload_date : "";
+    const uploadDate = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(raw)
+      ? new Date(raw.replace(" ", "T") + "Z").toISOString()
+      : null;
+
     const meta: VimeoMeta = {
       thumbnail:
         (data.thumbnail_url as string) ?? fallbackFor(vimeoId).thumbnail,
       portrait: width > 0 && height > width,
+      duration: Number(data.duration) || 0,
+      uploadDate,
     };
     cache.set(vimeoId, meta);
     return meta;

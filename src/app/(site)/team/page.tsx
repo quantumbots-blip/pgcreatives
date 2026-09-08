@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { breadcrumbs, teamPage, jsonLd } from "@/lib/seo";
 import { pageMetadata } from "@/lib/metadata";
 import Image from "next/image";
 
@@ -112,8 +113,21 @@ const values = [
 ];
 
 export default function TeamPage() {
+  /* Ten named people with roles. Naming them is how a business reads as an
+     entity rather than a URL, which is most of what an answer engine is
+     weighing when it picks whom to cite for "who shoots listings in Green
+     Bay". */
+  const schema = [
+    breadcrumbs([{ name: "About", path: "/team" }]),
+    teamPage(team.map((m) => ({ name: m.name, role: m.role }))),
+  ];
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(schema) }}
+      />
       {/* ── Page head ────────────────────────────────────────────────────
           No section background of its own. The old hero painted two radial
           gradients that stopped dead at the section boundary, leaving a

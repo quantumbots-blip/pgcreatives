@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { breadcrumbs, serviceList, jsonLd } from "@/lib/seo";
 import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   ...pageMetadata({
     title: "Services",
     description:
-      "Real estate listing media, commercial production, and a monthly personal-brand content program for agents across Green Bay, Madison, Milwaukee and the Fox Valley.",
+      "Listing media, commercial production and a monthly content program for agents across Green Bay, Madison, Milwaukee and the Fox Valley.",
     path: "/services",
     image: "/og-services.jpg",
     imageAlt: "PG Creatives services",
@@ -93,8 +94,25 @@ const services = [
 ];
 
 export default function ServicesPage() {
+  /* What each service IS, who it is for and where it is available. The
+     organization node already lists what is sold; this answers the question
+     an answer engine actually holds when somebody asks who does listing
+     video in the Fox Valley. */
+  const schema = [
+    breadcrumbs([{ name: "Services", path: "/services" }]),
+    serviceList(
+      services.map((svc) => ({ name: svc.title, description: svc.lede })),
+      "/services",
+      "PG Creatives services",
+    ),
+  ];
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(schema) }}
+      />
       <PageHead
         lines={["Three things,", "done right."]}
         lede="Listing media that sells the house, commercial work for everyone else, and a monthly program for the agents who want to be known."
