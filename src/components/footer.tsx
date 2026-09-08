@@ -7,6 +7,7 @@ import { BUSINESS } from "@/lib/data";
 const footerLinks = [
   { name: "Services", href: "/services" },
   { name: "Portfolio", href: "/portfolio" },
+  { name: "Areas we cover", href: "/areas" },
   { name: "About", href: "/team" },
   { name: "Contact", href: "/contact" },
 ];
@@ -47,7 +48,23 @@ export function Footer() {
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-ink-2">
               Professional-grade videography, photography, drone aerial, and 3D
-              tours. Serving Green Bay, Madison, Milwaukee, and the Fox Valley.
+              tours. Serving{" "}
+              <Link href="/areas/green-bay" className="text-ink-2 underline-offset-2 hover:underline">
+                Green Bay
+              </Link>
+              ,{" "}
+              <Link href="/areas/madison" className="text-ink-2 underline-offset-2 hover:underline">
+                Madison
+              </Link>
+              ,{" "}
+              <Link href="/areas/milwaukee" className="text-ink-2 underline-offset-2 hover:underline">
+                Milwaukee
+              </Link>
+              , and{" "}
+              <Link href="/areas/fox-valley" className="text-ink-2 underline-offset-2 hover:underline">
+                the Fox Valley
+              </Link>
+              .
             </p>
             {/* Social icons */}
             <div className="flex gap-2.5">

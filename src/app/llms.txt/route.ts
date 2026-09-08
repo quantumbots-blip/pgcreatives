@@ -1,5 +1,7 @@
 import { BUSINESS } from "@/lib/data";
 import { faqs } from "@/components/faq";
+import { MARKETS } from "@/lib/markets";
+import { filmsForMarket } from "@/lib/films";
 
 /**
  * llms.txt, the plain text brief an assistant reads instead of parsing the
@@ -64,6 +66,15 @@ function build(): string {
     "## Pages",
     "",
     ...PAGES.map((p) => `- [${BUSINESS.url}${p.path === "/" ? "" : p.path}](${BUSINESS.url}${p.path === "/" ? "" : p.path}): ${p.what}`),
+    "",
+    "## Areas covered",
+    "",
+    ...MARKETS.map((m) => {
+      const count = filmsForMarket(m.slug).length;
+      const phone = BUSINESS.phones[m.phoneKey].number;
+      const work = count > 0 ? `${count} film${count === 1 ? "" : "s"} in the portfolio shot here` : "covered by travel, no work shot here yet";
+      return `- **${m.name}** (${phone}): ${m.towns.join(", ")}. ${work}. ${BUSINESS.url}/areas/${m.slug}`;
+    }),
     "",
     "## Common questions",
     "",
