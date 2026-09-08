@@ -122,6 +122,9 @@ export function row(label: string, text: string | null | undefined, html?: strin
   return [label, html ?? esc(value), value];
 }
 
+/** A modest text link, for an action that does not need a button. */
+export type TextLink = { href: string; label: string };
+
 export type LayoutInput = {
   badge: string;
   badgeTone?: Tone;
@@ -130,6 +133,8 @@ export type LayoutInput = {
   body?: string;
   rows?: (Row | null)[];
   buttons?: (Button | ButtonRow)[];
+  /** Sits under the buttons, quieter than them. */
+  link?: TextLink;
   note?: string;
   preheader?: string;
   footerNote?: string;
@@ -154,7 +159,7 @@ function buttonCell({ href, label, style = "solid" }: Button): string {
     /* No bgcolor attribute. It paints a square the radius never clips, which
        is what put a hard cornered box around the rounded button. */
     `<tr><td align="center" class="${solid ? "pg-btn" : "pg-btn-out"}" style="background:${bg};border:1px solid ${border};border-radius:999px">` +
-    `<a href="${esc(href)}" class="pg-btn-a" style="display:block;padding:14px 20px;font:600 15px/1.25 ${FONT};letter-spacing:-0.01em;color:${fg};text-decoration:none">${esc(
+    `<a href="${esc(href)}" class="pg-btn-a" style="display:block;padding:13px 10px;font:600 14px/1.25 ${FONT};letter-spacing:-0.01em;color:${fg};text-decoration:none">${esc(
       label,
     )}</a>` +
     `</td></tr></table>`
@@ -166,32 +171,29 @@ function buttonHtml(b: Button): string {
 }
 
 /**
- * A row of buttons that stacks.
+ * A row of equal buttons.
  *
- * Stacked is the DEFAULT and the row appears from 400px up. A client that
- * strips media queries, which several Android mail apps do, therefore falls
- * back to full width buttons rather than to a pair squeezed into a phone.
- * Degrading toward the safe layout is the whole point of building it this way
- * round.
+ * Plain table cells at an equal width, and no media query anywhere near them.
+ * The previous version stacked below 400px and sat in a row above it, which
+ * gave three different button widths on one screen and left them looking
+ * unaligned. Short labels fit three across at 280px, so there is nothing to
+ * stack and nothing for a client that strips media queries to get wrong.
  */
 function buttonRowHtml(buttons: Button[]): string {
-  const gap = 8;
+  const width = Math.floor(100 / buttons.length);
   const cells = buttons
     .map(
       (b, i) =>
-        `<td class="pg-col" style="display:block;width:100%;padding:0 0 10px" valign="top">` +
-        `<!--[if mso]><table role="presentation" width="100%"><tr><td style="padding:0 ${
-          i === buttons.length - 1 ? 0 : gap
-        }px 0 0"><![endif]-->` +
+        `<td width="${width}%" valign="top" style="width:${width}%;padding:0 ${
+          i === buttons.length - 1 ? 0 : 8
+        }px 0 0">` +
         buttonCell(b) +
-        `<!--[if mso]></td></tr></table><![endif]-->` +
         `</td>`,
     )
     .join("");
   return (
-    `<div style="margin:0 0 10px">` +
-    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>${cells}</tr></table>` +
-    `</div>`
+    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed">` +
+    `<tr>${cells}</tr></table>`
   );
 }
 
@@ -216,6 +218,7 @@ export function renderHtml(input: LayoutInput): string {
     body,
     rows = [],
     buttons = [],
+    link,
     note,
     preheader,
     footerNote,
@@ -255,14 +258,7 @@ export function renderHtml(input: LayoutInput): string {
     `.pg-h1{font-size:26px !important}` +
     `.pg-outer{padding:0 !important}` +
     `}` +
-    /* A pair sits side by side from 400 up. min-width, so a client that
-       strips media queries falls back to full width rather than to two
-       squeezed into a phone. */
-    `@media (min-width:400px){` +
-    `.pg-col{display:table-cell !important;width:50% !important;padding:0 5px !important}` +
-    `.pg-col:first-child{padding-left:0 !important}` +
-    `.pg-col:last-child{padding-right:0 !important}` +
-    `}` +
+
     `</style></head>` +
     `<body class="pg-body" style="margin:0;padding:0;background:${COLOR.ground}">` +
     `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:${COLOR.ground};opacity:0">` +
@@ -276,7 +272,10 @@ export function renderHtml(input: LayoutInput): string {
     /* Header */
     `<tr><td align="center" style="background:${COLOR.ground};padding:38px 24px 30px">` +
     `<a href="${SITE_URL}" style="text-decoration:none">` +
-    `<img src="${LOGO_URL}" width="176" height="37" alt="PG Creatives" style="display:block;width:176px;height:37px">` +
+    /* Styled for the case where images are blocked, which is the default in
+       more clients than not. The alt text inherits the img's own font and
+       colour, so instead of a blue serif link it reads as the wordmark. */
+    `<img src="${LOGO_URL}" width="176" height="37" alt="PG Creatives" style="display:block;width:176px;height:37px;font:700 21px/37px ${FONT};letter-spacing:-0.01em;color:${COLOR.ink};text-decoration:none">` +
     `</a></td></tr>` +
     `<tr><td class="pg-pad" style="padding:0 34px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>` +
     `<td style="height:1px;line-height:1px;font-size:0;background:${COLOR.line}">&nbsp;</td></tr></table></td></tr>` +
@@ -303,8 +302,14 @@ export function renderHtml(input: LayoutInput): string {
           .map((b) => ("row" in b ? buttonRowHtml(b.row) : buttonHtml(b)))
           .join("")}</td></tr>`
       : "") +
+    (link
+      ? `<tr><td class="pg-pad" style="padding:16px 34px 0">` +
+        `<a href="${esc(link.href)}" style="font:600 14px/1.4 ${FONT};color:${COLOR.signalInk};text-decoration:none">${esc(
+          link.label,
+        )} &rarr;</a></td></tr>`
+      : "") +
     (visibleRows.length
-      ? `<tr><td class="pg-pad" style="padding:20px 34px 0">` +
+      ? `<tr><td class="pg-pad" style="padding:24px 34px 0">` +
         `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${visibleRows
           .map(rowHtml)
           .join("")}</table></td></tr>`
@@ -331,7 +336,7 @@ export function renderHtml(input: LayoutInput): string {
 
 /** The plain text twin, from the same input. Never written by hand. */
 export function renderText(input: LayoutInput): string {
-  const { title, sub, body, rows = [], buttons = [], note } = input;
+  const { title, sub, body, rows = [], buttons = [], link, note } = input;
   const lines: string[] = [title];
   if (sub) lines.push(sub);
   if (body) lines.push("", body);
@@ -348,6 +353,7 @@ export function renderText(input: LayoutInput): string {
       for (const one of "row" in b ? b.row : [b]) lines.push(`${one.label}: ${one.href}`);
     }
   }
+  if (link) lines.push(`${link.label}: ${link.href}`);
   if (note) lines.push("", note);
 
   lines.push(

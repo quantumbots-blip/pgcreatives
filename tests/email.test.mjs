@@ -99,15 +99,27 @@ test("a new lead can be called, texted and emailed straight from the inbox", () 
     "the text body is not pre written",
   );
   assert.equal(m.replyTo, "heathersellswi@gmail.com", "reply should reach the customer");
-  /* Call is the only filled button and takes the full width; text and email
-     pair beside each other. Four stacked buttons read as a form. */
-  assert.equal((m.html.match(/class="pg-col"/g) ?? []).length, 2, "text and email should pair");
-  assert.match(m.html, /@media \(min-width:400px\)/, "no rule to put the pair in a row");
+  /* Three equal buttons on one row, call filled and the other two outlined,
+     so nothing is a different size to anything else. */
   assert.equal(
     (m.html.match(/class="pg-btn"/g) ?? []).length,
     1,
     "exactly one filled button, so the primary action is obvious",
   );
+  assert.equal(
+    (m.html.match(/class="pg-btn-out"/g) ?? []).length,
+    2,
+    "text and email should be the two outlined ones",
+  );
+  // Equal widths, declared, not left to a media query that a client may drop.
+  assert.equal((m.html.match(/width="33%"/g) ?? []).length, 3, "the three should be equal width");
+  assert.ok(
+    !/@media \(min-width/.test(m.html),
+    "buttons must not depend on a media query to line up",
+  );
+  // The dashboard is a link now, not a fourth button.
+  assert.match(m.html, /Open the dashboard/, "no way into the dashboard");
+  assert.ok(!/>Open the dashboard<\/a>[\s\S]{0,40}pg-btn/.test(m.html), "dashboard became a button again");
   /* The email is dark, so there is no light version for a client to switch
      away from. What matters instead is that it says so, and that every colour
      is stated rather than inherited. */
