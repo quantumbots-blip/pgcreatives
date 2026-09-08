@@ -36,6 +36,18 @@ export const metadata: Metadata = {
   title: "Dashboard | PG Creatives",
   // Belt and braces with the Disallow in robots.ts.
   robots: { index: false, follow: false },
+  /* Installable, and only the dashboard is. The manifest's scope is /admin,
+     so a visitor to the marketing site is never asked to install anything;
+     the owner gets an icon that opens straight onto the leads. */
+  manifest: "/admin.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "PG Leads",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    apple: "/app-icon-192.png",
+  },
 };
 
 export default function AdminRootLayout({

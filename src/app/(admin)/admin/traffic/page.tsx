@@ -13,12 +13,14 @@ import {
   Search as SearchIcon,
   Share2,
   Link2,
+  Unlink,
 } from "lucide-react";
 import { verifySessionFull } from "@/lib/auth";
 import { ensureSchema, ensurePageViewsTable, getSubmissions } from "@/lib/db";
 import {
   getTrafficInsights,
   getLeadSources,
+  getDeadLinks,
   parseRange,
   RANGE_OPTIONS,
   type Channel,
@@ -55,18 +57,21 @@ export default async function TrafficPage({
 
   let traffic: Awaited<ReturnType<typeof getTrafficInsights>> | null = null;
   let leadSources: Awaited<ReturnType<typeof getLeadSources>> = { rows: [], unattributed: 0 };
+  let deadLinks: Awaited<ReturnType<typeof getDeadLinks>> = [];
   let waiting = 0;
   let dbError = false;
 
   try {
     await Promise.all([ensureSchema(), ensurePageViewsTable()]);
-    const [t, s, subs] = await Promise.all([
+    const [t, s, dead, subs] = await Promise.all([
       getTrafficInsights(range),
       getLeadSources(),
+      getDeadLinks(),
       getSubmissions(),
     ]);
     traffic = t;
     leadSources = s;
+    deadLinks = dead;
     waiting = subs.filter((x) => (x.status || "new") === "new").length;
   } catch {
     dbError = true;
@@ -276,6 +281,36 @@ export default async function TrafficPage({
             <Panel title="When visitors are here" aside={<span className="text-xs text-ink-3">Wisconsin time</span>}>
               <VisitorHeatmap grid={traffic.heatmap} />
             </Panel>
+
+            {/* Addresses that go nowhere */}
+            {deadLinks.length > 0 && (
+              <Panel
+                title="Links that go nowhere"
+                note="Somebody is sending people to these addresses and this site has no such page, so every one of these visits landed on the 404. Usually an old link in a profile, a directory listing, or a post."
+                aside={
+                  <span className="text-xs text-ink-3">
+                    {deadLinks.reduce((n, d) => n + d.visitors, 0)} visitors lost
+                  </span>
+                }
+              >
+                <div className="space-y-2">
+                  {deadLinks.map((d) => (
+                    <div
+                      key={d.path}
+                      className="flex items-center justify-between gap-3 rounded-lg bg-surface-hi px-3 py-2"
+                    >
+                      <div className="flex min-w-0 items-center gap-2">
+                        <Unlink className="h-3.5 w-3.5 shrink-0 text-amber-300" />
+                        <span className="truncate font-mono text-xs text-ink-2">{d.path}</span>
+                      </div>
+                      <span className="shrink-0 text-[11px] tabular-nums text-ink-3">
+                        {d.visitors} {d.visitors === 1 ? "visitor" : "visitors"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </Panel>
+            )}
 
             {/* Detail */}
             <div className="grid gap-6 lg:grid-cols-3">

@@ -444,3 +444,48 @@ export async function getWeeklyDigest(): Promise<WeeklyDigest> {
     medianReplyHours: response.medianHours,
   };
 }
+
+/* ── Addresses that go nowhere ───────────────────────────────────────── */
+
+/**
+ * Every path this site actually serves. A page view on anything else was a
+ * visitor landing on the 404 page.
+ *
+ * Kept as a list rather than read from the router because the router is not
+ * introspectable at runtime, and because a wrong entry here is visible
+ * immediately: a real page would start appearing in the report.
+ */
+const REAL_PATHS = new Set([
+  "/",
+  "/portfolio",
+  "/services",
+  "/services/content-creator-program",
+  "/team",
+  "/contact",
+  "/privacy",
+]);
+
+export type DeadLink = { path: string; views: number; visitors: number; lastSeen: string };
+
+export async function getDeadLinks(limit = 12): Promise<DeadLink[]> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT path,
+           COUNT(*)::int                     AS views,
+           COUNT(DISTINCT visitor_hash)::int AS visitors,
+           MAX(created_at)                   AS last_seen
+    FROM page_views
+    WHERE path NOT LIKE '/admin%' AND path NOT LIKE '/api%'
+    GROUP BY path
+    ORDER BY views DESC
+  `;
+  return rows
+    .filter((r) => !REAL_PATHS.has(String(r.path)))
+    .slice(0, limit)
+    .map((r) => ({
+      path: String(r.path),
+      views: Number(r.views),
+      visitors: Number(r.visitors),
+      lastSeen: String(r.last_seen),
+    }));
+}

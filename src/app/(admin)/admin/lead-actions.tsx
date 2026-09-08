@@ -5,6 +5,7 @@ import { Phone, MessageSquare, Mail, Copy, Check, Undo2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Submission } from "@/lib/db";
 import { updateStatusAction } from "@/app/actions/admin";
+import { telHref, smsHref, mailtoHref } from "@/lib/lead-messages";
 
 /**
  * The four things worth doing with a new lead, as one row of buttons.
@@ -21,58 +22,6 @@ import { updateStatusAction } from "@/app/actions/admin";
  * they only wanted to look at the address.
  */
 
-/** Formats to E.164 so tel: and sms: dial correctly from a phone. */
-export function dialable(phone: string | null): string | null {
-  if (!phone) return null;
-  const digits = phone.replace(/\D/g, "");
-  if (digits.length === 10) return `+1${digits}`;
-  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
-  if (digits.length > 11) return `+${digits}`;
-  return null;
-}
-
-/** What they asked for, in a form that reads naturally mid sentence. */
-function subjectFor(service: string | null): string {
-  switch (service) {
-    case "Real Estate":
-      return "your real estate shoot";
-    case "Commercial":
-      return "your commercial project";
-    case "Personal Brand":
-      return "the Content Creator Program";
-    case "Social Media":
-      return "your social media content";
-    default:
-      return "the project you asked about";
-  }
-}
-
-function smsBody(sub: Submission): string {
-  return `Hi ${sub.first_name}, this is PG Creatives getting back to you about ${subjectFor(
-    sub.service,
-  )}. Happy to talk through timing and pricing. When is good for a quick call?`;
-}
-
-function emailSubject(sub: Submission): string {
-  return `PG Creatives: following up on ${subjectFor(sub.service)}`;
-}
-
-function emailBody(sub: Submission): string {
-  return [
-    `Hi ${sub.first_name},`,
-    ``,
-    `Thanks for reaching out to PG Creatives about ${subjectFor(sub.service)}.`,
-    ``,
-    ``,
-    ``,
-    `Give me a call any time and we can get you on the schedule.`,
-    ``,
-    `PG Creatives`,
-    `(920) 777 0127`,
-    `pgcreativeswi.com`,
-  ].join("\n");
-}
-
 type Size = "sm" | "md";
 
 export function LeadActions({
@@ -88,20 +37,12 @@ export function LeadActions({
   const [copied, setCopied] = useState(false);
   const [justMarked, setJustMarked] = useState(false);
 
-  const tel = dialable(submission.phone);
-  const hasEmail = Boolean(submission.email?.trim());
+  /* All three come from lib/lead-messages, which the notification email uses
+     too, so the wording a lead gets is the same whichever one is tapped. */
   const wasNew = submission.status === "new";
-
-  /* sms: takes its body after a "?&" on iOS and a "?" on Android. "?&" is the
-     spelling both accept. */
-  const smsHref = tel
-    ? `sms:${tel}?&body=${encodeURIComponent(smsBody(submission))}`
-    : null;
-  const mailHref = hasEmail
-    ? `mailto:${submission.email}?subject=${encodeURIComponent(
-        emailSubject(submission),
-      )}&body=${encodeURIComponent(emailBody(submission))}`
-    : null;
+  const callHref = telHref(submission.phone);
+  const textHref = smsHref(submission);
+  const mailHref = mailtoHref(submission);
 
   async function markContacted() {
     if (!wasNew) return;
@@ -147,8 +88,8 @@ export function LeadActions({
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap gap-2">
-        {tel ? (
-          <a href={`tel:${tel}`} onClick={markContacted} className={primary}>
+        {callHref ? (
+          <a href={callHref} onClick={markContacted} className={primary}>
             <Phone className="h-4 w-4" />
             Call
           </a>
@@ -162,8 +103,8 @@ export function LeadActions({
           </span>
         )}
 
-        {smsHref && (
-          <a href={smsHref} onClick={markContacted} className={secondary}>
+        {textHref && (
+          <a href={textHref} onClick={markContacted} className={secondary}>
             <MessageSquare className="h-4 w-4" />
             Text
           </a>
