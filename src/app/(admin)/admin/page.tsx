@@ -141,10 +141,13 @@ export default async function AdminDashboard() {
           </div>
         )}
 
+        {/* Above the leads, because it is a thing to do once and it was
+            sitting under six lead cards where it would never be found. Once
+            alerts are on it collapses to a single line saying so. */}
+        {vapidKey && <LeadAlerts vapidKey={vapidKey} />}
+
         {/* Everyone waiting on a reply, before anything else on the page. */}
         <NewLeads leads={needsReply} />
-
-        {vapidKey && <LeadAlerts vapidKey={vapidKey} />}
 
         <div className="flex flex-wrap items-start gap-3">
           <AddLead />
