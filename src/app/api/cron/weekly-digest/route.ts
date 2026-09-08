@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
 import { ensureSchema, ensurePageViewsTable, logAuditEvent } from "@/lib/db";
 import { getWeeklyDigest } from "@/lib/insights";
 import { weeklyDigestEmail } from "@/lib/email/templates";
+import { sendEmail } from "@/lib/email/send";
 import { BUSINESS } from "@/lib/data";
 
 /**
@@ -39,28 +39,25 @@ export async function GET(request: NextRequest) {
     await Promise.all([ensureSchema(), ensurePageViewsTable()]);
     const d = await getWeeklyDigest();
 
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json({ ok: true, sent: false, reason: "no RESEND_API_KEY", digest: d });
-    }
-
-    const mail = weeklyDigestEmail(d);
-
-    const resend = new Resend(apiKey);
-    await resend.emails.send({
-      from: "PG Creatives <noreply@pgcreativeswi.com>",
+    const sent = await sendEmail({
       to: BUSINESS.email,
-      subject: mail.subject,
-      html: mail.html,
-      text: mail.text,
+      mail: weeklyDigestEmail(d),
+      kind: "weekly digest",
     });
+
+    if (!sent.ok) {
+      // Surfaced rather than swallowed: a Monday with no email should be
+      // findable afterwards.
+      await logAuditEvent({ action: "weekly_digest_failed", newValue: sent.reason });
+      return NextResponse.json({ ok: false, sent: false, reason: sent.reason }, { status: 500 });
+    }
 
     await logAuditEvent({
       action: "weekly_digest_sent",
       newValue: `${d.waiting} waiting, ${d.leadsThisWeek} leads`,
     });
 
-    return NextResponse.json({ ok: true, sent: true });
+    return NextResponse.json({ ok: true, sent: true, id: sent.id });
   } catch (err) {
     console.error("[weekly-digest] failed:", (err as Error).message);
     return NextResponse.json({ ok: false, error: "Digest failed" }, { status: 500 });

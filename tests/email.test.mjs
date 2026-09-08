@@ -162,3 +162,25 @@ test("the customer email says who it is from and why they got it", () => {
   assert.match(m.html, /href="tel:\+19207770127"/, "should offer the Green Bay number");
   assert.ok(!m.html.includes("dashboard"), "customer email leaks an internal link");
 });
+
+test("a rejected send is reported, not swallowed", async () => {
+  const { sendEmail } = await import("../src/lib/email/send.ts");
+  const saved = process.env.RESEND_API_KEY;
+
+  process.env.RESEND_API_KEY = "";
+  const noKey = await sendEmail({ to: "a@b.com", mail: renderSample("new_lead"), kind: "test" });
+  assert.equal(noKey.ok, false, "a missing key must not read as success");
+  assert.match(noKey.reason, /RESEND_API_KEY/);
+
+  /* The bug this guards. The Resend SDK resolves with { data: null, error }
+     rather than throwing, so a try/catch around it never fires and a rejected
+     send is indistinguishable from a delivered one. An invalid key exercises
+     exactly that path. */
+  process.env.RESEND_API_KEY = "re_invalid_key_used_only_by_this_test";
+  const rejected = await sendEmail({ to: "a@b.com", mail: renderSample("new_lead"), kind: "test" });
+  assert.equal(rejected.ok, false, "an API rejection must not read as success");
+  assert.ok(rejected.reason.length > 0, "a rejection must carry a reason");
+
+  if (saved === undefined) delete process.env.RESEND_API_KEY;
+  else process.env.RESEND_API_KEY = saved;
+});
