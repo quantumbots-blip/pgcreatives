@@ -45,7 +45,19 @@ export function formatPhone(phone: string | null | undefined): string {
   return `(${ten.slice(0, 3)}) ${ten.slice(3, 6)}-${ten.slice(6)}`;
 }
 
-/** What they asked for, in a form that reads naturally mid sentence. */
+/**
+ * What they asked for, in two voices.
+ *
+ * There is only one phrase per service but two people read it, and they are
+ * not in the same position. Writing to the customer, "your real estate shoot"
+ * is right. Describing that customer to the owner, the same words produce
+ * "Heather Zeitler wants your real estate shoot", which reads as if the shoot
+ * were already ours and she were after it.
+ *
+ * So: `subjectFor` stays second person and is only ever used in a message
+ * addressed to the customer. `serviceNoun` names the thing plainly and is
+ * what the owner's notification uses.
+ */
 export function subjectFor(service: string | null | undefined): string {
   switch (service) {
     case "Real Estate":
@@ -58,6 +70,22 @@ export function subjectFor(service: string | null | undefined): string {
       return "your social media content";
     default:
       return "the project you asked about";
+  }
+}
+
+/** The same request, named rather than addressed. For the owner's eyes. */
+export function serviceNoun(service: string | null | undefined): string {
+  switch (service) {
+    case "Real Estate":
+      return "real estate photography";
+    case "Commercial":
+      return "commercial work";
+    case "Personal Brand":
+      return "the Content Creator Program";
+    case "Social Media":
+      return "social media content";
+    default:
+      return "";
   }
 }
 

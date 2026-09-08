@@ -16,7 +16,7 @@ import {
   telHref,
   smsHref,
   mailtoHref,
-  subjectFor,
+  serviceNoun,
   formatPhone,
   type LeadLike,
 } from "@/lib/lead-messages";
@@ -71,7 +71,6 @@ export function newLeadEmail(d: NewLeadData): RenderedEmail {
      header: it breaks the plain text body's shape too. Newlines belong in the
      message field, which is rendered with nl2br on purpose. */
   const name = headerSafe(`${d.firstName} ${d.lastName}`) || "Someone";
-  const firstName = headerSafe(d.firstName) || name;
   const tel = telHref(d.phone);
   const sms = smsHref(lead);
   const mail = mailtoHref(lead);
@@ -79,23 +78,20 @@ export function newLeadEmail(d: NewLeadData): RenderedEmail {
   /* Call first, because it is the fastest way to win a real estate booking
      and the one the owner is least likely to do from an inbox. Text and email
      arrive already written. */
-  /* Calling is the action worth taking, so it gets the full width and the
-     only filled button. Text and email are the two alternatives to it and
-     pair naturally, which also keeps them wide enough for a long first name
-     where three across would not. Following up in the dashboard is a
-     different kind of act and sits on its own underneath.
+  /* Three ways to reach one person, so three equal buttons on one row.
+     The labels are one word each because the name is already in the heading
+     directly above them, and because "Call Heather" at full width beside two
+     half width buttons was three different sizes on one screen.
 
-     Four buttons stacked read as a form rather than a choice, which is what
-     this looked like before. */
-  const pair: Button[] = [];
-  if (sms) pair.push({ href: sms, label: "Send a text", style: "outline" });
-  if (mail) pair.push({ href: mail, label: "Reply by email", style: "outline" });
+     The dashboard is not urgent and does not need a button competing with
+     these, so it is a link underneath. */
+  const actions: Button[] = [];
+  if (tel) actions.push({ href: tel, label: "Call" });
+  if (sms) actions.push({ href: sms, label: "Text", style: "outline" });
+  if (mail) actions.push({ href: mail, label: "Email", style: "outline" });
 
-  const buttons: (Button | ButtonRow)[] = [];
-  if (tel) buttons.push({ href: tel, label: `Call ${firstName}` });
-  if (pair.length === 2) buttons.push({ row: pair });
-  else buttons.push(...pair);
-  buttons.push({ href: DASHBOARD_URL, label: "Follow up in the dashboard", style: "outline" });
+  const buttons: (Button | ButtonRow)[] =
+    actions.length > 1 ? [{ row: actions }] : actions;
 
   const prettyPhone = formatPhone(d.phone);
   const phoneHtml = d.phone
@@ -105,8 +101,12 @@ export function newLeadEmail(d: NewLeadData): RenderedEmail {
     ? `<a href="mailto:${esc(d.email)}" style="${linkStyle}">${esc(d.email)}</a>`
     : undefined;
 
+  /* Named, not addressed. "Heather Zeitler wants your real estate shoot"
+     borrowed the wording meant for writing TO Heather. */
+  const asked = serviceNoun(d.service);
+
   return render({
-    subject: `New lead: ${name}, ${subjectFor(d.service)}`,
+    subject: asked ? `New lead: ${name}, ${asked}` : `New lead: ${name}`,
     // Replying to the notification reaches the customer, which is what
     // anybody who hits reply on this is trying to do.
     replyTo: d.email || undefined,
@@ -114,8 +114,10 @@ export function newLeadEmail(d: NewLeadData): RenderedEmail {
     badgeTone: "signal",
     preheader: d.message
       ? d.message.replace(/\s+/g, " ").slice(0, 110)
-      : `${name} asked about ${subjectFor(d.service)}.`,
-    title: `${name} wants ${subjectFor(d.service)}`,
+      : asked
+        ? `${name} asked about ${asked}.`
+        : `${name} got in touch.`,
+    title: asked ? `${name} asked about ${asked}` : `${name} got in touch`,
     sub: d.phone
       ? "Call while it is fresh. The text and the email are already written."
       : "They left no number, so email is the way back to them.",
@@ -130,6 +132,7 @@ export function newLeadEmail(d: NewLeadData): RenderedEmail {
       row("Received", d.receivedAt ? when(d.receivedAt) : ""),
     ],
     buttons,
+    link: { href: DASHBOARD_URL, label: "Open the dashboard" },
     note: "Marking the lead Contacted in the dashboard is what keeps the reply time honest and stops it turning up on the Monday list.",
   });
 }
