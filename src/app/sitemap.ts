@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BUSINESS } from "@/lib/data";
+import { MARKETS } from "@/lib/markets";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = BUSINESS.url;
@@ -14,6 +15,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/services`, lastModified, changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/services/content-creator-program`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/portfolio`, lastModified, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/areas`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+    /* One entry per market. These target the searches with local intent,
+       which is where a service business actually competes. */
+    ...MARKETS.map((m) => ({
+      url: `${baseUrl}/areas/${m.slug}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
     { url: `${baseUrl}/contact`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/team`, lastModified, changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.2 },
