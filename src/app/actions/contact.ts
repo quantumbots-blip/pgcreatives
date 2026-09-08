@@ -2,7 +2,6 @@
 
 import crypto from "crypto";
 import { headers } from "next/headers";
-import { Resend } from "resend";
 import { checkBotId } from "botid/server";
 import {
   saveSubmission,
@@ -17,6 +16,7 @@ import { checkFormToken } from "@/lib/form-token";
 import { BUSINESS } from "@/lib/data";
 import { scoreSubmission, submissionFingerprint } from "@/lib/spam";
 import { newLeadEmail, leadConfirmationEmail } from "@/lib/email/templates";
+import { sendEmail } from "@/lib/email/send";
 import { sendPush } from "@/lib/push";
 import { subjectFor, formatPhone } from "@/lib/lead-messages";
 
@@ -272,22 +272,6 @@ export async function submitContactForm(
     return SILENT_SUCCESS;
   }
 
-  // Send email notification
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    // No API key. The submission is in the database, which is enough, unless
-    // the database is where the problem was.
-    return dbReachable
-      ? { success: true, error: null }
-      : {
-          success: false,
-          error: "Something went wrong. Please try again or call us directly.",
-          values,
-        };
-  }
-
-  const resend = new Resend(apiKey);
-
   const notification = newLeadEmail({
     firstName,
     lastName,
@@ -300,49 +284,31 @@ export async function submitContactForm(
     receivedAt: new Date().toISOString(),
   });
 
-  try {
-    await resend.emails.send({
-      from: "PG Creatives <noreply@pgcreativeswi.com>",
-      to: BUSINESS.email,
-      replyTo: notification.replyTo,
-      subject: notification.subject,
-      html: notification.html,
-      text: notification.text,
+  const sent = await sendEmail({ to: BUSINESS.email, mail: notification, kind: "new lead" });
+
+  /* An acknowledgement to the person who wrote in. Off unless the owner
+     turns it on, because it is his name on an email landing in a customer's
+     inbox and that is his decision to make, not a default. */
+  if (process.env.CONFIRM_LEADS === "1") {
+    await sendEmail({
+      to: email,
+      mail: leadConfirmationEmail({ firstName, service, message }),
+      replyTo: BUSINESS.email,
+      kind: "lead confirmation",
     });
+  }
 
-    /* An acknowledgement to the person who wrote in. Off unless the owner
-       turns it on, because it is his name on an email landing in a customer's
-       inbox and that is his decision to make, not a default. The dashboard
-       has a preview of exactly what it says. */
-    if (process.env.CONFIRM_LEADS === "1") {
-      const confirmation = leadConfirmationEmail({ firstName, service, message });
-      try {
-        await resend.emails.send({
-          from: "PG Creatives <noreply@pgcreativeswi.com>",
-          to: email,
-          replyTo: BUSINESS.email,
-          subject: confirmation.subject,
-          html: confirmation.html,
-          text: confirmation.text,
-        });
-      } catch (err) {
-        // The lead is safe either way. A failed courtesy note is not a
-        // reason to tell the visitor their message did not go through.
-        console.error("[contact] Confirmation to the visitor failed:", (err as Error).message);
-      }
-    }
-
-    return { success: true, error: null };
-  } catch (err) {
-    console.error("[contact] Email send failed:", (err as Error).message);
-    // If the lead is already in the database, telling the visitor it failed
-    // only invites a second copy of a message we have. It is only a real
-    // failure when neither the database nor the mail got it.
-    if (dbReachable) return { success: true, error: null };
+  /* The lead is in the database either way, so a failed notification is not
+     a reason to tell the visitor their message did not arrive and invite a
+     second copy of it. It IS a reason for a loud line in the logs, which
+     sendEmail has already written. The only real failure is losing both. */
+  if (!sent.ok && !dbReachable) {
     return {
       success: false,
       error: "Something went wrong. Please try again or call us directly.",
       values,
     };
   }
+
+  return { success: true, error: null };
 }
