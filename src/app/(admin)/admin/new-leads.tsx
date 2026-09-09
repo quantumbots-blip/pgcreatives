@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Clock, Building2, CheckCircle2, Ban } from "lucide-react";
+import { Building2, CheckCircle2, Ban, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Submission } from "@/lib/db";
 import { LeadActions } from "./lead-actions";
 import { FollowUp } from "./follow-up";
 import { markSpamAction, updateStatusAction } from "@/app/actions/admin";
-import { timeAgo, hoursSince, serviceLabel } from "./format";
+import { compactAge, hoursSince, serviceLabel, reachability } from "./format";
+import { formatPhone } from "@/lib/lead-messages";
 
 /**
  * The top of the dashboard: everyone who has written in and not been answered.
@@ -18,7 +19,7 @@ import { timeAgo, hoursSince, serviceLabel } from "./format";
  * so it comes first and every card carries the button that clears it.
  */
 
-/** Colour of the waiting badge. A lead going cold should look like one. */
+/** Color of the waiting badge. A lead going cold should look like one. */
 function ageTone(hours: number): { label: string; className: string } {
   if (hours < 4) return { label: "Just in", className: "bg-emerald-500/12 text-emerald-300" };
   if (hours < 24) return { label: "Today", className: "bg-[rgba(43,111,184,0.16)] text-signal-ink" };
@@ -100,6 +101,10 @@ export function NewLeads({ leads }: { leads: Submission[] }) {
             ? { label: "Follow up due", className: "bg-amber-500/12 text-amber-300" }
             : ageTone(hoursSince(lead.created_at));
           const isAnswered = answered.has(lead.id);
+          /* What they left you to reach them with. Two cards used to look
+             identical whether one had a phone number and the other had
+             nothing at all. */
+          const reach = reachability(lead);
           return (
             <li
               key={lead.id}
@@ -108,52 +113,111 @@ export function NewLeads({ leads }: { leads: Submission[] }) {
                 isAnswered && "opacity-60",
               )}
             >
-              <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+              <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="text-base font-semibold text-white">
+                  <p className="truncate text-base font-semibold text-white">
                     {lead.first_name} {lead.last_name}
                   </p>
                   <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
                     <span className="text-ink-2">{serviceLabel(lead.service)}</span>
-                    <span aria-hidden="true">&middot;</span>
-                    <span className="inline-flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {isDueFollowUp
-                        ? `you asked to revisit this, came in ${timeAgo(lead.created_at)}`
-                        : timeAgo(lead.created_at)}
-                    </span>
                     {lead.company && (
                       <>
                         <span aria-hidden="true">&middot;</span>
-                        <span className="inline-flex items-center gap-1">
-                          <Building2 className="h-3 w-3" />
-                          {lead.company}
+                        <span className="inline-flex min-w-0 items-center gap-1">
+                          <Building2 className="h-3 w-3 shrink-0" />
+                          <span className="truncate">{lead.company}</span>
                         </span>
+                      </>
+                    )}
+                    {isDueFollowUp && (
+                      <>
+                        <span aria-hidden="true">&middot;</span>
+                        <span>you asked to revisit this</span>
                       </>
                     )}
                   </p>
                 </div>
+                {/* The age lives in the badge rather than beside it. Every
+                    card used to say "5mo ago" in the line above a red chip
+                    reading "Going cold", which is one fact wearing two
+                    labels, and with six old leads on the page the chips were
+                    six identical red rectangles carrying nothing. The colour
+                    is the urgency and the number is the information. */}
                 <span
                   className={cn(
-                    "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium",
+                    "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium tabular-nums",
                     isAnswered ? "bg-white/[0.06] text-ink-3" : age.className,
                   )}
                 >
-                  {isAnswered ? "Answered" : age.label}
+                  {isAnswered ? "Answered" : `${age.label} · ${compactAge(lead.created_at)}`}
                 </span>
               </div>
 
+              {/* The number keeps its width and the address gives, rather
+                  than the pair wrapping onto two lines because the address is
+                  nine pixels too long for a 390px phone. A number is short,
+                  fixed and the thing you act on; an address ends in a domain
+                  you can lose the tail of and still recognise. */}
+              <div className="mt-2.5 flex items-center gap-x-3 text-xs">
+                {/* A number that will not dial is shown in the muted ink, so
+                    the line agrees with the buttons under it about whether
+                    this person can be called. */}
+                {reach.phone && (
+                  <span
+                    className={cn(
+                      "inline-flex shrink-0 items-center gap-1.5",
+                      reach.callable ? "text-ink-2" : "text-ink-3",
+                    )}
+                  >
+                    <Phone
+                      className={cn(
+                        "h-3 w-3 shrink-0",
+                        reach.callable ? "text-signal-ink" : "text-ink-3",
+                      )}
+                    />
+                    <span className="tabular-nums">{formatPhone(reach.phone)}</span>
+                  </span>
+                )}
+                {reach.email && (
+                  <span
+                    className="inline-flex min-w-0 flex-1 items-center gap-1.5 text-ink-2"
+                    title={reach.email}
+                  >
+                    <Mail className="h-3 w-3 shrink-0 text-signal-ink" />
+                    <span className="truncate">{reach.email}</span>
+                  </span>
+                )}
+                {/* Only ever shown when one of the two above is absent, so
+                    the row never has to hold all three at once. */}
+                {reach.gap && (
+                  <span
+                    className={cn(
+                      "shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium",
+                      reach.gap.className,
+                    )}
+                  >
+                    {reach.gap.label}
+                  </span>
+                )}
+              </div>
+
               {lead.message?.trim() && (
-                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-ink-2">
+                <p className="mt-2.5 line-clamp-2 text-sm leading-relaxed text-ink-2">
                   {lead.message}
                 </p>
               )}
 
-              <div className="mt-4 space-y-3">
+              <div className="mt-3.5">
                 <LeadActions
                   submission={lead}
                   onStatusChange={(id, status) => setAnsweredState(id, status === "contacted")}
                 />
+              </div>
+
+              {/* Follow up, Booked and Not a real lead used to be two stacked
+                  rows on top of a wrapped block of contact buttons, which is
+                  how one card reached 373px on a phone. They are one row. */}
+              <div className="-mx-2 mt-3 flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-line pt-2.5 text-xs">
                 <FollowUp
                   id={lead.id}
                   followUpAt={lead.follow_up_at}
@@ -164,9 +228,6 @@ export function NewLeads({ leads }: { leads: Submission[] }) {
                     if (isDueFollowUp && iso === null) drop(lead.id);
                   }}
                 />
-              </div>
-
-              <div className="-mx-2 mt-3 flex flex-wrap gap-2 border-t border-line pt-2 text-xs">
                 <button
                   type="button"
                   onClick={async () => {
@@ -187,7 +248,7 @@ export function NewLeads({ leads }: { leads: Submission[] }) {
                   className="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 text-ink-3 transition-colors hover:bg-white/[0.04] hover:text-red-300"
                 >
                   <Ban className="h-3.5 w-3.5" />
-                  Not a real lead
+                  Not a lead
                 </button>
               </div>
             </li>

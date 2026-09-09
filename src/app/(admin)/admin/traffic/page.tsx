@@ -14,6 +14,7 @@ import {
   Share2,
   Link2,
   Unlink,
+  ChevronDown,
 } from "lucide-react";
 import { verifySessionFull, getSessionEmail } from "@/lib/auth";
 import { ensureSchema, ensurePageViewsTable, getSubmissions } from "@/lib/db";
@@ -124,7 +125,7 @@ export default async function TrafficPage({
             </div>
 
             {/* Headline numbers */}
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <div className="grid auto-rows-fr grid-cols-2 gap-3 lg:grid-cols-4">
               <Stat
                 icon={Eye}
                 label="Views"
@@ -171,13 +172,21 @@ export default async function TrafficPage({
               />
             </div>
 
+            {/* A footnote, set as one. It was four lines of body copy in the
+                third most prominent position on the page, above every chart,
+                explaining a fault that is already fixed. */}
             {traffic.showVisitorAccuracyNote && (
-              <p className="rounded-lg border border-line bg-surface px-4 py-3 text-xs leading-relaxed text-ink-3">
-                Visitor counts before 7 September 2026 were overstated. The value identifying a
-                returning visitor was regenerated on every deploy, so one person could be counted
-                several times. Views, pages and referrers were never affected, and visitor figures
-                from that date on are accurate.
-              </p>
+              <details className="group rounded-lg border border-line bg-surface px-4 py-2.5">
+                <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[11px] text-ink-3 transition-colors marker:content-none hover:text-ink-2">
+                  <ChevronDown className="h-3.5 w-3.5 shrink-0 transition-transform group-open:rotate-180" />
+                  Visitor counts before 7 September 2026 were overstated
+                </summary>
+                <p className="mt-2 text-xs leading-relaxed text-ink-3">
+                  The value identifying a returning visitor was regenerated on every deploy, so
+                  one person could be counted several times. Views, pages and referrers were
+                  never affected, and visitor figures from that date on are accurate.
+                </p>
+              </details>
             )}
 
             {/* Daily */}
@@ -192,8 +201,13 @@ export default async function TrafficPage({
               />
             </Panel>
 
-            {/* Channels: traffic against leads */}
-            <div className="grid gap-6 lg:grid-cols-2">
+            {/* Channels: traffic against leads.
+                items-start because grid children stretch by default, and
+                until leads carry a source the right hand panel holds one
+                paragraph. Stretched, that paragraph sat in the middle of a
+                340px box of nothing, matching the height of the full panel
+                beside it for no reason. */}
+            <div className="grid items-start gap-6 lg:grid-cols-2">
               <Panel
                 title="Where visitors come from"
                 note="Hostnames grouped into channels, so Instagram's several link domains read as one line."
@@ -345,7 +359,11 @@ export default async function TrafficPage({
                   {traffic.devices.length === 0 ? (
                     <p className="text-xs text-ink-3">No data yet</p>
                   ) : (
-                    <div className="space-y-2">
+                  /* Laid out like the channel panels rather than as a row of
+                     tiny 40px bars, so two device rows carry their share of a
+                     column whose neighbours run to four hundred pixels, and
+                     so the count is on screen next to the percentage. */
+                  <div className="space-y-3">
                       {traffic.devices.map((d) => {
                         const total = traffic.devices.reduce((sum, v) => sum + v.count, 0);
                         const pct = total > 0 ? Math.round((d.count / total) * 100) : 0;
@@ -356,18 +374,17 @@ export default async function TrafficPage({
                               ? Tablet
                               : Monitor;
                         return (
-                          <div
-                            key={d.device}
-                            className="flex items-center gap-3 rounded-lg bg-surface-hi px-3 py-2"
-                          >
-                            <Icon className="h-3.5 w-3.5 shrink-0 text-signal-ink" />
-                            <span className="min-w-0 flex-1 truncate text-xs capitalize text-ink-2">
-                              {d.device}
-                            </span>
-                            <span className="shrink-0 text-[11px] tabular-nums text-ink-3">
-                              {pct}%
-                            </span>
-                            <div className="h-1.5 w-10 shrink-0 overflow-hidden rounded-full bg-white/[0.08] sm:w-16">
+                          <div key={d.device}>
+                            <div className="mb-1.5 flex items-center gap-2">
+                              <Icon className="h-3.5 w-3.5 shrink-0 text-signal-ink" />
+                              <span className="min-w-0 flex-1 truncate text-sm capitalize text-ink-2">
+                                {d.device}
+                              </span>
+                              <span className="shrink-0 text-xs tabular-nums text-ink-3">
+                                {d.count.toLocaleString()} ({pct}%)
+                              </span>
+                            </div>
+                            <div className="h-2 overflow-hidden rounded-full bg-white/[0.08]">
                               <div
                                 className="h-full rounded-full bg-signal"
                                 style={{ width: `${pct}%` }}

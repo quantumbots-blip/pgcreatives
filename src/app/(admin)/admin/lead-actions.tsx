@@ -75,9 +75,18 @@ export function LeadActions({
     }
   }
 
+  /* flex-1 with a zero basis rather than fixed padding, so four buttons share
+     a phone's width in one row instead of spilling Copy onto a second and
+     Follow up onto a third.
+
+     min-w-0 matters as much as the basis: a flex item will not shrink below
+     its own content by default, so on a 360px phone the four buttons pushed
+     the whole page four pixels wider than the screen rather than giving up
+     four pixels of padding between them. Below 360 there is genuinely not
+     room for four, and they become two rows of two. */
   const base = cn(
-    "inline-flex items-center justify-center gap-2 rounded-lg border font-medium transition-colors",
-    size === "md" ? "min-h-11 px-4 text-sm" : "min-h-9 px-3 text-xs",
+    "inline-flex min-w-0 flex-1 basis-0 items-center justify-center gap-1.5 rounded-lg border font-medium transition-colors",
+    size === "md" ? "min-h-11 px-2 text-sm sm:px-4" : "min-h-9 px-2 text-xs sm:px-3",
   );
   const primary = cn(base, "border-signal bg-signal text-white hover:bg-[#3179c4]");
   const secondary = cn(
@@ -85,49 +94,48 @@ export function LeadActions({
     "border-line bg-surface text-ink-2 hover:border-line-strong hover:text-ink",
   );
 
+  /* Whichever way of reaching this person actually exists is the filled
+     button. A lead with no number used to put a dead grey "No number" box in
+     the primary slot, which spent the most prominent thing on the card
+     saying that nothing could be done. The card's contact line carries the
+     absence now, and the button that does work is the one that stands out. */
+  const emailIsPrimary = !callHref && !!mailHref;
+
   return (
     <div className="space-y-2">
-      <div className="flex flex-wrap gap-2">
-        {callHref ? (
+      <div className="grid grid-cols-2 gap-2 min-[360px]:flex">
+        {callHref && (
           <a href={callHref} onClick={markContacted} className={primary}>
-            <Phone className="h-4 w-4" />
-            Call
+            <Phone className="h-4 w-4 shrink-0" />
+            <span className="truncate">Call</span>
           </a>
-        ) : (
-          <span
-            className={cn(base, "border-line bg-surface text-ink-3 cursor-not-allowed")}
-            title="This lead did not leave a phone number"
-          >
-            <Phone className="h-4 w-4" />
-            No number
-          </span>
         )}
 
         {textHref && (
           <a href={textHref} onClick={markContacted} className={secondary}>
-            <MessageSquare className="h-4 w-4" />
-            Text
+            <MessageSquare className="h-4 w-4 shrink-0" />
+            <span className="truncate">Text</span>
           </a>
         )}
 
-        {mailHref ? (
-          <a href={mailHref} onClick={markContacted} className={secondary}>
-            <Mail className="h-4 w-4" />
-            Email
-          </a>
-        ) : (
-          <span
-            className={cn(base, "border-line bg-surface text-ink-3 cursor-not-allowed")}
-            title="This lead did not leave an email address"
+        {mailHref && (
+          <a
+            href={mailHref}
+            onClick={markContacted}
+            className={emailIsPrimary ? primary : secondary}
           >
-            <Mail className="h-4 w-4" />
-            No email
-          </span>
+            <Mail className="h-4 w-4 shrink-0" />
+            <span className="truncate">Email</span>
+          </a>
         )}
 
         <button type="button" onClick={copyDetails} className={secondary}>
-          {copied ? <Check className="h-4 w-4 text-signal-ink" /> : <Copy className="h-4 w-4" />}
-          {copied ? "Copied" : "Copy"}
+          {copied ? (
+            <Check className="h-4 w-4 shrink-0 text-signal-ink" />
+          ) : (
+            <Copy className="h-4 w-4 shrink-0" />
+          )}
+          <span className="truncate">{copied ? "Copied" : "Copy"}</span>
         </button>
       </div>
 

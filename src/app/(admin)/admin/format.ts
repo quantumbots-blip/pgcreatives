@@ -1,3 +1,4 @@
+import { dialable } from "@/lib/lead-messages";
 import type { SubmissionStatus } from "@/lib/db";
 
 export function timeAgo(dateStr: string): string {
@@ -16,6 +17,53 @@ export function timeAgo(dateStr: string): string {
 
 export function hoursSince(dateStr: string): number {
   return (Date.now() - new Date(dateStr).getTime()) / 3_600_000;
+}
+
+/** timeAgo without the "ago", for when a label beside it already says when. */
+export function compactAge(dateStr: string): string {
+  return timeAgo(dateStr).replace(/ ago$/, "");
+}
+
+/**
+ * What this lead actually left you to reach them with.
+ *
+ * A card that shows a name and a message looks the same whether the person
+ * left a phone number or nothing at all, and the only way to find out used to
+ * be to tap Call and see. The numbers go on the card, and the gap is called
+ * out only when there is one: a lead with both is unremarkable and should not
+ * wear a badge saying so.
+ */
+export type Reach = {
+  phone: string | null;
+  /** Whether that number is one the phone can actually dial. */
+  callable: boolean;
+  email: string | null;
+  /** Null when the lead left both, so a complete lead carries no chip. */
+  gap: { label: string; className: string } | null;
+};
+
+export function reachability(sub: {
+  phone?: string | null;
+  email?: string | null;
+}): Reach {
+  const phone = sub.phone?.trim() || null;
+  const email = sub.email?.trim() || null;
+  /* The same test the Call button uses. A lead from Barcelona left nine
+     digits, which is a phone number everywhere except a tel: link, and the
+     card was showing the digits beside a row of buttons that had quietly
+     dropped Call and Text. One of the two was lying. */
+  const callable = dialable(phone) !== null;
+  let gap: Reach["gap"] = null;
+  if (!callable && !email) {
+    gap = { label: "No way to reach them", className: "bg-red-500/12 text-red-300" };
+  } else if (!callable) {
+    gap = phone
+      ? { label: "Number will not dial", className: "bg-amber-500/12 text-amber-300" }
+      : { label: "Email only", className: "bg-white/[0.06] text-ink-3" };
+  } else if (!email) {
+    gap = { label: "Phone only", className: "bg-white/[0.06] text-ink-3" };
+  }
+  return { phone, callable, email, gap };
 }
 
 export function fullDate(dateStr: string): string {

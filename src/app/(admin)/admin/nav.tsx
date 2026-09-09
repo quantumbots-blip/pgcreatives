@@ -25,15 +25,23 @@ export function AdminNav({ waiting, signedInAs }: { waiting: number; signedInAs?
   return (
     <header className="border-b border-line bg-surface">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:h-16 sm:px-6">
-        <div className="flex min-w-0 items-center gap-4 sm:gap-8">
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-white sm:text-base">PG Creatives</p>
+        {/* The brand used to sit in a min-w-0 box next to three tabs and a
+            sign out button, and on a 390px phone the flexbox took the space
+            it needed out of the only thing that would give: the name
+            collapsed to eight pixels, which read as a stray letter P. It
+            keeps its width now and the tabs scroll instead, since a tab row
+            that scrolls is a normal thing and a shredded logo is not. */}
+        <div className="flex min-w-0 items-center gap-2.5 sm:gap-8">
+          <div className="shrink-0">
+            <p className="text-[13px] font-semibold leading-tight text-white sm:text-base">
+              PG Creatives
+            </p>
             <p className="hidden truncate text-[11px] text-ink-3 sm:block" title={signedInAs ?? undefined}>
               {signedInAs ?? "Dashboard"}
             </p>
           </div>
 
-          <nav className="flex items-center gap-1">
+          <nav className="-mx-1 flex min-w-0 items-center gap-1 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {TABS.map((tab) => {
               const active =
                 tab.href === "/admin" ? pathname === "/admin" : pathname.startsWith(tab.href);
@@ -43,7 +51,7 @@ export function AdminNav({ waiting, signedInAs }: { waiting: number; signedInAs?
                   href={tab.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "inline-flex min-h-10 items-center gap-1.5 rounded-lg px-3 text-xs font-medium transition-colors sm:text-sm",
+                    "inline-flex min-h-10 shrink-0 items-center gap-1 rounded-lg px-2 text-xs font-medium transition-colors sm:gap-1.5 sm:px-3 sm:text-sm",
                     active
                       ? "bg-[rgba(43,111,184,0.16)] text-signal-ink"
                       : "text-ink-3 hover:bg-white/[0.04] hover:text-ink-2",
