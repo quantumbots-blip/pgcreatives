@@ -109,6 +109,49 @@ export type TrafficInsights = {
 /** When the salt was set and unique visitors started meaning something. */
 export const VISITOR_FIX_DATE = new Date("2026-09-07T00:00:00Z");
 
+/** The Wisconsin calendar day a moment falls on, as YYYY-MM-DD. */
+function dayKey(d: Date): string {
+  return d.toLocaleDateString("en-CA", { timeZone: BUSINESS_TZ });
+}
+
+/**
+ * Put back the days nothing happened.
+ *
+ * A GROUP BY only returns days that have rows, so a quiet Sunday does not
+ * come back as a zero, it does not come back at all. Handed to a chart that
+ * gives every entry an equal slice of the width, that silently redraws the
+ * calendar: thirty days with four quiet ones becomes twenty six evenly spaced
+ * columns, and the axis underneath still claims to span the month. At the
+ * extreme, one lead in thirty days was one column filling the entire panel,
+ * which read as a solid month of work.
+ *
+ * Stepping at noon UTC keeps the walk clear of both ends of a daylight saving
+ * change, where midnight can land on the same local day twice.
+ */
+export function densifyDays<T extends object>(
+  rows: ({ day: string } & T)[],
+  from: Date,
+  to: Date,
+  empty: T,
+): ({ day: string } & T)[] {
+  const seen = new Map(rows.map((r) => [r.day, r]));
+  const last = dayKey(to);
+  /* Both ends have to be resolved the same way. Taking the start from the
+     UTC components while the end came from dayKey made the range a day short
+     for most of the evening in Wisconsin, where the UTC date has already
+     rolled over and the local one has not. */
+  const cursor = new Date(`${dayKey(from)}T12:00:00Z`);
+  const out: ({ day: string } & T)[] = [];
+  // A generous ceiling rather than a while(true): all time is years, not eras.
+  for (let guard = 0; guard < 4000; guard++) {
+    const key = dayKey(cursor);
+    out.push(seen.get(key) ?? { day: key, ...empty });
+    if (key >= last) break;
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+  }
+  return out;
+}
+
 export async function getTrafficInsights(range: RangeKey): Promise<TrafficInsights> {
   const sql = getDb();
   const days = rangeDays(range);
@@ -236,11 +279,20 @@ export async function getTrafficInsights(range: RangeKey): Promise<TrafficInsigh
     leads: delta(leads, Number(leadTotals?.prev_leads ?? 0), priorStart !== null),
     // Rounded to one decimal: at this volume a whole number reads 0% forever.
     conversionPct: visitors > 0 ? Math.round((leads / visitors) * 1000) / 10 : null,
-    daily: dailyRows.map((r) => ({
-      day: String(r.day),
-      views: Number(r.views),
-      visitors: Number(r.visitors),
-    })),
+    /* On all time the window starts at the epoch, so the walk begins at the
+       first day actually recorded rather than in 1970. */
+    daily: densifyDays(
+      dailyRows.map((r) => ({
+        day: String(r.day),
+        views: Number(r.views),
+        visitors: Number(r.visitors),
+      })),
+      days === null
+        ? new Date(dailyRows.length > 0 ? `${dailyRows[0].day}T12:00:00Z` : Date.now())
+        : new Date(Date.now() - (days - 1) * 86_400_000),
+      new Date(),
+      { views: 0, visitors: 0 },
+    ),
     channels: CHANNEL_ORDER.filter((c) => byChannel.has(c)).map((c) => ({
       channel: c,
       views: byChannel.get(c)!.views,
@@ -359,7 +411,12 @@ export async function getLeadsByDay(days: number) {
     GROUP BY 1
     ORDER BY 1 ASC
   `;
-  return rows.map((r) => ({ day: String(r.day), count: Number(r.count) }));
+  return densifyDays(
+    rows.map((r) => ({ day: String(r.day), count: Number(r.count) })),
+    new Date(Date.now() - (days - 1) * 86_400_000),
+    new Date(),
+    { count: 0 },
+  );
 }
 
 /* ── Weekly summary ──────────────────────────────────────────────────── */

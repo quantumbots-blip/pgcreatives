@@ -61,11 +61,16 @@ export function Stat({
   delta?: number | null;
   invert?: boolean;
 }) {
+  /* Full height, with the number pinned to the top of what is left after the
+     label. "Visitors who write in" wraps to two lines on a phone where
+     "Views" takes one, which used to drag its own card taller than the one
+     beside it and leave the row of four sitting at two different heights.
+     The grids pair this with auto-rows-fr. */
   return (
-    <div className="rounded-xl border border-line bg-surface p-4">
-      <div className="flex items-center gap-2 text-ink-3">
-        <Icon className="h-4 w-4 shrink-0 text-signal-ink" />
-        <span className="text-[11px] uppercase tracking-[0.12em]">{label}</span>
+    <div className="flex h-full flex-col rounded-xl border border-line bg-surface p-4">
+      <div className="flex items-start gap-2 text-ink-3">
+        <Icon className="mt-px h-4 w-4 shrink-0 text-signal-ink" />
+        <span className="text-[11px] uppercase leading-[1.35] tracking-[0.12em]">{label}</span>
       </div>
       <div className="mt-2 flex flex-wrap items-baseline gap-2">
         <p
@@ -75,7 +80,10 @@ export function Stat({
         </p>
         {delta !== undefined && <DeltaChip pct={delta} invert={invert} />}
       </div>
-      {sub && <p className="mt-1 text-[11px] text-ink-3">{sub}</p>}
+      {/* mt-auto rather than mt-1 so the note sits on the floor of the card.
+          Cards in a row are the same height now, and a note that hangs in the
+          middle of one of them reads as a mistake. */}
+      {sub && <p className="mt-auto pt-1 text-[11px] leading-[1.4] text-ink-3">{sub}</p>}
     </div>
   );
 }
@@ -110,6 +118,16 @@ export function Panel({
  * which does not exist on a phone. Every chart here labels its ends and its
  * middle, which is enough to place any bar without crowding thirty labels
  * into three hundred pixels.
+ *
+ * A percentage height only means something when the box it is measured
+ * against has a height of its own. This chart used to put h-40 on the row and
+ * then ask each bar for a percentage of its immediate wrapper, which was a
+ * bare flex-1 div with no height at all: under items-end a wrapper is only as
+ * tall as what is inside it, and what was inside it was asking the wrapper how
+ * tall to be. The percentage resolved against nothing, fell back to auto, and
+ * every bar on both charts came out at the 3px floor, identical whether the
+ * day had four views or eighty. The wrappers now stretch to the full height of
+ * the row, so the percentage has a real number underneath it.
  */
 export function BarChart({
   data,
@@ -131,14 +149,31 @@ export function BarChart({
   };
   const midIndex = Math.floor((data.length - 1) / 2);
 
+  /* All time is around one bar per day since March, and a 2px gap between
+     bars that thin spends more of the row on gaps than on data. */
+  const gap = data.length <= 40 ? 2 : data.length <= 90 ? 1 : 0;
+
   return (
     <div>
-      <div className={`flex items-end gap-[2px] ${height}`}>
+      <div
+        className={`flex items-stretch border-b border-line ${height}`}
+        style={{ gap: `${gap}px` }}
+      >
         {data.map((d) => (
-          <div key={d.day} className="group relative flex-1" title={d.hint}>
+          <div
+            key={d.day}
+            className="group flex h-full flex-1 flex-col justify-end"
+            title={d.hint}
+          >
             <div
               className="w-full rounded-t bg-signal transition-colors group-hover:bg-signal-ink"
-              style={{ height: `${(d.value / max) * 100}%`, minHeight: "3px" }}
+              style={{
+                height: `${(d.value / max) * 100}%`,
+                /* A floor keeps a quiet day visible, but only a day that
+                   actually had something. A day with no visits at all is not
+                   a short bar, it is no bar. */
+                minHeight: d.value > 0 ? "2px" : undefined,
+              }}
             />
           </div>
         ))}

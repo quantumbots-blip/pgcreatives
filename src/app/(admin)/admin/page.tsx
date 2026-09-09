@@ -156,7 +156,7 @@ export default async function AdminDashboard() {
         </div>
 
         {/* ── The numbers ── */}
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="grid auto-rows-fr grid-cols-2 gap-3 lg:grid-cols-4">
           <Stat
             icon={Sparkles}
             value={needsReply.length}

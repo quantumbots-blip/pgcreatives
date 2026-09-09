@@ -55,8 +55,12 @@ export function FollowUp({
      means two cards never disagree about what time it is. */
   const isDue = current === followUpAt && initiallyDue;
 
+  /* A fragment rather than a wrapper, so the parent can lay the button out
+     beside other buttons while the choices, when they open, take a line of
+     their own. Wrapped in a div the four intervals had to wrap inside the
+     button's own width and came out as a narrow stack. */
   return (
-    <div>
+    <>
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
@@ -92,7 +96,7 @@ export function FollowUp({
       </div>
 
       {open && (
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="flex w-full basis-full flex-wrap gap-2">
           {CHOICES.map((c) => (
             <button
               key={c.days}
@@ -105,6 +109,6 @@ export function FollowUp({
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 }

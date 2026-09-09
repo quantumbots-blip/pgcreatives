@@ -28,6 +28,25 @@ function hourLabel(hour: number): string {
   return hour < 12 ? `${hour}am` : `${hour - 12}pm`;
 }
 
+/**
+ * The colour of a cell at a given position on the scale.
+ *
+ * The ramp used to vary alpha alone, from 0.14 to 1, over a near black
+ * panel. Fading one colour toward the background compresses everything into
+ * the dark end: a quiet cell and a busy one both read as navy, which is why
+ * three views and seventy two looked alike. Lightness carries the scale now,
+ * climbing from the accent to the lighter ink value the design system already
+ * uses for accented text, with alpha only helping at the bottom.
+ */
+function cellColor(intensity: number): string {
+  const lerp = (from: number, to: number) => Math.round(from + (to - from) * intensity);
+  const r = lerp(43, 106);
+  const g = lerp(111, 176);
+  const b = lerp(184, 212);
+  const alpha = (0.22 + intensity * 0.78).toFixed(3);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 export function VisitorHeatmap({ grid }: { grid: number[][] }) {
   const bucketed = grid.map((row) =>
     BUCKETS.map((b) => row.slice(b.from, b.to).reduce((sum, n) => sum + n, 0)),
@@ -102,9 +121,7 @@ export function VisitorHeatmap({ grid }: { grid: number[][] }) {
                         className="h-7 rounded"
                         style={{
                           backgroundColor:
-                            count === 0
-                              ? "rgba(255,255,255,0.04)"
-                              : `rgba(43,111,184,${(0.14 + intensity * 0.86).toFixed(3)})`,
+                            count === 0 ? "rgba(255,255,255,0.04)" : cellColor(intensity),
                         }}
                       />
                     </td>
@@ -116,13 +133,29 @@ export function VisitorHeatmap({ grid }: { grid: number[][] }) {
         </table>
       </div>
 
+      {/* A sentence saying the quietest cell is 3 and the busiest is 72 does
+          not tell you which shade is which. The ramp itself does. */}
+      <div className="mt-3 flex items-center gap-2 text-[11px] tabular-nums text-ink-3">
+        <span>{floor.toLocaleString()}</span>
+        <div className="flex gap-[3px]">
+          {[0, 0.25, 0.5, 0.75, 1].map((t) => (
+            <div
+              key={t}
+              className="h-3 w-5 rounded-sm"
+              style={{ backgroundColor: cellColor(t) }}
+            />
+          ))}
+        </div>
+        <span>{peak.toLocaleString()} views</span>
+      </div>
+
       <p className="mt-3 text-xs leading-relaxed text-ink-2">
         Busiest hour is <span className="text-white">{DAYS[bestDay]}</span> around{" "}
         <span className="text-white">{hourLabel(bestHour)}</span>, Wisconsin time.
       </p>
       <p className="mt-1 text-[11px] text-ink-3">
         Worth knowing before scheduling a post, since Instagram sends more people here than
-        search does. Darkest cell {floor.toLocaleString()} views, lightest {peak.toLocaleString()}.
+        search does.
       </p>
     </div>
   );
