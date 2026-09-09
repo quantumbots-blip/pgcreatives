@@ -129,7 +129,18 @@ export function LeadActions({
           </a>
         )}
 
-        <button type="button" onClick={copyDetails} className={secondary}>
+        {/* Desktop only. Four labelled buttons do not fit a phone: sharing
+            292px between them leaves 67px each where "Email" needs 72, and
+            they came out reading "C…", "Te…", "E…". Copy is also the one of
+            the four a phone needs least, now that the number and the address
+            are printed on the card and the other three act on them directly.
+            It is worth its place on a desktop, where the details are being
+            pasted somewhere else. */}
+        <button
+          type="button"
+          onClick={copyDetails}
+          className={cn(secondary, "hidden sm:inline-flex")}
+        >
           {copied ? (
             <Check className="h-4 w-4 shrink-0 text-signal-ink" />
           ) : (

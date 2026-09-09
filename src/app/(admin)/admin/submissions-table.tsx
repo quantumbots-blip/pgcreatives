@@ -620,7 +620,10 @@ export function SubmissionsTable({
                               First answered {fullDate(sub.contacted_at)}
                             </p>
                           )}
-                          <div className="mt-3">
+                          {/* FollowUp is a fragment, so the container supplies
+                              the gap between its button and the intervals it
+                              opens, the same way the card list does. */}
+                          <div className="mt-3 flex flex-wrap items-center gap-2">
                             <FollowUp
                               id={sub.id}
                               followUpAt={sub.follow_up_at}
