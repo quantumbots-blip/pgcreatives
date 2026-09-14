@@ -198,7 +198,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         </AnimateOnScroll>
 
         {videos.length > 0 && (
-          <div className="mt-12 sm:mt-16">
+          <div className="block-gap">
             <h2 className="meta border-b border-line pb-4">
               Films <span className="text-ink-3">({videos.length})</span>
             </h2>

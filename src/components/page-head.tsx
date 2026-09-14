@@ -25,7 +25,7 @@ export function PageHead({
   meta?: ReactNode;
 }) {
   return (
-    <section className="section-tight">
+    <section className="section-head-page">
       <div className="shell">
         <div className="page-head">
           <DisplayLines as="h1" className="display-1 text-white" lines={lines} entrance />

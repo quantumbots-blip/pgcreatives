@@ -199,7 +199,7 @@ export default async function ContentCreatorProgramPage() {
             lede="You show up and be yourself. Everything on either side of that is ours."
           />
 
-          <ol className="mt-12 sm:mt-16">
+          <ol className="block-gap">
             {whatWeDoItems.map((item, i) => (
               <AnimateOnScroll
                 key={item}
@@ -271,7 +271,7 @@ export default async function ContentCreatorProgramPage() {
             lede="Strategy, filming, editing, and coaching are in all three. The tier sets how much you get each month."
           />
 
-          <div className="scene mt-12 grid gap-5 sm:mt-16 lg:grid-cols-3 lg:gap-4">
+          <div className="scene block-gap grid gap-5 lg:grid-cols-3 lg:gap-4">
             {tiers.map((tier, i) => (
               <AnimateOnScroll
                 key={tier.name}
@@ -304,7 +304,7 @@ export default async function ContentCreatorProgramPage() {
         <div className="shell">
           <SectionHead lines={["Why this program", "is different."]} />
 
-          <dl className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 lg:grid-cols-3">
+          <dl className="block-gap grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-3">
             {differences.map((d, i) => (
               <AnimateOnScroll
                 key={d.title}

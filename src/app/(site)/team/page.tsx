@@ -259,7 +259,7 @@ export default function TeamPage() {
             lede="Four things every shoot is held to, whoever is behind the camera that day."
           />
 
-          <dl className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="block-gap grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
             {values.map((value, i) => (
               <AnimateOnScroll
                 key={value.title}

@@ -150,7 +150,7 @@ export default function HomePage() {
       {/* ── Track record ──────────────────────────────────────────────────
           A hairline-bounded strip rather than three floating numbers. It
           reads as one row of evidence and takes a fraction of the height. */}
-      <section className="pb-[calc(var(--section-y)/1.6)] pt-[calc(var(--section-y)/4)]">
+      <section className="pb-[calc(var(--section-y)/2.6)] pt-[calc(var(--section-y)/3)]">
         <div className="shell">
           <dl className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-12">
             {stats.map((stat, i) => (
@@ -182,7 +182,7 @@ export default function HomePage() {
             lede="Listing media for agents, production for businesses, and a monthly program for the agents who want to be known."
           />
 
-          <div className="mt-12 grid grid-cols-1 gap-5 sm:mt-16 sm:gap-4 md:grid-cols-3">
+          <div className="block-gap grid grid-cols-1 gap-5 sm:gap-4 md:grid-cols-3">
             {services.map((service, i) => (
               <AnimateOnScroll key={service.title} animation="depth" delay={i * 0.1} className="scene h-full">
                 <Tilt className="h-full">
@@ -239,7 +239,7 @@ export default function HomePage() {
               lead frame runs full width and the other four sit in a 2x2. The
               four-column bento waits for 1024: below that its small tiles
               measured 168x126 at 768 and 138x104 at 640. */}
-          <div className="scene mt-12 grid grid-cols-1 gap-3 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
+          <div className="scene block-gap grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
             {photos.map((photo, i) => (
               <AnimateOnScroll
                 key={photo.alt}
@@ -326,7 +326,7 @@ export default function HomePage() {
             lede="Green Bay and Madison book online in a minute. Anything else, send the details and we quote it the same day."
           />
 
-          <div className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-4">
+          <div className="block-gap grid gap-5 sm:grid-cols-2 sm:gap-4">
             {portals.map((portal, i) => (
               <AnimateOnScroll key={portal.name} animation="depth" delay={i * 0.1} className="scene h-full">
                 <Tilt className="h-full" max={6} lift={20}>

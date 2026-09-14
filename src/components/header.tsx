@@ -131,8 +131,8 @@ function DesktopDropdown({
         aria-expanded={open}
         aria-haspopup="true"
         className={cn(
-          "flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
-          isActive ? "bg-white/[0.08] text-white" : "text-white/78 hover:text-white hover:bg-white/[0.05]"
+          "nav-link flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
+          isActive ? "nav-link-active text-white" : "text-white/[0.82] hover:bg-white/[0.07] hover:text-white"
         )}
       >
         {item.name}
@@ -147,7 +147,7 @@ function DesktopDropdown({
           open ? "visible opacity-100 translate-y-0" : "invisible opacity-0 -translate-y-1"
         )}
       >
-        <div className="glass glass-panel overflow-hidden rounded-2xl p-1.5 backdrop-blur-2xl backdrop-saturate-150">
+        <div className="glass glass-panel overflow-hidden rounded-2xl p-1.5 backdrop-blur-2xl backdrop-saturate-[1.7]">
           {item.children.map((child) => {
             const Icon = child.icon;
             return child.external ? (
@@ -313,7 +313,7 @@ export function Header() {
           {/* From lg, not md: at 768 the capsule was nearly the full viewport
               and crowded the wordmark. Tablets take the menu instead. */}
           <nav className="hidden items-center lg:flex">
-            <div className="glass flex items-center gap-0.5 rounded-full p-1 pl-2 backdrop-blur-xl backdrop-saturate-150 lg:backdrop-blur-2xl">
+            <div className="glass flex items-center gap-0.5 rounded-full p-1.5 pl-2.5 backdrop-blur-2xl backdrop-saturate-[1.7] backdrop-brightness-[0.36]">
               {navigation.map((item) =>
                 item.children ? (
                   <DesktopDropdown
@@ -336,7 +336,7 @@ export function Header() {
                       "nav-link rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
                       isSectionActive(item.href, pathname)
                         ? "nav-link-active text-white"
-                        : "text-white/78 hover:text-white"
+                        : "text-white/[0.82] hover:bg-white/[0.07] hover:text-white"
                     )}
                   >
                     {item.name}
@@ -344,7 +344,7 @@ export function Header() {
                 )
               )}
 
-              <span className="mx-1.5 h-5 w-px bg-line" aria-hidden="true" />
+              <span className="nav-divider mx-2" aria-hidden="true" />
 
               <ClientLoginMenu
                 open={openMenu === "login"}
@@ -353,7 +353,7 @@ export function Header() {
                 }
               />
 
-              <Link href="/#book" className="btn btn-primary ml-1 !px-5 !py-2 !text-sm">
+              <Link href="/#book" className="btn btn-primary nav-cta ml-1 !px-5 !py-2 !text-sm">
                 Book a shoot
               </Link>
             </div>
@@ -363,7 +363,7 @@ export function Header() {
           <button
             ref={hamburgerRef}
             onClick={() => setMobileOpen((v) => !v)}
-            className="glass relative z-50 flex h-11 w-11 items-center justify-center rounded-full backdrop-blur-xl backdrop-saturate-150 lg:hidden"
+            className="glass relative z-50 flex h-11 w-11 items-center justify-center rounded-full backdrop-blur-xl backdrop-saturate-[1.7] backdrop-brightness-[0.36] lg:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
@@ -519,7 +519,7 @@ function ClientLoginMenu({
         onClick={() => onOpenChange(!open)}
         aria-expanded={open}
         aria-haspopup="true"
-        className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-white/78 transition-colors hover:text-white"
+        className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-white/[0.82] transition-colors hover:bg-white/[0.07] hover:text-white"
       >
         Client login
         <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-200", open && "rotate-180")} />
@@ -530,7 +530,7 @@ function ClientLoginMenu({
           open ? "visible opacity-100 translate-y-0" : "invisible opacity-0 -translate-y-1"
         )}
       >
-        <div className="glass glass-panel overflow-hidden rounded-2xl p-1.5 backdrop-blur-2xl backdrop-saturate-150">
+        <div className="glass glass-panel overflow-hidden rounded-2xl p-1.5 backdrop-blur-2xl backdrop-saturate-[1.7]">
           {clientLogins.map((portal) => (
             <a
               key={portal.href}

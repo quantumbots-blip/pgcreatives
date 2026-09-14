@@ -174,7 +174,7 @@ export function Footer() {
         </div>
 
         {/* ── Bottom Bar ── */}
-        <div className="mt-12 sm:mt-16 border-t border-line pt-6 sm:pt-8">
+        <div className="block-gap border-t border-line pt-6 sm:pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-center text-xs text-ink-3 sm:text-left">
               &copy; {new Date().getFullYear()} {BUSINESS.legalName}. All rights reserved.
