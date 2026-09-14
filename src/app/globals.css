@@ -558,13 +558,15 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   padding-block: calc(var(--section-y) / 4);
 }
 
-/* The opening of an inner page.
+/* The opening of an inner page. Named for `.page-head` below, not for
+   `.section-head` — it is the section that HOLDS a page head, not a
+   variant of the section-heading primitive.
 
    It is not a section-tight: it needs MORE air above than a mid-page
    section (it is the first thing under a fixed header, and a 100px h1
    sitting 30px below the nav crowds it) and LESS below (the head and the
    first section are one thought). */
-.section-head-page {
+.page-head-section {
   padding-block: calc(var(--section-y) * 0.58) calc(var(--section-y) * 0.32);
 }
 
