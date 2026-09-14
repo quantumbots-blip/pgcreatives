@@ -129,6 +129,13 @@
      desktop and leaves small screens exactly where they were. */
   --section-y: clamp(7.5rem, 11vw, 13rem);
   --block-y: clamp(3rem, 5.5vw, 6.5rem);
+  /* Between two sibling GROUPS inside one section, each with its own small
+     heading: the films grid and the stills grid, or the intro and the
+     stages. It has to sit clearly between the other two, or a reader cannot
+     tell a new group from a new section by the gap alone. Two places used a
+     hardcoded 80px here, which at 1440 was within a pixel of --block-y: the
+     gap opening a group and the gap inside it measured the same. */
+  --group-y: calc(var(--block-y) * 1.6);
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 
   --background: #07090c;
@@ -578,6 +585,10 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   margin-top: var(--block-y);
 }
 
+.group-gap {
+  margin-top: var(--group-y);
+}
+
 .shell {
   margin-inline: auto;
   width: 100%;
@@ -698,11 +709,20 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 
 /* The utility face. Camera metadata, not decoration: these labels carry
    location, sequence, and category — information the reader can use. */
+/* The small caps label.
+
+   `line-height: 1` was chosen for a label that sits on one line, and most
+   do. But this is 11px set in caps at 0.15em, and on a phone it wraps
+   constantly: a team member's role runs to three lines, "Most booked" to
+   two, the portfolio counts to two. At a leading of 1 those lines have
+   NOTHING between them, so they stack into a solid block. 1.4 is the
+   reading leading for caps at this size; single-line labels grow by 4px,
+   which is the cost of the ones that wrap being legible. */
 .meta {
   font-family: var(--font-display);
   font-size: 0.6875rem;
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.4;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--ink-3);
@@ -756,6 +776,18 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   font-size: 0.8125rem;
   color: var(--ink-2);
   transition: color 0.2s ease, gap 0.2s ease;
+  /* The text box is 21px tall. It clears SC 2.5.8 on the spacing exception,
+     since nothing else is within 24px of it, but a thumb still has to find
+     21px of link. The hit area is extended to 44px by an overlay rather
+     than by padding, because this link is aligned to a heading's baseline
+     and padding would push it off. */
+  position: relative;
+}
+
+.rule-link::after {
+  content: "";
+  position: absolute;
+  inset: -0.75rem -0.5rem;
 }
 
 .rule-link:hover { color: var(--signal-ink); gap: 0.75rem; }
@@ -867,9 +899,13 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   justify-content: center;
   gap: 0.5rem;
   border-radius: 999px;
-  /* Smaller on a phone. The desktop padding on a full-width button reads as a
-     slab; this still clears the 44px touch target with room to spare. */
-  padding: 0.8125rem 1.5rem;
+  /* The tap target is a MINIMUM, not something derived from the padding.
+     It used to be 13px of padding chosen to land the box near 44px, which
+     put an odd number into the spacing scale and left the real constraint
+     unstated. 44px is WCAG 2.5.5 (AAA), well past the 24px that 2.5.8 asks
+     for at AA, and it is the figure both Apple and Material use. */
+  min-height: 2.75rem;
+  padding: 0.75rem 1.5rem;
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -883,7 +919,8 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 @media (min-width: 640px) {
   .btn {
     gap: 0.625rem;
-    padding: 0.9375rem 1.75rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.75rem;
     font-size: 0.9375rem;
   }
 }
@@ -1039,8 +1076,8 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
     0 0 0 3px rgba(43, 111, 184, 0.22);
 }
 
-.field-input { height: 3.125rem; padding-inline: 1rem; }
-.field-area { min-height: 7.5rem; padding: 0.9375rem 1rem; resize: none; }
+.field-input { height: 3rem; padding-inline: 1rem; }
+.field-area { min-height: 7.5rem; padding: 0.75rem 1rem; resize: none; }
 
 .field-label {
   display: block;
@@ -1048,7 +1085,7 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
      it names are one object; the gap between fields is what separates them.
      This was 0.625rem against a 1.5rem field gap, close enough that the
      column read as one undifferentiated stack. */
-  margin-bottom: 0.4375rem;
+  margin-bottom: 0.5rem;
   font-family: var(--font-display);
   font-size: 0.6875rem;
   font-weight: 600;

@@ -112,7 +112,7 @@ export default function ContactPage() {
                               min-content width, so the email still sized its column
                               and pushed the card past a 320px viewport.
                               `overflow-wrap: anywhere` is the one that does. */}
-                          <p className="mt-1.5 text-sm text-ink-2 transition-colors [overflow-wrap:anywhere]">
+                          <p className="mt-1.5 text-sm leading-relaxed text-ink-2 transition-colors [overflow-wrap:anywhere]">
                             {item.value}
                           </p>
                         </div>

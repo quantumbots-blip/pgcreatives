@@ -359,7 +359,7 @@ export default function HomePage() {
                   <p className="display-2 relative mt-4 !text-[clamp(2rem,3.4vw,2.9rem)] text-white">
                     {portal.name}
                   </p>
-                  <p className="relative mt-3 flex-1 text-sm text-ink-2">{portal.areas}</p>
+                  <p className="relative mt-3 flex-1 text-sm leading-relaxed text-ink-2">{portal.areas}</p>
                   <span className="btn btn-solid relative mt-8 self-start !py-3 !text-sm">
                     Book a session
                     <ArrowUpRight className="arrow h-4 w-4" />
