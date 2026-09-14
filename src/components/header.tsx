@@ -237,6 +237,19 @@ export function Header() {
      the menu's contents become `visibility: hidden`, so `document.activeElement`
      fell back to <body> and Tab restarted from the top of the document. */
   const restoreFocus = useRef(false);
+  /* ...but only for someone who is actually using the keyboard.
+
+     Moving focus programmatically is what put a visible focus ring on the
+     menu button after a TAP: the ring is correct for a keyboard user and
+     reads as a rendering bug to everyone else. `event.detail` is 0 when a
+     button's click came from Enter or Space and 1 or more when it came from
+     a real pointer, which is the only reliable way to tell them apart.
+
+     Skipping the move costs a touch user nothing. The background is `inert`
+     while the menu is open, so the first Tab lands inside the menu whether
+     or not we put it there, and once the menu is closed there is nothing to
+     return from. */
+  const byKeyboard = useRef(false);
 
   useEffect(() => {
     if (!mobileOpen) {
@@ -244,7 +257,7 @@ export function Header() {
       setBackgroundInert(false);
       if (restoreFocus.current) {
         restoreFocus.current = false;
-        hamburgerRef.current?.focus();
+        if (byKeyboard.current) hamburgerRef.current?.focus();
       }
       return;
     }
@@ -254,10 +267,13 @@ export function Header() {
     restoreFocus.current = true;
 
     // Move focus into the menu so the first Tab continues inside it.
-    menuRef.current?.querySelector<HTMLElement>("a, button")?.focus();
+    if (byKeyboard.current) menuRef.current?.querySelector<HTMLElement>("a, button")?.focus();
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMobileOpen(false);
+      if (e.key !== "Escape") return;
+      // Escape is the keyboard, whatever opened the menu.
+      byKeyboard.current = true;
+      setMobileOpen(false);
     };
     document.addEventListener("keydown", onKey);
     return () => {
@@ -362,7 +378,10 @@ export function Header() {
           {/* Mobile hamburger */}
           <button
             ref={hamburgerRef}
-            onClick={() => setMobileOpen((v) => !v)}
+            onClick={(e) => {
+              byKeyboard.current = e.detail === 0;
+              setMobileOpen((v) => !v);
+            }}
             className="glass relative z-50 flex h-11 w-11 items-center justify-center rounded-full backdrop-blur-xl backdrop-saturate-[1.7] backdrop-brightness-[0.36] lg:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
