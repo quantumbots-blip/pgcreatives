@@ -66,8 +66,8 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
                 )}
                 sizes={
                   portrait
-                    ? "(min-width: 1360px) 400px, (min-width: 640px) 31vw, 50vw"
-                    : "(min-width: 1360px) 400px, (min-width: 1024px) 31vw, (max-width: 640px) 100vw, 50vw"
+                    ? "(min-width: 1360px) 28vw, (min-width: 640px) 31vw, 50vw"
+                    : "(min-width: 1360px) 28vw, (min-width: 1024px) 31vw, (max-width: 640px) 100vw, 50vw"
                 }
               />
             )}

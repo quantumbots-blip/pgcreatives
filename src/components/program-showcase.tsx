@@ -89,7 +89,7 @@ export async function ProgramShowcaseDeck() {
                   alt={reel.alt}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 1024px) 30vw, 210px"
+                  sizes="(max-width: 1024px) 30vw, 12vw"
                 />
                 <span className="absolute inset-0 rounded-[1.75rem] ring-1 ring-inset ring-white/10" />
               </figure>

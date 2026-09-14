@@ -102,8 +102,8 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
             )}
             sizes={
               videosPortrait
-                ? "(min-width: 1360px) 240px, (min-width: 1024px) 19vw, (max-width: 640px) 50vw, 33vw"
-                : "(min-width: 1360px) 400px, (min-width: 1024px) 31vw, (max-width: 640px) 100vw, 50vw"
+                ? "(min-width: 1360px) 18vw, (min-width: 1024px) 19vw, (max-width: 640px) 50vw, 33vw"
+                : "(min-width: 1360px) 28vw, (min-width: 1024px) 31vw, (max-width: 640px) 100vw, 50vw"
             }
           />
         )}
@@ -155,13 +155,14 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
           alt={project.title}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-          /* Pixel caps above the breakpoint, not `vw`. `.shell` plateaus at
-             1280px, so a `25vw` claim at 1440 asked for 360px for a box that
-             renders 272 — one whole rendition step too large, on every tile. */
+          /* Back to `vw` above the breakpoint. The pixel caps here were
+             right while `.shell` plateaued at 1280px; it grows with the
+             viewport now, so a fixed 280px claim served a 640px rendition
+             into a box that renders 496 on a 1440p display. */
           sizes={
             canSpan(project, i, all.length)
-              ? "(min-width: 1360px) 580px, (min-width: 1024px) 40vw, (max-width: 640px) 100vw, 50vw"
-              : "(min-width: 1360px) 280px, (min-width: 1024px) 20vw, (max-width: 640px) 100vw, 33vw"
+              ? "(min-width: 1360px) 42vw, (min-width: 1024px) 40vw, (max-width: 640px) 100vw, 50vw"
+              : "(min-width: 1360px) 21vw, (min-width: 1024px) 20vw, (max-width: 640px) 100vw, 33vw"
           }
         />
       )}
