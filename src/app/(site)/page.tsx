@@ -26,7 +26,6 @@ const services = [
   {
     title: "Real estate",
     href: "/services#real-estate",
-    meta: "Listings",
     description:
       "Photography, listing video, drone, and 3D tours. Everything a listing needs to go live looking its best.",
     image: "/images/marble-kitchen-dining.jpg",
@@ -34,7 +33,6 @@ const services = [
   {
     title: "Commercial",
     href: "/services#commercial",
-    meta: "Business",
     description:
       "Media for businesses outside real estate. Interiors, facilities, brand film, and the stills that go with them.",
     image: "/images/twilight-wooded-exterior.jpg",
@@ -43,7 +41,6 @@ const services = [
   {
     title: "Personal brand",
     href: "/services/content-creator-program",
-    meta: "Monthly program",
     description:
       "A monthly content program that keeps you visible in your market between listings. Strategy, filming, editing, coaching.",
     image: "/images/dark-home-office.jpg",
@@ -152,7 +149,7 @@ export default function HomePage() {
           reads as one row of evidence and takes a fraction of the height. */}
       <section className="pb-[calc(var(--section-y)/2.6)] pt-[calc(var(--section-y)/3)]">
         <div className="shell">
-          <dl className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-12">
+          <dl className="mx-auto grid max-w-[72rem] grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-12">
             {stats.map((stat, i) => (
               <AnimateOnScroll
                 key={stat.label}
@@ -202,8 +199,11 @@ export default function HomePage() {
                       style={service.objectPosition ? { objectPosition: service.objectPosition } : undefined}
                       sizes="(min-width: 1360px) 400px, (min-width: 768px) 31vw, 100vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f1319] via-[#0f1319]/25 to-transparent" />
-                    <p className="meta absolute bottom-4 left-5">{service.meta}</p>
+                    {/* The gradient stays after the kicker went: it is what
+                        lands the photograph on the card's own surface
+                        instead of ending on a hard edge. Shorter now that
+                        it has no label to carry. */}
+                    <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0f1319] to-transparent" />
                   </div>
 
                   <div className="flex flex-1 flex-col p-6 lg:p-7">
@@ -239,7 +239,7 @@ export default function HomePage() {
               lead frame runs full width and the other four sit in a 2x2. The
               four-column bento waits for 1024: below that its small tiles
               measured 168x126 at 768 and 138x104 at 640. */}
-          <div className="scene block-gap grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
+          <div className="scene block-gap grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 3xl:gap-4">
             {photos.map((photo, i) => (
               <AnimateOnScroll
                 key={photo.alt}
@@ -290,7 +290,7 @@ export default function HomePage() {
                   className="display-2 text-white"
                   lines={["Grow the brand,", "not just the listing."]}
                 />
-                <p className="lede mt-6 max-w-lg">
+                <p className="lede mt-6 max-w-xl">
                   A monthly program built around consistency, strategy, and
                   results. We handle strategy, filming, editing, and coaching.
                   You show up and be yourself.

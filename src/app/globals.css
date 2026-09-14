@@ -4,6 +4,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Past Tailwind's 2xl (1536). The shell keeps growing to 2100px, and a
+     grid that stops adding columns just makes its cards enormous. */
+  --breakpoint-3xl: 1800px;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-poppins), "Poppins Fallback", ui-sans-serif, system-ui, sans-serif;
@@ -600,11 +604,39 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   margin-top: var(--group-y);
 }
 
+/* The container.
+
+   Up to 1440 the viewport is what bounds the content, so the shell fills
+   the screen minus its gutters: 89% of a 1440 display. Past that the old
+   fixed 80rem froze while the screen kept growing, and the proportion
+   collapsed — 67% of a 1920 monitor, 50% of a 1440p one, which is what
+   made a wide window read as a column of content stranded in the middle
+   of a black page.
+
+   It holds the proportion instead now. The floor keeps every width up to
+   1440 exactly where it was; past that the shell grows with the viewport
+   and stops at 2100px, which is as wide as this content should ever be
+   asked to span.
+
+     1440   1280 (unchanged)     1920   1661     2560   2100
+     1600   1408                 2100   1804
+
+   Widening the container does NOT widen the reading measures inside it:
+   every lede and body column keeps its own max-width, so the extra room
+   goes to the grids and the pictures, which is what it is for. */
 .shell {
   margin-inline: auto;
   width: 100%;
-  max-width: 80rem;
+  max-width: clamp(80rem, 8.75rem + 79.2vw, 131.25rem);
   padding-inline: var(--gutter);
+}
+
+/* A narrower shell, for a section whose content is a single reading
+   column rather than a grid. Nothing should be asked to span 2100px of
+   running text. */
+.shell-narrow {
+  max-width: min(100%, 68rem);
+  margin-inline: auto;
 }
 
 /* ── Type ──────────────────────────────────────────────────────────────
@@ -615,7 +647,11 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .display-1 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.6rem, 7vw, 6.25rem);
+  /* The cap used to land at 1429px, which is where a 7vw curve reaches
+     100px. Past that the heading was frozen while the shell kept growing,
+     so on a 1920 or 1440p monitor it read small against the page it was
+     opening. It reaches 120px at 1714 now and holds there. */
+  font-size: clamp(2.6rem, 7vw, 7.5rem);
   line-height: 1.0;
   letter-spacing: -0.02em;
   text-wrap: balance;
@@ -636,7 +672,20 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .hero-display {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(3.05rem, 11.4vw, 8.25rem);
+  /* Two curves, and the switch between them is the point.
+
+     Up to 1440 this is the curve that was tuned against the footage and
+     signed off: 11.4vw, topping out at 132px. Past that the cap used to
+     hold while the screen kept growing, so on a 2560 monitor the headline
+     spanned a third of the frame it is supposed to fill. The inner clamp
+     takes over above the cap and keeps it growing, flatter, to 192px.
+
+       390   49    1024  117    1440  132    1920  159    2560  201
+
+     `min` picks whichever curve is lower, so the original one governs
+     everything up to its cap and the flatter one governs after it; the
+     outer `max` is the phone floor. */
+  font-size: max(3.05rem, min(11.4vw, clamp(8.25rem, 2rem + 6.6vw, 12rem)));
   line-height: 0.94;
   letter-spacing: -0.042em;
   text-wrap: balance;
@@ -704,7 +753,20 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .display-2 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2rem, 4.4vw, 3.75rem);
+  /* Two curves, like the hero, and for a harder reason than taste.
+
+     4.4vw hit its 60px cap at 1364, so on a wide monitor every section
+     heading was still set for a 1364px page. But this heading sits in the
+     1.7fr column of `.section-head`, and that ratio was chosen so a
+     22-character authored line holds at 60px. Simply raising the cap broke
+     the line breaks: at 1440 "Three ways we put your" needs 870px in a
+     715px column, and wrapped.
+
+     So it holds 60px through the widths where the column is narrow, and
+     only grows once the column has the room: 66px at 1920 in a 955px
+     column, 76px at 2560 in a 1232px column. Verified against every
+     authored line on the site at nine widths. */
+  font-size: max(2rem, min(4.4vw, clamp(3.75rem, 2.34rem + 1.51vw, 4.75rem)));
   line-height: 1.06;
   letter-spacing: -0.018em;
   text-wrap: balance;
@@ -713,7 +775,7 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .display-3 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.375rem, 2vw, 1.875rem);
+  font-size: clamp(1.375rem, 2vw, 2.25rem);
   line-height: 1.18;
   letter-spacing: -0.012em;
 }
@@ -1098,6 +1160,14 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
     inset 3px 0 0 var(--signal),
     0 1px 0 rgba(255, 255, 255, 0.06) inset,
     0 0 0 3px rgba(43, 111, 184, 0.22);
+}
+
+/* A form column stops growing long before the page does. A 949px first-name
+   field is not more usable than a 420px one, it just looks stretched, and at
+   2560 the message box was running to 1922px. */
+.form-column {
+  width: 100%;
+  max-width: 46rem;
 }
 
 .field-input { height: 3rem; padding-inline: 1rem; }
@@ -1634,7 +1704,12 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
-  max-width: 30rem;
+  /* Was a flat 30rem, which left its column three quarters empty once the
+     shell started growing. It fills the column it is given now, up to a
+     point past which a 9:16 reel stops being a phone and starts being a
+     poster. */
+  width: 100%;
+  max-width: min(100%, 44rem);
   margin-inline: auto;
   perspective: 1400px;
 }
@@ -1645,7 +1720,10 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
    held up. Desktop only: on a phone three side-by-side cards are already
    narrow, and raking them makes the outer two unreadable. */
 @media (min-width: 640px) {
-  .reel-deck { gap: 1rem; max-width: 34rem; }
+  /* From sm it fills its column rather than sitting at a fixed width: on a
+     wide monitor the two-column block's right half was three quarters
+     empty. Capped where a 9:16 reel stops reading as a phone. */
+  .reel-deck { gap: 1rem; max-width: min(100%, 44rem); }
   .reel-card-0 { transform: rotateY(15deg) translate3d(14px, 22px, -70px); }
   .reel-card-1 { transform: translate3d(0, -10px, 30px); z-index: 2; }
   .reel-card-2 { transform: rotateY(-15deg) translate3d(-14px, 22px, -70px); }
@@ -2042,7 +2120,7 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 }
 
 .section-head-lede {
-  max-width: 28rem;
+  max-width: 32rem;
 }
 
 .section-head-link {

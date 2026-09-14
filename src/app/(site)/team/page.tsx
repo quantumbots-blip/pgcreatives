@@ -215,7 +215,7 @@ export default function TeamPage() {
               </div>
             </AnimateOnScroll>
             <AnimateOnScroll animation="rise" delay={0.1}>
-              <div className="space-y-6 text-base leading-relaxed text-ink-2 sm:text-lg">
+              <div className="max-w-[46rem] space-y-6 text-base leading-relaxed text-ink-2 sm:text-lg">
                 <p>
                   I started PG Creatives at 19 years old with a simple goal: create
                   better media for real estate and help agents stand out in a

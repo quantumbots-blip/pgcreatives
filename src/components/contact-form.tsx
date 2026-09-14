@@ -82,7 +82,7 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
   }
 
   return (
-    <form ref={formRef} action={submitWithSource} className="space-y-6 sm:space-y-8">
+    <form ref={formRef} action={submitWithSource} className="form-column space-y-6 sm:space-y-8">
       {/* Honeypot, hidden from humans, filled by bots.
 
           Sized down to a pixel. A default text input is about 318px wide, and

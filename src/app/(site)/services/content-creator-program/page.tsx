@@ -330,7 +330,7 @@ export default async function ContentCreatorProgramPage() {
             <div className="surface flex flex-col items-start gap-8 p-8 sm:p-12 lg:flex-row lg:items-center lg:justify-between lg:p-16">
               <div>
                 <DisplayLines
-                  className="display-2 max-w-lg text-white"
+                  className="display-2 max-w-[min(100%,40rem)] text-white"
                   lines={["Ready to grow", "your brand?"]}
                 />
                 <p className="lede mt-5 max-w-md">
