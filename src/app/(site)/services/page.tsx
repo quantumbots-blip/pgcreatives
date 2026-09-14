@@ -139,7 +139,7 @@ export default function ServicesPage() {
                     {service.includes.map((item) => (
                       <li
                         key={item}
-                        className="flex items-start gap-3 py-2 text-sm text-ink-2"
+                        className="flex items-start gap-3 py-2 text-sm leading-relaxed text-ink-2"
                       >
                         <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal-ink" />
                         {item}
@@ -152,7 +152,7 @@ export default function ServicesPage() {
                       {service.cta.label}
                       <ArrowRight className="arrow h-4 w-4" />
                     </Link>
-                    <p className="text-sm text-ink-3">{service.note}</p>
+                    <p className="text-sm leading-relaxed text-ink-3">{service.note}</p>
                   </div>
                 </div>
               </AnimateOnScroll>

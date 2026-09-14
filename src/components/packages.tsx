@@ -75,7 +75,7 @@ export function Packages() {
         {/* Outside the grid. As a fourth grid child this note landed in the
             first column under PG Core, a third of the width it needed. */}
         <AnimateOnScroll animation="fade-up" delay={0.1}>
-          <p className="mt-8 max-w-2xl text-sm text-ink-3">
+          <p className="mt-8 max-w-xl text-sm leading-relaxed text-ink-3">
             Package pricing scales with square footage and varies slightly
             between our Green Bay and Madison markets. Send us the address and
             we&apos;ll confirm the exact number.

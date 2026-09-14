@@ -219,7 +219,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         )}
 
         {photos.length > 0 && (
-          <div className="mt-20 sm:mt-20">
+          <div className="group-gap">
             <h2 className="meta border-b border-line pb-4">
               Stills <span className="text-ink-3">({photos.length})</span>
             </h2>
