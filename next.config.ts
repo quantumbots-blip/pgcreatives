@@ -10,7 +10,16 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 2560],
+    /* Nothing above 1920. Not one source in `public/images` is wider than
+       1920px and the Vimeo posters are 1280, so a 2048 or 2560 rendition is
+       byte-for-byte the 1920 one — it cannot carry more detail than its
+       master. Adding them bought no sharpness and cost a cold, oversized
+       transform for every full-width tile on a 2x tablet: below `lg` the
+       bento's big tile claims `100vw`, so at 1023 CSS it asked for 2046 and
+       was handed the new 2048 step instead of 1920. That is the only thing
+       that changed at that width, and it is where the tile came back
+       blank. */
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     minimumCacheTTL: 31536000,
     remotePatterns: [
