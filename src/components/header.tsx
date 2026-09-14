@@ -301,7 +301,7 @@ export function Header() {
         )}
       >
         <ScrollProgress />
-        <div className="mx-auto flex h-16 max-w-[80rem] items-center justify-between px-[var(--gutter)] lg:h-20">
+        <div className="shell flex h-16 items-center justify-between lg:h-20">
           {/* The wordmark, cropped to its artwork. The old file was the 3D
               mark centred in a canvas that was mostly transparent, so at the
               header's size the brand rendered about 33px wide: the smallest
@@ -313,7 +313,7 @@ export function Header() {
               alt="PG Creatives"
               width={366}
               height={77}
-              className="h-[22px] w-auto lg:h-[26px]"
+              className="h-[24px] w-auto lg:h-[30px]"
               loading="eager"
             />
           </Link>
@@ -329,7 +329,7 @@ export function Header() {
           {/* From lg, not md: at 768 the capsule was nearly the full viewport
               and crowded the wordmark. Tablets take the menu instead. */}
           <nav className="hidden items-center lg:flex">
-            <div className="glass flex items-center gap-0.5 rounded-full p-1.5 pl-2.5 backdrop-blur-2xl backdrop-saturate-[1.7] backdrop-brightness-[0.36]">
+            <div className="glass flex items-center gap-0.5 rounded-full p-1 pl-2 backdrop-blur-2xl backdrop-saturate-[1.7] backdrop-brightness-[0.36]">
               {navigation.map((item) =>
                 item.children ? (
                   <DesktopDropdown

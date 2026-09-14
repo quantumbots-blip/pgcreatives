@@ -197,7 +197,7 @@ export default function HomePage() {
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                       style={service.objectPosition ? { objectPosition: service.objectPosition } : undefined}
-                      sizes="(min-width: 1360px) 400px, (min-width: 768px) 31vw, 100vw"
+                      sizes="(min-width: 1360px) 28vw, (min-width: 768px) 31vw, 100vw"
                     />
                     {/* The gradient stays after the kicker went: it is what
                         lands the photograph on the card's own surface
@@ -257,8 +257,8 @@ export default function HomePage() {
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   sizes={
                     photo.className
-                      ? "(min-width: 1360px) 600px, (min-width: 1024px) 47vw, 100vw"
-                      : "(min-width: 1360px) 300px, (min-width: 1024px) 23vw, (min-width: 640px) 47vw, 100vw"
+                      ? "(min-width: 1360px) 42vw, (min-width: 1024px) 47vw, 100vw"
+                      : "(min-width: 1360px) 21vw, (min-width: 1024px) 23vw, (min-width: 640px) 47vw, 100vw"
                   }
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#07090c]/90 to-transparent p-4 pt-10 opacity-0 transition-opacity duration-400 group-hover:opacity-100">
@@ -345,8 +345,8 @@ export default function HomePage() {
                     <Image
                       src="/images/wisconsin-outline.png"
                       alt=""
-                      width={128}
-                      height={137}
+                      width={256}
+                      height={274}
                       className="h-full w-auto invert"
                     />
                     <span
@@ -371,7 +371,12 @@ export default function HomePage() {
           </div>
 
           <AnimateOnScroll animation="depth" delay={0.15}>
-            <div className="surface surface-raised quote-panel mt-4 p-6 sm:p-9 lg:p-12">
+            {/* Two columns from lg: the ask on the left, the form on the
+                right. Stacked, the form has a maximum useful width and the
+                panel does not, so on a wide screen the right two thirds of
+                it were empty. Side by side, the panel is filled by the two
+                things it is actually made of. */}
+            <div className="surface surface-raised quote-panel mt-4 grid gap-10 p-6 sm:p-9 lg:grid-cols-[0.85fr_1fr] lg:items-start lg:gap-16 lg:p-12 xl:gap-20">
               <div className="relative max-w-lg">
                 <p className="meta meta-signal">Not sure which package?</p>
                 {/* Was body-grey and the largest thing in the panel at once,
@@ -384,7 +389,7 @@ export default function HomePage() {
                   recommendation, usually the same day.
                 </p>
               </div>
-              <div className="relative mt-10">
+              <div className="relative">
                 <ContactForm />
               </div>
             </div>

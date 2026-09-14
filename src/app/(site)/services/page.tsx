@@ -166,7 +166,7 @@ export default function ServicesPage() {
                     alt={service.imageAlt}
                     fill
                     className="object-cover"
-                    sizes="(min-width: 1360px) 580px, (min-width: 1024px) 40vw, 100vw"
+                    sizes="(min-width: 1360px) 42vw, (min-width: 1024px) 40vw, 100vw"
                   />
                 </div>
                 </Tilt>
