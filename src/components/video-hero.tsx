@@ -439,7 +439,12 @@ export function VideoHero() {
         className="hero-parallax-content relative z-10 w-full pb-14 pt-24 sm:pb-28 sm:pt-32 lg:pb-32"
       >
         <div className="shell">
-          <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+          {/* Wide enough that the two authored lines never wrap. `max-w-4xl` was
+              sized for a headline that stopped growing at 132px; at 192px on a
+              2560 monitor "grade media." needs about 1270px and was breaking
+              into two. The lede and the button row carry their own widths, so
+              this only governs the headline. */}
+          <div className="mx-auto flex max-w-[min(100%,84rem)] flex-col items-center text-center">
             <p className="animate-hero-fade-up meta hero-markets flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 text-white/70">
               {/* All four markets in the same gray. Green Bay used to carry
                   the accent, which read as a ranking the owner never meant. */}
