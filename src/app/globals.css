@@ -617,11 +617,26 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
    background to text would erase the line completely. */
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .hero-sheen {
+    /* The reserve on `.line-mask` above stops the mask clipping the "g", but
+       a clipped background is bounded by the painting element's own padding
+       box, not by the mask's. At `line-height: 0.94` Poppins puts the tail of
+       the "g" about 0.155em below this span's box, and the part that hangs
+       past it has no gradient to be clipped to — so it paints nothing and the
+       descender is sliced off flat. Reserving the space here gives the
+       gradient somewhere to exist; the negative margin keeps the reserve out
+       of layout, and it stays inside the mask's 0.26em so nothing is cut.
+
+       The stops are the same ramp rescaled by 0.94/1.16, so the gradient
+       lands on the letterforms exactly where it did before the padding
+       stretched the box, and holds its end colour through the descender. */
+    padding-bottom: 0.22em;
+    margin-bottom: -0.22em;
     background-image: linear-gradient(
       168deg,
       #ffffff 0%,
-      #ffffff 34%,
-      #dbeaf6 68%,
+      #ffffff 27.6%,
+      #dbeaf6 55.1%,
+      #8dbcdf 81%,
       #8dbcdf 100%
     );
     -webkit-background-clip: text;
