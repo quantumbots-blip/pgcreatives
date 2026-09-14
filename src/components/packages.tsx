@@ -48,7 +48,7 @@ export function Packages() {
           lede="Everything a listing needs is already in the package: photography, video, drone, and the extras that usually get billed separately. Anything bigger gets a custom quote."
         />
 
-        <div className="scene mt-12 grid gap-5 sm:mt-16 lg:grid-cols-3 lg:gap-4">
+        <div className="scene block-gap grid gap-5 lg:grid-cols-3 lg:gap-4">
           {packages.map((pkg, i) => (
             <AnimateOnScroll
               key={pkg.title}

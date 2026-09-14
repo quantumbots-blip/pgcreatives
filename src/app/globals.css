@@ -113,8 +113,22 @@
   --signal-dim: rgba(43, 111, 184, 0.16);
   --brand-deep: #0b2c56;
 
-  /* One vertical rhythm for the whole site. */
-  --section-y: clamp(7.5rem, 9vw, 10rem);
+  /* One vertical rhythm for the whole site, in two steps.
+
+     --section-y is the gap BETWEEN sections. --block-y is the gap INSIDE
+     one, between a heading and the content it introduces, and it is
+     deliberately about half of --section-y: that ratio is what tells a
+     reader the heading and the grid under it are one thought while the
+     next heading is a new one.
+
+     Both grew on 2026-09-14. The section gap used to top out at 160px,
+     which was set before the display scale went to 100px — a heading
+     block taller than the air above it reads as crammed, and on a wide
+     desktop the whole page ran together. The phone floor is unchanged:
+     the vw term only overtakes it past about 1130px, so this loosens the
+     desktop and leaves small screens exactly where they were. */
+  --section-y: clamp(7.5rem, 11vw, 13rem);
+  --block-y: clamp(3rem, 5.5vw, 6.5rem);
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 
   --background: #07090c;
@@ -544,6 +558,26 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   padding-block: calc(var(--section-y) / 4);
 }
 
+/* The opening of an inner page. Named for `.page-head` below, not for
+   `.section-head` — it is the section that HOLDS a page head, not a
+   variant of the section-heading primitive.
+
+   It is not a section-tight: it needs MORE air above than a mid-page
+   section (it is the first thing under a fixed header, and a 100px h1
+   sitting 30px below the nav crowds it) and LESS below (the head and the
+   first section are one thought). */
+.page-head-section {
+  padding-block: calc(var(--section-y) * 0.58) calc(var(--section-y) * 0.32);
+}
+
+/* The gap between a heading and the content it introduces. One token, so
+   it moves with the rhythm — this used to be `mt-12 sm:mt-16` repeated in
+   eleven files, which pinned it to 64px however large the section gap or
+   the display type around it grew. */
+.block-gap {
+  margin-top: var(--block-y);
+}
+
 .shell {
   margin-inline: auto;
   width: 100%;
@@ -676,8 +710,14 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 
 .meta-signal { color: var(--signal-ink); }
 
+/* The supporting line under a heading.
+
+   1.15vw only reached its 19px cap past 1650px, so on an ordinary desktop
+   the lede was setting at 16.5px beside a 100px display face — a caption
+   next to a headline rather than the second half of the same thought.
+   It tops out at 20px now, and gets there at 1480. */
 .lede {
-  font-size: clamp(1rem, 1.15vw, 1.1875rem);
+  font-size: clamp(1.0625rem, 1.35vw, 1.25rem);
   line-height: 1.6;
   color: var(--ink-2);
   text-wrap: pretty;
@@ -784,18 +824,32 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .viewfinder:hover > .vf-b::before { inset: auto auto var(--vf-inset-hover) var(--vf-inset-hover); opacity: 0.9; }
 .viewfinder:hover > .vf-b::after { inset: auto var(--vf-inset-hover) var(--vf-inset-hover) auto; opacity: 0.9; }
 
-/* The hero frame starts behind the fixed header, so its top marks have to
-   clear the header row — at the default 14px they sat either side of the
-   logo and read as a rendering glitch rather than as a frame. The hero's
-   marks are also fixed: they are the page's frame, not a hover affordance. */
+/* The hero's marks are fixed rather than a hover affordance: they are the
+   page's frame, and a frame with three corners in one place and the fourth
+   somewhere else is not a frame.
+
+   All four used to sit at the same inset from their own edge EXCEPT the top
+   two, which were pushed down past the fixed header — 112px in from the top
+   against 32px in from the sides, so the frame read as lopsided and the top
+   marks looked like they belonged to some other element.
+
+   From lg the top marks go where they belong, level with the sides, and the
+   inset is tightened to clear the wordmark and the nav capsule at every
+   width that shows them: the marks span 18px from a 16-22px inset, the
+   header's own content starts at the gutter (40px), so nothing meets.
+
+   Below lg they still clear the header row. There the wordmark and the menu
+   button sit hard against the gutter — at 390px the gutter is 20px and a
+   mark at the corner would be drawn straight through the logo. */
 .viewfinder-hero {
-  --vf-inset: clamp(16px, 3vw, 32px);
+  --vf-inset: clamp(14px, 1.6vw, 22px);
   --vf-inset-top: calc(4rem + clamp(16px, 3vw, 32px));
   --vf-inset-hover: var(--vf-inset);
 }
 
 @media (min-width: 1024px) {
-  .viewfinder-hero { --vf-inset-top: calc(5rem + clamp(16px, 3vw, 32px)); }}
+  .viewfinder-hero { --vf-inset-top: var(--vf-inset); }
+}
 
 .viewfinder-hero:hover::before { inset: var(--vf-inset-top) auto auto var(--vf-inset); opacity: 0.55; }
 .viewfinder-hero:hover::after { inset: var(--vf-inset-top) var(--vf-inset) auto auto; opacity: 0.55; }
@@ -1141,20 +1195,29 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   /* Two knobs, moved together, so the strip scales as a unit. The gap is not
      simply `scale x 2.25rem`: a phone is showing about two logos at a time, and
      at the desktop gap it would be showing one and a half with a hole either
-     side. It closes faster than the artwork does. */
-  --logo-scale: 0.72;
-  --logo-gap: 2rem;
+     side. It closes faster than the artwork does.
+
+     Scaled up on 2026-09-14. At 1.0 the brokerage marks sat at about 27px of
+     ink between a 100px display face above and 3.25rem of air either side,
+     so the one piece of proof on the fold read as a footnote. */
+  --logo-scale: 0.85;
+  --logo-gap: 2.25rem;
+  /* Set per breakpoint alongside the two above, because the animation runs
+     one half in one duration: widening the artwork also speeds the strip
+     up. Each value holds the tuned ~90px/s at the half width that
+     breakpoint produces (4231 / 5375 / 6847px, measured). */
+  --marquee-run: 48s;
   overflow: hidden;
   -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
   mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
 
 @media (min-width: 640px) {
-  .marquee { --logo-scale: 0.85; --logo-gap: 2.625rem; }
+  .marquee { --logo-scale: 1.05; --logo-gap: 3rem; --marquee-run: 60s; }
 }
 
 @media (min-width: 1024px) {
-  .marquee { --logo-scale: 1; --logo-gap: 3.25rem; }
+  .marquee { --logo-scale: 1.3; --logo-gap: 4rem; --marquee-run: 76s; }
 }
 
 .marquee-track {
@@ -1163,11 +1226,10 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
      translating -50% is exactly one half and the loop is seamless whatever
      the content measures. */
   width: max-content;
-  /* Tied to the half's width, not chosen for its own sake. The animation runs
-     one half in one duration, so widening the gaps also speeds the strip up:
-     the 52s that gave 91px/s at the old spacing gave 104px/s once the half
-     grew to 5385px. 60s puts it back. */
-  animation: marquee-run 60s linear infinite;
+  /* Tied to the half's width, not chosen for its own sake — see
+     --marquee-run above. The 52s that gave 91px/s at the old spacing gave
+     104px/s once the half grew to 5385px. */
+  animation: marquee-run var(--marquee-run, 60s) linear infinite;
   will-change: transform;
 }
 
@@ -1204,7 +1266,9 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .marquee-logo {
   height: calc(var(--h) * var(--logo-scale));
   width: auto;
-  opacity: 0.65;
+  /* A third larger, so a little quieter: at 0.65 the bigger artwork started
+     competing with the stats above it for the same glance. */
+  opacity: 0.58;
 }
 
 @keyframes marquee-run {
@@ -1434,8 +1498,15 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   position: relative;
 }
 
+/* A well, not a tint. The fill alone was a flat rectangle of white at 8%,
+   which on glass is indistinguishable from a hover state; the two inset
+   lines give it a lit top edge and a shadowed bottom one, so the item reads
+   as pressed into the material. */
 .nav-link-active {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 .nav-link-active::after {
@@ -1448,6 +1519,41 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   border-radius: 999px;
   background: var(--signal);
   transform: translateX(-50%);
+}
+
+/* The divider between browsing and acting. A flat 1px of --line (8% white)
+   over glass was invisible, so "Client login" read as detached from
+   nothing. A hairline that fades out at both ends carries the break without
+   drawing a rule across the bar. */
+.nav-divider {
+  width: 1px;
+  height: 1.375rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* The CTA inset in the nav bar.
+
+   `.btn-primary` carries a 1px ring and a 30px glow, which is right for a
+   button standing alone on the page and wrong for one sitting 6px inside
+   another pill's rim: the two edges read as a double outline with a halo
+   between them. In here it keeps its fill and takes the same lit-from-above
+   edge as the bar around it. */
+.nav-cta.btn-primary {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.nav-cta.btn-primary:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 2px 10px -2px rgba(43, 111, 184, 0.6);
 }
 
 /* The bar tightens as the page scrolls: a header that behaves is a small
@@ -1665,63 +1771,63 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 }
 
 /* ── Glass ─────────────────────────────────────────────────────────────
-   The header used to be an 85%-opaque bar running the full width of the
-   page — a hard slab on a site with no other hard edges, which is what made
-   it read as bolted on rather than part of the page.
+   The controls float in this material rather than sitting on a bar.
 
-   Now the controls float in this material instead. Three things make it
-   read as glass rather than as a grey box: the backdrop is blurred AND
-   saturated, so colour from the page bleeds through and the pill picks up
-   whatever is behind it; the fill is a top-to-bottom gradient, so it catches
-   light like a curved surface; and a bright inset line along the top edge
-   gives it a specular highlight. */
+   Rebuilt 2026-09-14. The previous version painted a white gradient onto a
+   base that was already 72% opaque, which is not how dark glass works: two
+   light sources, one of them invented, over a fill you could not see
+   through. It read as a grey plastic capsule with a hairline drawn all the
+   way round it.
+
+   What makes this read as glass instead:
+
+   1. THE DARKENING HAPPENS IN THE BACKDROP, NOT ON TOP OF IT. The pill
+      carries `backdrop-brightness` — an ND filter over the lens, which is
+      the right instrument for a site about cameras. The picture behind is
+      dimmed and desaturated toward the glass rather than hidden under
+      paint, so hue still comes through and white labels keep a contrast
+      floor over the brightest frame of the hero. That is what lets the
+      fill below drop to a third of its old opacity. Measured against a
+      pure white viewport behind the header, which is worse than anything
+      the site can actually put there: the resting label reads 4.84:1 on
+      the desktop capsule and 5.57:1 on the phone's menu button. Darken
+      with the filter, never with the fill — the fill is what turns glass
+      back into a grey slab.
+   2. ONE LIGHT, FROM ABOVE. The rim is bright along the top, gone by the
+      middle, and turns to shadow at the bottom edge — an object lit from
+      the page, not glowing from inside. The old rim ended BRIGHTER at the
+      bottom-right than it started, which is what made the capsule look
+      like it was floating and lit from nowhere.
+   3. NO INTERIOR BLOOM. What is left is the blur, the saturation, and two
+      shadows: a tight contact shadow and a wide ambient one.
+
+   The utilities that go with it live on the element (Lightning CSS drops a
+   hand-written `backdrop-filter`, so every part of the filter has to be a
+   Tailwind class): `backdrop-blur-2xl backdrop-saturate-[1.7]
+   backdrop-brightness-[0.36]`. */
 
 .glass {
-  /* A dark base UNDER the highlight gradient. Glass that is only a white
-     tint disappears over a bright photograph and takes the white label text
-     with it — measured unreadable over the lit interiors in the work grid.
-     The base keeps a floor under the text; the blur and the saturation are
-     what still make it read as glass rather than as a grey box. */
   position: relative;
-  /* The sheen is deliberately faint. Apple's dark material does not paint
-     white onto the glass; it darkens what is behind, blurs it hard, and lets
-     the light that survives come THROUGH. Painting a 0.10 gradient on top of
-     a half-transparent base is what read as shiny — two light sources, one of
-     them fake. This is a third of what it was, over a base that is darker and
-     more opaque, so the pill sits down into the page instead of floating on
-     it lit from nowhere. */
-  background:
-    linear-gradient(
-      165deg,
-      rgba(255, 255, 255, 0.035) 0%,
-      rgba(255, 255, 255, 0.018) 38%,
-      rgba(255, 255, 255, 0.008) 62%,
-      rgba(255, 255, 255, 0.022) 100%
-    ),
-    rgba(6, 8, 11, 0.72);
+  /* A cool graphite tint, thin enough to see through. The brightness filter
+     under it is what holds the contrast floor, so this only has to carry
+     the colour of the material. */
+  background-color: rgba(10, 14, 20, 0.34);
   /* Transparent, so the rim below draws the edge instead. Kept at 1px rather
      than removed so the box does not resize. */
   border: 1px solid transparent;
   background-clip: padding-box;
-  /* No hard inset line. A 1px band of 22% white across the top read as a
-     seam lit from behind — a glow sitting on the bar rather than an edge
-     belonging to it. What is left is a soft interior bloom, which is what
-     thickness actually looks like, and the drop shadow. */
   box-shadow:
-    inset 0 14px 28px -18px rgba(255, 255, 255, 0.14),
-    inset 0 -10px 22px -18px rgba(255, 255, 255, 0.06),
-    0 10px 34px -12px rgba(0, 0, 0, 0.75);
+    0 2px 6px -2px rgba(0, 0, 0, 0.55),
+    0 20px 44px -18px rgba(0, 0, 0, 0.8);
   transition: background-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 /* The rim.
 
-   A real glass edge is not a uniform hairline: it catches light on the side
-   facing it and all but vanishes on the opposite side. This is a gradient
-   drawn into a 1px ring — the two masks cancel everything except the border
-   box, leaving only the ring — so the edge is bright at the top-left, fades
-   through nothing across the middle, and picks up a little bounce along the
-   bottom. */
+   A 1px ring, drawn as a gradient and masked to the border box. Lit hard
+   along the top edge, fading to nothing by the middle, and closing as a
+   soft dark line along the bottom — the underside of a piece of glass is
+   the shadow side, not a second highlight. */
 .glass::after {
   content: "";
   position: absolute;
@@ -1730,12 +1836,12 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   padding: 1px;
   pointer-events: none;
   background: linear-gradient(
-    150deg,
-    rgba(255, 255, 255, 0.17) 0%,
-    rgba(255, 255, 255, 0.075) 22%,
-    rgba(255, 255, 255, 0.025) 45%,
-    rgba(255, 255, 255, 0.02) 62%,
-    rgba(255, 255, 255, 0.085) 100%
+    to bottom,
+    rgba(255, 255, 255, 0.26) 0%,
+    rgba(255, 255, 255, 0.10) 16%,
+    rgba(255, 255, 255, 0.03) 42%,
+    rgba(255, 255, 255, 0.015) 68%,
+    rgba(0, 0, 0, 0.28) 100%
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -1747,15 +1853,13 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   mask-composite: exclude;
 }
 
-/* A dropdown needs to be readable, not see-through, so it takes the same
-   material over a darker base. */
+/* A dropdown has to be readable rather than see-through, so it takes the
+   same edge over a base that is nearly solid. */
 .glass-panel {
-  background:
-    linear-gradient(165deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.012)),
-    rgba(9, 12, 16, 0.9);
+  background-color: rgba(11, 15, 21, 0.94);
   box-shadow:
-    inset 0 14px 30px -20px rgba(255, 255, 255, 0.32),
-    0 24px 60px rgba(0, 0, 0, 0.6);
+    0 2px 6px -2px rgba(0, 0, 0, 0.6),
+    0 28px 64px -20px rgba(0, 0, 0, 0.85);
 }
 
 /* ── Header ────────────────────────────────────────────────────────────
@@ -1784,19 +1888,12 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 
 .header-scrolled::before { opacity: 1; }
 
-/* Scrolled, the capsule tightens and picks up a little more body — the small
-   behaviour that makes a header feel attached to the page rather than
-   floating above it. */
+/* Scrolled, the capsule picks up a little more body — the small behaviour
+   that makes a header feel attached to the page rather than floating above
+   it. Over the page's own ground there is nothing bright left to filter, so
+   the fill does the work the brightness filter was doing over the hero. */
 .header-scrolled .glass {
-  background:
-    linear-gradient(
-      165deg,
-      rgba(255, 255, 255, 0.042) 0%,
-      rgba(255, 255, 255, 0.021) 38%,
-      rgba(255, 255, 255, 0.010) 62%,
-      rgba(255, 255, 255, 0.026) 100%
-    ),
-    rgba(6, 8, 11, 0.8);
+  background-color: rgba(10, 14, 20, 0.52);
 }
 
 @media (max-width: 768px) {
@@ -1812,35 +1909,13 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 
   /* Cheaper blur on phones. A backdrop filter is charged per painted tile
      during scroll, and this one is fixed, so it is charged on every frame.
-     A softer blur lets more of the backdrop through, so the base goes a
-     little deeper to hold the same contrast floor — measured 4.48:1 at the
-     lit interiors before this, which is under the 4.5 the label needs. */
-  .glass {
-    background:
-      linear-gradient(
-        165deg,
-        rgba(255, 255, 255, 0.035) 0%,
-        rgba(255, 255, 255, 0.018) 38%,
-        rgba(255, 255, 255, 0.008) 62%,
-        rgba(255, 255, 255, 0.022) 100%
-      ),
-      rgba(6, 8, 11, 0.78);
-  }
+     A softer blur lets more of the backdrop through, so the fill goes a
+     little deeper to hold the same contrast floor. */
+  .glass { background-color: rgba(10, 14, 20, 0.46); }
 
   /* `.header-scrolled .glass` outranks the rule above, so the scrolled state
-     needs its own mobile value or it keeps the desktop base behind a blur
-     that lets more of the page through. */
-  .header-scrolled .glass {
-    background:
-      linear-gradient(
-        165deg,
-        rgba(255, 255, 255, 0.042) 0%,
-        rgba(255, 255, 255, 0.021) 38%,
-        rgba(255, 255, 255, 0.010) 62%,
-        rgba(255, 255, 255, 0.026) 100%
-      ),
-      rgba(6, 8, 11, 0.84);
-  }
+     needs its own mobile value. */
+  .header-scrolled .glass { background-color: rgba(10, 14, 20, 0.62); }
 }
 
 /* The market list runs to 44 characters, which at the default mono tracking
@@ -1872,7 +1947,6 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 .page-head {
   display: grid;
   gap: 1.75rem;
-  margin-top: 2.5rem;
 }
 
 .page-head-row {

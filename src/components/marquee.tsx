@@ -64,7 +64,7 @@ export function Marquee() {
   );
 
   return (
-    <div className="marquee py-6 sm:py-7" aria-hidden="true">
+    <div className="marquee py-7 sm:py-9 lg:py-11" aria-hidden="true">
       <div className="marquee-track">
         {half}
         {half}

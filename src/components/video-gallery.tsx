@@ -30,7 +30,7 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
           four columns left one alone on the last. */}
       <div
         className={cn(
-          "mt-12 grid gap-3 sm:mt-16 sm:gap-4",
+          "block-gap grid gap-3 sm:gap-4",
           portrait
             ? "grid-cols-2 sm:grid-cols-3"
             : "sm:grid-cols-2 lg:grid-cols-3"
