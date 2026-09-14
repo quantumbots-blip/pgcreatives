@@ -121,13 +121,24 @@
      reader the heading and the grid under it are one thought while the
      next heading is a new one.
 
-     Both grew on 2026-09-14. The section gap used to top out at 160px,
-     which was set before the display scale went to 100px — a heading
-     block taller than the air above it reads as crammed, and on a wide
-     desktop the whole page ran together. The phone floor is unchanged:
-     the vw term only overtakes it past about 1130px, so this loosens the
-     desktop and leaves small screens exactly where they were. */
-  --section-y: clamp(7.5rem, 11vw, 13rem);
+     The middle term is `rem + vw`, not vw alone, and that is the whole
+     point of it. Measured against the display size it separates, a pure
+     11vw left a trough exactly where most people browse:
+
+       360-600px   gap 120  h1 41.6   2.88x
+       768px       gap 120  h1 53.8   2.23x
+       1024px      gap 120  h1 71.7   1.67x   <- iPad landscape
+       1280px      gap 141  h1 89.6   1.57x   <- the tightest on the site
+       1440px      gap 158  h1 100    1.58x
+       1920px      gap 208  h1 100    2.08x
+
+     A pure vw term sits on its floor until it overtakes it (1091px here),
+     so every width below that got the phone's gap while the type kept
+     growing with the viewport. Adding a rem constant lifts the curve off
+     the floor earlier and flattens the band to 1.76-2.08 from 900px up,
+     without touching the phone floor or the 208px cap the wide desktop
+     already had. */
+  --section-y: clamp(7.5rem, 0.8rem + 11.3vw, 13rem);
   --block-y: clamp(3rem, 5.5vw, 6.5rem);
   /* Between two sibling GROUPS inside one section, each with its own small
      heading: the films grid and the stills grid, or the intro and the
@@ -1981,9 +1992,13 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
    on the left. Sharing a row with the lede gave a 100px face a 625px column
    and broke every two-line heading into four. */
 
+/* The gap between the h1 and its lede holds a ratio to the h1 rather than
+   a fixed 28/40px. Fixed, it measured 0.67x the display size on a phone,
+   0.44x at 900px and 0.40x at 1440 — the heading grew and the air under it
+   did not. Fluid, it stays between 0.52x and 0.67x everywhere. */
 .page-head {
   display: grid;
-  gap: 1.75rem;
+  gap: clamp(1.75rem, 0.65rem + 2.9vw, 3.5rem);
 }
 
 .page-head-row {
@@ -1996,7 +2011,6 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 }
 
 @media (min-width: 1024px) {
-  .page-head { gap: 2.5rem; }
   .page-head-row {
     grid-template-columns: 1fr 1fr;
     align-items: end;
