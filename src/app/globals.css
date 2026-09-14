@@ -836,6 +836,7 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 
 .viewfinder {
   position: relative;
+  --vf-size: 18px;
   --vf-inset: 14px;
   --vf-inset-hover: 10px;
   --vf-inset-top: var(--vf-inset);
@@ -847,8 +848,8 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .viewfinder > .vf-b::after {
   content: "";
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: var(--vf-size);
+  height: var(--vf-size);
   border-color: var(--signal);
   border-style: solid;
   border-width: 0;
@@ -871,27 +872,31 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
    page's frame, and a frame with three corners in one place and the fourth
    somewhere else is not a frame.
 
-   All four used to sit at the same inset from their own edge EXCEPT the top
-   two, which were pushed down past the fixed header — 112px in from the top
-   against 32px in from the sides, so the frame read as lopsided and the top
-   marks looked like they belonged to some other element.
+   All four sit at the true corners now, at every width. The top two used to
+   be pushed down past the fixed header below lg, because an 18px mark at a
+   14px inset is drawn straight through the wordmark when the gutter is only
+   20px.
 
-   From lg the top marks go where they belong, level with the sides, and the
-   inset is tightened to clear the wordmark and the nav capsule at every
-   width that shows them: the marks span 18px from a 16-22px inset, the
-   header's own content starts at the gutter (40px), so nothing meets.
+   The invariant that makes one rule work everywhere: the header's own
+   content starts exactly one --gutter in from each edge, on both sides, at
+   every width (past 1360 the shell centres and there is even more room). So
+   a mark clears it as long as its whole footprint, inset PLUS size, stays
+   under the gutter. Both terms scale, and the sum is held below the gutter's
+   own curve:
 
-   Below lg they still clear the header row. There the wordmark and the menu
-   button sit hard against the gutter — at 390px the gutter is 20px and a
-   mark at the corner would be drawn straight through the logo. */
+     320-430px   gutter 20   inset 7    size 11   -> 18
+     768px       gutter 31   inset 12   size 11   -> 23
+     1024px      gutter 40   inset 16   size 14   -> 30
+     1440px+     gutter 40   inset 22   size 18   -> 40
+
+   Small screens get a smaller mark, which is the right answer anyway: an
+   18px crop mark at the corner of a 390px screen is a third the size of the
+   wordmark beside it. */
 .viewfinder-hero {
-  --vf-inset: clamp(14px, 1.6vw, 22px);
-  --vf-inset-top: calc(4rem + clamp(16px, 3vw, 32px));
+  --vf-size: clamp(11px, 1.35vw, 18px);
+  --vf-inset: clamp(7px, 1.6vw, 22px);
+  --vf-inset-top: var(--vf-inset);
   --vf-inset-hover: var(--vf-inset);
-}
-
-@media (min-width: 1024px) {
-  .viewfinder-hero { --vf-inset-top: var(--vf-inset); }
 }
 
 .viewfinder-hero:hover::before { inset: var(--vf-inset-top) auto auto var(--vf-inset); opacity: 0.55; }
@@ -973,10 +978,18 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
    One visible ring for the whole site, on the accent so it is unmissable
    against the dark ground. */
 
+/* No `border-radius` here. It used to set 4px, and because this rule is
+   unlayered it beat Tailwind's `rounded-full` in @layer utilities — so
+   focusing the round menu button turned the BUTTON into a rounded square
+   and the ring drew around that. A blue square appearing around a circle
+   on tap, which is what it looked like.
+
+   An outline follows the element's own border-radius in every browser that
+   supports :focus-visible, so the ring is round on a round control, a pill
+   on a pill, and square on a square without being told. */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--signal-ink);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 /* ── Reduced motion ────────────────────────────────────────────────────
