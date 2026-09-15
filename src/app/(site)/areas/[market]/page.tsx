@@ -150,9 +150,9 @@ export default async function MarketPage({
         }
       />
 
-      <section className="section pt-0">
+      <section className="section section-flush-top">
         <div className="shell">
-          <div className="mx-auto max-w-2xl space-y-6">
+          <div className="max-w-2xl space-y-6">
             {market.body.map((paragraph) => (
               <p key={paragraph.slice(0, 40)} className="text-lg leading-relaxed text-ink-2">
                 {paragraph}
@@ -189,7 +189,7 @@ export default async function MarketPage({
                 `Nothing published from ${market.city} yet. Here is everything we have made elsewhere.`
               }
             />
-            <Link href="/portfolio" className="btn btn-primary">
+            <Link href="/portfolio" className="btn btn-primary block-gap">
               See the full portfolio
             </Link>
           </div>
@@ -206,7 +206,7 @@ export default async function MarketPage({
                 : "Send the address and the date and we will come back the same day."
             }
           />
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="block-gap grid gap-4 sm:grid-cols-2">
             <div className="surface p-6">
               <p className="meta mb-2">Call {market.city}</p>
               <a href={phone.href} className="display-3 text-signal-ink">
@@ -241,7 +241,7 @@ export default async function MarketPage({
       <section className="section">
         <div className="shell">
           <SectionHead lines={["The other", "markets."]} />
-          <div className="flex flex-wrap gap-3">
+          <div className="block-gap flex flex-wrap gap-3">
             {MARKETS.filter((m) => m.slug !== market.slug).map((m) => (
               <Link
                 key={m.slug}

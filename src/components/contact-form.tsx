@@ -1,14 +1,40 @@
 "use client";
 
-import { useState, useActionState, useRef, useEffect } from "react";
+import { useState, useActionState, useRef, useEffect, useCallback } from "react";
 import { submitContactForm, type ContactState } from "@/app/actions/contact";
 import { readFirstTouch } from "@/lib/first-touch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 
 const initialState: ContactState = { success: false, error: null };
+
+/* Validation the page owns, rather than the browser.
+
+   `required` and `type="email"` alone hand the visitor a bright orange
+   system tooltip in the platform UI font, pointed at a field the fixed
+   header may have just scrolled under. The attributes stay on the inputs,
+   because that is what assistive technology reads and what the server-side
+   check mirrors; the form carries `noValidate` so the browser stops drawing
+   its own, and these rules draw ours. */
+type Errors = Partial<Record<"firstName" | "lastName" | "email", string>>;
+
+/* Deliberately permissive. This catches a typed mistake, not an invalid
+   address: anything shaped like a@b.c gets through and the server decides. */
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function validate(form: HTMLFormElement): Errors {
+  const get = (name: string) =>
+    String(new FormData(form).get(name) ?? "").trim();
+  const errors: Errors = {};
+  if (!get("firstName")) errors.firstName = "Tell us your first name.";
+  if (!get("lastName")) errors.lastName = "Tell us your last name.";
+  const email = get("email");
+  if (!email) errors.email = "We need an email address to reply to.";
+  else if (!EMAIL.test(email)) errors.email = "That does not look like an email address.";
+  return errors;
+}
 
 export function ContactForm() {
   const [resetKey, setResetKey] = useState(0);
@@ -21,7 +47,18 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
     initialState,
   );
   const formRef = useRef<HTMLFormElement>(null);
+  const [errors, setErrors] = useState<Errors>({});
   const prior = state.values;
+
+  /* Re-check on submit, and from then on re-check a field as it is corrected
+     so the message clears the moment it stops being true. Nothing is ever
+     marked invalid before the visitor has tried to send: being told off for
+     an empty field you have not reached yet is worse than no validation. */
+  const [live, setLive] = useState(false);
+  const recheck = useCallback(() => {
+    if (!live || !formRef.current) return;
+    setErrors(validate(formRef.current));
+  }, [live]);
 
   /* A signed timestamp, fetched when the form mounts and sent back with the
      message. The gap between the two is how long somebody spent filling this
@@ -34,6 +71,26 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
      into state on mount. sessionStorage is not readable while the server
      renders, so holding it in state would mean an effect writing state on
      every mount purely to carry a value the submit already has access to. */
+  /* Validation gates the SUBMIT EVENT, not the action. A function action
+     that returns without doing anything still counts as a completed action,
+     and React resets an uncontrolled form when one completes: a visitor who
+     mistyped their email would have watched the whole form empty itself.
+     Preventing the event means the action never runs and nothing is reset. */
+  function guard(event: React.FormEvent<HTMLFormElement>) {
+    const form = event.currentTarget;
+    const found = validate(form);
+    setLive(true);
+    setErrors(found);
+    const first = Object.keys(found)[0];
+    if (!first) return;
+    event.preventDefault();
+    const el = form.elements.namedItem(first);
+    if (el instanceof HTMLElement) {
+      el.closest(".field-row")?.scrollIntoView({ block: "nearest" });
+      el.focus({ preventScroll: true });
+    }
+  }
+
   function submitWithSource(formData: FormData) {
     const touch = readFirstTouch();
     if (touch) {
@@ -82,7 +139,15 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
   }
 
   return (
-    <form ref={formRef} action={submitWithSource} className="form-column space-y-6 sm:space-y-8">
+    <form
+      ref={formRef}
+      action={submitWithSource}
+      noValidate
+      onSubmit={guard}
+      onInput={recheck}
+      onChange={recheck}
+      className="form-column space-y-6 sm:space-y-8"
+    >
       {/* Honeypot, hidden from humans, filled by bots.
 
           Sized down to a pixel. A default text input is about 318px wide, and
@@ -119,8 +184,11 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             required
             maxLength={50}
             autoComplete="given-name"
+            aria-invalid={errors.firstName ? true : undefined}
+            aria-describedby={errors.firstName ? "firstName-error" : undefined}
             className="field field-input"
           />
+          <FieldError id="firstName-error" message={errors.firstName} />
         </div>
         <div className="field-row">
           <Label htmlFor="lastName" className="field-label">
@@ -133,8 +201,11 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             required
             maxLength={50}
             autoComplete="family-name"
+            aria-invalid={errors.lastName ? true : undefined}
+            aria-describedby={errors.lastName ? "lastName-error" : undefined}
             className="field field-input"
           />
+          <FieldError id="lastName-error" message={errors.lastName} />
         </div>
       </div>
 
@@ -153,8 +224,11 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
             required
             maxLength={254}
             autoComplete="email"
+            aria-invalid={errors.email ? true : undefined}
+            aria-describedby={errors.email ? "email-error" : undefined}
             className="field field-input"
           />
+          <FieldError id="email-error" message={errors.email} />
         </div>
         <div className="field-row">
           <Label htmlFor="phone" className="field-label">
@@ -243,5 +317,21 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
         </button>
       </div>
     </form>
+  );
+}
+
+/* One shape for every field message, so they cannot drift apart. `aria-live`
+   sits on the container rather than the text, so a message that appears
+   after submit is announced and one that is simply absent costs nothing. */
+function FieldError({ id, message }: { id: string; message?: string }) {
+  return (
+    <p id={id} className="field-error" role="alert" aria-live="polite">
+      {message ? (
+        <>
+          <AlertCircle className="mt-px h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          {message}
+        </>
+      ) : null}
+    </p>
   );
 }

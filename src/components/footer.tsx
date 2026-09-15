@@ -6,7 +6,10 @@ import { BUSINESS } from "@/lib/data";
 
 const footerLinks = [
   { name: "Services", href: "/services" },
-  { name: "Portfolio", href: "/portfolio" },
+  /* "Work", not "Portfolio". The header calls this destination Work on every
+     page, and the footer called it Portfolio on the same page: one place, two
+     names, both in the DOM at once. */
+  { name: "Work", href: "/portfolio" },
   { name: "Areas we cover", href: "/areas" },
   { name: "About", href: "/team" },
   { name: "Contact", href: "/contact" },
@@ -43,7 +46,7 @@ export function Footer() {
                 alt="PG Creatives"
                 width={366}
                 height={77}
-                className="h-8 w-auto opacity-90 transition-opacity duration-300 hover:opacity-100 sm:h-9"
+                className="brand-mark h-8 w-auto opacity-90 transition-opacity duration-300 hover:opacity-100 sm:h-9"
               />
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-ink-2">

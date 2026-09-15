@@ -108,7 +108,7 @@ export default function ContactPage() {
                         <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-white/40" />
                         <div className="min-w-0">
                           <p className="meta">{item.label}</p>
-                          {/* `break-words` wraps the text but does NOT reduce the element's
+                          {/* `break-words` wraps the text but does NOT reduce the element’s
                               min-content width, so the email still sized its column
                               and pushed the card past a 320px viewport.
                               `overflow-wrap: anywhere` is the one that does. */}

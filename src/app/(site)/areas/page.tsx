@@ -58,11 +58,15 @@ export default function AreasPage() {
 
       <PageHead
         lines={["Four markets,", "one crew."]}
-        lede="Four markets, each with its own number and its own crew. Green Bay is the home one, Milwaukee is the newest."
+        /* The old lede said "each with its own number and its own crew", and the
+              four cards directly beneath it print three numbers, because the Green
+              Bay crew covers the Fox Valley on the Green Bay line. Saying it plainly
+              also stops the lede contradicting the h1 above it. */
+          lede="Four markets, one standard, and a local number for each crew. Green Bay is the home one, Milwaukee is the newest."
         meta={<p className="meta">{BUSINESS.locationText}</p>}
       />
 
-      <section className="section pt-0">
+      <section className="section section-flush-top">
         <div className="shell">
           <div className="grid gap-4 md:grid-cols-2">
             {MARKETS.map((market) => {

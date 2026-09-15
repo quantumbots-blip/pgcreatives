@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
  * Pointer-driven 3D tilt.
@@ -18,6 +18,10 @@ import { useRef, type ReactNode } from "react";
  * - The transform is read off the pointer inside a rAF, never on every
  *   pointermove, so a fast cursor cannot queue more work than the display can
  *   show.
+ * - A reduced-motion visitor gets a plain div. The CSS rule is gated the same
+ *   way: the site's global reduced-motion block only shortens transitions, so
+ *   left alone the tilt did not stop, it snapped to the pointer with no
+ *   easing, which is worse than the effect it was supposed to suppress.
  */
 export function Tilt({
   children,
@@ -35,6 +39,17 @@ export function Tilt({
   const ref = useRef<HTMLDivElement>(null);
   const frame = useRef(0);
   const next = useRef<{ x: number; y: number } | null>(null);
+  const [tilts, setTilts] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(
+      "(pointer: fine) and (prefers-reduced-motion: no-preference)"
+    );
+    const sync = () => setTilts(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const apply = () => {
     frame.current = 0;
@@ -74,6 +89,10 @@ export function Tilt({
     el.style.setProperty("--tilt-y", "0deg");
     el.style.setProperty("--tilt-z", "0px");
   };
+
+  if (!tilts) {
+    return <div className={`tilt ${className}`}>{children}</div>;
+  }
 
   return (
     <div

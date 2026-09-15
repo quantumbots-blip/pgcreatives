@@ -179,7 +179,11 @@ export default function HomePage() {
             lede="Listing media for agents, production for businesses, and a monthly program for the agents who want to be known."
           />
 
-          <div className="block-gap grid grid-cols-1 gap-5 sm:gap-4 md:grid-cols-3">
+          {/* Three-up from lg, not md. At exactly 768 each card was 228px wide
+              and its paragraph set to a 20-character measure over six lines.
+              A tablet gets three full-width cards instead, which is what the
+              image on each of them wants anyway. */}
+          <div className="block-gap grid grid-cols-1 gap-5 sm:gap-4 lg:grid-cols-3">
             {services.map((service, i) => (
               <AnimateOnScroll key={service.title} animation="depth" delay={i * 0.1} className="scene h-full">
                 <Tilt className="h-full">
@@ -197,7 +201,12 @@ export default function HomePage() {
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                       style={service.objectPosition ? { objectPosition: service.objectPosition } : undefined}
-                      sizes="(min-width: 1360px) 28vw, (min-width: 768px) 31vw, 100vw"
+                      /* These went three-up at 768 and now go three-up at 1024, so the
+                         768 breakpoint here was claiming a third of the viewport
+                         for a card that renders full width: an 802px box asking
+                         for 828px at dpr 3, a 0.34x rendition. Whenever a grid's
+                         column count moves, its `sizes` has to move with it. */
+                      sizes="(min-width: 1360px) 28vw, (min-width: 1024px) 31vw, 92vw"
                     />
                     {/* The gradient stays after the kicker went: it is what
                         lands the photograph on the card's own surface
@@ -385,7 +394,7 @@ export default function HomePage() {
                   Tell us about the property.
                 </p>
                 <p className="mt-3 text-ink-2">
-                  Send the details and we&apos;ll come back with a quote and a
+                  Send the details and we’ll come back with a quote and a
                   recommendation, usually the same day.
                 </p>
               </div>

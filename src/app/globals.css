@@ -466,7 +466,10 @@ html[data-reveal-ready] .reveal.is-visible {
 .faq:has(#faq-cat-production:focus-visible) .faq-pill[for="faq-cat-production"],
 .faq:has(#faq-cat-delivery-licensing:focus-visible) .faq-pill[for="faq-cat-delivery-licensing"],
 .faq:has(#faq-cat-results:focus-visible) .faq-pill[for="faq-cat-results"] {
-  outline: 2px solid var(--signal);
+  /* --signal-ink, like every other focus ring on the site. --signal is the
+     fill value; as a 2px line on the dark ground it is the one ring a
+     visitor would struggle to see. */
+  outline: 2px solid var(--signal-ink);
   outline-offset: 3px;
 }
 
@@ -578,6 +581,20 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
    than starting a new one. */
 .section-tight {
   padding-block: calc(var(--section-y) / 4);
+}
+
+/* A section that opens directly under the page head. The page head already
+   pays its own bottom, so a section under it must not pay a top as well.
+
+   This exists because `pt-0` does not work here. `.section` is unlayered and
+   Tailwind's utilities live in `@layer utilities`, so an unlayered primitive
+   outranks them whatever the specificity says. Three page templates carried a
+   `section pt-0` that had never once applied, and each opened a 98 to 171px
+   void between its heading and its only content. Anything that needs to
+   override a primitive on this site needs a class in the primitive's own
+   layer, not a utility. */
+.section-flush-top {
+  padding-top: 0;
 }
 
 /* The opening of an inner page. Named for `.page-head` below, not for
@@ -898,6 +915,21 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 
 .viewfinder {
   position: relative;
+  /* The marks have to sit ABOVE the picture, and they did not.
+
+     A pseudo-element with `z-index: auto` paints in DOM order among its
+     parent's positioned children, and every framed card puts an absolutely
+     positioned `<img>` after it. So on /portfolio's 49 tiles, the home photo
+     bento and the reel cards, all four crop marks were painted underneath
+     the photograph and drew nothing at all. Diffing a card with the marks
+     hidden against the same card with them shown changed zero pixels.
+
+     `isolation: isolate` scopes the z-index to the frame, so raising the
+     marks lifts them over the picture and its caption scrim without letting
+     them reach anything outside the card. It creates a stacking context and
+     nothing else: no containment, so the `view()` drift timeline on the same
+     element is untouched. */
+  isolation: isolate;
   --vf-size: 18px;
   --vf-inset: 14px;
   --vf-inset-hover: 10px;
@@ -917,6 +949,20 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   border-width: 0;
   opacity: 0.55;
   pointer-events: none;
+  /* The marks are drawn ON the photograph, and a 1px hairline in the accent
+     blue does not survive most of them. Measured across ten frames on
+     /portfolio it ran 1.11:1 to 3.82:1 against the pixels behind it, so on a
+     bright kitchen or a pale sky the signature simply was not there, and a
+     frame showing one corner of four reads as a rendering fault rather than
+     as a crop mark.
+
+     A drop shadow follows the alpha shape, so it darkens the L itself and
+     nothing else — the same thing a real viewfinder overlay does, and the
+     same fix the phone menu's white bars already use. It does not change the
+     colour, so the accent is still the accent. One tight radius, on an 18px
+     box that never repaints except on a hover the pointer is already over. */
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.9)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+  z-index: 2;
   transition: inset 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
 }
 
@@ -1055,11 +1101,6 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 }
 
 /* ── Reduced motion ────────────────────────────────────────────────────
-   Kills the ambient loops outright rather than shortening them: a 25s
-   breathing logo is exactly what someone with vestibular sensitivity
-   turned this setting on to avoid. */
-
-/* ── Reduced motion ────────────────────────────────────────────────────
    One block for the whole site. The universal rule below already stops every
    animation and transition, so nothing here needs to enumerate animation
    names — the previous version listed twenty-two of them by hand and half had
@@ -1075,6 +1116,17 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    /* The DELAYS have to go too, and this is the half that was missing.
+
+       Zeroing only the duration leaves every staggered entrance waiting out
+       its full delay first, and each of them is `animation-fill-mode: both`,
+       so the element sat at its `from` keyframe the whole time. On an inner
+       page the h1 was blank for 300ms and the lede for 420ms; on the home
+       page the scroll cue waited 2.1s, and then every one of them hard-cut
+       into place. A reduced-motion visitor was getting the worst version of
+       the effect rather than none of it: content that flashes in late. */
+    animation-delay: 0s !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
 
@@ -1185,6 +1237,9 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.1em;
+  /* The same mistake `.meta` documents and fixed: an 11px label at
+     line-height 1 has no leading at all, and these wrap on a phone. */
+  line-height: 1.4;
   text-transform: uppercase;
   color: var(--ink-2);
   transition: color 0.2s ease;
@@ -1195,6 +1250,57 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .field-row:has(.field:focus) .field-label { color: var(--signal-ink); }
 
 .field-required { color: var(--signal-ink); }
+
+/* An unset <select> is a placeholder, and it was painting in full white:
+   the one field nobody had filled in was the one that looked filled. A
+   native select cannot carry ::placeholder, so the empty option is matched
+   instead. Browsers without :has() fall back to the old appearance. */
+select.field:has(> option[value=""]:checked) {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Field validation ──────────────────────────────────────────────────
+   The form used to leave this to the browser. On a dark editorial page the
+   result was a bright orange system tooltip in the platform's own UI font,
+   different in every browser, that pointed at a field the fixed header had
+   just scrolled out of view. The form carries `noValidate` now and says it
+   itself. `required` stays on the inputs: it is what assistive technology
+   reads, and the server still validates whatever arrives. */
+/* Always in the DOM so it is a live region before it has anything to say,
+   and costing no space until it does. */
+.field-error:empty { margin-top: 0; }
+
+.field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #ff9d9d;
+}
+
+.field[aria-invalid="true"] {
+  border-color: rgba(255, 120, 120, 0.55);
+  box-shadow:
+    inset 3px 0 0 #ff7878,
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+.field[aria-invalid="true"]:focus,
+.field[aria-invalid="true"]:focus-visible {
+  border-color: #ff7878;
+  box-shadow:
+    inset 3px 0 0 #ff7878,
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 0 3px rgba(255, 120, 120, 0.22);
+}
+
+.field-row:has(.field[aria-invalid="true"]) .field-label { color: #ff9d9d; }
+
+/* A field that validation sends focus to has to clear the fixed header, or
+   the visitor is looking at the message for a field they cannot see. */
+.field-row { scroll-margin-top: 7rem; }
 /* ══════════════════════════════════════════════════════════════════════
    DEPTH LAYER
 
@@ -1245,7 +1351,12 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
    `will-change` lives in here too: outside it, every one of the 49 portfolio
    tiles was promoted to its own compositor layer on phones, for a pointer
    effect that never runs on a touchscreen. */
-@media (pointer: fine) {
+/* `no-preference`, not just `pointer: fine`. The tilt used to run for
+   reduced-motion visitors too: the global reduced-motion block only shortens
+   transitions, so the card did not stop moving, it started SNAPPING to the
+   pointer with no easing at all, which is the opposite of what the setting
+   asks for. The component skips its own pointer work under the same query. */
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .tilt {
     will-change: transform;
     transform:
@@ -1904,6 +2015,14 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
    like somewhere you are about to go. */
 
 .portal-card {
+  /* The map's placement depends on how wide THIS CARD is, not how wide the
+     window is, and those two stopped agreeing the moment the grid went
+     two-up. A `max-width: 640px` rule moved the map behind the copy on a
+     phone, and at exactly 641 the cards halved to 286px while the map
+     sprang back to sitting beside text that no longer had room for it: the
+     state outline was drawn straight through the kicker, the city name and
+     the button, by as much as 188px, everywhere from 640 to 1024. */
+  container-type: inline-size;
   background:
     radial-gradient(120% 100% at 82% 18%, rgba(43, 111, 184, 0.16), transparent 62%),
     linear-gradient(155deg, #141c28 0%, #0f1319 55%, #0c1017 100%);
@@ -1984,8 +2103,11 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   .portal-pin::after { animation: none; opacity: 0.5; }
 }
 
-@media (max-width: 640px) {
-  /* The map moves behind the copy on a narrow card rather than beside it. */
+/* Narrow card: the map moves behind the copy rather than beside it, and
+   drops to a weight that reads as a watermark. 33rem is where the longest
+   line in the card ("Green Bay, Fox Valley and the lakeshore") stops
+   clearing a map inset at the right edge. */
+@container (max-width: 33rem) {
   .portal-map { right: 0.5rem; height: 62%; opacity: 0.24; }
   .portal-glow { right: -22%; width: 78%; }
 }
@@ -2261,4 +2383,261 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
       scale: 1.17;
     }
   }
+}
+
+/* ── Forced colors ─────────────────────────────────────────────────────
+   Windows High Contrast replaces every colour the page chose with four
+   system ones, and deletes background images and box-shadows outright.
+   This site leans on all three, so left alone it lost its brand and two of
+   its shapes:
+
+   - The wordmark is white artwork on transparency. Against the light HC
+     canvas it measured 1.00:1, which is to say the logo and the only link
+     back to the home page were both invisible.
+   - `.btn-primary` and `.btn-solid` draw their edge with a box-shadow, so a
+     filled button became a rectangle of system colour with no boundary.
+   - The brokerage strip went blank: seven white logos on a white canvas.
+
+   `forced-color-adjust: none` is used only where the artwork IS the content
+   and the brand's own dark ground has to come with it. Everything else keeps
+   the system palette, which is the point of the mode. */
+@media (forced-colors: active) {
+  .brand-mark,
+  .marquee-logo {
+    forced-color-adjust: none;
+    background-color: #07090c;
+    border-radius: 6px;
+    padding: 3px 6px;
+  }
+
+  /* A transparent border is repainted in the system's own colour, so it
+     gives every filled control back the edge the shadow used to draw. */
+  .btn,
+  .field,
+  .surface,
+  .portal-card,
+  .faq-item,
+  .glass {
+    border: 1px solid transparent;
+  }
+
+  /* The corner marks are 1px borders on an empty box, which forced colors
+     keeps, but the drop shadow it deletes was doing the separating. Full
+     opacity so they still read. */
+  .viewfinder::before,
+  .viewfinder::after,
+  .viewfinder > .vf-b::before,
+  .viewfinder > .vf-b::after {
+    opacity: 1;
+  }
+}
+
+/* ── Print ─────────────────────────────────────────────────────────────
+   A dark site prints as a dark site: several pages of near-black with text
+   the printer renders at 1.5:1, or a solid black rectangle if the visitor
+   has background graphics switched on. Agents print pages. This turns the
+   document back into a document: black on white, no chrome, no decoration,
+   and nothing that only made sense on a screen.
+
+   The tokens are redefined rather than the rules overridden, so anything
+   built on the system comes along without being enumerated here. */
+@media print {
+  :root {
+    --ground: #ffffff;
+    --surface: #ffffff;
+    --surface-hi: #ffffff;
+    --line: rgba(0, 0, 0, 0.18);
+    --line-strong: rgba(0, 0, 0, 0.3);
+    --ink: #000000;
+    --ink-2: #1a1a1a;
+    --ink-3: #444444;
+    --signal: #1d4d82;
+    --signal-ink: #14456f;
+    --background: #ffffff;
+    --foreground: #000000;
+    --section-y: 2.5rem;
+    --block-y: 1.25rem;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Screen-only furniture. */
+  header,
+  footer nav,
+  #mobile-menu,
+  .splash-failsafe,
+  .marquee,
+  .aurora,
+  .gradient-mesh-unified,
+  .grid-rules,
+  .portal-glow,
+  .portal-map,
+  canvas,
+  video,
+  form,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  .surface,
+  .portal-card,
+  .quote-panel,
+  .glass,
+  .field {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .viewfinder::before,
+  .viewfinder::after,
+  .viewfinder > .vf-b::before,
+  .viewfinder > .vf-b::after {
+    display: none;
+  }
+
+  /* Nothing animates, nothing is hidden waiting for a scroll that a sheet of
+     paper cannot perform. */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  /* Headings and anything set in literal white come from Tailwind utilities
+     rather than from a token, so redefining the tokens above does not reach
+     them: every display line printed white on white. */
+  h1, h2, h3, h4, h5, h6,
+  [class*="text-white"] {
+    color: #000000 !important;
+  }
+
+  /* The hero headline is a gradient clipped to the text, which means its own
+     colour is transparent. On paper that is a blank line where the largest
+     words on the site should be. */
+  .hero-display,
+  .hero-display .line-inner {
+    background: none !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+
+  a {
+    color: #000000 !important;
+    text-decoration: underline;
+  }
+
+  /* A heading at the foot of a sheet with its content on the next one is the
+     one break rule worth enforcing. */
+  h1, h2, h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .surface,
+  .portal-card,
+  li,
+  figure {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
+/* ── Hero on a short screen ────────────────────────────────────────────
+   The hero is built for a tall viewport. Turn a phone sideways and the
+   viewport is 360 to 440px tall while the headline alone is 180px of it, so
+   the whole stack ran 1.5x to 1.8x the screen: the lede and both buttons were
+   always below the fold, and the visitor's first impression of the site was a
+   headline with no offer under it and nothing to press.
+
+   The fluid margins do not help, because every one of them is a clamp whose
+   FLOOR was picked for a phone held upright: at 360svh the `6svh` term is
+   21px and the 2rem floor takes over, so the spacing does not shrink at
+   exactly the moment it has to. Everything here is pegged to the dimension
+   that is actually short.
+
+   Scoped to landscape so it can never catch a narrow portrait phone, and
+   capped at 560px so it only meets the shapes that need it. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .viewfinder-hero {
+    min-height: 100svh;
+  }
+
+  /* 13svh holds two authored lines plus their leading inside a third of the
+     screen: 47px at 360 tall, 57px at 440, and back to the width-driven
+     curve as soon as there is room. */
+  .hero-h1 {
+    font-size: max(2rem, min(13svh, 4.5rem));
+    margin-top: clamp(0.75rem, 3.5svh, 2rem);
+  }
+
+  .hero-lede {
+    margin-top: clamp(0.625rem, 3svh, 1.5rem);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .hero-actions {
+    margin-top: clamp(1rem, 4.5svh, 2.25rem);
+  }
+
+  /* The single biggest term, and the one that is easy to miss: the hero's
+     content block carries 128px of top padding and 112px of bottom, to clear
+     the fixed header and leave room under the scroll cue. On a 360px screen
+     that is 240px, two thirds of the viewport, spent on clearance for two
+     things that are 64px and gone. */
+  .hero-parallax-content {
+    padding-top: clamp(3.25rem, 15svh, 5rem);
+    padding-bottom: clamp(1rem, 5svh, 2.5rem);
+  }
+
+  /* The scroll cue is the first thing to go: on a screen this short it was
+     printing "Scroll" straight through the two buttons it is meant to point
+     past. It already hides below sm for the same reason on an iPhone SE. */
+  .hero-cue {
+    display: none;
+  }
+}
+
+/* ── Line breaking ─────────────────────────────────────────────────────
+   The commonest small ugliness on this site is a ragged tail: a card
+   description ending on one word, "Fox Valley" split across two lines twice
+   on one screen, a market card closing on "into." alone, a three-word
+   heading breaking two and one. It showed up on nearly every page in the
+   device sweep, and it is one property.
+
+   `pretty` only reflows the LAST few lines of a paragraph, so it cannot
+   change a measure that was tuned. `balance` is scoped to the short
+   headings: it is capped at a handful of lines by the spec anyway, and it is
+   deliberately NOT applied to `.display-1`, `.display-2` or `.hero-display`,
+   whose breaks are authored line by line and, below 640px where those masks
+   collapse to inline flow, are the one place a browser re-balancing them
+   would overrule a decision somebody made. */
+p,
+li,
+dd,
+figcaption {
+  text-wrap: pretty;
+}
+
+h3,
+h4,
+h5,
+h6,
+.display-3 {
+  text-wrap: balance;
 }
