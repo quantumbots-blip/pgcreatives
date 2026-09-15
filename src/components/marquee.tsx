@@ -64,8 +64,15 @@ export function Marquee() {
   );
 
   return (
-    <div className="marquee py-7 sm:py-9 lg:py-11" aria-hidden="true">
-      <div className="marquee-track">
+    <div className="marquee py-7 sm:py-9 lg:py-11">
+      {/* The strip itself is decoration: seven logos repeated six times, with
+          the artwork carried by images that say nothing. The claim it makes
+          is real though, so it is written out once for anything that cannot
+          see it, and the pictures stay hidden rather than read out 42 times. */}
+      <p className="sr-only">
+        Work made for agents at {brokerages.map((b) => b.name).join(", ")}.
+      </p>
+      <div className="marquee-track" aria-hidden="true">
         {half}
         {half}
       </div>

@@ -105,7 +105,7 @@ export const MARKETS: Market[] = [
       "Further west, Green Lake and Markesan account for more of our work than any market outside Green Bay. Lake property is its own job. The shot that sells it is almost never from the street, so these are drone first, and often twilight, and they need to be timed against the weather rather than the calendar.",
     ],
     description:
-      "Listing photography, video, drone and 3D tours across Oshkosh, Appleton, Neenah and the Green Lake area. Lake property a speciality.",
+      "Listing photography, video, drone and 3D tours across Oshkosh, Appleton, Neenah and the Green Lake area. Lake property a specialty.",
   },
   {
     slug: "madison",
@@ -142,7 +142,7 @@ export const MARKETS: Market[] = [
     emptyState: {
       lines: ["The first films", "are in the edit."],
       lede:
-        "Milwaukee shoots are happening, they are just not published yet. Rather than put somebody else's listing on a Milwaukee page, here is everything we have made elsewhere. The same crew and the same standard.",
+        "Milwaukee shoots are happening, they are just not published yet. Rather than put somebody else’s listing on a Milwaukee page, here is everything we have made elsewhere. The same crew and the same standard.",
     },
     description:
       "Real estate photography, listing video and drone in Milwaukee, Wauwatosa, Brookfield and Mequon. A local crew on a Milwaukee number, booked next day.",

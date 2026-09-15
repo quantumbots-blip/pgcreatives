@@ -167,6 +167,11 @@ export default function ServicesPage() {
                     fill
                     className="object-cover"
                     sizes="(min-width: 1360px) 42vw, (min-width: 1024px) 40vw, 100vw"
+                    /* The first service frame is the largest thing in the
+                       opening viewport, so it is the LCP element. Left lazy it
+                       was not even requested until the browser had laid the
+                       page out. */
+                    priority={i === 0}
                   />
                 </div>
                 </Tilt>
@@ -186,7 +191,7 @@ export default function ServicesPage() {
                   lines={["Not sure which", "one you need?"]}
                 />
                 <p className="lede mt-5 max-w-md">
-                  Send us the property or the brief. We&apos;ll tell you what we
+                  Send us the property or the brief. We’ll tell you what we
                   would shoot and what it costs, usually the same day.
                 </p>
               </div>

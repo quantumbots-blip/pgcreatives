@@ -78,7 +78,7 @@ export function Packages() {
           <p className="mt-8 max-w-xl text-sm leading-relaxed text-ink-3">
             Package pricing scales with square footage and varies slightly
             between our Green Bay and Madison markets. Send us the address and
-            we&apos;ll confirm the exact number.
+            we’ll confirm the exact number.
           </p>
         </AnimateOnScroll>
       </div>

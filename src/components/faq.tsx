@@ -30,7 +30,7 @@ export const faqs: FAQItem[] = [
     category: "General",
     question: "What areas do you serve?",
     answer:
-      "We serve Green Bay, Madison, Milwaukee, the Fox Valley, and surrounding areas throughout Wisconsin. For larger projects we're happy to travel further, just reach out and we'll make it work.",
+      "We serve Green Bay, Madison, Milwaukee, the Fox Valley, and surrounding areas throughout Wisconsin. For larger projects we’re happy to travel further, just reach out and we’ll make it work.",
   },
   {
     category: "General",
@@ -43,13 +43,13 @@ export const faqs: FAQItem[] = [
     category: "Pricing & Booking",
     question: "How much does a real estate shoot cost?",
     answer:
-      "Photography on its own starts at $250. Full listing packages start at $550, PG Core covers daytime photography, a premium listing video, drone photography, and three virtual twilights; PG Growth ($725) adds a Matterport or Zillow 3D tour and a 2D floor plan; PG Platinum ($1,000) adds twilight photography and a day-to-night listing video. Pricing scales with square footage and varies slightly by market, so send us the address and we'll give you an exact number.",
+      "Photography on its own starts at $250. Full listing packages start at $550, PG Core covers daytime photography, a premium listing video, drone photography, and three virtual twilights; PG Growth ($725) adds a Matterport or Zillow 3D tour and a 2D floor plan; PG Platinum ($1,000) adds twilight photography and a day-to-night listing video. Pricing scales with square footage and varies slightly by market, so send us the address and we’ll give you an exact number.",
   },
   {
     category: "Pricing & Booking",
     question: "Do you offer custom packages?",
     answer:
-      "Absolutely. Every business is different, so we build custom packages based on your goals, content needs, and budget. Contact us for a free consultation and we'll put together a tailored plan.",
+      "Absolutely. Every business is different, so we build custom packages based on your goals, content needs, and budget. Contact us for a free consultation and we’ll put together a tailored plan.",
   },
   {
     category: "Pricing & Booking",
@@ -80,13 +80,13 @@ export const faqs: FAQItem[] = [
     category: "Production",
     question: "How should I prepare for a real estate shoot?",
     answer:
-      "We recommend decluttering surfaces, turning on all lights, opening blinds, and ensuring the property is clean. We'll send a detailed prep checklist when you book.",
+      "We recommend decluttering surfaces, turning on all lights, opening blinds, and ensuring the property is clean. We’ll send a detailed prep checklist when you book.",
   },
   {
     category: "Production",
     question: "How long does a typical shoot take?",
     answer:
-      "A standard real estate shoot takes 1 to 2 hours depending on property size. Commercial and social media shoots vary from 2 to 6 hours based on scope. We'll give you a time estimate upfront.",
+      "A standard real estate shoot takes 1 to 2 hours depending on property size. Commercial and social media shoots vary from 2 to 6 hours based on scope. We’ll give you a time estimate upfront.",
   },
   // Delivery & Licensing
   {

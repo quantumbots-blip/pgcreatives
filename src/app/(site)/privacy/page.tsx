@@ -16,15 +16,23 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <section className="section">
-      <div className="shell max-w-3xl">
-        <h1 className="display-2 text-white">
-          Privacy Policy
-        </h1>
-        <p className="mt-2 text-sm leading-relaxed text-ink-3">
-          Effective July 22, 2024
-        </p>
+      {/* The reading column is a child of the shell, not the shell itself.
+          `.shell` is an unlayered primitive and its max-width outranks any
+          Tailwind utility on the same element, so the `max-w-3xl` that used
+          to sit here had never applied: the policy set to 138 characters a
+          line at 1920 and 276 at 2560.
 
-        <div className="mt-10 space-y-8 text-sm leading-relaxed text-ink-2">
+          Left-aligned, not centred. Every page on this site starts at the
+          gutter, and a centred reading column put the policy's own h1 296px
+          right of the wordmark directly above it. */}
+      <div className="shell">
+        <div className="max-w-[38rem]">
+          <h1 className="display-2 text-white">
+            Privacy Policy
+          </h1>
+          <p className="meta mt-3">Effective July 22, 2024</p>
+
+          <div className="block-gap space-y-8 leading-relaxed text-ink-2">
           <p>
             As the owner of this website, referred to as the &quot;Site&quot;, PG
             Creatives Real Estate Photography understands that your privacy is of
@@ -40,7 +48,7 @@ export default function PrivacyPolicyPage() {
 
             <div className="mt-4 space-y-4">
               <div>
-                <h3 className="font-medium text-white">
+                <h3 className="text-base font-semibold text-white">
                   Information You Voluntarily Submit to the Site
                 </h3>
                 <p className="mt-1">
@@ -55,7 +63,7 @@ export default function PrivacyPolicyPage() {
               </div>
 
               <div>
-                <h3 className="font-medium text-white">
+                <h3 className="text-base font-semibold text-white">
                   Information We Collect from Others
                 </h3>
                 <p className="mt-1">
@@ -66,7 +74,7 @@ export default function PrivacyPolicyPage() {
               </div>
 
               <div>
-                <h3 className="font-medium text-white">
+                <h3 className="text-base font-semibold text-white">
                   Automatically-Collected Information
                 </h3>
                 <p className="mt-1">
@@ -81,7 +89,7 @@ export default function PrivacyPolicyPage() {
               </div>
 
               <div>
-                <h3 className="font-medium text-white">Cookies</h3>
+                <h3 className="text-base font-semibold text-white">Cookies</h3>
                 <p className="mt-1">
                   We may log information using cookies, which are small data files
                   stored on your browser by the Website. We may use both session
@@ -133,12 +141,12 @@ export default function PrivacyPolicyPage() {
               analyze the use of our website. These services gather information
               about website use by means of cookies. The information gathered
               relating to our website is used to create reports about the use of our
-              website. Google&apos;s privacy policy is available at:{" "}
+              website. Google’s privacy policy is available at:{" "}
               <a
                 href="https://www.google.com/policies/privacy/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-purple-light hover:underline"
+                className="text-signal-ink underline underline-offset-2 decoration-signal-ink/40 hover:decoration-signal-ink"
               >
                 google.com/policies/privacy
               </a>
@@ -153,7 +161,7 @@ export default function PrivacyPolicyPage() {
               We may share your information with third parties when you explicitly
               authorize us to share your information. Additionally, the Site may use
               third-party service providers to service various aspects of the Site.
-              Each third-party service provider&apos;s use of your personal
+              Each third-party service provider’s use of your personal
               information is dictated by their respective privacy policies.
             </p>
             <p className="mt-3">
@@ -210,7 +218,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="display-3 text-white">
               How Your Information May Be Used
             </h2>
-            <ul className="mt-2 list-disc list-inside space-y-1">
+            <ul className="mt-2 list-disc space-y-1 ps-5">
               <li>To operate and maintain the Site</li>
               <li>To create your account and customize the Site</li>
               <li>To send you promotional information, such as newsletters</li>
@@ -231,7 +239,7 @@ export default function PrivacyPolicyPage() {
               From time to time, the Site may engage in remarketing efforts with
               third-party companies, such as Google, Facebook, or Instagram, in
               order to market the Site. These companies use cookies to serve ads
-              based on someone&apos;s past visits to the Site. However, your
+              based on someone’s past visits to the Site. However, your
               personally identifiable information is not used by any remarketing
               service other than to present you offers from the Site.
             </p>
@@ -239,7 +247,7 @@ export default function PrivacyPolicyPage() {
 
           <div>
             <h2 className="display-3 text-white">
-              Children&apos;s Information
+              Children’s Information
             </h2>
             <p className="mt-2">
               The Website does not knowingly collect any personally identifiable
@@ -286,12 +294,13 @@ export default function PrivacyPolicyPage() {
               of this Site, please contact us at{" "}
               <a
                 href="mailto:pgcreativeswisconsin@gmail.com"
-                className="text-purple-light hover:underline"
+                className="text-signal-ink underline underline-offset-2 decoration-signal-ink/40 hover:decoration-signal-ink"
               >
                 pgcreativeswisconsin@gmail.com
               </a>
               .
             </p>
+            </div>
           </div>
         </div>
       </div>

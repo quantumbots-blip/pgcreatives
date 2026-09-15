@@ -371,7 +371,7 @@ export default async function PortfolioPage() {
         }
       />
 
-      <section className="section pt-0">
+      <section className="section section-flush-top">
         <PortfolioFilter projects={projectsWithThumbs} />
       </section>
     </>

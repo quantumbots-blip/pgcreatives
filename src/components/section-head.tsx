@@ -12,6 +12,12 @@ import { DisplayLines } from "@/components/display-lines";
  * `mt-8` offsets that were spacing for a rule that no longer exists. The
  * heading column is 1.5fr so a `display-2` line of 22 characters holds at
  * every width from 1024 up; below that the aside drops beneath the heading.
+ *
+ * THE HEAD OWNS NO BOTTOM MARGIN. Whatever follows it carries `.block-gap`,
+ * because the gap belongs to the pair, not to the heading, and only the
+ * sibling knows whether it is a grid, a list or a single button. Four heads
+ * on the market pages shipped without it and sat flush on their own content
+ * at 0px; if you add a SectionHead, give the element after it `.block-gap`.
  */
 export function SectionHead({
   lines,

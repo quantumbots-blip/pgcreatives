@@ -95,6 +95,19 @@ const RETRY_DELAY_MS = 400;
 const BASE_BG = "translateZ(-140px) scale(1.125)";
 const BASE_CONTENT = "translateZ(60px)";
 
+/* When the hero's entrance is allowed to start, in seconds from first paint.
+
+   It used to start at 0.18s and be over by 1.6s. The splash is an opaque
+   black overlay at z-index 9999 until 1.6s, and it is not fully gone until
+   2.2s, so the whole entrance played behind it: the one piece of motion that
+   most separates this page from a template, and nobody had ever seen it.
+
+   1.42s puts the first line into the last fifth of the splash's hold, so the
+   headline is already rising as the logo dissolves off it. Both are CSS
+   animations measured from first paint, so they stay in step on a slow phone
+   where first paint is late. The splash's own timing is untouched. */
+const HERO_START = 1.42;
+
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
@@ -445,7 +458,10 @@ export function VideoHero() {
               into two. The lede and the button row carry their own widths, so
               this only governs the headline. */}
           <div className="mx-auto flex max-w-[min(100%,84rem)] flex-col items-center text-center">
-            <p className="animate-hero-fade-up meta hero-markets flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 text-white/70">
+            <p
+              className="animate-hero-fade-up meta hero-markets flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 text-white/70"
+              style={{ animationDelay: `${HERO_START}s` }}
+            >
               {/* All four markets in the same gray. Green Bay used to carry
                   the accent, which read as a ranking the owner never meant. */}
               {[
@@ -469,16 +485,16 @@ export function VideoHero() {
                 The colour lives in `.hero-display` rather than a `text-white`
                 utility, because the second line paints itself with a clipped
                 gradient and a utility colour would land on top of it. */}
-            <h1 className="hero-display mt-[clamp(2rem,6svh,3.75rem)]">
+            <h1 className="hero-display hero-h1 mt-[clamp(2rem,6svh,3.75rem)]">
               <span className="line-mask">
-                <span className="line-inner hero-line" style={{ animationDelay: "0.18s" }}>
+                <span className="line-inner hero-line" style={{ animationDelay: `${HERO_START + 0.06}s` }}>
                   Professional{" "}
                 </span>
               </span>
               <span className="line-mask">
                 <span
                   className="line-inner hero-line hero-sheen"
-                  style={{ animationDelay: "0.30s" }}
+                  style={{ animationDelay: `${HERO_START + 0.18}s` }}
                 >
                   grade media.
                 </span>
@@ -486,8 +502,8 @@ export function VideoHero() {
             </h1>
 
             <p
-              className="animate-hero-fade-up lede mt-[clamp(1.75rem,5svh,2.75rem)] max-w-xl"
-              style={{ animationDelay: "0.44s" }}
+              className="animate-hero-fade-up hero-lede lede mt-[clamp(1.75rem,5svh,2.75rem)] max-w-xl"
+              style={{ animationDelay: `${HERO_START + 0.32}s` }}
             >
               Listing photography, video, drone and 3D tours for Wisconsin
               agents, plus the personal-brand content that keeps you in front
@@ -495,8 +511,8 @@ export function VideoHero() {
             </p>
 
             <div
-              className="animate-hero-fade-up mx-auto mt-[clamp(2.5rem,7svh,4.25rem)] flex w-full max-w-[17.5rem] flex-col items-stretch gap-3 sm:max-w-none sm:w-auto sm:flex-row sm:items-center sm:gap-4"
-              style={{ animationDelay: "0.56s" }}
+              className="animate-hero-fade-up hero-actions mx-auto mt-[clamp(2.5rem,7svh,4.25rem)] flex w-full max-w-[17.5rem] flex-col items-stretch gap-3 sm:max-w-none sm:w-auto sm:flex-row sm:items-center sm:gap-4"
+              style={{ animationDelay: `${HERO_START + 0.44}s` }}
             >
               <Link href="/#book" className="btn btn-primary">
                 Book a shoot
@@ -515,8 +531,8 @@ export function VideoHero() {
           middle of the viewport, and hidden on phones where a short screen
           (iPhone SE) puts it on top of the buttons. */}
       <div
-        className="animate-hero-fade-up absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 sm:block"
-        style={{ animationDelay: "0.8s" }}
+        className="hero-cue animate-hero-fade-up absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 sm:block"
+        style={{ animationDelay: `${HERO_START + 0.68}s` }}
       >
         <div className="flex flex-col items-center gap-2.5">
           <span className="meta">Scroll</span>

@@ -313,7 +313,7 @@ export function Header() {
               alt="PG Creatives"
               width={366}
               height={77}
-              className="h-[24px] w-auto lg:h-[30px]"
+              className="brand-mark h-[24px] w-auto lg:h-[30px]"
               loading="eager"
             />
           </Link>

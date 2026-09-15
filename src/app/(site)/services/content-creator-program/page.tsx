@@ -334,7 +334,7 @@ export default async function ContentCreatorProgramPage() {
                   lines={["Ready to grow", "your brand?"]}
                 />
                 <p className="lede mt-5 max-w-md">
-                  Get in touch for a free consultation and we&apos;ll tell you
+                  Get in touch for a free consultation and we’ll tell you
                   honestly whether the program is right for you.
                 </p>
               </div>

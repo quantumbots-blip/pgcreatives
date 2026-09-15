@@ -16,6 +16,11 @@ export function GoogleButton() {
   const [going, setGoing] = useState(false);
 
   return (
+    /* A real document navigation, not a client-side route change: this hands
+       the browser to Google's consent screen and the route handler sets the
+       PKCE cookie on the way. next/link would prefetch and soft-navigate an
+       endpoint that only ever answers with a redirect. */
+    // eslint-disable-next-line @next/next/no-html-link-for-pages
     <a
       href="/api/auth/google/start"
       onClick={() => setGoing(true)}

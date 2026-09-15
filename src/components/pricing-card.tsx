@@ -37,14 +37,26 @@ export function PricingCard({
           : ""
       }`}
     >
-      <div className="flex items-start justify-between gap-4">
-        <h3 className="display-3 text-white">{name}</h3>
+      {/* The badge sits ABOVE the name, in a slot every card reserves.
+
+          It used to share a row with the title, taking width off it. At 1024
+          the three-up grid gives each card a 304px box: "PG Growth" plus the
+          badge no longer fitted on one line, the title wrapped to two, and
+          that one card's price and rule sat 26px below its neighbours' while
+          the cards themselves stayed the same height. Reserving the row on
+          all three costs 24px of air above two titles and guarantees the
+          prices and the rules line up at every width. It is also the site's
+          own grammar: a `.meta` kicker over a heading, the same as every
+          other card here. */}
+      <p className="meta meta-signal flex h-6 items-center">
         {popular && (
-          <span className="meta meta-signal shrink-0 rounded-full border border-signal/35 px-2.5 py-1.5">
+          <span className="rounded-full border border-signal/35 px-2.5 py-1">
             Most booked
           </span>
         )}
-      </div>
+      </p>
+
+      <h3 className="display-3 mt-3 text-white">{name}</h3>
 
       <p className="mt-5 flex items-baseline gap-2">
         <span className="display-2 !text-[clamp(1.75rem,2.6vw,2.25rem)] text-white">

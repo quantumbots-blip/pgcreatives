@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
@@ -58,11 +59,32 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
      means on a phone — where most of this gets browsed — none of the 34
      frames had a label at all. */
   const caption = (project: Project) => (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#07090c] via-[#07090c]/70 to-transparent p-4 pt-12 sm:p-5 sm:pt-14">
+    <div className="-mt-12 bg-gradient-to-t from-[#07090c] via-[#07090c]/70 to-transparent p-4 pt-12 sm:-mt-14 sm:p-5 sm:pt-14">
       <p className="meta meta-signal">{project.category}</p>
       <h3 className="mt-1.5 text-sm font-medium text-white sm:text-base">
         {project.title}
       </h3>
+    </div>
+  );
+
+  /* The play mark and the caption share one flex column filling the card,
+     rather than both being absolutely positioned over it.
+
+     Centred in the whole card, the mark collided with the category label on
+     every film tile at exactly the two widths where a new column count makes
+     the card shortest: 640px (card 188x235, 1px of overlap) and 1024px (card
+     179x224, 6px). Sizing its box against the caption's instead makes that
+     impossible at any card height. The negative margin lets it use the 48px
+     of the caption's scrim that is still transparent, so on a tall tile the
+     mark stays where it always sat. */
+  const overlay = (project: Project) => (
+    <div className="pointer-events-none absolute inset-0 flex flex-col">
+      <div className="flex flex-1 items-center justify-center">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-[#07090c]/55 text-white backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:border-signal group-hover:text-signal-ink sm:h-14 sm:w-14">
+          <Play className="ml-0.5 h-5 w-5" />
+        </div>
+      </div>
+      {caption(project)}
     </div>
   );
 
@@ -107,12 +129,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
             }
           />
         )}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-[#07090c]/55 text-white backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:border-signal group-hover:text-signal-ink sm:h-14 sm:w-14">
-            <Play className="ml-0.5 h-5 w-5" />
-          </div>
-        </div>
-        {caption(project)}
+        {overlay(project)}
       </button>
       </Tilt>
     </AnimateOnScroll>
@@ -161,8 +178,13 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
              into a box that renders 496 on a 1440p display. */
           sizes={
             canSpan(project, i, all.length)
-              ? "(min-width: 1360px) 42vw, (min-width: 1024px) 40vw, (max-width: 640px) 100vw, 50vw"
-              : "(min-width: 1360px) 21vw, (min-width: 1024px) 20vw, (max-width: 640px) 100vw, 33vw"
+              /* Measured, not estimated. A feature tile spans two of the
+                 grid's columns plus the gap between them, so at 1024 it
+                 renders 464 of 1024 (45%) and at 820 it renders 497 of 820
+                 (61%) — the old 40vw and 50vw were asking for an 828px
+                 rendition for a box that needs 928 or 994 at 2x. */
+              ? "(min-width: 1360px) 42vw, (min-width: 1024px) 47vw, (max-width: 640px) 100vw, 61vw"
+              : "(min-width: 1360px) 21vw, (min-width: 1024px) 23vw, (max-width: 640px) 100vw, 33vw"
           }
         />
       )}
@@ -209,7 +231,11 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
               className={cn(
                 "mt-6 grid gap-3",
                 videosPortrait
-                  ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
+                  /* 2 / 3 / 4 / 5. Going 3 straight to 5 at 1024 took the
+                     tile from 228px to 179px: 21% smaller for a window 256px
+                     wider, which is the one thing a responsive grid must
+                     never do. */
+                  ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
                   : "sm:grid-cols-2 lg:grid-cols-3",
                 "scene"
               )}
@@ -236,9 +262,9 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         {videos.length === 0 && photos.length === 0 && (
           <p className="mt-16 text-ink-2">
             Nothing filed under {activeCategory} yet. Try another subject, or{" "}
-            <a href="/contact" className="text-signal-ink underline underline-offset-4">
+            <Link href="/contact" className="text-signal-ink underline underline-offset-4">
               ask us what we have
-            </a>
+            </Link>
             .
           </p>
         )}

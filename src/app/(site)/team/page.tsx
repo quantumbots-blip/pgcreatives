@@ -143,7 +143,13 @@ export default function TeamPage() {
           <h2 className="sr-only">Meet the team</h2>
           {/* Five across on desktop: ten people fill two rows exactly, where
               four columns left two alone on the last. */}
-          <div className="scene grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
+          {/* 2 / 3 / 4 / 5, not 2 straight to 5. The old jump happened in one
+              8px step at 1024: a 460x613 portrait became a 176x234 thumbnail,
+              so the grid got SMALLER as the window got bigger and every name
+              and role broke across lines. Ten members divide evenly at 2 and
+              5 and leave one short row at 3 and 4, which is the right trade
+              for portraits that stay a usable size on a tablet. */}
+          <div className="scene grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
             {team.map((member, index) => (
               <AnimateOnScroll
                 key={member.name}
@@ -161,6 +167,9 @@ export default function TeamPage() {
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
                       sizes="(max-width: 1024px) 50vw, 20vw"
+                      /* The first row is above the fold on every width and
+                         holds the page's LCP element. */
+                      priority={index < 2}
                     />
                     {/* A deeper, longer scrim than the old half-height one: the
                         headshots vary wildly in exposure, and a light background
