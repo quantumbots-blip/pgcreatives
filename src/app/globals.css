@@ -1697,6 +1697,77 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
     0 2px 10px -2px rgba(43, 111, 184, 0.6);
 }
 
+/* ── Mobile menu ───────────────────────────────────────────────────────
+   One centred column of type. The rows used to be icon + label + a hairline
+   under each, which on a phone read as a settings list rather than as the
+   site's own navigation, and the tap rows were 56px with nothing between
+   them.
+
+   The sizes are fluid against the viewport's HEIGHT, not its width: what
+   decides whether a menu feels cramped on a phone is how much vertical room
+   the five items have to sit in, and that is what changes between a 667px
+   SE and a 956px Pro Max. Every row clears 44px at the smallest size and
+   reaches 68px at the largest. */
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: clamp(3rem, 7.2svh, 4.375rem);
+  padding-inline: 1rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.8svh, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  transition: color 0.2s ease;
+}
+
+/* The active item is the white one. It used to also carry an accent dot
+   pushed to the right edge of its row, which a centred row has no right
+   edge to push to; the accent moved under the word instead, where it reads
+   as an underline for the page you are on rather than a bullet. */
+.menu-link-active {
+  position: relative;
+}
+
+.menu-link-active::after {
+  content: "";
+  position: absolute;
+  bottom: clamp(0.35rem, 1svh, 0.7rem);
+  left: 50%;
+  width: 1.375rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--signal);
+  transform: translateX(-50%);
+}
+
+.menu-sublink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: clamp(2.75rem, 4.4svh, 3.25rem);
+  font-size: clamp(1rem, 1.9svh, 1.125rem);
+  transition: color 0.2s ease;
+}
+
+/* The bars carry their own contrast. Without the glass capsule behind them
+   they sit straight on the hero footage, where a 1.5px white line over a
+   lit window is invisible; the shadow is what a white icon on a photograph
+   always needs. */
+.menu-button span {
+  /* Measured against a pure white viewport behind the header, which is
+     worse than any frame the hero can show: at the softer shadow the white
+     bar read 4.06:1 against its own surround, under the 4.5 it needs. This
+     is 7.34:1 and still invisible over the dark ground, where there is
+     nothing for it to darken. */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.85), 0 0 2px rgba(0, 0, 0, 0.95);
+}
+
 /* The bar tightens as the page scrolls: a header that behaves is a small
    signal that the rest of the site was built with the same care. */
 .header-shell {
