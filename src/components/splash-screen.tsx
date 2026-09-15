@@ -57,7 +57,11 @@ export function SplashScreen() {
           // opened at, which the owner found too big for a splash.
           width={186}
           height={151}
-          className="w-[5.6rem] sm:w-[7.2rem] h-auto"
+          // Nudged 5px right of dead centre, by eye. The `translate`
+          // property rather than a transform: the wrapper's enter and breathe
+          // keyframes own `transform`, and setting one here would be
+          // overwritten the moment either of them ran.
+          className="w-[5.6rem] sm:w-[7.2rem] h-auto translate-x-[5px]"
           preload
         />
       </div>
