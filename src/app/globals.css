@@ -910,8 +910,14 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
    The signature. Four corner marks, the crop guides you see through a
    camera's viewfinder, drawn as hairline L's just inside a frame's edge.
    They open outward a couple of pixels on hover — the way a frame settles
-   when you compose a shot. Used on the hero and on portfolio frames only;
-   the moment it appears on every card it stops meaning anything. */
+   when you compose a shot.
+
+   THEY MARK A FRAME THAT STANDS ALONE, NEVER A SET. The hero, the three
+   service frames, and the founder's portrait. They came off the portfolio's
+   49 tiles, the home photo bento, the market film galleries and the reel
+   deck: the owner's words for a crop mark on every picture in a grid were
+   "it looks weird", and the rule was already written here before anyone
+   could see them, because until PR #56 they were painted under the photo. */
 
 .viewfinder {
   position: relative;
@@ -1752,16 +1758,25 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
     inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
-.nav-link-active::after {
+.nav-label {
+  position: relative;
+  display: inline-block;
+}
+
+/* As wide as the word, in the ink value. It was a fixed 14px bar centred
+   under a pill that is 32px of padding plus the label plus, on the dropdown
+   trigger, a chevron: under "Services" it marked a quarter of the word and
+   floated nearer the chevron than the text. Same fault, same fix, as the
+   phone menu's underline. */
+.nav-link-active .nav-label::after {
   content: "";
   position: absolute;
-  left: 50%;
-  bottom: 0.25rem;
-  width: 14px;
+  left: 0;
+  right: 0;
+  bottom: -0.3rem;
   height: 2px;
   border-radius: 999px;
-  background: var(--signal);
-  transform: translateX(-50%);
+  background: var(--signal-ink);
 }
 
 /* The divider between browsing and acting. A flat 1px of --line (8% white)
@@ -1843,16 +1858,24 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   position: relative;
 }
 
-.menu-link-active::after {
+.menu-label {
+  position: relative;
+  display: inline-block;
+}
+
+/* The underline is as wide as the word and set in the ink value, not the
+   fill. It used to be a fixed 1.375rem bar centred under a label that runs
+   25 to 36px: under "Services" it covered a third of the word and read as a
+   stray dash rather than as a marker for the page you are on. */
+.menu-link-active .menu-label::after {
   content: "";
   position: absolute;
-  bottom: clamp(0.35rem, 1svh, 0.7rem);
-  left: 50%;
-  width: 1.375rem;
-  height: 2px;
+  left: 0;
+  right: 0;
+  bottom: -0.32em;
+  height: 3px;
   border-radius: 999px;
-  background: var(--signal);
-  transform: translateX(-50%);
+  background: var(--signal-ink);
 }
 
 .menu-sublink {
@@ -1922,14 +1945,21 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 }
 
 .stage-track {
+  /* Named, because the connector has to know it: the line between two nodes
+     spans the gap, so the gap and the overshoot are the same number. */
+  --stage-gap: 1.25rem;
+  --stage-row-gap: 2.25rem;
   display: grid;
-  gap: 2.25rem 1.5rem;
+  gap: var(--stage-row-gap) 1.5rem;
   grid-template-columns: 1fr;
   counter-reset: stage;
 }
 
 @media (min-width: 768px) {
-  .stage-track { grid-template-columns: repeat(5, 1fr); gap: 1.25rem; }
+  .stage-track {
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--stage-gap);
+  }
 }
 
 .stage {
@@ -1938,13 +1968,19 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
 }
 
 /* The connector. Drawn on the node row and stopped before the last item, so
-   the sequence reads left to right and does not trail off the end. */
+   the sequence reads left to right and does not trail off the end.
+
+   It has to cross the grid gap. `right: 0` stopped it at this column's edge,
+   which left the track's own 1.25rem gap as a break in front of every node
+   after the first: five bubbles with lines that reached four of them. The
+   node is opaque, so overshooting to exactly the next one's left edge is
+   what joins them. */
 .stage::before {
   content: "";
   position: absolute;
   top: 1rem;
   left: 2rem;
-  right: 0;
+  right: calc(var(--stage-gap, 0px) * -1);
   height: 1px;
   background: linear-gradient(to right, var(--line-strong), var(--line));
 }
@@ -1955,8 +1991,10 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   /* Vertical on phones: the connector runs down the left instead. */
   .stage { padding-top: 0; padding-left: 3.25rem; }
   .stage::before {
-    top: 2.25rem;
-    bottom: -2.25rem;
+    /* 2rem is the node's own bottom edge. At 2.25rem the line started 4px
+       below it and the bubble had a gap under it as well as in front. */
+    top: 2rem;
+    bottom: calc(var(--stage-row-gap, 2.25rem) * -1);
     left: 1rem;
     right: auto;
     width: 1px;

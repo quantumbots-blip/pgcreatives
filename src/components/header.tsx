@@ -135,7 +135,10 @@ function DesktopDropdown({
           isActive ? "nav-link-active text-white" : "text-white/[0.82] hover:bg-white/[0.07] hover:text-white"
         )}
       >
-        {item.name}
+        {/* The label in its own box, so the active underline measures the
+            word and not the button, which also holds a chevron and 32px of
+            padding. See `.nav-label` in globals.css. */}
+        <span className="nav-label">{item.name}</span>
         <ChevronDown
           className={cn("h-3.5 w-3.5 transition-transform duration-200", open && "rotate-180")}
         />
@@ -355,7 +358,7 @@ export function Header() {
                         : "text-white/[0.82] hover:bg-white/[0.07] hover:text-white"
                     )}
                   >
-                    {item.name}
+                    <span className="nav-label">{item.name}</span>
                   </Link>
                 )
               )}
@@ -451,7 +454,12 @@ export function Header() {
                     active ? "menu-link-active text-white" : "text-white/55 active:text-white"
                   )}
                 >
-                  {item.name}
+                  {/* The label is its own inline box so the active underline
+                      can be the width of the WORD. Drawn on the link itself
+                      it had nothing to measure, because the row is the full
+                      width of the screen, so it was a fixed 22px bar under a
+                      36px word. */}
+                  <span className="menu-label">{item.name}</span>
                 </Link>
               );
             })}

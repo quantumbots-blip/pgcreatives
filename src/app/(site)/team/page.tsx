@@ -214,7 +214,10 @@ export default function TeamPage() {
                         className="object-cover"
                         sizes="240px"
                       />
-                      <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#07090c] via-[#07090c]/75 to-transparent p-4 pt-12">
+                      {/* pb-9, not pb-4. The bottom crop marks occupy the
+                          last 32px of each corner, and "Founder" was set
+                          straight through the left one. */}
+                      <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#07090c] via-[#07090c]/75 to-transparent px-5 pb-9 pt-12">
                         <p className="text-sm font-semibold text-white">Michael McIntee</p>
                         <p className="meta mt-1.5">Founder</p>
                       </figcaption>

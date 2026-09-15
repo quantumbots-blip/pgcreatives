@@ -82,8 +82,7 @@ export async function ProgramShowcaseDeck() {
         <div className="reel-deck" aria-hidden="false">
           {reels.map((reel, i) => (
             <Tilt key={reel.src} className={`reel-card reel-card-${i}`} max={8} lift={22}>
-              <figure className="viewfinder relative aspect-[9/16] overflow-hidden rounded-[1.75rem] border border-line-strong bg-surface shadow-[0_30px_80px_-30px_rgba(0,0,0,0.95)]">
-                <span className="vf-b" aria-hidden="true" />
+              <figure className="relative aspect-[9/16] overflow-hidden rounded-[1.75rem] border border-line-strong bg-surface shadow-[0_30px_80px_-30px_rgba(0,0,0,0.95)]">
                 <Image
                   src={reel.src}
                   alt={reel.alt}

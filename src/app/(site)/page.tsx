@@ -12,6 +12,7 @@ import { SectionHead } from "@/components/section-head";
 import { Counter } from "@/components/counter";
 import { FAQ, faqs } from "@/components/faq";
 import { Packages } from "@/components/packages";
+import { BUSINESS } from "@/lib/data";
 
 const stats = [
   { value: 3, prefix: "$", suffix: "B", label: "In real estate captured" },
@@ -254,11 +255,10 @@ export default function HomePage() {
                 key={photo.alt}
                 animation="depth"
                 delay={i * 0.07}
-                className={`drift viewfinder group relative overflow-hidden rounded-xl bg-surface ${
+                className={`drift group relative overflow-hidden rounded-xl bg-surface ${
                   photo.className ?? ""
                 } ${photo.className ? "aspect-[16/10] lg:aspect-auto" : "aspect-[4/3]"}`}
               >
-                <span className="vf-b" aria-hidden="true" />
                 <Image
                   src={photo.image}
                   alt={photo.alt}
@@ -396,6 +396,57 @@ export default function HomePage() {
                 <p className="mt-3 text-ink-2">
                   Send the details and we’ll come back with a quote and a
                   recommendation, usually the same day.
+                </p>
+
+                {/* The column under the ask used to be empty for most of a
+                    tall panel, so the form read as the only thing in it. What
+                    belongs beside a form is the answer to the question a
+                    visitor is actually holding: what happens once I send
+                    this, and can I just call instead. */}
+                <ol className="block-gap space-y-6">
+                  {[
+                    {
+                      step: "You send the address",
+                      detail:
+                        "Square footage and the date it needs to be live is enough to price it.",
+                    },
+                    {
+                      step: "We come back the same day",
+                      detail:
+                        "An exact number and the package we would actually shoot it with.",
+                    },
+                    {
+                      step: "We book the light",
+                      detail:
+                        "Most listings are shot within a couple of days, and delivered in 24 hours.",
+                    },
+                  ].map((item, i) => (
+                    <li key={item.step} className="flex gap-4">
+                      <span className="meta meta-signal mt-1 w-5 shrink-0 tabular-nums">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-base font-semibold text-white">
+                          {item.step}
+                        </span>
+                        <span className="mt-1 block text-sm leading-relaxed text-ink-2">
+                          {item.detail}
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+
+                <p className="block-gap border-t border-line pt-6 text-sm leading-relaxed text-ink-3">
+                  Rather talk it through? Call{" "}
+                  <a href={BUSINESS.phones.greenBay.href} className="text-signal-ink">
+                    {BUSINESS.phones.greenBay.number}
+                  </a>{" "}
+                  for Green Bay and the Fox Valley, or{" "}
+                  <a href={BUSINESS.phones.madison.href} className="text-signal-ink">
+                    {BUSINESS.phones.madison.number}
+                  </a>{" "}
+                  for Madison.
                 </p>
               </div>
               <div className="relative">

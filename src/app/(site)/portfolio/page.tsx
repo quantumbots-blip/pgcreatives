@@ -5,6 +5,17 @@ import { breadcrumbs, videoGallery, jsonLd } from "@/lib/seo";
 
 export const revalidate = 3600;
 
+/* `feature: true` doubles a tile to two columns and two rows, which on a
+   1920 display renders 782px wide and therefore needs 1565 real pixels at 2x.
+   ONLY PHOTOS WITH A 1920px MASTER CAN CARRY IT. Three of the four features
+   were a 900px and two 1200px files, and Next upscales rather than refusing,
+   so the URL said `?w=1920` while the pixels were a 900px photo stretched
+   nearly twice its width: the softest thing on the site, in its biggest
+   frame. Check the master before you flag one:
+     node -e "require('sharp')('public/images/x.jpg').metadata().then(m=>console.log(m.width))"
+   Masters at 1920 today: luxury-living-room, modern-condo, lakehouse-kitchen,
+   gourmet-kitchen, modern-entryway, luxury-estate-night, stone-fireplace-living,
+   farmhouse-kitchen, fireplace-living, marble-kitchen-dining. */
 const projects = [
   // Videos
   {
@@ -115,13 +126,13 @@ const projects = [
     category: "Drone",
     type: "photo" as const,
     image: "/images/aerial-lakefront.jpg",
-    feature: true,
   },
   {
     title: "Lakehouse Kitchen & Fireplace",
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/lakehouse-kitchen.jpg",
+    feature: true,
   },
   {
     title: "Cottage Exterior",
@@ -182,6 +193,7 @@ const projects = [
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/fireplace-living.jpg",
+    feature: true,
   },
   {
     title: "Kitchen Detail & Backsplash",
@@ -256,7 +268,6 @@ const projects = [
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/lakefront-screened-porch.jpg",
-    feature: true,
   },
   {
     title: "Marble Chef Kitchen",
@@ -305,7 +316,6 @@ const projects = [
     category: "Real Estate",
     type: "photo" as const,
     image: "/images/golf-simulator-room.jpg",
-    feature: true,
   },
 ];
 
