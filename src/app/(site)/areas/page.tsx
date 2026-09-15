@@ -85,7 +85,7 @@ export default function AreasPage() {
                   <p className="text-sm leading-relaxed text-ink-3">
                     <span className="text-signal-ink">{phone.number}</span>
                     <span className="mx-2" aria-hidden="true">/</span>
-                    {market.towns.slice(0, 3).join(", ")}
+                    {market.towns.slice(0, 3).map((t) => t.replace(/ /g, "\u00a0")).join(", ")}
                   </p>
                 </Link>
               );

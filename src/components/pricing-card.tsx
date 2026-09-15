@@ -65,7 +65,12 @@ export function PricingCard({
         {priceSuffix && <span className="meta">{priceSuffix}</span>}
       </p>
 
-      <p className="mt-4 border-t border-line pt-5 text-sm leading-relaxed text-ink-2">
+      {/* The description reserves three lines, the way the badge row above
+          reserves one. `flex-1` on the list below pins the BUTTON to the card
+          bottom but lets the list start wherever the description happens to
+          end, so the three check lists began one 22.75px line apart at almost
+          every desktop width. */}
+      <p className="mt-4 border-t border-line pt-5 text-sm leading-relaxed text-ink-2 lg:min-h-[calc(4*1.625em+1.25rem)] xl:min-h-[calc(3*1.625em+1.25rem)]">
         {description}
       </p>
 

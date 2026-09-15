@@ -63,7 +63,9 @@ const contactInfo = [
     icon: Mail,
     label: "Email",
     value: BUSINESS.email,
-    href: `mailto:${BUSINESS.email}`,
+    href: `mailto:${BUSINESS.email.split("@")[0]}
+                    @<wbr />
+                    {BUSINESS.email.split("@")[1]}`,
   },
 ];
 
@@ -99,7 +101,7 @@ export default function ContactPage() {
                 response promise are the only things here the footer does not
                 already say, so they are what this column leads with. */}
             <AnimateOnScroll animation="depth" delay={0.12} className="lg:col-span-2">
-              <div className="surface h-full p-6 sm:p-8">
+              <div className="surface h-full p-6 sm:p-8 lg:p-10">
                 <p className="meta">Reach us directly</p>
                 <ul className="mt-6 space-y-1">
                   {contactInfo.map((item) => {

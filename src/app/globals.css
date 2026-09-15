@@ -204,8 +204,18 @@
   }
 }
 
-html {
-  scroll-behavior: smooth;
+/* Smooth scrolling belongs to same-page anchors, NOT to navigation.
+
+   On `html` it also applies to the scroll RESTORATION a route change performs:
+   click any nav link from halfway down a page and the browser lands the new
+   page at your old scroll offset and then animates it up to the top, so every
+   page opened mid-content and slid for the better part of a second. Scoping
+   it to a live `:target` leaves the three in-page jumps (#book, #real-estate,
+   #commercial, #pricing) smooth and gives navigation an instant top. */
+@media (prefers-reduced-motion: no-preference) {
+  html:has(:target) {
+    scroll-behavior: smooth;
+  }
 }
 
 /* ── Core keyframes (consolidated) ── */
@@ -223,7 +233,8 @@ html {
 }
 
 @keyframes logo-breathe {
-  0%, 100% { filter: brightness(0.85) drop-shadow(0 0 8px rgba(52, 97, 209, 0.1)); transform: scale(1); }
+  /* Starts where logo-enter ended, so the handover is invisible. */
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 12px rgba(52, 97, 209, 0.2)); transform: scale(1); }
   50% { filter: brightness(1.15) drop-shadow(0 0 30px rgba(52, 97, 209, 0.4)); transform: scale(1.02); }
 }
 
@@ -322,6 +333,14 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
 .reveal[data-reveal="rise"] {
   --reveal-from: translate3d(0, 44px, 0);
   --reveal-duration: 0.9s;
+}
+
+/* The compositor hint lives on the PENDING state only, so it is dropped the
+   moment each heading arrives and a touch device that never runs the
+   pointer-gated effects promotes nothing. Same rule the tilt already follows. */
+html[data-reveal-ready] .reveal:not(.is-visible) .line-inner,
+.hero-line {
+  will-change: transform, opacity;
 }
 
 html[data-reveal-ready] .reveal {
@@ -865,7 +884,7 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   gap: 0.5rem;
   font-size: 0.8125rem;
   color: var(--ink-2);
-  transition: color 0.2s ease, gap 0.2s ease;
+  transition: color 0.2s ease;
   /* The text box is 21px tall. It clears SC 2.5.8 on the spacing exception,
      since nothing else is within 24px of it, but a thumb still has to find
      21px of link. The hit area is extended to 44px by an overlay rather
@@ -880,7 +899,12 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   inset: -0.75rem -0.5rem;
 }
 
-.rule-link:hover { color: var(--signal-ink); gap: 0.75rem; }
+.rule-link:hover { color: var(--signal-ink); }
+
+/* The arrow moves, not the words. Animating `gap` on a row whose first item
+   is the label pushed the TEXT 4px left on hover, which is the opposite of
+   the nudge every other link on the site does. */
+.rule-link:hover .arrow { transform: translateX(4px); }
 
 /* ── Surfaces ──────────────────────────────────────────────────────────
    A card is a real object: a lighter ground and a hairline, so its edge
@@ -1042,6 +1066,10 @@ html[data-reveal-ready] .reveal[data-reveal="lines"]:not(.is-visible) {
   white-space: nowrap;
   transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
     background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  /* Every variant reserves the same 2px, so the ghost button and the
+     filled one beside it are the same height. `.btn-ghost` only recolours
+     it. */
+  border: 1px solid transparent;
 }
 
 .btn:active { transform: scale(0.97); }
@@ -1303,6 +1331,8 @@ select.field:has(> option[value=""]:checked) {
 }
 
 .field-row:has(.field[aria-invalid="true"]) .field-label { color: #ff9d9d; }
+/* The asterisk goes red with its label rather than staying accent blue. */
+.field-row:has(.field[aria-invalid="true"]) .field-required { color: inherit; }
 
 /* A field that validation sends focus to has to clear the fixed header, or
    the visitor is looking at the message for a field they cannot see. */
@@ -2302,6 +2332,15 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
    is a few pixels wider than a 390px phone's content column — so it wrapped,
    and a line ended on a separator. Tightening the tracking below 480px keeps
    all four markets on one line, which is what the list is for. */
+/* The strip sits on moving footage, so it needs its own value. `.meta` is a
+   primitive and sets `color`, which silently outranks the `text-white/70`
+   utility the component asks for: the line was rendering at --ink-3 and
+   measured 2.8:1 over the video, the worst contrast on the site. */
+.hero-markets {
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
 @media (max-width: 480px) {
   .hero-markets {
     letter-spacing: 0.09em;
@@ -2440,6 +2479,17 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
    and the brand's own dark ground has to come with it. Everything else keeps
    the system palette, which is the point of the mode. */
 @media (forced-colors: active) {
+  /* Highlight/HighlightText is the one pair the mode keeps distinct, so it is
+     what a selected filter chip or FAQ tab has to use. Without it the chosen
+     one looked exactly like the four beside it. */
+  .faq-pill:has(~ * :checked),
+  .faq:has(input:checked) .faq-pill,
+  [aria-pressed="true"] {
+    forced-color-adjust: none;
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
   .brand-mark,
   .marquee-logo {
     forced-color-adjust: none;
@@ -2503,7 +2553,11 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
     color: #000000 !important;
   }
 
-  /* Screen-only furniture. */
+  /* Screen-only furniture. The hero's backdrop goes with it: the headline is
+     white BECAUSE it sits on footage, and once the tokens flip to black ink
+     the photograph underneath is the one thing that can make it unreadable
+     again. Same for the caption scrims on the portfolio cards — the picture
+     is what the black caption was landing on. */
   header,
   footer nav,
   #mobile-menu,
@@ -2514,11 +2568,18 @@ html[data-reveal-ready] .reveal.is-visible .line-inner {
   .grid-rules,
   .portal-glow,
   .portal-map,
+  .hero-parallax-bg,
   canvas,
   video,
   form,
   [data-print-hide] {
     display: none !important;
+  }
+
+  /* A caption printed over a photograph needs paper under it. */
+  .scene img + div,
+  [class*="bg-gradient-to-t"] {
+    background: #ffffff !important;
   }
 
   .surface,
@@ -2678,4 +2739,34 @@ h5,
 h6,
 .display-3 {
   text-wrap: balance;
+}
+
+/* A team card's role reserves its lines so the NAMES in a row share a
+   baseline. The caption is anchored to the bottom of the card, so a role that
+   wraps pushed its own name up: measured at 36px of stagger across a row at
+   320, and 16px at every width from 440 to 1440. `.meta` is line-height 1.4,
+   so two lines is 2.8em and three is 4.2em. Three below sm, where the card is
+   narrowest and "Creative Specialist (Green Bay)" takes three; two above it. */
+.team-role {
+  min-height: 4.2em;
+}
+
+/* And the NAME reserves two lines where the card is narrow enough to wrap
+   one. Reserving the role alone left 20px of stagger at 320 and 390, because
+   "Diether Ryan Ybanez" and "Charlibeth Sicad" break where "Calvin Lee" does
+   not, and the caption is anchored to the bottom. */
+.team-name {
+  min-height: 2.6em;
+}
+
+@media (min-width: 640px) {
+  .team-name {
+    min-height: 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .team-role {
+    min-height: 2.8em;
+  }
 }

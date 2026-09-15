@@ -176,8 +176,17 @@ export default function TeamPage() {
                         behind a name in white is unreadable. */}
                     <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-[#07090c] via-[#07090c]/80 to-transparent" />
                     <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-                      <h3 className="text-sm font-semibold text-white sm:text-base">{member.name}</h3>
-                      <p className="meta mt-1.5">{member.role}</p>
+                      <h3 className="team-name text-sm font-semibold text-white sm:text-base">
+                        {member.name}
+                      </h3>
+                      {/* The role reserves its lines, so the NAMES in a row
+                          share a baseline. The caption is anchored to the
+                          bottom of the card, so a role that wraps to two or
+                          three lines pushed its own name up and left the row
+                          staggered by up to 36px at 320 and 16px at every
+                          width up to 1440. Three lines below sm, where the
+                          card is narrowest, two above it. */}
+                      <p className="team-role meta mt-1.5">{member.role}</p>
                     </div>
                   </div>
                 </div>

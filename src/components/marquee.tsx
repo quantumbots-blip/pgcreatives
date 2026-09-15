@@ -55,7 +55,13 @@ export function Marquee() {
               height={brand.h * 3}
               className="marquee-logo"
               style={{ "--h": `${brand.h}px` } as React.CSSProperties}
-              loading="eager"
+              /* Lazy. This strip is decoration that sits below the fold, and
+                 `eager` made next/image emit a preload link for all seven
+                 brands: on a phone, fourteen preloads for logos nobody has
+                 scrolled to yet, ahead of the hero poster, which is the page's
+                 LCP element. The loop is CSS and starts wherever it starts, so
+                 a logo arriving a beat late costs nothing. */
+              loading="lazy"
             />
           </span>
         ))

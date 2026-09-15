@@ -72,11 +72,18 @@ function build(): string {
     ...MARKETS.map((m) => {
       const count = filmsForMarket(m.slug).length;
       const phone = BUSINESS.phones[m.phoneKey].number;
+      /* Two of the four statuses ARE a film count ("5 films shot here"), so
+         appending the count again printed it twice in one sentence: "5 films
+         shot here, 5 films in the portfolio shot here". This file is written
+         for machines that will repeat whatever it says, so it says each fact
+         once. */
+      const statusCountsFilms = /^\d+\s+films?\s+shot here$/i.test(m.status);
       const work =
         count > 0
           ? `${count} film${count === 1 ? "" : "s"} in the portfolio shot here`
           : "shoots underway, films not published yet";
-      return `- **${m.name}** (${phone}): ${m.towns.join(", ")}. ${m.status}, ${work}. ${BUSINESS.url}/areas/${m.slug}`;
+      const detail = statusCountsFilms ? work : `${m.status}, ${work}`;
+      return `- **${m.name}** (${phone}): ${m.towns.join(", ")}. ${detail}. ${BUSINESS.url}/areas/${m.slug}`;
     }),
     "",
     "## Common questions",

@@ -207,18 +207,18 @@ export default async function MarketPage({
             }
           />
           <div className="block-gap grid gap-4 sm:grid-cols-2">
-            <div className="surface p-6">
+            <div className="surface flex flex-col p-6">
               <p className="meta mb-2">Call {market.city}</p>
               <a href={phone.href} className="display-3 text-signal-ink">
                 {phone.number}
               </a>
-              <p className="mt-3 text-sm leading-relaxed text-ink-3">
+              <p className="mt-auto pt-3 text-sm leading-relaxed text-ink-3">
                 {market.people.length > 0
                   ? `Reaches ${market.people.join(" and ")}.`
                   : `Reaches the ${market.city} branch directly.`}
               </p>
             </div>
-            <div className="surface p-6">
+            <div className="surface flex flex-col p-6">
               <p className="meta mb-2">{portal ? "Book a listing" : "Hold a date"}</p>
               {portal ? (
                 <a href={portal.href} className="btn btn-primary" target="_blank" rel="noopener">
@@ -229,7 +229,7 @@ export default async function MarketPage({
                   Send the details
                 </Link>
               )}
-              <p className="mt-3 text-sm leading-relaxed text-ink-3">
+              <p className="mt-auto pt-3 text-sm leading-relaxed text-ink-3">
                 Covering {market.towns.slice(0, 4).join(", ")}
                 {market.towns.length > 4 ? ` and ${market.towns.length - 4} more` : ""}.
               </p>

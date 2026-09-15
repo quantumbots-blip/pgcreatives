@@ -113,9 +113,21 @@ function DesktopDropdown({
         onOpenChange(false);
       }
     };
+    /* Tabbing out has to close it too. The panel hides with
+       `visibility: hidden`, so once focus leaves, the open panel is a dead
+       sheet painted over the hero with no way to dismiss it from the
+       keyboard. `focusout` carries the element focus is moving TO. */
+    const handleFocusOut = (e: FocusEvent) => {
+      const next = e.relatedTarget as Node | null;
+      if (next && containerRef.current?.contains(next)) return;
+      onOpenChange(false);
+    };
+    const node = containerRef.current;
+    node?.addEventListener("focusout", handleFocusOut);
     document.addEventListener("keydown", handleKey);
     document.addEventListener("mousedown", handleClick);
     return () => {
+      node?.removeEventListener("focusout", handleFocusOut);
       document.removeEventListener("keydown", handleKey);
       document.removeEventListener("mousedown", handleClick);
     };
@@ -279,8 +291,24 @@ export function Header() {
       setMobileOpen(false);
     };
     document.addEventListener("keydown", onKey);
+
+    /* The menu itself is `lg:hidden`, so crossing 1024 with it open hides the
+       panel and the close button and leaves the page behind it scroll-locked
+       and `inert`, with nothing left on screen that can undo either. An iPad
+       held in portrait and turned to landscape does exactly that. Close on
+       the breakpoint rather than trying to keep the panel usable past it. */
+    const wide = window.matchMedia("(min-width: 64rem)");
+    const closeOnWide = () => {
+      if (!wide.matches) return;
+      byKeyboard.current = false;
+      setMobileOpen(false);
+    };
+    closeOnWide();
+    wide.addEventListener("change", closeOnWide);
+
     return () => {
       document.removeEventListener("keydown", onKey);
+      wide.removeEventListener("change", closeOnWide);
       document.body.style.overflow = "";
       setBackgroundInert(false);
     };
@@ -317,7 +345,11 @@ export function Header() {
               width={366}
               height={77}
               className="brand-mark h-[24px] w-auto lg:h-[30px]"
+              /* `eager`, not preloaded. A 30px wordmark is not worth a slot
+                 ahead of the LCP image on a phone, and on the home page it
+                 spends its first 1.6s behind an opaque splash anyway. */
               loading="eager"
+              fetchPriority="low"
             />
           </Link>
 
@@ -390,7 +422,7 @@ export function Header() {
                shadow on the bars themselves does that without drawing a
                circle in the corner of every phone screen. The 44px box
                stays, as the tap target. */
-            className="menu-button relative z-50 flex h-11 w-11 items-center justify-center lg:hidden"
+            className="menu-button relative z-50 -mr-3 flex h-11 w-11 items-center justify-center lg:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
