@@ -57,9 +57,17 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
 
   /* The caption is always visible. It used to appear only on hover, which
      means on a phone — where most of this gets browsed — none of the 34
-     frames had a label at all. */
-  const caption = (project: Project) => (
-    <div className="-mt-12 bg-gradient-to-t from-[#07090c] via-[#07090c]/70 to-transparent p-4 pt-12 sm:-mt-14 sm:p-5 sm:pt-14">
+     frames had a label at all.
+
+     Look and placement are separate on purpose. A film tile puts this at the
+     bottom of a flex column so the play mark can be centred in the room above
+     it; a photo tile positions it absolutely over the picture. When the
+     negative margin the film tile needs lived in here, the photo tiles
+     inherited it as a STATIC block inside an `overflow-hidden` frame and all
+     34 captions were pulled off the top edge and clipped away: the text was
+     in the HTML and on none of the screens. */
+  const captionBody = (project: Project) => (
+    <div className="bg-gradient-to-t from-[#07090c] via-[#07090c]/70 to-transparent p-4 pt-12 sm:p-5 sm:pt-14">
       <p className="meta meta-signal">{project.category}</p>
       <h3 className="mt-1.5 text-sm font-medium text-white sm:text-base">
         {project.title}
@@ -84,7 +92,7 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
           <Play className="ml-0.5 h-5 w-5" />
         </div>
       </div>
-      {caption(project)}
+      <div className="-mt-12 sm:-mt-14">{captionBody(project)}</div>
     </div>
   );
 
@@ -100,14 +108,13 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
         onClick={() => setActiveVideo(project)}
         aria-label={`Play video: ${project.title}`}
         className={cn(
-          "viewfinder group relative block w-full overflow-hidden rounded-xl border border-line bg-surface text-left",
+          "group relative block w-full overflow-hidden rounded-xl border border-line bg-surface text-left",
           /* Reels are shot 9:16. A 4:5 box crops a third of every frame, and
              on a phone that crop was also only 187px wide. Phones get the
              real aspect; from sm the 4:5 tile keeps the grid even. */
           videosPortrait ? "aspect-[9/16] sm:aspect-[4/5]" : "aspect-video"
         )}
       >
-        <span className="vf-b" aria-hidden="true" />
         {/* Through next/image, not a raw <img>: these are the heaviest assets
             on the page (15 thumbs at ~80 KB of unoptimized JPEG, all pinned to
             a _640 rendition for a tile that renders under 290px) and one of
@@ -158,14 +165,13 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
       animation="depth"
       delay={(i % 4) * 0.06}
       className={cn(
-        "drift viewfinder group relative overflow-hidden rounded-xl border border-line bg-surface",
+        "drift group relative overflow-hidden rounded-xl border border-line bg-surface",
         /* The feature span starts at sm. In a single column a doubled row is
            just a portrait box, and every photo here is landscape — it would
            crop the best frames hardest. */
         canSpan(project, i, all.length) && "sm:col-span-2 sm:row-span-2"
       )}
     >
-      <span className="vf-b" aria-hidden="true" />
       {project.image && (
         <Image
           src={project.image}
@@ -188,7 +194,9 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
           }
         />
       )}
-      {caption(project)}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0">
+        {captionBody(project)}
+      </div>
     </AnimateOnScroll>
   );
 

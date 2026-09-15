@@ -47,15 +47,14 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
             onClick={() => setActive(video)}
             aria-label={`Play video: ${video.title}`}
             className={cn(
-              "viewfinder group relative block w-full overflow-hidden rounded-xl border border-line bg-surface text-left",
+              "group relative block w-full overflow-hidden rounded-xl border border-line bg-surface text-left",
               /* Same as the portfolio grid: reels are 9:16, and a 4:5 box
                  crops a third of every frame off a tile that is only 187px
                  wide on a phone. */
               portrait ? "aspect-[9/16] sm:aspect-[4/5]" : "aspect-video"
             )}
           >
-            <span className="vf-b" aria-hidden="true" />
-            {video.thumbnail && (
+                {video.thumbnail && (
               <Image
                 src={video.thumbnail}
                 alt=""

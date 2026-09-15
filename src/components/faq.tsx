@@ -38,6 +38,12 @@ export const faqs: FAQItem[] = [
     answer:
       "We work with real estate agents, brokers, property managers, local businesses, restaurants, fitness studios, contractors, and anyone looking to elevate their visual brand with professional content.",
   },
+  {
+    category: "General",
+    question: "Why not just use a phone or a cheaper shooter?",
+    answer:
+      "Every frame is lit, composed and color graded, and the video is cut to hold attention rather than to show every room in order. It is the difference between a listing that looks documented and one that looks sold. The same crew shoots every job, so the standard does not change between your first listing and your fiftieth.",
+  },
   // Pricing & Booking
   {
     category: "Pricing & Booking",
