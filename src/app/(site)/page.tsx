@@ -156,7 +156,11 @@ export default function HomePage() {
                 key={stat.label}
                 animation="depth"
                 delay={i * 0.1}
-                className="flex flex-col-reverse items-center text-center"
+                /* justify-end is the TOP edge in column-reverse. Without it the
+                     grid stretches each cell and the labels bottom-align, so a
+                     label that wraps to two lines pushes its own figure 15px
+                     off the line its neighbours sit on, from 640 to 812. */
+                  className="flex flex-col-reverse items-center justify-end text-center"
               >
                 <dt className="meta mt-3">{stat.label}</dt>
                 <dd className="stat-figure display-2 !text-[clamp(2.25rem,4vw,3.25rem)]">

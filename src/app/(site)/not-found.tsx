@@ -2,10 +2,22 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-// Next already emits noindex for the not-found boundary; only the title is
-// missing by default.
+/* Next emits its own `noindex` for this boundary, but it does NOT stop the
+   layout's site-wide defaults reaching the same document. The layout sets
+   `robots: { index: true, follow: true }` and `alternates: { canonical: "/" }`
+   as the values every real page overrides — and a 404 had nothing to override
+   them with. Every mistyped URL on the live site was shipping two
+   contradictory robots tags AND a canonical claiming the URL was the home
+   page, which is the strongest dedup signal there is pointed at junk.
+
+   This has to live here rather than on the catch-all page: a page that throws
+   `notFound()` hands metadata resolution to this boundary. */
 export const metadata: Metadata = {
   title: "Page Not Found",
+  description:
+    "That page is not here. The work, the services and the team are one click away.",
+  robots: { index: false, follow: false },
+  alternates: { canonical: null },
 };
 
 export default function NotFound() {

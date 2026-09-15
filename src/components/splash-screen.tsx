@@ -62,7 +62,13 @@ export function SplashScreen() {
           // keyframes own `transform`, and setting one here would be
           // overwritten the moment either of them ran.
           className="w-[5.6rem] sm:w-[7.2rem] h-auto translate-x-[5px]"
-          preload
+          /* NOT preloaded. This is a 4KB logo on a black overlay that is gone
+             by 2.2s, and its preload was competing with the hero poster, which
+             is the home page's LCP element. Three images were claiming the
+             preload queue on the one page where the LCP image most needs it:
+             the wordmark, this mark, and the poster. `loading="eager"` still
+             fetches it in the first wave, it just stops jumping the queue. */
+          loading="eager"
         />
       </div>
     </div>

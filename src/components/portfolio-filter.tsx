@@ -67,9 +67,16 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
      34 captions were pulled off the top edge and clipped away: the text was
      in the HTML and on none of the screens. */
   const captionBody = (project: Project) => (
-    <div className="bg-gradient-to-t from-[#07090c] via-[#07090c]/70 to-transparent p-4 pt-12 sm:p-5 sm:pt-14">
+    /* The scrim reaches 90% opacity by 40% of its own height, so the 11px
+       accent label lands in the dense half of it rather than in the clear top.
+       At 70% via the label was measuring 3.4:1 over a light interior, and a
+       quarter of the 49 cards failed AA on it. */
+    <div className="bg-gradient-to-t from-[#07090c] via-[#07090c]/90 via-40% to-transparent p-4 pt-12 sm:p-5 sm:pt-14">
       <p className="meta meta-signal">{project.category}</p>
-      <h3 className="mt-1.5 text-sm font-medium text-white sm:text-base">
+      {/* Two lines reserved. The play mark is centred in the room above the
+          caption, so a title that wraps made its own card's mark sit 12px
+          higher than the ones beside it. */}
+      <h3 className="mt-1.5 min-h-[2lh] text-sm font-medium text-white sm:text-base">
         {project.title}
       </h3>
     </div>
@@ -189,7 +196,10 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
                  renders 464 of 1024 (45%) and at 820 it renders 497 of 820
                  (61%) — the old 40vw and 50vw were asking for an 828px
                  rendition for a box that needs 928 or 994 at 2x. */
-              ? "(min-width: 1360px) 42vw, (min-width: 1024px) 47vw, (max-width: 640px) 100vw, 61vw"
+              ? /* The 640-767 band is TWO columns, so a feature tile spanning both is
+                   effectively the full content width (683 of 744 at iPad mini),
+                   not the 61vw the three-column band gives it. */
+                "(min-width: 1360px) 42vw, (min-width: 1024px) 47vw, (min-width: 768px) 61vw, (max-width: 640px) 100vw, 92vw"
               : "(min-width: 1360px) 21vw, (min-width: 1024px) 23vw, (max-width: 640px) 100vw, 33vw"
           }
         />
@@ -261,7 +271,12 @@ export function PortfolioFilter({ projects }: { projects: Project[] }) {
             {/* One column on phones. Two columns of 189px tiles put the work
                 at 189x144 on a 430px screen — a photography portfolio showing
                 its photographs at thumbnail size. Full width is 398x256. */}
-            <div className="scene mt-6 grid auto-rows-[16rem] grid-flow-row-dense grid-cols-1 gap-3 sm:auto-rows-[11rem] sm:grid-cols-3 sm:gap-3 lg:auto-rows-[13rem] lg:grid-cols-4">
+            {/* 1 / 2 / 3 / 4. Going one column straight to three at 640 put every
+                photograph at 188x176 on a small tablet, which is the thumbnail
+                size the single column above was chosen to avoid. A feature
+                tile spans two columns, so at two columns it is simply full
+                width, which is the right shape for it there. */}
+            <div className="scene mt-6 grid auto-rows-[16rem] grid-flow-row-dense grid-cols-1 gap-3 sm:auto-rows-[12rem] sm:grid-cols-2 sm:gap-3 md:auto-rows-[11rem] md:grid-cols-3 lg:auto-rows-[13rem] lg:grid-cols-4">
               {photos.map(renderPhoto)}
             </div>
           </div>

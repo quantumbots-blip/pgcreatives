@@ -105,10 +105,29 @@ const BASE_CONTENT = "translateZ(60px)";
    1.42s puts the first line into the last fifth of the splash's hold, so the
    headline is already rising as the logo dissolves off it. Both are CSS
    animations measured from first paint, so they stay in step on a slow phone
-   where first paint is late. The splash's own timing is untouched. */
-const HERO_START = 1.42;
+   where first paint is late.
+
+   BUT ONLY WHEN THERE IS A SPLASH TO WAIT FOR. The splash renders on the
+   first load of "/" and never again, so on a client-side navigation home —
+   clicking the wordmark from any other page — there was nothing covering the
+   hero and it simply sat blank for a second and a half before anything
+   appeared. The offset is decided once, at mount, by whether the overlay is
+   actually in the document: true on the server (where the splash is being
+   rendered alongside it, so hydration agrees), false on a soft navigation. */
+const SPLASH_WAIT = 1.36;
+const HERO_STEP = 0.06;
+
+function useHeroStart() {
+  const [start] = useState(() =>
+    typeof document === "undefined" || document.querySelector(".splash-failsafe")
+      ? SPLASH_WAIT + HERO_STEP
+      : HERO_STEP
+  );
+  return start;
+}
 
 export function VideoHero() {
+  const HERO_START = useHeroStart();
   const videoRef = useRef<HTMLVideoElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);

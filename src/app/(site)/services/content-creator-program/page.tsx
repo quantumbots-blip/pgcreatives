@@ -208,7 +208,7 @@ export default async function ContentCreatorProgramPage() {
                 delay={i * 0.06}
                 className="flex items-baseline gap-6 py-4 sm:gap-10 sm:py-5"
               >
-                <span className="meta meta-signal shrink-0">
+                <span className="meta meta-signal w-6 shrink-0 tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="text-base text-ink-2 sm:text-lg">{item}</span>

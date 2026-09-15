@@ -37,7 +37,11 @@ export function Footer() {
             broke mid-word as "gmail.c / om". */}
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.7fr_1.3fr_1fr] lg:gap-12">
           {/* Brand column */}
-          <div className="sm:col-span-2 lg:col-span-1 space-y-5">
+          <div className=/* No sm:col-span-2. The brand blurb is max-w-xs (320px) and the
+                 sm column is 274px at its narrowest, so it reflows without
+                 clipping. Spanning both columns pushed Client portals into a
+                 half-empty third row and left an L of dead space. */
+              "lg:col-span-1 space-y-5">
             <Link href="/" className="inline-block" aria-label="PG Creatives, home">
               {/* The wordmark cropped to its artwork. The old file kept it
                   inside a mostly transparent canvas, so it rendered 70px wide. */}

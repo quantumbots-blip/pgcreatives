@@ -77,6 +77,10 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
      mistyped their email would have watched the whole form empty itself.
      Preventing the event means the action never runs and nothing is reset. */
   function guard(event: React.FormEvent<HTMLFormElement>) {
+    if (pending) {
+      event.preventDefault();
+      return;
+    }
     const form = event.currentTarget;
     const found = validate(form);
     setLive(true);
@@ -119,7 +123,15 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
 
   if (state.success) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center sm:py-20">
+      <div
+        /* The form is replaced wholesale, so without this the change is
+           silent and focus is nowhere. */
+        role="status"
+        aria-live="polite"
+        tabIndex={-1}
+        ref={(el) => el?.focus()}
+        className="flex flex-col items-center justify-center py-16 text-center outline-none sm:py-20"
+      >
         <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-signal/35 bg-signal-dim">
           <CheckCircle2 className="h-7 w-7 text-signal-ink" />
         </div>
@@ -298,10 +310,18 @@ function ContactFormInner({ onReset }: { onReset: () => void }) {
 
       {/* Submit */}
       <div className="flex flex-col-reverse gap-4 pt-0 sm:pt-2 sm:flex-row sm:items-center sm:justify-end">
+        {/* `aria-disabled`, not `disabled`. A disabled button is removed from
+            the tab order, so the moment the visitor pressed Send their focus
+            was thrown to <body> and the pending and success states were
+            announced to nobody. This keeps the focus ring where they left it
+            and the guard below refuses the second submit. */}
         <button
           type="submit"
-          disabled={pending}
-          className="btn btn-primary w-full sm:w-auto disabled:opacity-60"
+          aria-disabled={pending}
+          /* min-w reserves the resting label's width. "Send message" is 38px
+             wider than "Sending...", so the button used to shrink out from
+             under the pointer at the moment it was pressed. */
+          className="btn btn-primary w-full sm:w-auto sm:min-w-[11.5rem] aria-disabled:opacity-60 aria-disabled:pointer-events-none"
         >
           {pending ? (
             <>

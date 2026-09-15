@@ -80,7 +80,7 @@ export function VideoGallery({ videos }: { videos: VideoItem[] }) {
                   <Play className="ml-0.5 h-4 w-4" />
                 </div>
               </div>
-              <div className="-mt-12 bg-gradient-to-t from-[#07090c] via-[#07090c]/70 to-transparent p-4 pt-12">
+              <div className="-mt-12 bg-gradient-to-t from-[#07090c] via-[#07090c]/90 via-40% to-transparent p-4 pt-12">
                 <h3 className="text-sm font-medium text-white">{video.title}</h3>
               </div>
             </div>
