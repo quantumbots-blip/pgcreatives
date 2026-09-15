@@ -382,7 +382,12 @@ export function Header() {
               byKeyboard.current = e.detail === 0;
               setMobileOpen((v) => !v);
             }}
-            className="glass relative z-50 flex h-11 w-11 items-center justify-center rounded-full backdrop-blur-xl backdrop-saturate-[1.7] backdrop-brightness-[0.36] lg:hidden"
+            /* No capsule around it. The glass was there to hold a contrast
+               floor under white bars sitting on the hero footage; a drop
+               shadow on the bars themselves does that without drawing a
+               circle in the corner of every phone screen. The 44px box
+               stays, as the tap target. */
+            className="menu-button relative z-50 flex h-11 w-11 items-center justify-center lg:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
@@ -426,9 +431,15 @@ export function Header() {
             mobileOpen ? "translate-y-0" : "-translate-y-6"
           )}
         >
-          <nav className="flex-1">
+          {/* Centred, and nothing ruled off from anything else.
+
+              The icons went with the rules. A leading icon pins a row to the
+              left edge of its label, and labels are different lengths, so
+              five centred rows with icons put five icons at five different
+              x positions. Without them this is one column of type on one
+              axis, which is what a phone menu should be. */}
+          <nav className="flex flex-1 flex-col items-center justify-center gap-[clamp(0.125rem,0.9svh,0.625rem)] text-center">
             {mobileNavItems.map((item) => {
-              const Icon = item.icon;
               const active = isSectionActive(item.href, pathname);
               return (
                 <Link
@@ -436,18 +447,16 @@ export function Header() {
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    "flex items-center gap-4 border-b border-line py-4 transition-colors",
-                    active ? "text-white" : "text-white/55 active:text-white"
+                    "menu-link",
+                    active ? "menu-link-active text-white" : "text-white/55 active:text-white"
                   )}
                 >
-                  <Icon className={cn("h-5 w-5", active ? "text-signal-ink" : "text-white/30")} />
-                  <span className="display-3 !text-2xl">{item.name}</span>
-                  {active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-signal" />}
+                  {item.name}
                 </Link>
               );
             })}
 
-            <p className="meta pb-3 pt-8">Client login</p>
+            <p className="meta mt-10 mb-1">Client login</p>
             {clientLogins.map((portal) => (
               <a
                 key={portal.href}
@@ -455,12 +464,11 @@ export function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-4 border-b border-line py-3.5 text-white/60 transition-colors active:text-white"
+                className="menu-sublink text-white/60 active:text-white"
               >
-                <portal.icon className="h-4 w-4 text-white/30" />
-                <span className="flex-1 text-base">{portal.name}</span>
+                {portal.name}
                 <>
-                <ExternalLink className="h-3.5 w-3.5 text-white/45" aria-hidden="true" />
+                <ExternalLink className="h-3.5 w-3.5 shrink-0 text-white/45" aria-hidden="true" />
                 <span className="sr-only"> (opens in a new tab)</span>
               </>
               </a>
