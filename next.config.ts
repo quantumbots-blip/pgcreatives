@@ -125,7 +125,13 @@ const nextConfig: NextConfig = {
             value: [
               "default-src 'self'",
               `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
-              "style-src 'self' 'unsafe-inline'",
+              /* Google Fonts is listed for one reason: the newsletter editor
+                 previews the real email in an iframe, and the email links
+                 Poppins from there, which is what Apple Mail and iOS Mail
+                 will load. Without this the preview fell back to Helvetica
+                 and showed the owner a face nobody would receive. The site
+                 itself still self hosts its font. */
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               /* The canonical host is listed alongside 'self' because the
                  email preview renders the real templates, and those carry
                  absolute URLs so a logo still loads from an inbox. Same
@@ -133,7 +139,7 @@ const nextConfig: NextConfig = {
                  preview deployment, where the logo would otherwise be a
                  broken box. */
               "img-src 'self' data: blob: https://pgcreativeswi.com https://images.unsplash.com https://i.vimeocdn.com https://vumbnail.com",
-              "font-src 'self'",
+              "font-src 'self' https://fonts.gstatic.com",
               "connect-src 'self' blob:",
               "media-src 'self'",
               "frame-src 'self' https://player.vimeo.com",

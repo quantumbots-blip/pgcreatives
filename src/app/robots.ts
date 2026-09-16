@@ -43,7 +43,9 @@ const AI_AGENTS = [
 ];
 
 export default function robots(): MetadataRoute.Robots {
-  const closed = ["/admin", "/api/"];
+  // /newsletter holds the unsubscribe pages and the browser copies of sent
+  // emails, which are for the people they were sent to, not for an index.
+  const closed = ["/admin", "/api/", "/newsletter/"];
 
   return {
     rules: [
