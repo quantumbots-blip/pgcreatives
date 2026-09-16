@@ -17,8 +17,6 @@ export const metadata: Metadata = {
     description:
       "Listing media, commercial production and a monthly content program for agents across Green Bay, Madison, Milwaukee and the Fox Valley.",
     path: "/services",
-    image: "/og-services.jpg",
-    imageAlt: "PG Creatives services",
   }),
   keywords: [
     "real estate photography Wisconsin",

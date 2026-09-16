@@ -15,8 +15,6 @@ export const metadata: Metadata = {
     description:
       "Contact PG Creatives for a free consultation and custom quote. Professional media services across Green Bay, Madison, Milwaukee and the Fox Valley, Wisconsin.",
     path: "/contact",
-    image: "/og-contact.jpg",
-    imageAlt: "Contact PG Creatives for a free quote",
   }),
   keywords: [
     "contact PG Creatives",

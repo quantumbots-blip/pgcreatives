@@ -30,8 +30,6 @@ export async function generateMetadata({
       title: `Real Estate Photography in ${market.city === "the Fox Valley" ? "the Fox Valley" : market.city}`,
       description: market.description,
       path: `/areas/${market.slug}`,
-      image: "/og-portfolio.jpg",
-      imageAlt: `PG Creatives work in ${market.city}`,
     }),
     keywords: [
       `real estate photographer ${market.city}`,

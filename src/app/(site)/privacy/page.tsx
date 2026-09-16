@@ -7,8 +7,6 @@ export const metadata: Metadata = {
     description:
       "How PG Creatives collects, uses, and protects the information you share with us.",
     path: "/privacy",
-    image: "/og-home.jpg",
-    imageAlt: "PG Creatives",
   }),
   robots: { index: true, follow: false },
 };
