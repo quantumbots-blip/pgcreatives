@@ -18,8 +18,6 @@ export const metadata: Metadata = {
     description:
       "Meet the photographers, videographers, and creatives behind PG Creatives. Based in Green Bay and Madison, Wisconsin, delivering professional-grade media.",
     path: "/team",
-    image: "/og-team.jpg",
-    imageAlt: "The PG Creatives team",
   }),
   keywords: [
     "PG Creatives team",

@@ -12,21 +12,22 @@ import type { Metadata } from "next";
  * did not restate them. `og:type` is a required Open Graph property.
  *
  * Building both blocks from one call is what keeps them in step.
+ *
+ * Neither block names an image. Each route segment ships an
+ * `opengraph-image.tsx` instead, and Next fills in og:image, its dimensions,
+ * its alt text and twitter:image from that one file. Naming an image here as
+ * well would win over the generated card and pin every page back to a static
+ * JPEG in public/.
  */
 export function pageMetadata({
   title,
   description,
   path,
-  image,
-  imageAlt,
 }: {
   title: string;
   description: string;
   /** Route path, e.g. "/portfolio". Used for canonical and og:url. */
   path: string;
-  /** Absolute-from-root path to an OG image in `public/`. */
-  image: string;
-  imageAlt: string;
 }): Metadata {
   const ogTitle = `${title} | PG Creatives`;
   return {
@@ -39,13 +40,11 @@ export function pageMetadata({
       title: ogTitle,
       description,
       url: path,
-      images: [{ url: image, width: 1200, height: 630, alt: imageAlt }],
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
       description,
-      images: [image],
     },
   };
 }

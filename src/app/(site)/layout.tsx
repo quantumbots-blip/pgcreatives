@@ -73,21 +73,16 @@ export const metadata: Metadata = {
     siteName: "PG Creatives",
     locale: "en_US",
     type: "website",
-    images: [
-      {
-        url: "/og-home.jpg",
-        width: 1200,
-        height: 630,
-        alt: "PG Creatives - Professional Grade Media",
-      },
-    ],
+    // No `images` here, and none in `twitter` either. Each route segment ships
+    // an opengraph-image.tsx, and Next fills og:image, its size, its alt text
+    // and twitter:image in from that. An image named here would outrank the
+    // generated card on every page that did not override it.
   },
   twitter: {
     card: "summary_large_image",
     title: "PG Creatives | Professional Grade Media",
     description:
       "Professional grade media for tailored experiences in Green Bay, Madison & Milwaukee, WI.",
-    images: ["/og-home.jpg"],
   },
   robots: { index: true, follow: true },
   // Canonical is set per page. A canonical here would be inherited by every
@@ -117,7 +112,10 @@ const localBusinessJsonLd = {
     areaServed: p.label,
     availableLanguage: "English",
   })),
-  image: `${BUSINESS.url}/og-home.jpg`,
+  // A generated share card lives at a hashed URL that nothing can link to, so
+  // the business image points at the photograph itself. Despite the filename,
+  // this is the drone twilight of the lakefront estate.
+  image: `${BUSINESS.url}/images/marble-kitchen-dining.jpg`,
   logo: `${BUSINESS.url}/images/pg-logo.png`,
   priceRange: "$$",
   // TODO(owner): needs a real streetAddress and addressLocality. Google

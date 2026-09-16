@@ -14,8 +14,6 @@ export const metadata: Metadata = {
     description:
       "Where PG Creatives shoots: Green Bay and the northeast, the Fox Valley and lake country, Madison, and Milwaukee. Local numbers for each.",
     path: "/areas",
-    image: "/og-portfolio.jpg",
-    imageAlt: "The Wisconsin markets PG Creatives covers",
   }),
   keywords: [
     "real estate photographer Wisconsin",

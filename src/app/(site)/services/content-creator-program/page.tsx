@@ -20,8 +20,6 @@ export const metadata: Metadata = {
     description:
       "A monthly content creator program for real estate agents. Strategy, filming, editing, and coaching. We handle everything so you can focus on your business.",
     path: "/services/content-creator-program",
-    image: "/og-services.jpg",
-    imageAlt: "PG Creatives Content Creator Program",
   }),
   keywords: [
     "content creator program",

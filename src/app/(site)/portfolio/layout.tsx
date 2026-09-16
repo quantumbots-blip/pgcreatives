@@ -7,8 +7,6 @@ export const metadata: Metadata = {
     description:
       "Browse real estate photography, listing video, drone work and 3D tours produced for agents and businesses across Wisconsin.",
     path: "/portfolio",
-    image: "/og-portfolio.jpg",
-    imageAlt: "PG Creatives portfolio",
   }),
   keywords: [
     "real estate portfolio",
