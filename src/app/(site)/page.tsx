@@ -12,7 +12,6 @@ import { SectionHead } from "@/components/section-head";
 import { Counter } from "@/components/counter";
 import { FAQ, faqs } from "@/components/faq";
 import { Packages } from "@/components/packages";
-import { BUSINESS } from "@/lib/data";
 
 const stats = [
   { value: 3, prefix: "$", suffix: "B", label: "In real estate captured" },
@@ -40,7 +39,7 @@ const services = [
     objectPosition: "center 40%",
   },
   {
-    title: "Personal brand",
+    title: "Personal branding",
     href: "/services/content-creator-program",
     description:
       "A monthly content program that keeps you visible in your market between listings. Strategy, filming, editing, coaching.",
@@ -406,7 +405,7 @@ export default function HomePage() {
                     tall panel, so the form read as the only thing in it. What
                     belongs beside a form is the answer to the question a
                     visitor is actually holding: what happens once I send
-                    this, and can I just call instead. */}
+                    this. The phone numbers live on /contact. */}
                 <ol className="block-gap space-y-6">
                   {[
                     {
@@ -440,18 +439,6 @@ export default function HomePage() {
                     </li>
                   ))}
                 </ol>
-
-                <p className="block-gap border-t border-line pt-6 text-sm leading-relaxed text-ink-3">
-                  Rather talk it through? Call{" "}
-                  <a href={BUSINESS.phones.greenBay.href} className="text-signal-ink">
-                    {BUSINESS.phones.greenBay.number}
-                  </a>{" "}
-                  for Green Bay and the Fox Valley, or{" "}
-                  <a href={BUSINESS.phones.madison.href} className="text-signal-ink">
-                    {BUSINESS.phones.madison.number}
-                  </a>{" "}
-                  for Madison.
-                </p>
               </div>
               <div className="relative">
                 <ContactForm />
