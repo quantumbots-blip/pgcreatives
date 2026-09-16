@@ -6,13 +6,15 @@ import { logAuditEvent } from "@/lib/db";
 import type { Draft } from "./blocks";
 import { renderNewsletter, type Recipient } from "./render";
 import {
+  claimQueued,
   getCampaign,
   markFailed,
   markSent,
-  nextQueued,
   queueDeliveries,
+  releaseStuck,
   setCampaignStatus,
   skipUnsubscribedDeliveries,
+  unclaim,
   type Campaign,
   type QueuedDelivery,
 } from "./db";
@@ -127,6 +129,7 @@ export async function sendCampaign(campaignId: number, actor: string | null): Pr
   await setCampaignStatus(campaignId, "sending", null);
   const queued = await queueDeliveries(campaignId);
   await skipUnsubscribedDeliveries(campaignId);
+  await releaseStuck(campaignId);
   await logAuditEvent({
     actor,
     action: campaign.status === "paused" ? "newsletter_resume" : "newsletter_send",
@@ -143,11 +146,13 @@ export async function sendCampaign(campaignId: number, actor: string | null): Pr
 
   for (;;) {
     if (Date.now() - started > TIME_BUDGET_MS) {
+      // Nothing is claimed at this point: every batch is resolved before the
+      // loop comes back round.
       status = "paused";
       reason = "Sending paused to stay inside the time limit. Press Resume to carry on; nobody gets it twice.";
       break;
     }
-    const rows = await nextQueued(campaignId, BATCH);
+    const rows = await claimQueued(campaignId, BATCH);
     if (rows.length === 0) {
       status = "sent";
       break;
@@ -178,7 +183,8 @@ export async function sendCampaign(campaignId: number, actor: string | null): Pr
       console.error(`[newsletter] campaign ${campaignId} batch rejected:`, name, message);
       if (QUOTA.has(name) || /api_key|from_address|validation/.test(name)) {
         // Nothing in this batch went anywhere, and the next batch would fail
-        // the same way. Leave the rows queued and stop.
+        // the same way. Put the rows back in the queue and stop.
+        await unclaim(rows.map((r) => r.id));
         status = "paused";
         reason = explain(name, message);
         break;

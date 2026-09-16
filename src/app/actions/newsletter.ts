@@ -211,7 +211,9 @@ export async function sendTestAction(id: number, draft: unknown, toOverride?: st
     return { error: "That email address does not look right." };
   }
   const to = requested || who || BUSINESS.email;
-  const result = await sendTest(content, to, "Brenden");
+  // No name on a test: the copy reads "there" wherever the token is, which
+  // is exactly what a person with a thin row will get.
+  const result = await sendTest(content, to, "");
   if (!result.ok) return { error: result.reason };
   await logAuditEvent({ actor: who, action: "newsletter_test", targetTable: "newsletter_campaigns", targetId: id, newValue: to });
   return { success: true, to };

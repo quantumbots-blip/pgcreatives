@@ -317,7 +317,7 @@ const EMPTY_COUNTS: DeliveryCounts = {
 };
 
 const COUNT_SQL = `
-  COUNT(*) FILTER (WHERE d.status = 'queued')::int     AS queued,
+  COUNT(*) FILTER (WHERE d.status IN ('queued','sending'))::int AS queued,
   COUNT(*) FILTER (WHERE d.status IN ('sent','delivered','opened'))::int AS sent,
   COUNT(*) FILTER (WHERE d.status = 'failed')::int     AS failed,
   COUNT(*) FILTER (WHERE d.status IN ('delivered','opened'))::int AS delivered,
@@ -445,19 +445,61 @@ export async function queueDeliveries(campaignId: number): Promise<number> {
   return rows.length;
 }
 
-export async function nextQueued(campaignId: number, limit: number): Promise<QueuedDelivery[]> {
+/**
+ * Take the next batch, and mark it taken in the same statement.
+ *
+ * Two presses of Resume a second apart would otherwise both read the same
+ * hundred queued rows and both send them. The rows are moved to `sending`
+ * as they are picked, under SKIP LOCKED so a concurrent caller takes the
+ * next hundred instead of waiting for these, and the sender moves them on
+ * to sent or failed. Anything left in `sending` by a crash is put back by
+ * releaseStuck() before the next run.
+ */
+export async function claimQueued(campaignId: number, limit: number): Promise<QueuedDelivery[]> {
   const sql = getDb();
   const rows = await sql`
-    SELECT d.id, d.subscriber_id, s.email, s.first_name, s.last_name, s.company, s.unsubscribe_token
-    FROM newsletter_deliveries d
-    JOIN newsletter_subscribers s ON s.id = d.subscriber_id
-    WHERE d.campaign_id = ${campaignId} AND d.status = 'queued'
-      -- Somebody who left between queueing and sending is skipped, not mailed.
-      AND s.status = 'subscribed'
-    ORDER BY d.id
-    LIMIT ${limit}
+    WITH picked AS (
+      SELECT d.id
+      FROM newsletter_deliveries d
+      JOIN newsletter_subscribers s ON s.id = d.subscriber_id
+      WHERE d.campaign_id = ${campaignId} AND d.status = 'queued'
+        -- Somebody who left between queueing and sending is skipped, not mailed.
+        AND s.status = 'subscribed'
+      ORDER BY d.id
+      LIMIT ${limit}
+      FOR UPDATE OF d SKIP LOCKED
+    )
+    UPDATE newsletter_deliveries d
+    SET status = 'sending', updated_at = NOW()
+    FROM picked, newsletter_subscribers s
+    WHERE d.id = picked.id AND s.id = d.subscriber_id
+    RETURNING d.id, d.subscriber_id, s.email, s.first_name, s.last_name, s.company, s.unsubscribe_token
   `;
-  return rows as QueuedDelivery[];
+  return (rows as QueuedDelivery[]).sort((a, b) => a.id - b.id);
+}
+
+/** Rows a crashed run left mid flight go back in the queue. */
+export async function releaseStuck(campaignId: number, olderThanMinutes = 10): Promise<number> {
+  const sql = getDb();
+  const rows = await sql`
+    UPDATE newsletter_deliveries
+    SET status = 'queued', updated_at = NOW()
+    WHERE campaign_id = ${campaignId} AND status = 'sending'
+      AND updated_at < NOW() - MAKE_INTERVAL(mins => ${olderThanMinutes})
+    RETURNING id
+  `;
+  return rows.length;
+}
+
+/** Rows this run claimed and then could not send, back in the queue untouched. */
+export async function unclaim(ids: number[]): Promise<void> {
+  if (ids.length === 0) return;
+  const sql = getDb();
+  await sql.query(
+    `UPDATE newsletter_deliveries SET status = 'queued', updated_at = NOW()
+     WHERE id = ANY($1::int[]) AND status = 'sending'`,
+    [ids],
+  );
 }
 
 /** Rows queued for people who are no longer subscribed, closed out. */

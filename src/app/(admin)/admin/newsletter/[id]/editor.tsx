@@ -414,7 +414,7 @@ export function Editor({
 
           {!locked && (
             <AddRow
-              open={adding === draft.blocks.length && draft.blocks.length > 0 ? false : adding === -1}
+              open={adding === -1}
               onToggle={() => setAdding(adding === -1 ? null : -1)}
               onPick={(kind) => addAt(draft.blocks.length, kind)}
             />
