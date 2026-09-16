@@ -19,6 +19,9 @@ import type { RenderedEmail } from "./layout";
 
 export type SendResult = { ok: true; id: string } | { ok: false; reason: string };
 
+/** The one address this site sends from. The domain must be verified in Resend. */
+export const FROM = "PG Creatives <noreply@pgcreativeswi.com>";
+
 export async function sendEmail(options: {
   to: string;
   mail: RenderedEmail;
@@ -26,6 +29,8 @@ export async function sendEmail(options: {
   replyTo?: string;
   /** Named in the log line so a failure says which email it was. */
   kind: string;
+  /** Extra headers, such as the unsubscribe pair on a newsletter. */
+  headers?: Record<string, string>;
 }): Promise<SendResult> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return { ok: false, reason: "no RESEND_API_KEY" };
@@ -34,12 +39,13 @@ export async function sendEmail(options: {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "PG Creatives <noreply@pgcreativeswi.com>",
+      from: FROM,
       to: options.to,
       replyTo: options.replyTo ?? options.mail.replyTo,
       subject: options.mail.subject,
       html: options.mail.html,
       text: options.mail.text,
+      ...(options.headers ? { headers: options.headers } : {}),
     });
 
     if (error) {

@@ -66,7 +66,7 @@ export const COLOR = {
 /* Poppins is the site's face. Apple Mail and iOS Mail load a linked web font,
    which is most of where this gets read; everything else falls back to the
    stack and still looks deliberate. */
-const FONT = "'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif";
+export const FONT = "'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif";
 
 export function esc(value: unknown): string {
   return String(value ?? "").replace(
