@@ -75,7 +75,7 @@ const services = [
   {
     id: "personal-brand",
     label: "Service 03",
-    title: "Personal brand",
+    title: "Personal branding",
     lede:
       "A monthly program that keeps you visible in your market between listings. Strategy, filming, editing, coaching.",
     image: "/images/dark-home-office.jpg",
