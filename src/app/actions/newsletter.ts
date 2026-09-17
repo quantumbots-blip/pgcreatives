@@ -6,9 +6,10 @@ import { revalidatePath } from "next/cache";
 import { verifySessionFull, getSessionEmail } from "@/lib/auth";
 import { ensureSchema, logAuditEvent } from "@/lib/db";
 import { BUSINESS } from "@/lib/data";
-import { newId, normalizeDraft, type Draft } from "@/lib/newsletter/blocks";
+import { normalizeDraft, type Draft } from "@/lib/newsletter/blocks";
 import { getVimeoMeta } from "@/lib/vimeo";
-import { preflight, SAMPLE_DRAFT, type Preflight } from "@/lib/newsletter/render";
+import { preflight, type Preflight } from "@/lib/newsletter/render";
+import { BLANK, draftFromTemplate } from "@/lib/newsletter/templates";
 import { parseSubscriberList } from "@/lib/newsletter/import";
 import {
   ensureNewsletterSchema,
@@ -21,6 +22,7 @@ import {
   getCampaign,
   saveCampaign,
   deleteCampaign,
+  deleteMedia,
   requeueFailed,
   SUBSCRIBER_STATUSES,
   type SubscriberStatus,
@@ -59,30 +61,48 @@ function validId(id: unknown): id is number {
 /* ── Campaigns ──────────────────────────────────────────────────────── */
 
 /**
- * The example, with real posters. The sample in render.ts carries a
- * placeholder poster so the tests never call Vimeo; the copy the owner
- * opens gets the frame Vimeo actually serves, fresh ids too.
+ * A template, with real posters. The templates carry a placeholder poster
+ * so the tests never call Vimeo; the copy the owner opens gets the frame
+ * Vimeo actually serves.
  */
-async function exampleDraft(): Promise<Draft> {
+async function withRealPosters(draft: Draft): Promise<Draft> {
   const blocks = await Promise.all(
-    SAMPLE_DRAFT.blocks.map(async (b) => {
-      const id = newId();
-      if (b.kind !== "film") return { ...b, id };
+    draft.blocks.map(async (b) => {
+      if (b.kind !== "film" || !b.vimeoId) return b;
       const meta = await getVimeoMeta(b.vimeoId);
-      return { ...b, id, poster: meta.thumbnail, portrait: meta.portrait };
+      return { ...b, poster: meta.thumbnail, portrait: meta.portrait };
     }),
   );
-  return { subject: SAMPLE_DRAFT.subject, preheader: SAMPLE_DRAFT.preheader, blocks };
+  return { ...draft, blocks };
 }
 
-export async function createCampaignAction(startFrom: "blank" | "example"): Promise<void> {
+/** Start an email: blank, or from one of the templates, on a chosen theme. */
+export async function createCampaignAction(templateId: string, theme?: string): Promise<void> {
   if (!(await requireAdmin())) redirect("/admin/login");
   await ready();
-  const draft: Draft =
-    startFrom === "example" ? await exampleDraft() : { subject: "", preheader: "", blocks: [] };
+  const base = templateId === "blank" ? BLANK : draftFromTemplate(templateId);
+  if (!base) redirect("/admin/newsletter/new");
+  const chosen = normalizeDraft({ ...base, theme: theme ?? base.theme });
+  const draft = await withRealPosters(chosen);
   const id = await createCampaign(draft);
-  await logAuditEvent({ actor: await actor(), action: "newsletter_create", targetTable: "newsletter_campaigns", targetId: id });
+  await logAuditEvent({
+    actor: await actor(),
+    action: "newsletter_create",
+    targetTable: "newsletter_campaigns",
+    targetId: id,
+    newValue: `${templateId}, ${draft.theme}`,
+  });
   redirect(`/admin/newsletter/${id}`);
+}
+
+export async function deleteMediaAction(key: string): Promise<ActionResult> {
+  if (!(await requireAdmin())) return { error: "Unauthorized" };
+  if (!/^[A-Za-z0-9_-]{8,48}$/.test(String(key ?? ""))) return { error: "Invalid photo" };
+  await ready();
+  const gone = await deleteMedia(key);
+  if (!gone) return { error: "That photo was already gone." };
+  await logAuditEvent({ actor: await actor(), action: "newsletter_media_delete", targetTable: "newsletter_media", newValue: key });
+  return { success: true };
 }
 
 export async function duplicateCampaignAction(id: number): Promise<void> {
@@ -94,6 +114,7 @@ export async function duplicateCampaignAction(id: number): Promise<void> {
   const copy = await createCampaign({
     subject: source.subject,
     preheader: source.preheader,
+    theme: source.theme,
     blocks: source.blocks,
   });
   await logAuditEvent({ actor: await actor(), action: "newsletter_duplicate", targetTable: "newsletter_campaigns", targetId: copy, newValue: `from ${id}` });

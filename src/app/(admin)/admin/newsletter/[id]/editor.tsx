@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -27,49 +27,69 @@ import {
   Minus,
   MoveVertical,
   Sparkles,
+  LayoutGrid,
+  Hash,
+  ListOrdered,
+  UserRound,
+  CalendarCheck,
+  GripVertical,
+  Palette,
 } from "lucide-react";
 import {
+  BLOCK_GROUPS,
   BLOCK_HINT,
-  BLOCK_KINDS,
   BLOCK_LABEL,
+  THEMES,
+  THEME_LABEL,
   newBlock,
   type Block,
   type BlockKind,
   type Draft,
+  type ThemeId,
 } from "@/lib/newsletter/blocks";
+import { PALETTES } from "@/lib/newsletter/render";
 import type { CampaignSummary, DeliveryRow } from "@/lib/newsletter/db";
-import type { CatalogFilm, CatalogPhoto } from "@/lib/newsletter/catalog";
+import type { CatalogFilm, CatalogPerson, CatalogPhoto } from "@/lib/newsletter/catalog";
 import { saveCampaignAction, sendTestAction } from "@/app/actions/newsletter";
 import { cn } from "@/lib/utils";
 import { CampaignChip } from "../shared";
 import { BlockFields } from "./block-editor";
 import { Preview } from "./preview";
 import { SendPanel, SentSummary } from "./send-panel";
+import { useReorder } from "./use-reorder";
 
 /**
  * The editor.
  *
  * Two columns on a desktop: the words on the left, the email on the right,
- * updating as you type. On a phone the same two things are two tabs, since
- * neither is any use at half width. The email in the preview is the real
- * thing, rendered by the same code that renders the send, in an iframe so
- * the dashboard's own styles cannot leak into it.
+ * updating as you type, with a ring around whichever block is being edited.
+ * On a phone the same two things are two tabs, since neither is any use at
+ * half width. The email in the preview is the real thing, rendered by the
+ * same code that renders the send, in an iframe so the dashboard's own
+ * styles cannot leak into it.
  *
- * Drafts save themselves a moment after each change and the header says so.
- * An email that has gone out is shown read only with what happened to it.
+ * Blocks move by dragging their handle on a desktop and by the arrows
+ * anywhere. Drafts save themselves a moment after each change and the
+ * header says so. An email that has gone out is shown read only with what
+ * happened to it.
  */
 
 type SaveState = "saved" | "unsaved" | "saving" | "error";
 
-const KIND_ICON: Record<BlockKind, React.ComponentType<{ className?: string }>> = {
+export const KIND_ICON: Record<BlockKind, React.ComponentType<{ className?: string }>> = {
   hero: ImageIcon,
   heading: Heading2,
   text: AlignLeft,
   image: ImageIcon,
+  gallery: LayoutGrid,
   feature: Columns2,
   film: Clapperboard,
-  button: RectangleHorizontal,
+  stats: Hash,
+  list: ListOrdered,
   quote: Quote,
+  note: UserRound,
+  cta: CalendarCheck,
+  button: RectangleHorizontal,
   divider: Minus,
   spacer: MoveVertical,
 };
@@ -80,6 +100,7 @@ export function Editor({
   subscribers,
   photos,
   films,
+  team,
   postalAddress,
   testAddress,
 }: {
@@ -88,6 +109,7 @@ export function Editor({
   subscribers: number;
   photos: CatalogPhoto[];
   films: CatalogFilm[];
+  team: CatalogPerson[];
   postalAddress: string | null;
   testAddress: string;
 }) {
@@ -96,6 +118,7 @@ export function Editor({
   const [draft, setDraft] = useState<Draft>({
     subject: campaign.subject,
     preheader: campaign.preheader,
+    theme: campaign.theme,
     blocks: campaign.blocks,
   });
   const [saveState, setSaveState] = useState<SaveState>("saved");
@@ -109,6 +132,8 @@ export function Editor({
   });
   const [adding, setAdding] = useState<number | null>(null);
   const [collapsed, setCollapsed] = useState<Set<string>>(() => new Set());
+  const [active, setActive] = useState<string | null>(null);
+  const listRef = useRef<HTMLOListElement>(null);
 
   /* Save a moment after the last keystroke. The state is set to unsaved in
      the change handler, not here, so the effect only ever schedules work;
@@ -166,12 +191,32 @@ export function Editor({
       return { ...d, blocks };
     });
     setAdding(null);
+    setActive(block.id);
   }
 
+  const moveTo = useCallback(
+    (from: number, to: number) => {
+      if (from === to || to < 0) return;
+      update((d) => {
+        const blocks = [...d.blocks];
+        const [b] = blocks.splice(from, 1);
+        blocks.splice(to > from ? to - 1 : to, 0, b);
+        return { ...d, blocks };
+      });
+    },
+    [update],
+  );
+
+  const getItems = useCallback(
+    () => Array.from(listRef.current?.querySelectorAll<HTMLElement>(":scope > li") ?? []),
+    [],
+  );
+  const { dragging, dropAt, handleProps } = useReorder({ mode: "list", getItems, onMove: moveTo });
+
   function move(index: number, dir: -1 | 1) {
+    const to = index + dir;
     update((d) => {
       const blocks = [...d.blocks];
-      const to = index + dir;
       if (to < 0 || to >= blocks.length) return d;
       [blocks[index], blocks[to]] = [blocks[to], blocks[index]];
       return { ...d, blocks };
@@ -189,6 +234,7 @@ export function Editor({
 
   function remove(id: string) {
     update((d) => ({ ...d, blocks: d.blocks.filter((b) => b.id !== id) }));
+    if (active === id) setActive(null);
   }
 
   function toggleCollapsed(id: string) {
@@ -284,27 +330,29 @@ export function Editor({
         </div>
       )}
 
-      {/* Phone tabs */}
-      <div className="mt-5 flex rounded-lg border border-line bg-surface p-1 lg:hidden" role="tablist">
-        {(["write", "preview"] as const).map((t) => (
-          <button
-            key={t}
-            type="button"
-            role="tab"
-            aria-selected={tab === t}
-            onClick={() => setTab(t)}
-            className={cn(
-              "inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-md text-xs font-medium transition-colors",
-              tab === t ? "bg-[rgba(43,111,184,0.16)] text-signal-ink" : "text-ink-3 hover:text-ink-2",
-            )}
-          >
-            {t === "write" ? <PenLine className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            {t === "write" ? (locked ? "Content" : "Write") : "Preview"}
-          </button>
-        ))}
+      {/* Phone tabs, pinned so they are reachable from anywhere in a long email. */}
+      <div className="sticky top-0 z-20 -mx-4 mt-5 bg-ground/95 px-4 py-2 backdrop-blur lg:hidden">
+        <div className="flex rounded-lg border border-line bg-surface p-1" role="tablist">
+          {(["write", "preview"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              role="tab"
+              aria-selected={tab === t}
+              onClick={() => setTab(t)}
+              className={cn(
+                "inline-flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-md text-xs font-medium transition-colors",
+                tab === t ? "bg-[rgba(43,111,184,0.16)] text-signal-ink" : "text-ink-3 hover:text-ink-2",
+              )}
+            >
+              {t === "write" ? <PenLine className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {t === "write" ? (locked ? "Content" : "Write") : "Preview"}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+      <div className="mt-3 grid gap-6 lg:mt-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
         {/* Left: the words */}
         <div className={cn("min-w-0 space-y-4", tab !== "write" && "hidden lg:block")}>
           <section className="rounded-xl border border-line bg-surface p-4 sm:p-5">
@@ -319,7 +367,8 @@ export function Editor({
                 value={draft.subject}
                 disabled={locked}
                 onChange={(e) => update((d) => ({ ...d, subject: e.target.value }))}
-                placeholder="What sold this month, and the shoot that did it"
+                onFocus={() => setActive(null)}
+                placeholder="What sold this month, and the shoots behind it"
                 maxLength={200}
                 className="min-h-11 w-full min-w-0 rounded-lg border border-line bg-surface-hi px-3 text-base text-white outline-none transition-colors placeholder:text-ink-3 focus:border-line-strong disabled:opacity-70 sm:text-sm"
               />
@@ -335,6 +384,7 @@ export function Editor({
                 value={draft.preheader}
                 disabled={locked}
                 onChange={(e) => update((d) => ({ ...d, preheader: e.target.value }))}
+                onFocus={() => setActive(null)}
                 placeholder="The line the inbox shows under the subject"
                 maxLength={200}
                 className="min-h-11 w-full min-w-0 rounded-lg border border-line bg-surface-hi px-3 text-base text-white outline-none transition-colors placeholder:text-ink-3 focus:border-line-strong disabled:opacity-70 sm:text-sm"
@@ -344,23 +394,62 @@ export function Editor({
               Write <code className="rounded bg-white/[0.06] px-1 py-0.5 text-ink-2">{"{{first_name}}"}</code> anywhere
               and each person gets their own name, or &ldquo;there&rdquo; if the list has none for them.
             </p>
+
+            <div className="mt-4 border-t border-line pt-4">
+              <p className="mb-2 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.12em] text-ink-3">
+                <Palette className="h-3.5 w-3.5" />
+                Look
+              </p>
+              <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Look">
+                {THEMES.map((t) => (
+                  <ThemeSwatch
+                    key={t}
+                    id={t}
+                    selected={draft.theme === t}
+                    disabled={locked}
+                    onPick={() => update((d) => ({ ...d, theme: t }))}
+                  />
+                ))}
+              </div>
+            </div>
           </section>
 
           {draft.blocks.length === 0 && (
             <div className="rounded-xl border border-dashed border-line-strong px-4 py-10 text-center">
               <Sparkles className="mx-auto h-5 w-5 text-signal-ink" />
               <p className="mt-2 text-sm text-white">Empty so far.</p>
-              <p className="mt-1 text-xs text-ink-3">Add an opening picture, then a heading and a paragraph.</p>
+              <p className="mt-1 text-xs text-ink-3">Add an opening picture, then a heading and a paragraph, and end with Book a shoot.</p>
             </div>
           )}
 
-          <ol className="space-y-3">
+          <ol ref={listRef} className="space-y-3">
             {draft.blocks.map((block, index) => {
               const Icon = KIND_ICON[block.kind];
               const isCollapsed = collapsed.has(block.id);
+              const isActive = active === block.id;
               return (
-                <li key={block.id} className="rounded-xl border border-line bg-surface">
+                <li
+                  key={block.id}
+                  onFocusCapture={() => setActive(block.id)}
+                  className={cn(
+                    "relative rounded-xl border bg-surface transition-colors",
+                    isActive ? "border-signal/60" : "border-line",
+                    dragging === index && "opacity-40",
+                    dropAt === index && "before:absolute before:-top-2 before:left-2 before:right-2 before:h-0.5 before:rounded before:bg-signal-ink",
+                    dropAt === index + 1 && index === draft.blocks.length - 1 && "after:absolute after:-bottom-2 after:left-2 after:right-2 after:h-0.5 after:rounded after:bg-signal-ink",
+                  )}
+                >
                   <div className="flex items-center gap-1 px-2 py-1.5 sm:px-3">
+                    {!locked && (
+                      <span
+                        {...handleProps(index)}
+                        title="Drag to move"
+                        className="inline-flex h-9 w-6 shrink-0 cursor-grab select-none items-center justify-center text-ink-3 active:cursor-grabbing"
+                        aria-hidden="true"
+                      >
+                        <GripVertical className="h-4 w-4" />
+                      </span>
+                    )}
                     <button
                       type="button"
                       onClick={() => toggleCollapsed(block.id)}
@@ -395,6 +484,7 @@ export function Editor({
                         locked={locked}
                         photos={photos}
                         films={films}
+                        team={team}
                         onChange={(patch) => setBlock(block.id, patch)}
                       />
                     </div>
@@ -424,7 +514,7 @@ export function Editor({
         {/* Right: the email */}
         <div className={cn("min-w-0", tab !== "preview" && "hidden lg:block")}>
           <div className="lg:sticky lg:top-6">
-            <Preview draft={draft} postalAddress={postalAddress} />
+            <Preview draft={draft} postalAddress={postalAddress} highlightId={active} />
           </div>
         </div>
       </div>
@@ -445,6 +535,45 @@ export function Editor({
   );
 }
 
+function ThemeSwatch({
+  id,
+  selected,
+  disabled,
+  onPick,
+}: {
+  id: ThemeId;
+  selected: boolean;
+  disabled: boolean;
+  onPick: () => void;
+}) {
+  const p = PALETTES[id];
+  return (
+    <button
+      type="button"
+      role="radio"
+      aria-checked={selected}
+      disabled={disabled}
+      onClick={onPick}
+      title={THEME_LABEL[id].hint}
+      className={cn(
+        "flex min-h-11 items-center gap-2 rounded-lg border px-2 text-left transition-colors disabled:opacity-70",
+        selected ? "border-signal-ink bg-[rgba(43,111,184,0.12)]" : "border-line hover:border-line-strong",
+      )}
+    >
+      <span
+        className="h-7 w-7 shrink-0 overflow-hidden rounded-md border border-white/10"
+        style={{ background: `linear-gradient(135deg, ${p.ground} 0 50%, ${p.accent} 50% 100%)` }}
+        aria-hidden="true"
+      >
+        <span className="block h-1.5 w-3 translate-x-1.5 translate-y-4 rounded-sm" style={{ background: p.signal }} />
+      </span>
+      <span className="min-w-0">
+        <span className={cn("block text-xs font-medium", selected ? "text-signal-ink" : "text-white")}>{THEME_LABEL[id].name}</span>
+      </span>
+    </button>
+  );
+}
+
 function summary(b: Block): string {
   switch (b.kind) {
     case "hero":
@@ -455,18 +584,28 @@ function summary(b: Block): string {
       return b.text.split("\n")[0];
     case "image":
       return b.alt || b.caption;
+    case "gallery":
+      return `${b.items.filter((it) => it.image).length} photos`;
     case "feature":
       return b.title || b.text.split("\n")[0];
     case "film":
       return b.title;
+    case "stats":
+      return b.items.map((it) => it.value).filter(Boolean).join(", ");
+    case "list":
+      return b.title || b.items.split("\n")[0];
     case "button":
       return b.label;
     case "quote":
       return b.text;
+    case "note":
+      return b.name || b.text.split("\n")[0];
+    case "cta":
+      return b.title;
     case "divider":
       return "";
     case "spacer":
-      return { s: "Small", m: "Medium", l: "Large" }[b.size];
+      return { s: "A little", m: "Some", l: "A lot" }[b.size];
   }
 }
 
@@ -529,25 +668,30 @@ function AddRow({
         </button>
       ) : (
         <div className="rounded-lg border border-line bg-surface-hi p-2">
-          <div className="grid grid-cols-2 gap-1 sm:grid-cols-3">
-            {BLOCK_KINDS.map((kind) => {
-              const Icon = KIND_ICON[kind];
-              return (
-                <button
-                  key={kind}
-                  type="button"
-                  onClick={() => onPick(kind)}
-                  className="flex min-h-11 items-start gap-2 rounded-lg px-2 py-2 text-left transition-colors hover:bg-white/[0.05]"
-                >
-                  <Icon className="mt-0.5 h-4 w-4 shrink-0 text-signal-ink" />
-                  <span className="min-w-0">
-                    <span className="block text-xs font-medium text-white">{BLOCK_LABEL[kind]}</span>
-                    <span className="block text-[11px] leading-snug text-ink-3">{BLOCK_HINT[kind]}</span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+          {BLOCK_GROUPS.map((group) => (
+            <div key={group.name} className="mb-2 last:mb-0">
+              <p className="px-2 pb-1 pt-1 text-[10px] uppercase tracking-[0.14em] text-ink-3">{group.name}</p>
+              <div className="grid grid-cols-2 gap-1 sm:grid-cols-3">
+                {group.kinds.map((kind) => {
+                  const Icon = KIND_ICON[kind];
+                  return (
+                    <button
+                      key={kind}
+                      type="button"
+                      onClick={() => onPick(kind)}
+                      className="flex min-h-11 items-start gap-2 rounded-lg px-2 py-2 text-left transition-colors hover:bg-white/[0.05]"
+                    >
+                      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-signal-ink" />
+                      <span className="min-w-0">
+                        <span className="block text-xs font-medium text-white">{BLOCK_LABEL[kind]}</span>
+                        <span className="block text-[11px] leading-snug text-ink-3">{BLOCK_HINT[kind]}</span>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
           <button
             type="button"
             onClick={onToggle}

@@ -155,3 +155,53 @@ account, then DNS at the registrar), set `RESEND_WEBHOOK_SECRET` after adding
 the webhook in Resend, and supply a postal address for the footer
 (`NEWSLETTER_POSTAL_ADDRESS`), which CAN-SPAM requires. The page says all of
 this in plain words.
+
+## Round two, 2026-09-16
+
+The owner's brief: "fully improve all of the features and the design",
+"super easy to use", monthly emails to real estate agents "showing any new
+news, any cool houses that were shot that month, along with a call to
+action to book a shoot", easy from scratch or from "really nice looking
+templates with custom designs, custom backgrounds".
+
+What changed, and why:
+
+- **Templates.** Five complete emails in `templates.ts` (the month in
+  review, one listing told properly, something new, tips for sellers, a
+  quick note), each with real copy and real pictures, chosen from
+  `/admin/newsletter/new` where every card is the real render at a third
+  of its size. A blank start sits beside them. The chooser and the list page
+  both draw thumbnails with the sending renderer, so a card is never a
+  drawing of an email.
+- **Looks and tones.** A draft carries a theme (`night`, the site; `steel`,
+  deep navy; `paper`, cool white with navy type) and most blocks carry a
+  tone (on the ground, on a raised panel, on the brand blue). That is the
+  "custom backgrounds" ask done the only way email survives: solid colors
+  stated on every element, never a background image behind body text.
+  The one photo-behind-words is the overlay opening, done as a bulletproof
+  background with a VML twin for Outlook and a dark wash behind the words.
+- **New blocks** for the monthly job: a photo grid (two or three across,
+  every frame cropped to the same box, two-up on a phone), three numbers,
+  a numbered or bulleted list, a signed note with a headshot, and a
+  Book a shoot block that carries the heading, the line, the button and
+  the phone numbers together on a panel.
+- **The owner's own photos.** An upload shelf in the picker
+  (`/api/newsletter/upload`, up to 12 at a time, phone photos rotated,
+  shrunk to 1600 and re-encoded before they are stored in
+  `newsletter_media`). Everything a sent email shows goes through
+  `/media/...?w=&h=`, which crops and resizes with sharp and is cached at
+  the edge for a year, so a 400KB master is a 90KB frame in the inbox and
+  the grid is six identical boxes whatever was uploaded. Stored in Neon
+  rather than an object store on purpose: thirty photos a month at 300KB
+  is nothing, and it is one fewer account, key and bill.
+- **Editor.** Drag to reorder (with the arrows kept for touch), a ring in
+  the preview around the block being edited, a sticky Write/Preview switch
+  on a phone, the block palette grouped by job, and the preview loading
+  pictures from the dashboard's own server so an upload from a second ago
+  shows.
+
+Traps met: Chrome cancels a drag whose source element re-renders during
+`dragstart`, so the drag index lives in a ref and the dimming state is set
+a tick later. A stale Turbopack bundle produced a hydration mismatch and
+404s for a poster URL that no longer existed in the source; `rm -rf .next`
+was the fix, not code.

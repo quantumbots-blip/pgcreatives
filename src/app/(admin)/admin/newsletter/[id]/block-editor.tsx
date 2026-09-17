@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { ImageIcon, Clapperboard, X } from "lucide-react";
-import type { Block, BlockKind } from "@/lib/newsletter/blocks";
-import type { CatalogFilm, CatalogPhoto } from "@/lib/newsletter/catalog";
-import { imageUrl } from "@/lib/newsletter/render";
+import { useCallback, useRef, useState } from "react";
+import { ImageIcon, Clapperboard, X, Plus, GripVertical, Trash2 } from "lucide-react";
+import { useReorder } from "./use-reorder";
+import { TONES, TONE_LABEL, type Block, type BlockKind, type GalleryItem, type Tone } from "@/lib/newsletter/blocks";
+import type { CatalogFilm, CatalogPerson, CatalogPhoto } from "@/lib/newsletter/catalog";
+import { pic } from "@/lib/newsletter/render";
 import { cn } from "@/lib/utils";
-import { FilmPicker, PhotoPicker } from "./picker";
+import { FilmPicker, PhotoPicker, type Picked } from "./picker";
 
 /**
  * The fields for one block. Small, plain controls, labelled in the words
@@ -16,37 +17,59 @@ import { FilmPicker, PhotoPicker } from "./picker";
 
 type Patch<K extends BlockKind> = Partial<Extract<Block, { kind: K }>>;
 
+type Shared = {
+  locked: boolean;
+  photos: CatalogPhoto[];
+  team: CatalogPerson[];
+};
+
 export function BlockFields({
   block,
   locked,
   photos,
   films,
+  team,
   onChange,
 }: {
   block: Block;
   locked: boolean;
   photos: CatalogPhoto[];
   films: CatalogFilm[];
+  team: CatalogPerson[];
   onChange: (patch: Partial<Block>) => void;
 }) {
+  const shared: Shared = { locked, photos, team };
   switch (block.kind) {
     case "hero":
       return (
         <div className="space-y-3">
           <PictureField
+            {...shared}
             value={block.image}
             alt={block.alt}
-            locked={locked}
-            photos={photos}
-            onPick={(src, title) => onChange({ image: src, alt: block.alt || title } as Patch<"hero">)}
+            onPick={(p) => onChange({ image: p.src, alt: block.alt || p.title } as Patch<"hero">)}
             onClear={() => onChange({ image: "" } as Patch<"hero">)}
           />
           {block.image && (
-            <Text label="Describe the picture" hint="Read aloud by screen readers and shown when pictures are off." value={block.alt} locked={locked} onChange={(alt) => onChange({ alt } as Patch<"hero">)} />
+            <>
+              <Segmented
+                label="Words"
+                value={block.layout}
+                locked={locked}
+                options={[
+                  { value: "stacked", label: "Under the picture" },
+                  { value: "overlay", label: "Over the picture" },
+                ]}
+                onChange={(layout) => onChange({ layout } as Patch<"hero">)}
+              />
+              <Text label="Describe the picture" hint="Read aloud by screen readers and shown when pictures are off." value={block.alt} locked={locked} onChange={(alt) => onChange({ alt } as Patch<"hero">)} />
+            </>
           )}
           <Text label="Headline" value={block.title} locked={locked} onChange={(title) => onChange({ title } as Patch<"hero">)} placeholder="Hi {{first_name}}, here is September" />
           <Area label="Line under it" value={block.sub} locked={locked} rows={2} onChange={(sub) => onChange({ sub } as Patch<"hero">)} />
-          <Text label="Where the picture links to" hint="Optional. Starts with https://" value={block.href} locked={locked} onChange={(href) => onChange({ href } as Patch<"hero">)} placeholder="https://pgcreativeswi.com/portfolio" inputMode="url" />
+          {block.layout !== "overlay" && (
+            <Text label="Where the picture links to" hint="Optional. Starts with https://" value={block.href} locked={locked} onChange={(href) => onChange({ href } as Patch<"hero">)} placeholder="https://pgcreativeswi.com/portfolio" inputMode="url" />
+          )}
         </div>
       );
     case "heading":
@@ -54,28 +77,31 @@ export function BlockFields({
         <div className="space-y-3">
           <Text label="Small label above" hint="Optional, in the accent color." value={block.label} locked={locked} onChange={(label) => onChange({ label } as Patch<"heading">)} placeholder="New this month" />
           <Text label="Heading" value={block.text} locked={locked} onChange={(text) => onChange({ text } as Patch<"heading">)} placeholder="A crew in Milwaukee" />
+          <ToneField value={block.tone} locked={locked} onChange={(tone) => onChange({ tone } as Patch<"heading">)} />
         </div>
       );
     case "text":
       return (
-        <Area
-          label="Paragraphs"
-          hint="A blank line starts a new paragraph. **bold** for bold, [words](https://link) for a link."
-          value={block.text}
-          locked={locked}
-          rows={6}
-          onChange={(text) => onChange({ text } as Patch<"text">)}
-        />
+        <div className="space-y-3">
+          <Area
+            label="Paragraphs"
+            hint="A blank line starts a new paragraph. **bold** for bold, [words](https://link) for a link."
+            value={block.text}
+            locked={locked}
+            rows={6}
+            onChange={(text) => onChange({ text } as Patch<"text">)}
+          />
+          <ToneField value={block.tone} locked={locked} onChange={(tone) => onChange({ tone } as Patch<"text">)} />
+        </div>
       );
     case "image":
       return (
         <div className="space-y-3">
           <PictureField
+            {...shared}
             value={block.image}
             alt={block.alt}
-            locked={locked}
-            photos={photos}
-            onPick={(src, title) => onChange({ image: src, alt: block.alt || title } as Patch<"image">)}
+            onPick={(p) => onChange({ image: p.src, alt: block.alt || p.title } as Patch<"image">)}
             onClear={() => onChange({ image: "" } as Patch<"image">)}
           />
           <Text label="Describe the picture" hint="Read aloud by screen readers and shown when pictures are off." value={block.alt} locked={locked} onChange={(alt) => onChange({ alt } as Patch<"image">)} />
@@ -83,36 +109,48 @@ export function BlockFields({
           <Text label="Where it links to" hint="Optional. Starts with https://" value={block.href} locked={locked} onChange={(href) => onChange({ href } as Patch<"image">)} inputMode="url" />
         </div>
       );
+    case "gallery":
+      return (
+        <GalleryFields
+          {...shared}
+          title={block.title}
+          items={block.items}
+          columns={block.columns}
+          onChange={(patch) => onChange(patch as Patch<"gallery">)}
+        />
+      );
     case "feature":
       return (
         <div className="space-y-3">
           <PictureField
+            {...shared}
             value={block.image}
             alt={block.alt}
-            locked={locked}
-            photos={photos}
-            onPick={(src, title) => onChange({ image: src, alt: block.alt || title } as Patch<"feature">)}
+            onPick={(p) => onChange({ image: p.src, alt: block.alt || p.title } as Patch<"feature">)}
             onClear={() => onChange({ image: "" } as Patch<"feature">)}
           />
           {block.image && (
-            <Text label="Describe the picture" value={block.alt} locked={locked} onChange={(alt) => onChange({ alt } as Patch<"feature">)} />
+            <>
+              <Text label="Describe the picture" value={block.alt} locked={locked} onChange={(alt) => onChange({ alt } as Patch<"feature">)} />
+              <Segmented
+                label="Picture on the"
+                value={block.side}
+                locked={locked}
+                options={[
+                  { value: "left", label: "Left" },
+                  { value: "right", label: "Right" },
+                ]}
+                onChange={(side) => onChange({ side } as Patch<"feature">)}
+              />
+            </>
           )}
-          <Segmented
-            label="Picture on the"
-            value={block.side}
-            locked={locked}
-            options={[
-              { value: "left", label: "Left" },
-              { value: "right", label: "Right" },
-            ]}
-            onChange={(side) => onChange({ side } as Patch<"feature">)}
-          />
           <Text label="Heading" value={block.title} locked={locked} onChange={(title) => onChange({ title } as Patch<"feature">)} />
           <Area label="Text" value={block.text} locked={locked} rows={4} onChange={(text) => onChange({ text } as Patch<"feature">)} />
           <div className="grid gap-3 sm:grid-cols-2">
             <Text label="Link label" hint="Optional, shown under the text." value={block.buttonLabel} locked={locked} onChange={(buttonLabel) => onChange({ buttonLabel } as Patch<"feature">)} placeholder="See what is included" />
             <Text label="Link" value={block.href} locked={locked} onChange={(href) => onChange({ href } as Patch<"feature">)} placeholder="https://" inputMode="url" />
           </div>
+          <ToneField value={block.tone} locked={locked} onChange={(tone) => onChange({ tone } as Patch<"feature">)} />
         </div>
       );
     case "film":
@@ -127,6 +165,52 @@ export function BlockFields({
           onPick={(f) => onChange({ vimeoId: f.vimeoId, title: f.title, category: f.category, poster: f.poster, portrait: f.portrait } as Patch<"film">)}
           onClear={() => onChange({ vimeoId: "", poster: "", title: "", category: "" } as Patch<"film">)}
         />
+      );
+    case "stats":
+      return (
+        <div className="space-y-3">
+          <div className="grid gap-3 sm:grid-cols-3">
+            {block.items.map((it, i) => (
+              <div key={i} className="space-y-2 rounded-lg border border-line p-2.5">
+                <Text
+                  label={`Number ${i + 1}`}
+                  value={it.value}
+                  locked={locked}
+                  onChange={(value) => onChange({ items: block.items.map((x, j) => (j === i ? { ...x, value } : x)) } as Patch<"stats">)}
+                  placeholder="42"
+                />
+                <Text
+                  label="Under it"
+                  value={it.label}
+                  locked={locked}
+                  onChange={(label) => onChange({ items: block.items.map((x, j) => (j === i ? { ...x, label } : x)) } as Patch<"stats">)}
+                  placeholder="Listings shot"
+                />
+              </div>
+            ))}
+          </div>
+          <ToneField value={block.tone} locked={locked} onChange={(tone) => onChange({ tone } as Patch<"stats">)} />
+        </div>
+      );
+    case "list":
+      return (
+        <div className="space-y-3">
+          <Text label="Heading" hint="Optional." value={block.title} locked={locked} onChange={(title) => onChange({ title } as Patch<"list">)} placeholder="Before we arrive" />
+          <Area label="Items" hint="One per line." value={block.items} locked={locked} rows={5} onChange={(items) => onChange({ items } as Patch<"list">)} />
+          <div className="flex flex-wrap gap-4">
+            <Segmented
+              label="Marks"
+              value={block.style}
+              locked={locked}
+              options={[
+                { value: "numbered", label: "1, 2, 3" },
+                { value: "bulleted", label: "Dots" },
+              ]}
+              onChange={(style) => onChange({ style } as Patch<"list">)}
+            />
+            <ToneField value={block.tone} locked={locked} onChange={(tone) => onChange({ tone } as Patch<"list">)} />
+          </div>
+        </div>
       );
     case "button":
       return (
@@ -154,6 +238,52 @@ export function BlockFields({
           <div className="grid gap-3 sm:grid-cols-2">
             <Text label="Who" value={block.name} locked={locked} onChange={(name) => onChange({ name } as Patch<"quote">)} placeholder="Heather Zeitler" />
             <Text label="Brokerage or role" value={block.role} locked={locked} onChange={(role) => onChange({ role } as Patch<"quote">)} placeholder="Coldwell Banker" />
+          </div>
+          <ToneField value={block.tone} locked={locked} onChange={(tone) => onChange({ tone } as Patch<"quote">)} />
+        </div>
+      );
+    case "note":
+      return (
+        <div className="space-y-3">
+          <PictureField
+            {...shared}
+            value={block.image}
+            alt={block.name}
+            label="Headshot"
+            round
+            startTab="team"
+            onPick={(p) => onChange({ image: p.src, name: block.name || p.title, role: block.role || (p.role ?? "") } as Patch<"note">)}
+            onClear={() => onChange({ image: "" } as Patch<"note">)}
+          />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Text label="Signed" value={block.name} locked={locked} onChange={(name) => onChange({ name } as Patch<"note">)} placeholder="Michael McIntee" />
+            <Text label="Role" value={block.role} locked={locked} onChange={(role) => onChange({ role } as Patch<"note">)} placeholder="Founder" />
+          </div>
+          <Area label="The note" value={block.text} locked={locked} rows={4} onChange={(text) => onChange({ text } as Patch<"note">)} />
+          <ToneField value={block.tone} locked={locked} onChange={(tone) => onChange({ tone } as Patch<"note">)} />
+        </div>
+      );
+    case "cta":
+      return (
+        <div className="space-y-3">
+          <Text label="Heading" value={block.title} locked={locked} onChange={(title) => onChange({ title } as Patch<"cta">)} placeholder="Ready for your next listing?" />
+          <Area label="Line under it" value={block.text} locked={locked} rows={2} onChange={(text) => onChange({ text } as Patch<"cta">)} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Text label="Button label" value={block.label} locked={locked} onChange={(label) => onChange({ label } as Patch<"cta">)} placeholder="Book a shoot" />
+            <Text label="Button link" value={block.href} locked={locked} onChange={(href) => onChange({ href } as Patch<"cta">)} placeholder="https://pgcreativeswi.com/contact" inputMode="url" />
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <Segmented
+              label="Phone numbers under it"
+              value={block.phones ? "yes" : "no"}
+              locked={locked}
+              options={[
+                { value: "yes", label: "Show" },
+                { value: "no", label: "Hide" },
+              ]}
+              onChange={(v) => onChange({ phones: v === "yes" } as Patch<"cta">)}
+            />
+            <ToneField value={block.tone} locked={locked} onChange={(tone) => onChange({ tone } as Patch<"cta">)} />
           </div>
         </div>
       );
@@ -268,7 +398,7 @@ function Segmented<T extends string>({
   return (
     <div>
       <Label label={label} />
-      <div className="inline-flex rounded-lg border border-line bg-surface-hi p-0.5" role="radiogroup" aria-label={label}>
+      <div className="inline-flex flex-wrap rounded-lg border border-line bg-surface-hi p-0.5" role="radiogroup" aria-label={label}>
         {options.map((o) => (
           <button
             key={o.value}
@@ -290,33 +420,57 @@ function Segmented<T extends string>({
   );
 }
 
+function ToneField({ value, locked, onChange }: { value: Tone; locked: boolean; onChange: (t: Tone) => void }) {
+  return (
+    <Segmented
+      label="Sits"
+      value={value}
+      locked={locked}
+      options={TONES.map((t) => ({ value: t, label: TONE_LABEL[t] }))}
+      onChange={onChange}
+    />
+  );
+}
+
+/** A thumbnail from the same route the email uses, so a broken picture is broken here too. */
+function thumb(src: string, w: number, h: number): string {
+  return pic(src, w, h, "");
+}
+
 function PictureField({
   value,
   alt,
+  label = "Picture",
+  round,
+  startTab,
   locked,
   photos,
+  team,
   onPick,
   onClear,
-}: {
+}: Shared & {
   value: string;
   alt: string;
-  locked: boolean;
-  photos: CatalogPhoto[];
-  onPick: (src: string, title: string) => void;
+  label?: string;
+  round?: boolean;
+  startTab?: "uploads" | "site" | "team";
+  onPick: (p: Picked) => void;
   onClear: () => void;
 }) {
   const [open, setOpen] = useState(false);
   return (
     <div>
-      <Label label="Picture" />
+      <Label label={label} />
       {value ? (
         <div className="flex items-center gap-3">
-          {/* The same URL the email will use, so a picture that will not
-              load in an inbox does not load here either. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={imageUrl(value)} alt={alt} className="h-16 w-24 shrink-0 rounded-lg object-cover" />
+          <img
+            src={thumb(value, round ? 128 : 240, round ? 128 : 160)}
+            alt={alt}
+            className={cn("shrink-0 object-cover", round ? "h-14 w-14 rounded-full" : "h-16 w-24 rounded-lg")}
+          />
           <div className="min-w-0">
-            <p className="truncate text-xs text-ink-2">{value.replace(/^\/images\//, "")}</p>
+            <p className="truncate text-xs text-ink-2">{value.replace(/^\/(images|team|media\/u)\//, "")}</p>
             {!locked && (
               <div className="mt-1 flex gap-1.5">
                 <button type="button" onClick={() => setOpen(true)} className="min-h-8 rounded-lg border border-line px-2 text-xs text-ink-2 hover:border-line-strong hover:text-white">
@@ -338,14 +492,146 @@ function PictureField({
           className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-line-strong text-xs font-medium text-ink-2 transition-colors hover:border-signal-ink hover:text-white disabled:opacity-70"
         >
           <ImageIcon className="h-4 w-4" />
-          Choose a picture
+          Choose a {label.toLowerCase()}
         </button>
       )}
       {open && (
         <PhotoPicker
           photos={photos}
-          onPick={(src, title) => {
-            onPick(src, title);
+          team={team}
+          startTab={startTab}
+          onPick={(picked) => {
+            onPick(picked[0]);
+            setOpen(false);
+          }}
+          onClose={() => setOpen(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+function GalleryFields({
+  title,
+  items,
+  columns,
+  locked,
+  photos,
+  team,
+  onChange,
+}: Shared & {
+  title: string;
+  items: GalleryItem[];
+  columns: 2 | 3;
+  onChange: (patch: { title?: string; items?: GalleryItem[]; columns?: 2 | 3 }) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const gridRef = useRef<HTMLUListElement>(null);
+
+  function setItem(i: number, patch: Partial<GalleryItem>) {
+    onChange({ items: items.map((it, j) => (j === i ? { ...it, ...patch } : it)) });
+  }
+  function removeItem(i: number) {
+    onChange({ items: items.filter((_, j) => j !== i) });
+  }
+  const moveItem = useCallback(
+    (from: number, to: number) => {
+      if (from === to) return;
+      const next = [...items];
+      const [it] = next.splice(from, 1);
+      next.splice(to, 0, it);
+      onChange({ items: next });
+    },
+    [items, onChange],
+  );
+  const getItems = useCallback(
+    () => Array.from(gridRef.current?.querySelectorAll<HTMLElement>(":scope > li[data-photo]") ?? []),
+    [],
+  );
+  const { dragging, dropAt, handleProps } = useReorder({ mode: "grid", getItems, onMove: moveItem });
+
+  return (
+    <div className="space-y-3">
+      <Text label="Heading" hint="Optional." value={title} locked={locked} onChange={(t) => onChange({ title: t })} placeholder="Shot this month" />
+      <div>
+        <Label label={`Photos, ${items.length} of 6`} hint="Each one is cropped to the same box. Drag to reorder." />
+        <ul ref={gridRef} className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {items.map((it, i) => (
+            <li
+              key={i}
+              data-photo=""
+              className={cn(
+                "rounded-lg border bg-surface-hi p-2 transition-colors",
+                dragging === i ? "border-line opacity-40" : dropAt === i && dragging !== null ? "border-signal-ink" : "border-line",
+              )}
+            >
+              <div className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={thumb(it.image, 300, 200)} alt={it.alt} className="aspect-[3/2] w-full rounded-md object-cover" draggable={false} />
+                {!locked && (
+                  <>
+                    <span
+                      {...handleProps(i)}
+                      className="absolute left-1 top-1 inline-flex h-7 w-7 cursor-grab select-none items-center justify-center rounded-md bg-black/55 text-white active:cursor-grabbing"
+                      title="Drag to reorder"
+                      aria-hidden="true"
+                    >
+                      <GripVertical className="h-3.5 w-3.5" />
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeItem(i)}
+                      aria-label="Remove photo"
+                      className="absolute right-1 top-1 inline-flex h-7 w-7 items-center justify-center rounded-md bg-black/55 text-white hover:bg-red-500/80"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </>
+                )}
+              </div>
+              <input
+                value={it.caption}
+                disabled={locked}
+                onChange={(e) => setItem(i, { caption: e.target.value, alt: it.alt || e.target.value })}
+                placeholder="Caption"
+                aria-label="Caption"
+                className={cn(INPUT, "mt-2 min-h-9 px-2 text-xs sm:text-xs")}
+              />
+            </li>
+          ))}
+          {!locked && items.length < 6 && (
+            <li>
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="flex aspect-[3/2] w-full flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-line-strong text-xs font-medium text-ink-2 transition-colors hover:border-signal-ink hover:text-white"
+              >
+                <Plus className="h-4 w-4" />
+                Add photos
+              </button>
+            </li>
+          )}
+        </ul>
+      </div>
+      <Segmented
+        label="Across"
+        value={String(columns) as "2" | "3"}
+        locked={locked}
+        options={[
+          { value: "2", label: "Two" },
+          { value: "3", label: "Three" },
+        ]}
+        onChange={(v) => onChange({ columns: v === "3" ? 3 : 2 })}
+      />
+      {open && (
+        <PhotoPicker
+          photos={photos}
+          team={team}
+          multiple={6 - items.length}
+          onPick={(picked) => {
+            onChange({
+              items: [...items, ...picked.map((p) => ({ image: p.src, alt: p.title, caption: "", href: "" }))].slice(0, 6),
+            });
             setOpen(false);
           }}
           onClose={() => setOpen(false)}

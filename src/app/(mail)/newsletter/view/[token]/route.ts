@@ -24,7 +24,7 @@ export async function GET(_request: NextRequest, ctx: { params: Promise<{ token:
       return new NextResponse("Not found", { status: 404 });
     }
     const html = renderNewsletterHtml(
-      { subject: campaign.subject, preheader: campaign.preheader, blocks: campaign.blocks },
+      { subject: campaign.subject, preheader: campaign.preheader, theme: campaign.theme, blocks: campaign.blocks },
       { viewUrl: viewUrl(campaign.public_token), postalAddress: postalAddress() },
     );
     return new NextResponse(html, {

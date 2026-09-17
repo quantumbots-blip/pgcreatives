@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { getDb } from "@/lib/db";
-import { normalizeBlocks, type Block, type Draft } from "./blocks";
+import { normalizeBlocks, THEMES, type Block, type Draft, type ThemeId } from "./blocks";
 import type { ParsedSubscriber } from "./import";
 
 /**
@@ -84,6 +84,26 @@ export async function ensureNewsletterSchema() {
     CREATE INDEX IF NOT EXISTS idx_newsletter_deliveries_resend_id
     ON newsletter_deliveries (resend_id)
     WHERE resend_id IS NOT NULL
+  `;
+  // The ground the email sits on. Additive, so rows from before read as night.
+  await sql`ALTER TABLE newsletter_campaigns ADD COLUMN IF NOT EXISTS theme VARCHAR(20) NOT NULL DEFAULT 'night'`;
+  /* The owner's own photographs of the month, resized on the way in and
+     stored here rather than on a separate object store, because a few
+     hundred kilobytes a picture and thirty pictures a month is nothing a
+     database minds and it means one fewer account, key and bill. Served
+     through /media with a year of edge caching, so a row is read once per
+     region per size, not once per reader. */
+  await sql`
+    CREATE TABLE IF NOT EXISTS newsletter_media (
+      id SERIAL PRIMARY KEY,
+      key VARCHAR(48) NOT NULL UNIQUE,
+      filename VARCHAR(200) NOT NULL DEFAULT '',
+      width INTEGER NOT NULL,
+      height INTEGER NOT NULL,
+      bytes INTEGER NOT NULL,
+      data BYTEA NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
   `;
   ensured = true;
 }
@@ -284,6 +304,7 @@ export type Campaign = {
   id: number;
   subject: string;
   preheader: string;
+  theme: ThemeId;
   blocks: Block[];
   status: CampaignStatus;
   status_reason: string | null;
@@ -300,6 +321,7 @@ function toCampaign(row: Record<string, unknown>): Campaign {
     id: Number(row.id),
     subject: String(row.subject ?? ""),
     preheader: String(row.preheader ?? ""),
+    theme: (THEMES as readonly string[]).includes(String(row.theme)) ? (row.theme as ThemeId) : "night",
     blocks: normalizeBlocks(row.blocks),
     status: (CAMPAIGN_STATUSES as readonly string[]).includes(String(row.status))
       ? (row.status as CampaignStatus)
@@ -372,8 +394,8 @@ export async function getCampaignByPublicToken(token: string): Promise<Campaign 
 export async function createCampaign(draft: Draft): Promise<number> {
   const sql = getDb();
   const rows = await sql`
-    INSERT INTO newsletter_campaigns (subject, preheader, blocks, public_token)
-    VALUES (${draft.subject}, ${draft.preheader}, ${JSON.stringify(draft.blocks)}::jsonb, ${newToken()})
+    INSERT INTO newsletter_campaigns (subject, preheader, theme, blocks, public_token)
+    VALUES (${draft.subject}, ${draft.preheader}, ${draft.theme}, ${JSON.stringify(draft.blocks)}::jsonb, ${newToken()})
     RETURNING id
   `;
   return Number(rows[0].id);
@@ -384,7 +406,7 @@ export async function saveCampaign(id: number, draft: Draft): Promise<boolean> {
   const sql = getDb();
   const rows = await sql`
     UPDATE newsletter_campaigns
-    SET subject = ${draft.subject}, preheader = ${draft.preheader},
+    SET subject = ${draft.subject}, preheader = ${draft.preheader}, theme = ${draft.theme},
         blocks = ${JSON.stringify(draft.blocks)}::jsonb, updated_at = NOW()
     WHERE id = ${id} AND status = 'draft'
     RETURNING id
@@ -589,4 +611,69 @@ export async function listDeliveries(campaignId: number, limit = 300): Promise<D
     LIMIT ${limit}
   `;
   return rows as DeliveryRow[];
+}
+
+/* ── Media ──────────────────────────────────────────────────────────── */
+
+export type MediaItem = {
+  id: number;
+  key: string;
+  filename: string;
+  width: number;
+  height: number;
+  bytes: number;
+  created_at: string;
+};
+
+export function newMediaKey(): string {
+  return crypto.randomBytes(12).toString("base64url");
+}
+
+export async function saveMedia(item: {
+  key: string;
+  filename: string;
+  width: number;
+  height: number;
+  data: Buffer;
+}): Promise<MediaItem> {
+  const sql = getDb();
+  const rows = await sql.query(
+    `INSERT INTO newsletter_media (key, filename, width, height, bytes, data)
+     VALUES ($1, $2, $3, $4, $5, decode($6, 'hex'))
+     RETURNING id, key, filename, width, height, bytes, created_at`,
+    [item.key, item.filename, item.width, item.height, item.data.length, item.data.toString("hex")],
+  );
+  return rows[0] as MediaItem;
+}
+
+export async function listMedia(limit = 300): Promise<MediaItem[]> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT id, key, filename, width, height, bytes, created_at
+    FROM newsletter_media ORDER BY created_at DESC, id DESC LIMIT ${limit}
+  `;
+  return rows as MediaItem[];
+}
+
+/** The bytes, for the serving route. Null when the key is unknown. */
+export async function readMedia(key: string): Promise<{ data: Buffer; width: number; height: number } | null> {
+  if (!/^[A-Za-z0-9_-]{8,48}$/.test(key)) return null;
+  const sql = getDb();
+  const rows = await sql`
+    SELECT encode(data, 'hex') AS hex, width, height FROM newsletter_media WHERE key = ${key}
+  `;
+  if (!rows[0]) return null;
+  return { data: Buffer.from(String(rows[0].hex), "hex"), width: Number(rows[0].width), height: Number(rows[0].height) };
+}
+
+export async function deleteMedia(key: string): Promise<boolean> {
+  const sql = getDb();
+  const rows = await sql`DELETE FROM newsletter_media WHERE key = ${key} RETURNING id`;
+  return rows.length > 0;
+}
+
+export async function mediaTotals(): Promise<{ count: number; bytes: number }> {
+  const sql = getDb();
+  const [row] = await sql`SELECT COUNT(*)::int AS count, COALESCE(SUM(bytes), 0)::bigint AS bytes FROM newsletter_media`;
+  return { count: Number(row?.count ?? 0), bytes: Number(row?.bytes ?? 0) };
 }

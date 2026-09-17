@@ -4,7 +4,7 @@ import { loadShell } from "../load-shell";
 import { Editor } from "./editor";
 import { getCampaign, listDeliveries, countSubscribers } from "@/lib/newsletter/db";
 import { postalAddress } from "@/lib/newsletter/send";
-import { PHOTOS, type CatalogFilm } from "@/lib/newsletter/catalog";
+import { PHOTOS, TEAM, type CatalogFilm } from "@/lib/newsletter/catalog";
 import { PORTFOLIO_FILMS } from "@/lib/films";
 import { getVimeoMetas } from "@/lib/vimeo";
 import { BUSINESS } from "@/lib/data";
@@ -54,6 +54,7 @@ export default async function CampaignPage({ params }: { params: Promise<{ id: s
         subscribers={counts.subscribed}
         photos={PHOTOS}
         films={films}
+        team={TEAM}
         postalAddress={postalAddress() ?? null}
         testAddress={signedInAs ?? BUSINESS.email}
       />
