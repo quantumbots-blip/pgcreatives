@@ -53,3 +53,19 @@ export type CatalogFilm = {
   poster: string;
   portrait: boolean;
 };
+
+/** The team, for the signed note. Names and roles as the team page has them. */
+export type CatalogPerson = { src: string; name: string; role: string };
+
+export const TEAM: CatalogPerson[] = [
+  { src: "/team/michael-mcintee.jpg", name: "Michael McIntee", role: "Founder" },
+  { src: "/team/isaiah-bastian.jpg", name: "Isaiah Bastian", role: "Lead Creative (Madison)" },
+  { src: "/team/brenden-gruber.jpg", name: "Brenden Gruber", role: "Brand Development" },
+  { src: "/team/liam-janowski.jpg", name: "Liam Janowski", role: "Creative Specialist (Green Bay)" },
+  { src: "/team/calvin-lee.jpg", name: "Calvin Lee", role: "Creative Specialist (Appleton)" },
+  { src: "/team/ryan-ybanez.png", name: "Diether Ryan Ybañez", role: "Senior Video Editor" },
+  { src: "/team/lyle-alquilos.jpg", name: "Lyle Alquilos", role: "Video Editor" },
+  { src: "/team/claudio-ondoy-jr.png", name: "Claudio Ondoy Jr", role: "Video Editor" },
+  { src: "/team/gvy-teleron.png", name: "Gvy Teleron", role: "Video Editor" },
+  { src: "/team/charlibeth-sicad.png", name: "Charlibeth Sicad", role: "Administrative Coordinator" },
+];

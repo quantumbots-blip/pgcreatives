@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Smartphone, Monitor, FileText } from "lucide-react";
 import type { Draft } from "@/lib/newsletter/blocks";
-import { renderNewsletterHtml, renderNewsletterText, type Recipient } from "@/lib/newsletter/render";
+import { renderNewsletterHtml, renderNewsletterText, PALETTES, type Recipient } from "@/lib/newsletter/render";
 import { cn } from "@/lib/utils";
 
 /**
@@ -11,9 +11,12 @@ import { cn } from "@/lib/utils";
  *
  * Rendered in the browser by the same function the send uses, then put in
  * an iframe so nothing from the dashboard's stylesheet reaches it. A phone
- * width and a desktop width, because the two column block and the headline
- * size both change between them, plus the plain text twin, which is what a
- * watch or a screen reader gets.
+ * width and a desktop width, because the grids and the headline size both
+ * change between them, plus the plain text twin, which is what a watch or
+ * a screen reader gets. Whichever block is being edited wears a ring.
+ *
+ * Pictures load from this server rather than the live site, so a photo
+ * uploaded a second ago shows up. The sent email uses the site's address.
  *
  * The sandbox allows same origin so the scroll position can be kept across
  * re-renders (every keystroke re-renders), but not scripts, and the email
@@ -37,21 +40,39 @@ function useDebounced<T>(value: T, ms: number): T {
   return v;
 }
 
-export function Preview({ draft, postalAddress }: { draft: Draft; postalAddress: string | null }) {
+export function Preview({
+  draft,
+  postalAddress,
+  highlightId,
+}: {
+  draft: Draft;
+  postalAddress: string | null;
+  highlightId?: string | null;
+}) {
   const [mode, setMode] = useState<Mode>("phone");
   const settled = useDebounced(draft, 200);
   const frame = useRef<HTMLIFrameElement>(null);
   const scroll = useRef(0);
 
+  /* Relative picture URLs: a srcdoc frame resolves them against the page
+     it sits in, which is this server, so a photo uploaded a second ago
+     shows. The sent email gets absolute ones. */
   const html = useMemo(
-    () => renderNewsletterHtml(settled, { recipient: SAMPLE, postalAddress: postalAddress ?? undefined }),
-    [settled, postalAddress],
+    () =>
+      renderNewsletterHtml(settled, {
+        recipient: SAMPLE,
+        postalAddress: postalAddress ?? undefined,
+        assetOrigin: "",
+        highlightId: highlightId ?? undefined,
+      }),
+    [settled, postalAddress, highlightId],
   );
   const text = useMemo(
     () => renderNewsletterText(settled, { recipient: SAMPLE, postalAddress: postalAddress ?? undefined }),
     [settled, postalAddress],
   );
   const bytes = useMemo(() => new TextEncoder().encode(html).length, [html]);
+  const ground = PALETTES[settled.theme]?.ground ?? "#07090c";
 
   function remember() {
     try {
@@ -107,9 +128,10 @@ export function Preview({ draft, postalAddress }: { draft: Draft; postalAddress:
       ) : (
         <div
           className={cn(
-            "mx-auto overflow-hidden rounded-[18px] border border-line-strong bg-[#07090c] transition-[max-width]",
+            "mx-auto overflow-hidden rounded-[18px] border border-line-strong transition-[max-width]",
             mode === "phone" ? "max-w-[390px]" : "max-w-[720px]",
           )}
+          style={{ background: ground }}
         >
           <iframe
             ref={frame}
@@ -120,7 +142,8 @@ export function Preview({ draft, postalAddress }: { draft: Draft; postalAddress:
             onLoad={restore}
             onMouseLeave={remember}
             onTouchEnd={remember}
-            className={cn("block w-full border-0 bg-[#07090c]", mode === "phone" ? "h-[74vh] min-h-[560px]" : "h-[74vh] min-h-[640px]")}
+            style={{ background: ground }}
+            className={cn("block w-full border-0", mode === "phone" ? "h-[74vh] min-h-[560px]" : "h-[74vh] min-h-[640px]")}
           />
         </div>
       )}

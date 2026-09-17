@@ -9,21 +9,49 @@
  * live there, and compliance is not something an author should be able to
  * delete on a Tuesday.
  *
+ * A draft also carries a theme (the ground the whole email sits on) and
+ * most blocks carry a tone (plain on the ground, on a raised panel, or on
+ * the brand's deep blue), which is how one set of blocks makes emails that
+ * look different from each other without any of them looking off brand.
+ *
  * Everything the client sends back goes through normalizeBlocks() before it
  * is stored or rendered. Unknown kinds are dropped, every string is trimmed
  * and capped, and a link that is not https, mailto or tel is emptied rather
  * than kept, so a javascript: href can never reach an inbox or the preview.
  */
 
+export const THEMES = ["night", "steel", "paper"] as const;
+export type ThemeId = (typeof THEMES)[number];
+
+export const THEME_LABEL: Record<ThemeId, { name: string; hint: string }> = {
+  night: { name: "Night", hint: "The site itself. Black ground, white type, the brand blue on buttons." },
+  steel: { name: "Steel", hint: "Deep navy ground with the brand blue used more freely." },
+  paper: { name: "Paper", hint: "Cool white ground with navy type, for a lighter month." },
+};
+
+export const TONES = ["plain", "panel", "accent"] as const;
+export type Tone = (typeof TONES)[number];
+
+export const TONE_LABEL: Record<Tone, string> = {
+  plain: "On the ground",
+  panel: "On a panel",
+  accent: "On brand blue",
+};
+
 export const BLOCK_KINDS = [
   "hero",
   "heading",
   "text",
   "image",
+  "gallery",
   "feature",
   "film",
-  "button",
+  "stats",
+  "list",
   "quote",
+  "note",
+  "cta",
+  "button",
   "divider",
   "spacer",
 ] as const;
@@ -37,14 +65,22 @@ export type HeroBlock = Base<"hero"> & {
   title: string;
   sub: string;
   href: string;
+  /** Words under the picture, or words over it on a dark wash. */
+  layout: "stacked" | "overlay";
 };
-export type HeadingBlock = Base<"heading"> & { label: string; text: string };
-export type TextBlock = Base<"text"> & { text: string };
+export type HeadingBlock = Base<"heading"> & { label: string; text: string; tone: Tone };
+export type TextBlock = Base<"text"> & { text: string; tone: Tone };
 export type ImageBlock = Base<"image"> & {
   image: string;
   alt: string;
   caption: string;
   href: string;
+};
+export type GalleryItem = { image: string; alt: string; caption: string; href: string };
+export type GalleryBlock = Base<"gallery"> & {
+  title: string;
+  items: GalleryItem[];
+  columns: 2 | 3;
 };
 export type FeatureBlock = Base<"feature"> & {
   image: string;
@@ -54,6 +90,7 @@ export type FeatureBlock = Base<"feature"> & {
   href: string;
   buttonLabel: string;
   side: "left" | "right";
+  tone: Tone;
 };
 export type FilmBlock = Base<"film"> & {
   vimeoId: string;
@@ -62,12 +99,35 @@ export type FilmBlock = Base<"film"> & {
   poster: string;
   portrait: boolean;
 };
+export type StatItem = { value: string; label: string };
+export type StatsBlock = Base<"stats"> & { items: StatItem[]; tone: Tone };
+export type ListBlock = Base<"list"> & {
+  title: string;
+  items: string;
+  style: "numbered" | "bulleted";
+  tone: Tone;
+};
 export type ButtonBlock = Base<"button"> & {
   label: string;
   href: string;
   style: "solid" | "outline";
 };
-export type QuoteBlock = Base<"quote"> & { text: string; name: string; role: string };
+export type QuoteBlock = Base<"quote"> & { text: string; name: string; role: string; tone: Tone };
+export type NoteBlock = Base<"note"> & {
+  image: string;
+  name: string;
+  role: string;
+  text: string;
+  tone: Tone;
+};
+export type CtaBlock = Base<"cta"> & {
+  title: string;
+  text: string;
+  label: string;
+  href: string;
+  phones: boolean;
+  tone: Tone;
+};
 export type DividerBlock = Base<"divider">;
 export type SpacerBlock = Base<"spacer"> & { size: "s" | "m" | "l" };
 
@@ -76,10 +136,15 @@ export type Block =
   | HeadingBlock
   | TextBlock
   | ImageBlock
+  | GalleryBlock
   | FeatureBlock
   | FilmBlock
+  | StatsBlock
+  | ListBlock
   | ButtonBlock
   | QuoteBlock
+  | NoteBlock
+  | CtaBlock
   | DividerBlock
   | SpacerBlock;
 
@@ -87,6 +152,7 @@ export type Block =
 export type Draft = {
   subject: string;
   preheader: string;
+  theme: ThemeId;
   blocks: Block[];
 };
 
@@ -95,26 +161,44 @@ export const BLOCK_LABEL: Record<BlockKind, string> = {
   heading: "Heading",
   text: "Paragraphs",
   image: "Picture",
+  gallery: "Photo grid",
   feature: "Picture beside text",
   film: "Film from the portfolio",
-  button: "Button",
+  stats: "Three numbers",
+  list: "Numbered list",
   quote: "Quote",
+  note: "A note from the team",
+  cta: "Book a shoot",
+  button: "Button",
   divider: "Line",
   spacer: "Space",
 };
 
 export const BLOCK_HINT: Record<BlockKind, string> = {
-  hero: "A full width photo with a headline over the top of the email.",
+  hero: "A full width photo with a headline, under it or over it.",
   heading: "A section title, with a small label above it if you want one.",
   text: "Body copy. Leave a blank line between paragraphs.",
   image: "A photo on its own, with a caption if it needs one.",
+  gallery: "Up to six photos in a grid. The houses shot this month.",
   feature: "A photo on one side and a short piece of text on the other. Stacks on a phone.",
   film: "A reel from the portfolio with a play button.",
-  button: "One thing you want them to do.",
+  stats: "Three big numbers with a word or two under each.",
+  list: "Steps or tips, numbered or bulleted.",
   quote: "Something a client said, with their name.",
+  note: "A short personal note with a headshot, signed.",
+  cta: "The ask: a heading, a line, and the booking button, on a panel.",
+  button: "One button on its own.",
   divider: "A hairline between two parts.",
   spacer: "Breathing room.",
 };
+
+/** How the palette groups them. */
+export const BLOCK_GROUPS: { name: string; kinds: BlockKind[] }[] = [
+  { name: "Pictures", kinds: ["hero", "image", "gallery", "feature", "film"] },
+  { name: "Words", kinds: ["heading", "text", "list", "stats", "quote", "note"] },
+  { name: "Asks", kinds: ["cta", "button"] },
+  { name: "Spacing", kinds: ["divider", "spacer"] },
+];
 
 /* Length caps. Generous for prose, tight for anything that becomes an
    attribute or a header. */
@@ -137,13 +221,15 @@ export function newBlock(kind: BlockKind): Block {
   const id = newId();
   switch (kind) {
     case "hero":
-      return { id, kind, image: "", alt: "", title: "", sub: "", href: "" };
+      return { id, kind, image: "", alt: "", title: "", sub: "", href: "", layout: "stacked" };
     case "heading":
-      return { id, kind, label: "", text: "" };
+      return { id, kind, label: "", text: "", tone: "plain" };
     case "text":
-      return { id, kind, text: "" };
+      return { id, kind, text: "", tone: "plain" };
     case "image":
       return { id, kind, image: "", alt: "", caption: "", href: "" };
+    case "gallery":
+      return { id, kind, title: "", items: [], columns: 2 };
     case "feature":
       return {
         id,
@@ -155,13 +241,40 @@ export function newBlock(kind: BlockKind): Block {
         href: "",
         buttonLabel: "",
         side: "left",
+        tone: "plain",
       };
     case "film":
       return { id, kind, vimeoId: "", title: "", category: "", poster: "", portrait: true };
+    case "stats":
+      return {
+        id,
+        kind,
+        items: [
+          { value: "", label: "" },
+          { value: "", label: "" },
+          { value: "", label: "" },
+        ],
+        tone: "panel",
+      };
+    case "list":
+      return { id, kind, title: "", items: "", style: "numbered", tone: "plain" };
     case "button":
       return { id, kind, label: "", href: "", style: "solid" };
     case "quote":
-      return { id, kind, text: "", name: "", role: "" };
+      return { id, kind, text: "", name: "", role: "", tone: "plain" };
+    case "note":
+      return { id, kind, image: "", name: "", role: "", text: "", tone: "panel" };
+    case "cta":
+      return {
+        id,
+        kind,
+        title: "Ready for your next listing?",
+        text: "Photos the next business day, video within three. Book a date and we handle the rest.",
+        label: "Book a shoot",
+        href: "https://pgcreativeswi.com/contact",
+        phones: true,
+        tone: "accent",
+      };
     case "divider":
       return { id, kind };
     case "spacer":
@@ -190,19 +303,25 @@ export function safeHref(value: unknown): string {
 }
 
 /**
- * A picture source. Either a path into the site's own public folder or an
- * https URL. Anything else, including data: URIs and javascript:, is dropped.
+ * A picture source. A path into the site's own public folder, a path to an
+ * uploaded photo, or an https URL. Anything else, including data: URIs and
+ * javascript:, is dropped.
  */
 export function safeImage(value: unknown): string {
   const s = str(value, CAP.href);
   if (!s) return "";
-  if (/^\/[a-z0-9_\-/.]+\.(jpe?g|png|webp|gif)$/i.test(s)) return s;
+  if (/^\/(images|team)\/[a-z0-9_\-]+\.(jpe?g|png|webp)$/i.test(s)) return s;
+  if (/^\/media\/u\/[A-Za-z0-9_-]{8,48}\.jpg$/.test(s)) return s;
   if (/^https:\/\/[^\s<>"']+$/i.test(s)) return s;
   return "";
 }
 
 function oneOf<T extends string>(value: unknown, allowed: readonly T[], fallback: T): T {
   return allowed.includes(value as T) ? (value as T) : fallback;
+}
+
+function tone(value: unknown, fallback: Tone = "plain"): Tone {
+  return oneOf(value, TONES, fallback);
 }
 
 function normalizeBlock(raw: unknown): Block | null {
@@ -222,11 +341,18 @@ function normalizeBlock(raw: unknown): Block | null {
         title: str(r.title, CAP.title),
         sub: str(r.sub, CAP.title * 2),
         href: safeHref(r.href),
+        layout: oneOf(r.layout, ["stacked", "overlay"] as const, "stacked"),
       };
     case "heading":
-      return { id, kind: "heading", label: str(r.label, CAP.short), text: str(r.text, CAP.title) };
+      return {
+        id,
+        kind: "heading",
+        label: str(r.label, CAP.short),
+        text: str(r.text, CAP.title),
+        tone: tone(r.tone),
+      };
     case "text":
-      return { id, kind: "text", text: str(r.text, CAP.text) };
+      return { id, kind: "text", text: str(r.text, CAP.text), tone: tone(r.tone) };
     case "image":
       return {
         id,
@@ -236,6 +362,26 @@ function normalizeBlock(raw: unknown): Block | null {
         caption: str(r.caption, CAP.title * 2),
         href: safeHref(r.href),
       };
+    case "gallery": {
+      const items = Array.isArray(r.items) ? r.items : [];
+      return {
+        id,
+        kind: "gallery",
+        title: str(r.title, CAP.title),
+        columns: r.columns === 3 ? 3 : 2,
+        items: items
+          .slice(0, 6)
+          .map((it) => {
+            const o = (it && typeof it === "object" ? it : {}) as Record<string, unknown>;
+            return {
+              image: safeImage(o.image),
+              alt: str(o.alt, CAP.short),
+              caption: str(o.caption, CAP.short),
+              href: safeHref(o.href),
+            };
+          }),
+      };
+    }
     case "feature":
       return {
         id,
@@ -247,6 +393,7 @@ function normalizeBlock(raw: unknown): Block | null {
         href: safeHref(r.href),
         buttonLabel: str(r.buttonLabel, 40),
         side: oneOf(r.side, ["left", "right"] as const, "left"),
+        tone: tone(r.tone),
       };
     case "film":
       return {
@@ -257,6 +404,24 @@ function normalizeBlock(raw: unknown): Block | null {
         category: str(r.category, CAP.short),
         poster: safeImage(r.poster),
         portrait: r.portrait !== false,
+      };
+    case "stats": {
+      const items = Array.isArray(r.items) ? r.items : [];
+      const cleaned = items.slice(0, 3).map((it) => {
+        const o = (it && typeof it === "object" ? it : {}) as Record<string, unknown>;
+        return { value: str(o.value, 20), label: str(o.label, 60) };
+      });
+      while (cleaned.length < 3) cleaned.push({ value: "", label: "" });
+      return { id, kind: "stats", items: cleaned, tone: tone(r.tone, "panel") };
+    }
+    case "list":
+      return {
+        id,
+        kind: "list",
+        title: str(r.title, CAP.title),
+        items: str(r.items, CAP.text),
+        style: oneOf(r.style, ["numbered", "bulleted"] as const, "numbered"),
+        tone: tone(r.tone),
       };
     case "button":
       return {
@@ -273,6 +438,28 @@ function normalizeBlock(raw: unknown): Block | null {
         text: str(r.text, CAP.text),
         name: str(r.name, CAP.short),
         role: str(r.role, CAP.short),
+        tone: tone(r.tone),
+      };
+    case "note":
+      return {
+        id,
+        kind: "note",
+        image: safeImage(r.image),
+        name: str(r.name, CAP.short),
+        role: str(r.role, CAP.short),
+        text: str(r.text, CAP.text),
+        tone: tone(r.tone, "panel"),
+      };
+    case "cta":
+      return {
+        id,
+        kind: "cta",
+        title: str(r.title, CAP.title),
+        text: str(r.text, CAP.title * 2),
+        label: str(r.label, 60),
+        href: safeHref(r.href),
+        phones: r.phones !== false,
+        tone: tone(r.tone, "accent"),
       };
     case "divider":
       return { id, kind: "divider" };
@@ -304,6 +491,12 @@ export function normalizeDraft(input: unknown): Draft {
   return {
     subject: str(r.subject, 200).replace(/\s+/g, " "),
     preheader: str(r.preheader, 200).replace(/\s+/g, " "),
+    theme: oneOf(r.theme, THEMES, "night"),
     blocks: normalizeBlocks(r.blocks),
   };
+}
+
+/** A copy of a draft with every block id fresh, for templates and duplicates. */
+export function withFreshIds(draft: Draft): Draft {
+  return { ...draft, blocks: draft.blocks.map((b) => ({ ...b, id: newId() })) };
 }

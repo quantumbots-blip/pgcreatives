@@ -1,25 +1,34 @@
 import Link from "next/link";
-import { Users, Send, MailCheck, MailX, Plus, Sparkles, CheckCircle2, AlertCircle, ChevronRight } from "lucide-react";
+import { Users, Send, MailCheck, MailX, Plus, CheckCircle2, AlertCircle, ChevronRight } from "lucide-react";
 import { AdminNav } from "../nav";
 import { Panel, Stat } from "../ui";
 import { loadShell } from "./load-shell";
 import { CampaignChip, shortDate } from "./shared";
 import { CampaignActions } from "./campaign-actions";
+import { Thumb } from "./thumb";
 import { countSubscribers, listCampaigns, type CampaignSummary, type SubscriberCounts } from "@/lib/newsletter/db";
 import { checkSetup, type Setup } from "@/lib/newsletter/setup";
-import { createCampaignAction } from "@/app/actions/newsletter";
+import { postalAddress } from "@/lib/newsletter/send";
+import { PALETTES, renderNewsletterHtml } from "@/lib/newsletter/render";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 /**
  * The newsletter, from the top: who is on the list, whether sending can
- * work today, and every email written so far.
+ * work today, and every email written so far, each drawn small enough to
+ * recognise.
  */
 
 function subjectOf(c: CampaignSummary): string {
   return c.subject.trim() || "Untitled email";
 }
+
+const SAMPLE = {
+  email: "you@example.com",
+  firstName: "Heather",
+  unsubscribeUrl: "https://pgcreativeswi.com/newsletter/unsubscribe/preview",
+};
 
 export default async function NewsletterPage() {
   const { signedInAs, waiting, dbError } = await loadShell();
@@ -38,6 +47,7 @@ export default async function NewsletterPage() {
   const sentCount = campaigns.filter((c) => c.status === "sent").length;
   const delivered = campaigns.reduce((n, c) => n + c.counts.sent, 0);
   const problems = setup.items.filter((i) => !i.ok);
+  const address = postalAddress();
 
   return (
     <div className="min-h-screen bg-ground">
@@ -51,26 +61,13 @@ export default async function NewsletterPage() {
               One email a month to the people you have worked with.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <form action={createCampaignAction.bind(null, "example")}>
-              <button
-                type="submit"
-                className="inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-line bg-surface-hi px-3 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-white"
-              >
-                <Sparkles className="h-4 w-4" />
-                Start from an example
-              </button>
-            </form>
-            <form action={createCampaignAction.bind(null, "blank")}>
-              <button
-                type="submit"
-                className="inline-flex min-h-10 items-center gap-1.5 rounded-lg bg-signal px-3.5 text-xs font-semibold text-white transition-colors hover:bg-[#3480d2]"
-              >
-                <Plus className="h-4 w-4" />
-                New email
-              </button>
-            </form>
-          </div>
+          <Link
+            href="/admin/newsletter/new"
+            className="inline-flex min-h-10 items-center gap-1.5 rounded-lg bg-signal px-3.5 text-xs font-semibold text-white transition-colors hover:bg-[#3480d2]"
+          >
+            <Plus className="h-4 w-4" />
+            New email
+          </Link>
         </div>
 
         {dbError && (
@@ -85,6 +82,69 @@ export default async function NewsletterPage() {
           <Stat icon={Send} value={sentCount} label="Emails sent" sub={sentCount === 1 ? "One campaign so far" : "Campaigns that have gone out"} />
           <Stat icon={MailCheck} value={delivered.toLocaleString()} label="Copies delivered" sub="Across every email" />
         </div>
+
+        <Panel
+          title="Emails"
+          aside={
+            <Link
+              href="/admin/newsletter/subscribers"
+              className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-xs font-medium text-signal-ink transition-colors hover:bg-white/[0.04]"
+            >
+              <Users className="h-3.5 w-3.5" />
+              Manage the list
+              <ChevronRight className="h-3.5 w-3.5" />
+            </Link>
+          }
+        >
+          {campaigns.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-line-strong px-4 py-10 text-center">
+              <p className="text-sm text-white">No emails yet.</p>
+              <p className="mt-1 text-xs text-ink-3">Start one from a template. Each is a finished email you change rather than a form you fill in.</p>
+              <Link
+                href="/admin/newsletter/new"
+                className="mt-4 inline-flex min-h-10 items-center gap-1.5 rounded-lg bg-signal px-3.5 text-xs font-semibold text-white hover:bg-[#3480d2]"
+              >
+                <Plus className="h-4 w-4" />
+                New email
+              </Link>
+            </div>
+          ) : (
+            <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {campaigns.map((c) => {
+                const html = renderNewsletterHtml(
+                  { subject: c.subject, preheader: c.preheader, theme: c.theme, blocks: c.blocks },
+                  { recipient: SAMPLE, postalAddress: address, assetOrigin: "" },
+                );
+                return (
+                  <li key={c.id} className="flex flex-col overflow-hidden rounded-xl border border-line bg-surface-hi">
+                    <Link href={`/admin/newsletter/${c.id}`} className="block" aria-label={`Open ${subjectOf(c)}`}>
+                      <Thumb html={html} height={210} ground={PALETTES[c.theme].ground} />
+                    </Link>
+                    <div className="flex flex-1 flex-col gap-2 p-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <Link href={`/admin/newsletter/${c.id}`} className="min-w-0">
+                          <p className="line-clamp-2 text-sm font-medium text-white hover:text-signal-ink">{subjectOf(c)}</p>
+                        </Link>
+                        <CampaignChip status={c.status} />
+                      </div>
+                      <p className="text-xs text-ink-3">
+                        {c.status === "sent" && c.sent_at
+                          ? `Sent ${shortDate(c.sent_at)} to ${c.counts.sent.toLocaleString()}`
+                          : c.status === "paused"
+                            ? `${c.counts.sent.toLocaleString()} sent, ${c.counts.queued.toLocaleString()} still waiting`
+                            : `Edited ${shortDate(c.updated_at)}`}
+                        {c.counts.failed > 0 && `, ${c.counts.failed} failed`}
+                      </p>
+                      <div className="mt-auto pt-1">
+                        <CampaignActions id={c.id} status={c.status} />
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </Panel>
 
         <Panel
           title="Ready to send?"
@@ -118,51 +178,6 @@ export default async function NewsletterPage() {
               <li className="py-2 text-sm text-ink-3">Could not run the checks.</li>
             )}
           </ul>
-        </Panel>
-
-        <Panel
-          title="Emails"
-          aside={
-            <Link
-              href="/admin/newsletter/subscribers"
-              className="inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-xs font-medium text-signal-ink transition-colors hover:bg-white/[0.04]"
-            >
-              <Users className="h-3.5 w-3.5" />
-              Manage the list
-              <ChevronRight className="h-3.5 w-3.5" />
-            </Link>
-          }
-        >
-          {campaigns.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-line-strong px-4 py-10 text-center">
-              <p className="text-sm text-white">No emails yet.</p>
-              <p className="mt-1 text-xs text-ink-3">
-                Start from the example to see what one looks like, or open a blank one.
-              </p>
-            </div>
-          ) : (
-            <ul className="divide-y divide-line">
-              {campaigns.map((c) => (
-                <li key={c.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3 first:pt-0 last:pb-0">
-                  <Link href={`/admin/newsletter/${c.id}`} className="group min-w-0 flex-1 basis-60">
-                    <p className="truncate text-sm font-medium text-white group-hover:text-signal-ink">
-                      {subjectOf(c)}
-                    </p>
-                    <p className="mt-0.5 text-xs text-ink-3">
-                      {c.status === "sent" && c.sent_at
-                        ? `Sent ${shortDate(c.sent_at)} to ${c.counts.sent.toLocaleString()}`
-                        : c.status === "paused"
-                          ? `${c.counts.sent.toLocaleString()} sent, ${c.counts.queued.toLocaleString()} still waiting`
-                          : `Edited ${shortDate(c.updated_at)}`}
-                      {c.counts.failed > 0 && `, ${c.counts.failed} failed`}
-                    </p>
-                  </Link>
-                  <CampaignChip status={c.status} />
-                  <CampaignActions id={c.id} status={c.status} />
-                </li>
-              ))}
-            </ul>
-          )}
         </Panel>
       </main>
     </div>

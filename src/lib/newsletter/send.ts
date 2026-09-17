@@ -123,7 +123,12 @@ export async function sendCampaign(campaignId: number, actor: string | null): Pr
   }
   const resend = new Resend(apiKey);
 
-  const draft: Draft = { subject: campaign.subject, preheader: campaign.preheader, blocks: campaign.blocks };
+  const draft: Draft = {
+    subject: campaign.subject,
+    preheader: campaign.preheader,
+    theme: campaign.theme,
+    blocks: campaign.blocks,
+  };
   const opts = { viewUrl: viewUrl(campaign.public_token), postalAddress: postalAddress() };
 
   await setCampaignStatus(campaignId, "sending", null);
